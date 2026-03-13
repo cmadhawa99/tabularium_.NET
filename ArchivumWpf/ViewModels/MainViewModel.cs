@@ -7,16 +7,32 @@ public partial class MainViewModel : ObservableObject
 {
     [ObservableProperty] private ObservableObject _currentPageViewModel;
 
-    private readonly DashboardViewModel _dashboardVm = new();
-    private readonly SearchViewModel _searchVm = new();
-    private readonly CirculationViewModel _circulationVm = new();
-    private readonly AddFileViewModel _addFileVm = new();
-    private readonly ReportsViewModel _reportsVm = new();
-    private readonly SettingsViewModel _settingsVm = new();
-    private readonly DisposalViewModel _disposalVm = new();
+    private readonly DashboardViewModel _dashboardVm;
+    private readonly SearchViewModel _searchVm;
+    private readonly CirculationViewModel _circulationVm;
+    private readonly AddFileViewModel _addFileVm;
+    private readonly ReportsViewModel _reportsVm;
+    private readonly SettingsViewModel _settingsVm;
+    private readonly DisposalViewModel _disposalVm;
 
-    public MainViewModel()
+    public MainViewModel(
+        DashboardViewModel dashboardVm,
+        SearchViewModel searchVm,
+        CirculationViewModel circulationVm,
+        AddFileViewModel addFileVm,
+        ReportsViewModel reportsVm,
+        SettingsViewModel settingsVm,
+        DisposalViewModel disposalVm
+        )
     {
+        _dashboardVm = dashboardVm;
+        _searchVm = searchVm;
+        _circulationVm = circulationVm;
+        _addFileVm = addFileVm;
+        _reportsVm = reportsVm;
+        _settingsVm = settingsVm;
+        _disposalVm = disposalVm;
+        
         _currentPageViewModel = _dashboardVm;
     }
     
