@@ -10,6 +10,7 @@ namespace ArchivumWpf.ViewModels;
 public partial class SearchViewModel : ObservableObject
 {
     private readonly IArchiveService _archiveService;
+    private const int PageSize = 50;
     
     [ObservableProperty]
     private string _searchQuery = string.Empty;
@@ -19,27 +20,57 @@ public partial class SearchViewModel : ObservableObject
 
     [ObservableProperty] 
     private bool _isSearching;
+    
+    //Pagination
+    [ObservableProperty] private int _currentPage = 1;
+    [ObservableProperty] private int _totalPages = 1;
+    [ObservableProperty] private int _totalResultsCount = 0;
 
     public SearchViewModel(IArchiveService archiveService)
     {
         _archiveService = archiveService;
+
+        _ = LoadDataAsync();
     }
 
     [RelayCommand]
     private async Task PerformSearchAsync()
     {
-        if (string.IsNullOrWhiteSpace(SearchQuery))
-        {
-            SearchResults.Clear();
-            return;
-        }
-        
-        IsSearching = true;
+        CurrentPage = 1;
+        await LoadDataAsync();
+    }
 
-        var results = await _archiveService.SearchFilesAsync(SearchQuery);
+    [RelayCommand]
+    private async Task NextPageAsync()
+    {
+        if (CurrentPage < TotalPages)
+        {
+            CurrentPage++;
+            await LoadDataAsync();
+        }
+    }
+
+    [RelayCommand]
+    private async Task PreviousPageAsync()
+    {
+        if (CurrentPage > 1)
+        {
+            CurrentPage--;
+            await LoadDataAsync();
+        }
+    }
+
+
+    private async Task LoadDataAsync()
+    {
+        var result = await _archiveService.SearchFilesPaginatedAsync(SearchQuery, CurrentPage, PageSize);
+        
+        TotalResultsCount = result.TotalCount;
+        TotalPages = (int)Math.Ceiling((double)TotalResultsCount / PageSize);
+        if (TotalPages == 0) TotalPages = 1;
         
         SearchResults.Clear();
-        foreach (var file in results)
+        foreach (var file in result.Items)
         {
             SearchResults.Add(file);
         }
