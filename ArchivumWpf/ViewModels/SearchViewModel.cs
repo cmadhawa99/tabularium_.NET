@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -12,14 +13,12 @@ public partial class SearchViewModel : ObservableObject
     private readonly IArchiveService _archiveService;
     private const int PageSize = 50;
     
-    [ObservableProperty]
-    private string _searchQuery = string.Empty;
-
-    [ObservableProperty] 
-    private ObservableCollection<FileRecord> _searchResults = new();
-
-    [ObservableProperty] 
-    private bool _isSearching;
+    [ObservableProperty] private string _searchQuery = string.Empty;
+    [ObservableProperty] private ObservableCollection<FileRecord> _searchResults = new();
+    [ObservableProperty] private bool _isSearching;
+    [ObservableProperty] private FileRecord? _selectedFile;
+    [ObservableProperty] private bool _isDetailsOpen;
+    
     
     //Pagination
     [ObservableProperty] private int _currentPage = 1;
@@ -30,6 +29,16 @@ public partial class SearchViewModel : ObservableObject
     {
         _archiveService = archiveService;
 
+        _ = LoadDataAsync();
+    }
+
+    partial void OnSearchQueryChanged(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            CurrentPage = 1;
+        }
+        
         _ = LoadDataAsync();
     }
 
@@ -60,9 +69,26 @@ public partial class SearchViewModel : ObservableObject
         }
     }
 
+    [RelayCommand]
+    private void OpenDetails()
+    {
+        if (SelectedFile != null)
+        {
+            IsDetailsOpen = true;
+        }
+    }
+
+    [RelayCommand]
+    private void CloseDetails()
+    {
+        IsDetailsOpen = false;
+    }
+
 
     private async Task LoadDataAsync()
     {
+        IsSearching = true;
+        
         var result = await _archiveService.SearchFilesPaginatedAsync(SearchQuery, CurrentPage, PageSize);
         
         TotalResultsCount = result.TotalCount;

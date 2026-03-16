@@ -13,6 +13,7 @@ public class FileRecord
     public string RrNumber { get; set; } = null!;
 
     [Column("serial_number")]
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
     public int SerialNumber { get; set; }
 
     [Column("sector")]
@@ -27,10 +28,10 @@ public class FileRecord
     [Column("file_type")]
     public string? FileType { get; set; }
 
-    [Column("start_date")]
+    [Column("start_date", TypeName = "date")]
     public DateTime? StartDate { get; set; }
 
-    [Column("end_date")]
+    [Column("end_date", TypeName = "date")]
     public DateTime? EndDate { get; set; }
 
     [Column("total_pages")]
@@ -48,10 +49,10 @@ public class FileRecord
     [Column("current_status")]
     public string CurrentStatus { get; set; } = "Available";
 
-    [Column("to_be_removed_date")]
+    [Column("to_be_removed_date", TypeName =  "date")]
     public DateTime? ToBeRemovedDate { get; set; }
 
-    [Column("removed_date")]
+    [Column("removed_date", TypeName ="date")]
     public DateTime? RemovedDate { get; set; }
 
     [Column("is_removed")]

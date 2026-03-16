@@ -28,9 +28,11 @@ public partial class App : Application
             .Build();
         
         services.AddDbContext<AppDbContext>(options =>
-            options.UseNpgsql(config.GetConnectionString("DefaultConnection")));
-
+            options.UseNpgsql(config.GetConnectionString("DefaultConnection")),
+            ServiceLifetime.Transient);
+        
         services.AddTransient<IArchiveService, ArchiveService>();
+        //services.AddTransient<IArchiveService, DummyArchiveService>();
         
         services.AddSingleton<MainViewModel>();
         services.AddSingleton<DashboardViewModel>();

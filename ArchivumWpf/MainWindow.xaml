@@ -17,8 +17,17 @@
         </DataTemplate>
         
         <DataTemplate DataType="{x:Type viewmodels:SearchViewModel}">
-        <views:SearchView />
-    </DataTemplate>
+            <views:SearchView />
+        </DataTemplate>
+        
+        <DataTemplate DataType="{x:Type viewmodels:CirculationViewModel}">
+            <views:CirculationView />
+        </DataTemplate>
+        
+        <DataTemplate DataType="{x:Type viewmodels:AddFileViewModel}">
+            <views:AddFileView />
+        </DataTemplate>
+        
     
     </Window.Resources>
     
