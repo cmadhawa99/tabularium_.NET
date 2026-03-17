@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.CompilerServices;
+using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using ArchivumWpf.Models;
 
@@ -19,6 +20,13 @@ public interface IArchiveService
     Task<(bool Success, string Message)> IssueFileAsync(string rrNumber, string borrowerName);
     Task<(bool Success, string Message)> ReturnFileASync(string rrNumber);
     Task<(bool Success, string Message)> AddNewFileAsync(FileRecord newFile);
+
+    Task<List<FileRecord>> GetFilteredFilesForExportAsync(
+        string serialNumber, string rrNumber, string sector, string subjectNumber,
+        string fileName, string filetype, DateTime? startDate, DateTime? endDate,
+        string totalPages, string shelfNumber, string deckNumber, string fileNumber);
+
+    Task<(bool Success, string Message)> BackupDatabaseAsync(string backupPath);
 
 }
 
@@ -164,6 +172,96 @@ public class ArchiveService : IArchiveService
             string exactError = ex.InnerException != null ? ex.InnerException.Message : ex.Message;
             return (false, $"Database Error : {exactError}");
             //return (false, $"Database Error: {ex.Message}");
+        }
+    }
+    
+    //Records
+
+    public async Task<List<FileRecord>> GetFilteredFilesForExportAsync(
+        string serialNumber, string rrNumber, string sector, string subjectNumber,
+        string fileName, string fileType, DateTime? startDate, DateTime? endDate,
+        string totalPages, string shelfNumber, string deckNumber, string fileNumber)
+    {
+        var query = _context.FileRecords.AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(serialNumber) && int.TryParse(serialNumber, out int serial))
+            query = query.Where(f => f.SerialNumber == serial);
+        
+        if (!string.IsNullOrWhiteSpace(rrNumber))
+            query = query.Where(f => f.RrNumber.ToLower().Contains(rrNumber.ToLower()));
+        
+        if (!string.IsNullOrWhiteSpace(sector)) 
+            query = query.Where(f => f.Sector.ToLower().Contains(sector.ToLower()));
+
+        if (!string.IsNullOrWhiteSpace(subjectNumber))
+            query = query.Where(f =>
+                f.SubjectNumber != null && f.SubjectNumber.ToLower().Contains(subjectNumber.ToLower()));
+        
+        if (!string.IsNullOrWhiteSpace(fileName))
+            query = query.Where(f => f.FileName.ToLower().Contains(fileName.ToLower()));
+
+        if (!string.IsNullOrWhiteSpace(fileType))
+            query = query.Where(f => f.FileType != null && f.FileType.ToLower().Contains(fileType.ToLower()));
+        
+        if (startDate.HasValue)
+            query = query.Where(f => f.StartDate >= startDate.Value);
+
+        if (endDate.HasValue)
+            query = query.Where(f => f.EndDate <= endDate.Value);
+        
+        if (!string.IsNullOrWhiteSpace(totalPages) && int.TryParse(totalPages, out int tp))
+            query = query.Where(f => f.TotalPages == tp);
+        
+        if (!string.IsNullOrWhiteSpace(shelfNumber) && int.TryParse(shelfNumber, out int sn))
+            query = query.Where(f => f.ShelfNumber == sn);
+
+        if (!string.IsNullOrWhiteSpace(deckNumber) && int.TryParse(deckNumber, out int dn))
+            query = query.Where(f => f.DeckNumber == dn);
+
+        if (!string.IsNullOrWhiteSpace(fileNumber) && int.TryParse(fileNumber, out int fn))
+            query = query.Where(f => f.FileNumber == fn);
+        
+        return await query.OrderBy(f => f.SerialNumber).ToListAsync();
+    }
+
+    public async Task<(bool Success, string Message)> BackupDatabaseAsync(string backupPath)
+    {
+        try
+        {
+            string dbName = "archive_db";
+            string dbUser = "postgres";
+            string dbPassword = "su753421#2";
+
+            var processStartInfo = new ProcessStartInfo
+            {
+                FileName = "pg_dump",
+                Arguments = $"-U {dbUser} -d {dbName} -f \"{backupPath}\" -F p",
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                UseShellExecute = false,
+                CreateNoWindow = true,
+            };
+
+            processStartInfo.EnvironmentVariables["PGPASSWORD"] = dbPassword;
+
+            using var process = new Process { StartInfo = processStartInfo };
+            process.Start();
+            await process.WaitForExitAsync();
+
+            if (process.ExitCode != 0)
+            {
+                return (true, "Database backup completed successfully.");
+
+            }
+            else
+            {
+                string error = await process.StandardError.ReadToEndAsync();
+                return (false, $"Backup failed : {error}");
+            }
+        }
+        catch (System.Exception ex)
+        {
+            return (false, $"Failed to start backup process. Is PostgresSQL installed and in your PATH? Error: {ex.Message}");
         }
     }
 }

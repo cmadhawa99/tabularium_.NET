@@ -28,6 +28,10 @@
             <views:AddFileView />
         </DataTemplate>
         
+        <DataTemplate DataType="{x:Type viewmodels:ReportsViewModel}">
+            <views:ReportsView />
+        </DataTemplate>
+        
     
     </Window.Resources>
     
