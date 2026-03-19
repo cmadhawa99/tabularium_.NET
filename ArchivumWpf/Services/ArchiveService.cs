@@ -24,7 +24,8 @@ public interface IArchiveService
     Task<List<FileRecord>> GetFilteredFilesForExportAsync(
         string serialNumber, string rrNumber, string sector, string subjectNumber,
         string fileName, string filetype, DateTime? startDate, DateTime? endDate,
-        string totalPages, string shelfNumber, string deckNumber, string fileNumber);
+        string totalPages, string shelfNumber, string deckNumber, string fileNumber,
+        string currentStatus, bool? isRemoved, DateTime? toBeRemovedDate, DateTime? removedDate);
 
     Task<(bool Success, string Message)> BackupDatabaseAsync(string backupPath);
 
@@ -180,7 +181,8 @@ public class ArchiveService : IArchiveService
     public async Task<List<FileRecord>> GetFilteredFilesForExportAsync(
         string serialNumber, string rrNumber, string sector, string subjectNumber,
         string fileName, string fileType, DateTime? startDate, DateTime? endDate,
-        string totalPages, string shelfNumber, string deckNumber, string fileNumber)
+        string totalPages, string shelfNumber, string deckNumber, string fileNumber,
+        string currentStatus, bool? isRemoved, DateTime? toBeRemovedDate, DateTime? removedDate)
     {
         var query = _context.FileRecords.AsQueryable();
 
@@ -220,6 +222,14 @@ public class ArchiveService : IArchiveService
 
         if (!string.IsNullOrWhiteSpace(fileNumber) && int.TryParse(fileNumber, out int fn))
             query = query.Where(f => f.FileNumber == fn);
+        
+        if (!string.IsNullOrWhiteSpace(currentStatus)) query = query.Where(f => f.CurrentStatus.ToLower().Contains(currentStatus.ToLower()));
+        
+        if (isRemoved.HasValue) query =  query.Where(f => f.IsRemoved == isRemoved.Value);
+        
+        if  (toBeRemovedDate.HasValue) query = query.Where(f => f.ToBeRemovedDate >= toBeRemovedDate.Value);
+        
+        if (removedDate.HasValue) query = query.Where(f => f.RemovedDate >= removedDate.Value );
         
         return await query.OrderBy(f => f.SerialNumber).ToListAsync();
     }

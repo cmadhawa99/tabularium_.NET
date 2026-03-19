@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
@@ -6,6 +8,7 @@ using Microsoft.Win32;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using ArchivumWpf.Services;
+using ArchivumWpf.Models;
 using ClosedXML.Excel;
 
 namespace ArchivumWpf.ViewModels;
@@ -14,6 +17,8 @@ public partial class ReportsViewModel : ObservableObject
 {
     private readonly IArchiveService _archiveService;
 
+    [ObservableProperty] private ObservableCollection<FileRecord> _previewRecords = new();
+    
     [ObservableProperty] private string _serialNumber = string.Empty;
     [ObservableProperty] private string _rrNumber = string.Empty;
     [ObservableProperty] private string _sector = string.Empty;
@@ -26,79 +31,189 @@ public partial class ReportsViewModel : ObservableObject
     [ObservableProperty] private string _shelfNumber = string.Empty;
     [ObservableProperty] private string _deckNumber = string.Empty;
     [ObservableProperty] private string _fileNumber = string.Empty;
+    [ObservableProperty] private string _currentStatus = string.Empty;
+    [ObservableProperty] private bool? _isRemovedFilter = null; // Null means "Show Both"
+    [ObservableProperty] private DateTime? _toBeRemovedDate;
+    [ObservableProperty] private DateTime? _removedDate;
 
-    [ObservableProperty] private string _statusMessage = "Leave all fields blank to export the entire database.";
-    [ObservableProperty] private string _statusColor = "White";
-    [ObservableProperty] private bool _isProcessing = false;
+    // exports
+    [ObservableProperty] private bool _incSerial = true;
+    [ObservableProperty] private bool _incRrNumber = true;
+    [ObservableProperty] private bool _incSector = true;
+    [ObservableProperty] private bool _incSubject = true;
+    [ObservableProperty] private bool _incFileName = true;
+    [ObservableProperty] private bool _incFileType = true;
+    [ObservableProperty] private bool _incStartDate = true;
+    [ObservableProperty] private bool _incEndDate = true;
+    [ObservableProperty] private bool _incPages = true;
+    [ObservableProperty] private bool _incShelf = true;
+    [ObservableProperty] private bool _incDeck = true;
+    [ObservableProperty] private bool _incFileNum = true;
+    [ObservableProperty] private bool _incStatus = true;
+    [ObservableProperty] private bool _incToBeRemovedDate = true;
+    [ObservableProperty] private bool _incRemovedDate = true;
+    [ObservableProperty] private bool _incIsRemoved = true;
     
-    public ReportsViewModel (IArchiveService archiveService)
+    [ObservableProperty] private string _statusMessage = "Ready. Configure your report below.";
+    [ObservableProperty] private string _statusColor = "Gray";
+    [ObservableProperty] private bool _isProcessing = false;
+
+    public ReportsViewModel(IArchiveService archiveService)
     {
         _archiveService = archiveService;
+        _ = UpdatePreviewAsync(); 
+    }
+    
+    partial void OnSerialNumberChanged(string value) => _ = UpdatePreviewAsync();
+    partial void OnRrNumberChanged(string value) => _ = UpdatePreviewAsync();
+    partial void OnSectorChanged(string value) => _ = UpdatePreviewAsync();
+    partial void OnSubjectNumberChanged(string value) => _ = UpdatePreviewAsync();
+    partial void OnFileNameChanged(string value) => _ = UpdatePreviewAsync();
+    partial void OnFileTypeChanged(string value) => _ = UpdatePreviewAsync();
+    partial void OnStartDateChanged(DateTime? value) => _ = UpdatePreviewAsync();
+    partial void OnEndDateChanged(DateTime? value) => _ = UpdatePreviewAsync();
+    partial void OnTotalPagesChanged(string value) => _ = UpdatePreviewAsync();
+    partial void OnShelfNumberChanged(string value) => _ = UpdatePreviewAsync();
+    partial void OnDeckNumberChanged(string value) => _ = UpdatePreviewAsync();
+    partial void OnFileNumberChanged(string value) => _ = UpdatePreviewAsync();
+    partial void OnCurrentStatusChanged(string value) => _ = UpdatePreviewAsync();
+    partial void OnIsRemovedFilterChanged(bool? value) => _ = UpdatePreviewAsync();
+    partial void OnToBeRemovedDateChanged(DateTime? value) => _ = UpdatePreviewAsync();
+    partial void OnRemovedDateChanged(DateTime? value) => _ = UpdatePreviewAsync();
+
+    private async Task UpdatePreviewAsync()
+    {
+        var data = await _archiveService.GetFilteredFilesForExportAsync(
+            SerialNumber, RrNumber, Sector, SubjectNumber, FileName, FileType, StartDate, EndDate, 
+            TotalPages, ShelfNumber, DeckNumber, FileNumber, CurrentStatus, IsRemovedFilter, ToBeRemovedDate, RemovedDate);
+        
+        PreviewRecords.Clear();
+        foreach (var file in data) PreviewRecords.Add(file);
+        
+        ShowStatus($"Preview showing {PreviewRecords.Count} matching records.", "Gray");
     }
 
     [RelayCommand]
-    private async Task ExportCscAsync()
+    private async Task ExportCsvAsync()
     {
-        var dialog = new SaveFileDialog {Filter = "CSV File (*.csv)|*.csv", FileName = $"Vault_Export_{DateTime.Now:yyyyMMdd}.csv"};
-        if (dialog.ShowDialog() !=  true) return;
-        
+        var dialog = new SaveFileDialog { Filter = "CSV File (*.csv)|*.csv", FileName = $"Custom_Report_{DateTime.Now:yyyyMMdd}.csv" };
+        if (dialog.ShowDialog() != true) return;
+
         IsProcessing = true;
         ShowStatus("Generating CSV...", "Yellow");
-        
-        var data = await _archiveService.GetFilteredFilesForExportAsync(SerialNumber, RrNumber, Sector, SubjectNumber, FileName, FileType, StartDate, EndDate, TotalPages, ShelfNumber, DeckNumber, FileNumber);
-        
-        var csv = new StringBuilder();
-        csv.AppendLine(
-            "Serial Number,RR Number,Sector,Subject Number,File Name,File Type,Start Date,End Date,Total Pages,Shelf,Deck,File Number,Status");
 
-        foreach (var file in data)
+        var csv = new StringBuilder();
+        var headers = new List<string>();
+
+        if (IncSerial) headers.Add("Serial Number");
+        if (IncRrNumber) headers.Add("RR Number");
+        if (IncSector) headers.Add("Sector");
+        if (IncSubject) headers.Add("Subject Number");
+        if (IncFileName) headers.Add("File Name");
+        if (IncFileType) headers.Add("File Type");
+        if (IncStartDate) headers.Add("Start Date");
+        if (IncEndDate) headers.Add("End Date");
+        if (IncPages) headers.Add("Total Pages");
+        if (IncShelf) headers.Add("Shelf Number");
+        if (IncDeck) headers.Add("Deck Number");
+        if (IncFileNum) headers.Add("File Number");
+        if (IncStatus) headers.Add("Status");
+        if (IncToBeRemovedDate) headers.Add("To Be Removed Date");
+        if (IncRemovedDate) headers.Add("Removed Date");
+        if (IncIsRemoved) headers.Add("Is Removed");
+
+        csv.AppendLine(string.Join(",", headers));
+
+        foreach (var file in PreviewRecords)
         {
-            string cleanName = file.FileName?.Replace(",", "") ?? "";
-            
-            csv.AppendLine($"{file.SerialNumber},{file.RrNumber},{file.Sector},{file.SubjectNumber},{cleanName},{file.FileType},{file.StartDate:yyyy-MM-dd},{file.EndDate:yyyy-MM-dd},{file.TotalPages},{file.ShelfNumber},{file.DeckNumber},{file.FileNumber},{file.CurrentStatus}");
+            var row = new List<string>();
+            string safeName = file.FileName?.Replace(",", " ") ?? ""; 
+
+            if (IncSerial) row.Add(file.SerialNumber.ToString());
+            if (IncRrNumber) row.Add(file.RrNumber ?? "");
+            if (IncSector) row.Add(file.Sector ?? "");
+            if (IncSubject) row.Add(file.SubjectNumber ?? "");
+            if (IncFileName) row.Add(safeName);
+            if (IncFileType) row.Add(file.FileType ?? "");
+            if (IncStartDate) row.Add(file.StartDate?.ToString("yyyy-MM-dd") ?? "");
+            if (IncEndDate) row.Add(file.EndDate?.ToString("yyyy-MM-dd") ?? "");
+            if (IncPages) row.Add(file.TotalPages?.ToString() ?? "");
+            if (IncShelf) row.Add(file.ShelfNumber?.ToString() ?? "");
+            if (IncDeck) row.Add(file.DeckNumber?.ToString() ?? "");
+            if (IncFileNum) row.Add(file.FileNumber?.ToString() ?? "");
+            if (IncStatus) row.Add(file.CurrentStatus ?? "");
+            if (IncToBeRemovedDate) row.Add(file.ToBeRemovedDate?.ToString("yyyy-MM-dd") ?? "");
+            if (IncRemovedDate) row.Add(file.RemovedDate?.ToString("yyyy-MM-dd") ?? "");
+            if (IncIsRemoved) row.Add(file.IsRemoved.ToString());
+
+            csv.AppendLine(string.Join(",", row));
         }
-        
+
         await File.WriteAllTextAsync(dialog.FileName, csv.ToString());
-        ShowStatus($"Successfully exported {data.Count} records to CSV.", "#4CAF50");
+        ShowStatus($"Successfully exported {PreviewRecords.Count} records to CSV.", "#4CAF50");
+        IsProcessing = false;
     }
 
     [RelayCommand]
-    private async Task ExportExcelAsync()
+    private void ExportExcel()
     {
-        var dialog = new SaveFileDialog { Filter = "Excel File (*.xlsx)|*.xlsx", FileName = $"Vault_Export_{DateTime.Now:yyyyMMdd}.xlsx" };
+        var dialog = new SaveFileDialog { Filter = "Excel File (*.xlsx)|*.xlsx", FileName = $"Custom_Report_{DateTime.Now:yyyyMMdd}.xlsx" };
         if (dialog.ShowDialog() != true) return;
-        
+
         IsProcessing = true;
         ShowStatus("Generating Excel file...", "Yellow");
-        
-        var data = await _archiveService.GetFilteredFilesForExportAsync(SerialNumber, RrNumber, Sector, SubjectNumber, FileName, FileType, StartDate, EndDate, TotalPages, ShelfNumber, DeckNumber, FileNumber);
-
 
         using (var workbook = new XLWorkbook())
         {
-            var worksheet = workbook.Worksheets.Add("Vault Records");
-            
-            worksheet.Cell(1, 1).Value = "Serial Number";
-            worksheet.Cell(1, 2).Value = "RR Number";
-            worksheet.Cell(1, 3).Value = "Sector";
-            worksheet.Cell(1, 4).Value = "File Name";
-            worksheet.Cell(1, 5).Value = "Status";
+            var ws = workbook.Worksheets.Add("Vault Records");
+            int col = 1;
 
-            for (int i = 0; i < data.Count; i++)
+            if (IncSerial) ws.Cell(1, col++).Value = "Serial Number";
+            if (IncRrNumber) ws.Cell(1, col++).Value = "RR Number";
+            if (IncSector) ws.Cell(1, col++).Value = "Sector";
+            if (IncSubject) ws.Cell(1, col++).Value = "Subject Number";
+            if (IncFileName) ws.Cell(1, col++).Value = "File Name";
+            if (IncFileType) ws.Cell(1, col++).Value = "File Type";
+            if (IncStartDate) ws.Cell(1, col++).Value = "Start Date";
+            if (IncEndDate) ws.Cell(1, col++).Value = "End Date";
+            if (IncPages) ws.Cell(1, col++).Value = "Total Pages";
+            if (IncShelf) ws.Cell(1, col++).Value = "Shelf";
+            if (IncDeck) ws.Cell(1, col++).Value = "Deck";
+            if (IncFileNum) ws.Cell(1, col++).Value = "File Number";
+            if (IncStatus) ws.Cell(1, col++).Value = "Status";
+            if (IncToBeRemovedDate) ws.Cell(1, col++).Value = "To Be Removed";
+            if (IncRemovedDate) ws.Cell(1, col++).Value = "Removed Date";
+            if (IncIsRemoved) ws.Cell(1, col++).Value = "Is Removed";
+
+            for (int r = 0; r < PreviewRecords.Count; r++)
             {
-                var row = i + 2;
-                worksheet.Cell(row, 1).Value = data[i].SerialNumber;
-                worksheet.Cell(row, 2).Value = data[i].RrNumber;
-                worksheet.Cell(row, 3).Value = data[i].Sector;
-                worksheet.Cell(row, 4).Value = data[i].FileName;
-                worksheet.Cell(row, 5).Value = data[i].CurrentStatus;
+                int c = 1;
+                var file = PreviewRecords[r];
+                var row = r + 2;
+
+                if (IncSerial) ws.Cell(row, c++).Value = file.SerialNumber;
+                if (IncRrNumber) ws.Cell(row, c++).Value = file.RrNumber;
+                if (IncSector) ws.Cell(row, c++).Value = file.Sector;
+                if (IncSubject) ws.Cell(row, c++).Value = file.SubjectNumber;
+                if (IncFileName) ws.Cell(row, c++).Value = file.FileName;
+                if (IncFileType) ws.Cell(row, c++).Value = file.FileType;
+                if (IncStartDate) ws.Cell(row, c++).Value = file.StartDate?.ToString("yyyy-MM-dd");
+                if (IncEndDate) ws.Cell(row, c++).Value = file.EndDate?.ToString("yyyy-MM-dd");
+                if (IncPages) ws.Cell(row, c++).Value = file.TotalPages;
+                if (IncShelf) ws.Cell(row, c++).Value = file.ShelfNumber;
+                if (IncDeck) ws.Cell(row, c++).Value = file.DeckNumber;
+                if (IncFileNum) ws.Cell(row, c++).Value = file.FileNumber;
+                if (IncStatus) ws.Cell(row, c++).Value = file.CurrentStatus;
+                if (IncToBeRemovedDate) ws.Cell(row, c++).Value = file.ToBeRemovedDate?.ToString("yyyy-MM-dd");
+                if (IncRemovedDate) ws.Cell(row, c++).Value = file.RemovedDate?.ToString("yyyy-MM-dd");
+                if (IncIsRemoved) ws.Cell(row, c++).Value = file.IsRemoved;
             }
-            
-            worksheet.Columns().AdjustToContents();
+
+            ws.Columns().AdjustToContents();
             workbook.SaveAs(dialog.FileName);
         }
-        
-        ShowStatus($"Successfully exported {data.Count} records to Excel.", "#4CAF50");
+
+        ShowStatus($"Successfully exported {PreviewRecords.Count} records to Excel.", "#4CAF50");
         IsProcessing = false;
     }
 
@@ -109,11 +224,10 @@ public partial class ReportsViewModel : ObservableObject
         if (dialog.ShowDialog() != true) return;
 
         IsProcessing = true;
-        ShowStatus("Running SQL Backup (This may take a moment)...", "Yellow");
-        
+        ShowStatus("Running SQL Backup (This backs up the entire database regardless of filters)...", "Yellow");
         var result = await _archiveService.BackupDatabaseAsync(dialog.FileName);
-        ShowStatus(result.Message, result.Success ? "#4CAF50" : "#F4436");
-        IsProcessing  = false;
+        ShowStatus(result.Message, result.Success ? "#4CAF50" : "#F44336");
+        IsProcessing = false;
     }
 
     [RelayCommand]
@@ -123,13 +237,19 @@ public partial class ReportsViewModel : ObservableObject
         SubjectNumber = string.Empty; FileName = string.Empty; FileType = string.Empty;
         StartDate = null; EndDate = null; TotalPages = string.Empty;
         ShelfNumber = string.Empty; DeckNumber = string.Empty; FileNumber = string.Empty;
-        ShowStatus("Filters cleared. Ready for full database export.", "Gray");
+        CurrentStatus = string.Empty; IsRemovedFilter = null; ToBeRemovedDate = null; RemovedDate = null;
+        
+        IncSerial = true; IncRrNumber = true; IncSector = true; IncSubject = true;
+        IncFileName = true; IncFileType = true; IncStartDate = true; IncEndDate = true;
+        IncPages = true; IncShelf = true; IncDeck = true; IncFileNum = true; IncStatus = true;
+        IncToBeRemovedDate = true; IncRemovedDate = true; IncIsRemoved = true;
+        
+        _ = UpdatePreviewAsync();
     }
-    
 
     private void ShowStatus(string message, string color)
     {
         StatusMessage = message;
         StatusColor = color;
     }
-}    
+}
