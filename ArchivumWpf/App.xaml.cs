@@ -31,6 +31,8 @@ public partial class App : Application
             options.UseNpgsql(config.GetConnectionString("DefaultConnection")),
             ServiceLifetime.Transient);
         
+        services.AddSingleton<IPreferencesService, PreferencesService>();
+        
         services.AddTransient<IArchiveService, ArchiveService>();
         //services.AddTransient<IArchiveService, DummyArchiveService>();
         

@@ -8,6 +8,7 @@ using System.Runtime.CompilerServices;
 using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using ArchivumWpf.Models;
+using DocumentFormat.OpenXml.Spreadsheet;
 
 
 namespace ArchivumWpf.Services;
@@ -21,9 +22,16 @@ public interface IArchiveService
     Task<(bool Success, string Message)> ReturnFileASync(string rrNumber);
     Task<(bool Success, string Message)> AddNewFileAsync(FileRecord newFile);
 
-    Task<List<FileRecord>> GetFilteredFilesForExportAsync(
+    Task<(List<FileRecord> Items, int TotalCount)> GetFilteredPreviewPaginatedAsync(
         string serialNumber, string rrNumber, string sector, string subjectNumber,
         string fileName, string filetype, DateTime? startDate, DateTime? endDate,
+        string totalPages, string shelfNumber, string deckNumber, string fileNumber,
+        string currentStatus, bool? isRemoved, DateTime? toBeRemovedDate, DateTime? removedDate,
+        int pageNumber, int pageSize);
+
+    Task<List<FileRecord>> GetFullFilteredExportAsync(
+        string serialNumber, string rrNumber, string sector, string subjectNumber,
+        string fileName, string fileType, DateTime? startDate, DateTime? endDate,
         string totalPages, string shelfNumber, string deckNumber, string fileNumber,
         string currentStatus, bool? isRemoved, DateTime? toBeRemovedDate, DateTime? removedDate);
 
@@ -178,7 +186,7 @@ public class ArchiveService : IArchiveService
     
     //Records
 
-    public async Task<List<FileRecord>> GetFilteredFilesForExportAsync(
+    private IQueryable<FileRecord> BuildReportQuery(
         string serialNumber, string rrNumber, string sector, string subjectNumber,
         string fileName, string fileType, DateTime? startDate, DateTime? endDate,
         string totalPages, string shelfNumber, string deckNumber, string fileNumber,
@@ -196,8 +204,7 @@ public class ArchiveService : IArchiveService
             query = query.Where(f => f.Sector.ToLower().Contains(sector.ToLower()));
 
         if (!string.IsNullOrWhiteSpace(subjectNumber))
-            query = query.Where(f =>
-                f.SubjectNumber != null && f.SubjectNumber.ToLower().Contains(subjectNumber.ToLower()));
+            query = query.Where(f => f.SubjectNumber != null && f.SubjectNumber.ToLower().Contains(subjectNumber.ToLower()));
         
         if (!string.IsNullOrWhiteSpace(fileName))
             query = query.Where(f => f.FileName.ToLower().Contains(fileName.ToLower()));
@@ -223,17 +230,56 @@ public class ArchiveService : IArchiveService
         if (!string.IsNullOrWhiteSpace(fileNumber) && int.TryParse(fileNumber, out int fn))
             query = query.Where(f => f.FileNumber == fn);
         
-        if (!string.IsNullOrWhiteSpace(currentStatus)) query = query.Where(f => f.CurrentStatus.ToLower().Contains(currentStatus.ToLower()));
+        if (!string.IsNullOrWhiteSpace(currentStatus)) 
+            query = query.Where(f => f.CurrentStatus.ToLower().Contains(currentStatus.ToLower()));
         
-        if (isRemoved.HasValue) query =  query.Where(f => f.IsRemoved == isRemoved.Value);
+        if (isRemoved.HasValue) 
+            query = query.Where(f => f.IsRemoved == isRemoved.Value);
         
-        if  (toBeRemovedDate.HasValue) query = query.Where(f => f.ToBeRemovedDate >= toBeRemovedDate.Value);
+        if (toBeRemovedDate.HasValue) 
+            query = query.Where(f => f.ToBeRemovedDate >= toBeRemovedDate.Value);
         
-        if (removedDate.HasValue) query = query.Where(f => f.RemovedDate >= removedDate.Value );
+        if (removedDate.HasValue) 
+            query = query.Where(f => f.RemovedDate >= removedDate.Value);
         
-        return await query.OrderBy(f => f.SerialNumber).ToListAsync();
+        return query.OrderBy(f => f.SerialNumber);
     }
 
+    public async Task<(List<FileRecord> Items, int TotalCount)> GetFilteredPreviewPaginatedAsync(
+        string serialNumber, string rrNumber, string sector, string subjectNumber,
+        string fileName, string fileType, DateTime? startDate, DateTime? endDate,
+        string totalPages, string shelfNumber, string deckNumber, string fileNumber,
+        string currentStatus, bool? isRemoved, DateTime? toBeRemovedDate, DateTime? removedDate,
+        int pageNumber, int pageSize)
+    {
+        var query = BuildReportQuery(
+            serialNumber, rrNumber, sector, subjectNumber, fileName, fileType, startDate, endDate, 
+            totalPages, shelfNumber, deckNumber, fileNumber, currentStatus, isRemoved, toBeRemovedDate, removedDate);
+        
+        int totalCount = await query.CountAsync();
+        
+        var items = await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+        
+        return (items, totalCount);
+    }
+
+    public async Task<List<FileRecord>> GetFullFilteredExportAsync(
+        string serialNumber, string rrNumber, string sector, string subjectNumber,
+        string fileName, string fileType, DateTime? startDate, DateTime? endDate,
+        string totalPages, string shelfNumber, string deckNumber, string fileNumber,
+        string currentStatus, bool? isRemoved, DateTime? toBeRemovedDate, DateTime? removedDate)
+    {
+        var query = BuildReportQuery(
+            serialNumber, rrNumber, sector, subjectNumber, fileName, fileType, startDate, endDate, 
+            totalPages, shelfNumber, deckNumber, fileNumber, currentStatus, isRemoved, toBeRemovedDate, removedDate);
+
+        return await query.ToListAsync();
+    }
+    
+
+    
+    //sql
+    
     public async Task<(bool Success, string Message)> BackupDatabaseAsync(string backupPath)
     {
         try
@@ -258,7 +304,7 @@ public class ArchiveService : IArchiveService
             process.Start();
             await process.WaitForExitAsync();
 
-            if (process.ExitCode != 0)
+            if (process.ExitCode == 0)
             {
                 return (true, "Database backup completed successfully.");
 

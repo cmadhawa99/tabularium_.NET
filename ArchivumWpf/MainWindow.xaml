@@ -32,7 +32,10 @@
             <views:ReportsView />
         </DataTemplate>
         
-    
+        <DataTemplate DataType="{x:Type viewmodels:SettingsViewModel}">
+            <views:SettingsView />
+        </DataTemplate>
+        
     </Window.Resources>
     
     
@@ -89,7 +92,7 @@
                     </StackPanel>
                 </Button>
                 
-                <Button Command="{Binding NavigateToDashboardCommand}" Height="40" Margin="10,5" 
+                <Button Command="{Binding NavigateToSettingsCommand}" Height="40" Margin="10,5" 
                         Background="Transparent" BorderThickness="0" Foreground="White" HorizontalContentAlignment="Left">
                     <StackPanel Orientation="Horizontal" Margin="20,0,0,0">
                         <fa:ImageAwesome Icon="Cog" Width="16" Height="16" Foreground="#8f9bb3" Margin="0,0,15,0"/>

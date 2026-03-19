@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using Microsoft.Win32;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -16,6 +17,11 @@ namespace ArchivumWpf.ViewModels;
 public partial class ReportsViewModel : ObservableObject
 {
     private readonly IArchiveService _archiveService;
+    
+    private const int PageSize = 50;
+    [ObservableProperty] private int _currentPage = 1;
+    [ObservableProperty] private int _totalPageCount = 1;
+    [ObservableProperty] private int _totalResultCount = 0;
 
     [ObservableProperty] private ObservableCollection<FileRecord> _previewRecords = new();
     
@@ -64,34 +70,70 @@ public partial class ReportsViewModel : ObservableObject
         _ = UpdatePreviewAsync(); 
     }
     
-    partial void OnSerialNumberChanged(string value) => _ = UpdatePreviewAsync();
-    partial void OnRrNumberChanged(string value) => _ = UpdatePreviewAsync();
-    partial void OnSectorChanged(string value) => _ = UpdatePreviewAsync();
-    partial void OnSubjectNumberChanged(string value) => _ = UpdatePreviewAsync();
-    partial void OnFileNameChanged(string value) => _ = UpdatePreviewAsync();
-    partial void OnFileTypeChanged(string value) => _ = UpdatePreviewAsync();
-    partial void OnStartDateChanged(DateTime? value) => _ = UpdatePreviewAsync();
-    partial void OnEndDateChanged(DateTime? value) => _ = UpdatePreviewAsync();
-    partial void OnTotalPagesChanged(string value) => _ = UpdatePreviewAsync();
-    partial void OnShelfNumberChanged(string value) => _ = UpdatePreviewAsync();
-    partial void OnDeckNumberChanged(string value) => _ = UpdatePreviewAsync();
-    partial void OnFileNumberChanged(string value) => _ = UpdatePreviewAsync();
-    partial void OnCurrentStatusChanged(string value) => _ = UpdatePreviewAsync();
-    partial void OnIsRemovedFilterChanged(bool? value) => _ = UpdatePreviewAsync();
-    partial void OnToBeRemovedDateChanged(DateTime? value) => _ = UpdatePreviewAsync();
-    partial void OnRemovedDateChanged(DateTime? value) => _ = UpdatePreviewAsync();
+    partial void OnSerialNumberChanged(string value) => TriggerFilterSearch();
+    partial void OnRrNumberChanged(string value) => TriggerFilterSearch();
+    partial void OnSectorChanged(string value) => TriggerFilterSearch();
+    partial void OnSubjectNumberChanged(string value) => TriggerFilterSearch();
+    partial void OnFileNameChanged(string value) => TriggerFilterSearch();
+    partial void OnFileTypeChanged(string value) => TriggerFilterSearch();
+    partial void OnStartDateChanged(DateTime? value) => TriggerFilterSearch();
+    partial void OnEndDateChanged(DateTime? value) => TriggerFilterSearch();
+    partial void OnTotalPagesChanged(string value) => TriggerFilterSearch();
+    partial void OnShelfNumberChanged(string value) => TriggerFilterSearch();
+    partial void OnDeckNumberChanged(string value) => TriggerFilterSearch();
+    partial void OnFileNumberChanged(string value) => TriggerFilterSearch();
+    partial void OnCurrentStatusChanged(string value) => TriggerFilterSearch();
+    partial void OnIsRemovedFilterChanged(bool? value) => TriggerFilterSearch();
+    partial void OnToBeRemovedDateChanged(DateTime? value) => TriggerFilterSearch();
+    partial void OnRemovedDateChanged(DateTime? value) => TriggerFilterSearch();
 
+    private void TriggerFilterSearch()
+    {
+        CurrentPage = 1;
+        _ = UpdatePreviewAsync();
+    }
+    
     private async Task UpdatePreviewAsync()
     {
-        var data = await _archiveService.GetFilteredFilesForExportAsync(
+        var result = await _archiveService.GetFilteredPreviewPaginatedAsync(
             SerialNumber, RrNumber, Sector, SubjectNumber, FileName, FileType, StartDate, EndDate, 
-            TotalPages, ShelfNumber, DeckNumber, FileNumber, CurrentStatus, IsRemovedFilter, ToBeRemovedDate, RemovedDate);
+            TotalPages, ShelfNumber, DeckNumber, FileNumber, CurrentStatus, IsRemovedFilter, ToBeRemovedDate, RemovedDate,
+            CurrentPage, PageSize);
+
+        TotalResultCount = result.TotalCount;
+        TotalPageCount = (int)Math.Ceiling((double)TotalResultCount / PageSize);
+        if (TotalPageCount == 0) TotalPageCount = 1;
         
         PreviewRecords.Clear();
-        foreach (var file in data) PreviewRecords.Add(file);
+        foreach (var file in result.Items) PreviewRecords.Add(file);
         
-        ShowStatus($"Preview showing {PreviewRecords.Count} matching records.", "Gray");
+        ShowStatus($"Previewing page {CurrentPage} of {TotalPageCount}. Total matches: {TotalResultCount}", "Gray");
     }
+    
+    // paginaton
+
+    [RelayCommand]
+    private async Task NextPageAsync()
+    {
+        if (CurrentPage < TotalPageCount)
+        {
+            CurrentPage++;
+            await UpdatePreviewAsync();
+        }
+    }
+
+    [RelayCommand]
+    private async Task PreviousPageAsync()
+    {
+        if (CurrentPage > 1)
+        {
+            CurrentPage--;
+            await UpdatePreviewAsync();
+        }
+    }
+    
+    // ----
+    
 
     [RelayCommand]
     private async Task ExportCsvAsync()
@@ -101,6 +143,10 @@ public partial class ReportsViewModel : ObservableObject
 
         IsProcessing = true;
         ShowStatus("Generating CSV...", "Yellow");
+        
+        var fullData = await _archiveService.GetFullFilteredExportAsync(
+            SerialNumber, RrNumber, Sector, SubjectNumber, FileName, FileType, StartDate, EndDate, 
+            TotalPages, ShelfNumber, DeckNumber, FileNumber, CurrentStatus, IsRemovedFilter, ToBeRemovedDate, RemovedDate);
 
         var csv = new StringBuilder();
         var headers = new List<string>();
@@ -124,7 +170,7 @@ public partial class ReportsViewModel : ObservableObject
 
         csv.AppendLine(string.Join(",", headers));
 
-        foreach (var file in PreviewRecords)
+        foreach (var file in fullData)
         {
             var row = new List<string>();
             string safeName = file.FileName?.Replace(",", " ") ?? ""; 
@@ -150,18 +196,22 @@ public partial class ReportsViewModel : ObservableObject
         }
 
         await File.WriteAllTextAsync(dialog.FileName, csv.ToString());
-        ShowStatus($"Successfully exported {PreviewRecords.Count} records to CSV.", "#4CAF50");
+        ShowStatus($"Successfully exported {fullData.Count} records to CSV.", "#4CAF50");
         IsProcessing = false;
     }
 
     [RelayCommand]
-    private void ExportExcel()
+    private async Task ExportExcel()
     {
         var dialog = new SaveFileDialog { Filter = "Excel File (*.xlsx)|*.xlsx", FileName = $"Custom_Report_{DateTime.Now:yyyyMMdd}.xlsx" };
         if (dialog.ShowDialog() != true) return;
 
         IsProcessing = true;
         ShowStatus("Generating Excel file...", "Yellow");
+        
+        var fullData = await _archiveService.GetFullFilteredExportAsync(
+            SerialNumber, RrNumber, Sector, SubjectNumber, FileName, FileType, StartDate, EndDate, 
+            TotalPages, ShelfNumber, DeckNumber, FileNumber, CurrentStatus, IsRemovedFilter, ToBeRemovedDate, RemovedDate);
 
         using (var workbook = new XLWorkbook())
         {
@@ -185,10 +235,10 @@ public partial class ReportsViewModel : ObservableObject
             if (IncRemovedDate) ws.Cell(1, col++).Value = "Removed Date";
             if (IncIsRemoved) ws.Cell(1, col++).Value = "Is Removed";
 
-            for (int r = 0; r < PreviewRecords.Count; r++)
+            for (int r = 0; r < fullData.Count; r++)
             {
                 int c = 1;
-                var file = PreviewRecords[r];
+                var file = fullData[r];
                 var row = r + 2;
 
                 if (IncSerial) ws.Cell(row, c++).Value = file.SerialNumber;
@@ -213,7 +263,7 @@ public partial class ReportsViewModel : ObservableObject
             workbook.SaveAs(dialog.FileName);
         }
 
-        ShowStatus($"Successfully exported {PreviewRecords.Count} records to Excel.", "#4CAF50");
+        ShowStatus($"Successfully exported {fullData.Count} records to Excel.", "#4CAF50");
         IsProcessing = false;
     }
 
@@ -244,7 +294,7 @@ public partial class ReportsViewModel : ObservableObject
         IncPages = true; IncShelf = true; IncDeck = true; IncFileNum = true; IncStatus = true;
         IncToBeRemovedDate = true; IncRemovedDate = true; IncIsRemoved = true;
         
-        _ = UpdatePreviewAsync();
+        TriggerFilterSearch();
     }
 
     private void ShowStatus(string message, string color)
