@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Media.Effects;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using ArchivumWpf.Models;
 using ArchivumWpf.Services;
 
@@ -12,6 +14,10 @@ namespace ArchivumWpf.ViewModels;
 public partial class AddFileViewModel : ObservableObject
 {
     private readonly IArchiveService _archiveService;
+    private readonly IPreferencesService _preferencesService;
+
+    public ObservableCollection<string> AvailableSectors { get; } = new();
+    public ObservableCollection<string> AvailableFileTypes { get; } = new();
     
     [ObservableProperty] private string _rrNumber = string.Empty;
     [ObservableProperty] private string _sector = string.Empty;
@@ -31,10 +37,29 @@ public partial class AddFileViewModel : ObservableObject
     [ObservableProperty] private string _statusMessage = string.Empty;
     [ObservableProperty] private string _statusColor = "White";
 
-    public AddFileViewModel(IArchiveService archiveService)
+    public AddFileViewModel(IArchiveService archiveService, IPreferencesService preferencesService)
     {
         _archiveService = archiveService;
+        _preferencesService = preferencesService;
+        LoadDropdowns();
+        WeakReferenceMessenger.Default.Register<SettingsChangedMessage>(this, (recipient, message) =>
+        {
+            LoadDropdowns();
+        });
+        
     }
+
+    private void LoadDropdowns()
+    {
+        var prefs = _preferencesService.GetPreferences();
+        
+        AvailableSectors.Clear();
+        foreach (var s in prefs.Sectors) AvailableSectors.Add(s.Name);
+        
+        AvailableFileTypes.Clear();
+        foreach (var t in prefs.FileTypes) AvailableFileTypes.Add(t);
+    }
+    
 
     [RelayCommand]
     private async Task SaveFileAsync()

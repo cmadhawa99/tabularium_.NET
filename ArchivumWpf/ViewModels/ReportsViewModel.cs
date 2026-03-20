@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using Microsoft.Win32;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using ArchivumWpf.Services;
 using ArchivumWpf.Models;
 using ClosedXML.Excel;
@@ -17,6 +18,12 @@ namespace ArchivumWpf.ViewModels;
 public partial class ReportsViewModel : ObservableObject
 {
     private readonly IArchiveService _archiveService;
+    private readonly IPreferencesService _preferencesService;
+    
+    public ObservableCollection<string> AvailableSectors { get; } = new();
+    public ObservableCollection<string> AvailableFileTypes { get; } = new();
+    public ObservableCollection<SectorItem> RawSectors { get; } = new();
+    [ObservableProperty] private bool _enableRowColors = false;
     
     private const int PageSize = 50;
     [ObservableProperty] private int _currentPage = 1;
@@ -64,11 +71,37 @@ public partial class ReportsViewModel : ObservableObject
     [ObservableProperty] private string _statusColor = "Gray";
     [ObservableProperty] private bool _isProcessing = false;
 
-    public ReportsViewModel(IArchiveService archiveService)
+    public ReportsViewModel(IArchiveService archiveService, IPreferencesService preferencesService)
     {
         _archiveService = archiveService;
+        _preferencesService = preferencesService;
+        LoadDropdowns();
         _ = UpdatePreviewAsync(); 
+        WeakReferenceMessenger.Default.Register<SettingsChangedMessage>(this, (recipient, message) =>
+        {
+            LoadDropdowns();
+        });
     }
+
+    private void LoadDropdowns()
+    {
+        var prefs = _preferencesService.GetPreferences();
+        
+        AvailableSectors.Clear();
+        RawSectors.Clear();
+        AvailableSectors.Add("");
+        foreach (var s in prefs.Sectors)
+        {
+            AvailableSectors.Add(s.Name);
+            RawSectors.Add(s);
+        }
+        
+        AvailableFileTypes.Clear();
+        AvailableFileTypes.Add("");
+        foreach (var t in prefs.FileTypes) AvailableFileTypes.Add(t);
+    }
+    
+    
     
     partial void OnSerialNumberChanged(string value) => TriggerFilterSearch();
     partial void OnRrNumberChanged(string value) => TriggerFilterSearch();

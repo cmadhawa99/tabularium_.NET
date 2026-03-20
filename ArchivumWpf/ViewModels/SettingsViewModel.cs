@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Documents;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using ArchivumWpf.Models;
 using ArchivumWpf.Services;
 using Npgsql;
@@ -223,7 +224,8 @@ public partial class SettingsViewModel : ObservableObject
                 return;
             }
         }
-        
+
+        WeakReferenceMessenger.Default.Send(new SettingsChangedMessage());
         ShowStatus("Settings saved successfully! (App restart required for Database changes to apply).", "#4CAF50");
         
     }

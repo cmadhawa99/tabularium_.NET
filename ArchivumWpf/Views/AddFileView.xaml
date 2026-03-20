@@ -31,9 +31,10 @@
                         <TextBlock Text="RR Number *" Foreground="Gray" Margin="0,0,0,5"/>
                         <TextBox Text="{Binding RrNumber, UpdateSourceTrigger=PropertyChanged}" Height="35" Background="#252525" Foreground="White" BorderBrush="#333333" Padding="5,0"/>
                     </StackPanel>
+                    
                     <StackPanel Grid.Row="0" Grid.Column="2" Margin="0,0,0,15">
                         <TextBlock Text="Sector *" Foreground="Gray" Margin="0,0,0,5"/>
-                        <TextBox Text="{Binding Sector, UpdateSourceTrigger=PropertyChanged}" Height="35" Background="#252525" Foreground="White" BorderBrush="#333333" Padding="5,0"/>
+                        <ComboBox ItemsSource="{Binding AvailableSectors}" SelectedItem="{Binding Sector, UpdateSourceTrigger=PropertyChanged}" Height="35" Background="#252525" Foreground="White" BorderBrush="#333333" Padding="5,0"/>
                     </StackPanel>
 
                     <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,0,0,15">
@@ -45,15 +46,17 @@
                         <TextBlock Text="Subject Number" Foreground="Gray" Margin="0,0,0,5"/>
                         <TextBox Text="{Binding SubjectNumber, UpdateSourceTrigger=PropertyChanged}" Height="35" Background="#252525" Foreground="White" BorderBrush="#333333" Padding="5,0"/>
                     </StackPanel>
+                    
                     <StackPanel Grid.Row="2" Grid.Column="2" Margin="0,0,0,15">
                         <TextBlock Text="File Type" Foreground="Gray" Margin="0,0,0,5"/>
-                        <TextBox Text="{Binding FileType, UpdateSourceTrigger=PropertyChanged}" Height="35" Background="#252525" Foreground="White" BorderBrush="#333333" Padding="5,0"/>
+                        <ComboBox ItemsSource="{Binding AvailableFileTypes}" SelectedItem="{Binding FileType, UpdateSourceTrigger=PropertyChanged}" Height="35" Background="#252525" Foreground="White" BorderBrush="#333333" Padding="5,0"/>
                     </StackPanel>
 
                     <StackPanel Grid.Row="3" Grid.Column="0" Margin="0,0,0,15">
                         <TextBlock Text="Start Date" Foreground="Gray" Margin="0,0,0,5"/>
                         <DatePicker SelectedDate="{Binding StartDate}" Height="35" Background="#252525" Foreground="White" BorderBrush="#333333"/>
                     </StackPanel>
+                    
                     <StackPanel Grid.Row="3" Grid.Column="2" Margin="0,0,0,15">
                         <TextBlock Text="End Date" Foreground="Gray" Margin="0,0,0,5"/>
                         <DatePicker SelectedDate="{Binding EndDate}" Height="35" Background="#252525" Foreground="White" BorderBrush="#333333"/>
