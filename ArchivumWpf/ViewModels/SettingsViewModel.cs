@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
+using System.Windows.Documents;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using ArchivumWpf.Models;
@@ -39,6 +41,15 @@ public partial class SettingsViewModel : ObservableObject
     
     [ObservableProperty] private bool _autoBackupEnabled;
     [ObservableProperty] private string _autoBackupDirectory = string.Empty;
+
+    [ObservableProperty] private ObservableCollection<SectorItem> _sectors = new();
+    [ObservableProperty] private ObservableCollection<string> _fileTypes = new();
+    
+    public ColorPickerViewModel SectorColorPicker { get; } = new();
+    
+    [ObservableProperty] private string _newSectorName = string.Empty;
+    [ObservableProperty] private bool _isColorPickerOpen = false;
+    [ObservableProperty] private string _newFileTypeName = string.Empty;
     
     [ObservableProperty] private string _statusMessage =  string.Empty;
     [ObservableProperty] private string _statusColor = "Gray";
@@ -64,8 +75,14 @@ public partial class SettingsViewModel : ObservableObject
         DefaultExportDirectory = prefs.DefaultExportDirectory;
         AutoBackupEnabled = prefs.AutoBackupEnabled;
         AutoBackupDirectory = prefs.AutoBackupDirectory;
+        
+        Sectors.Clear();
+        foreach (var sector in prefs.Sectors) Sectors.Add(sector);
+        
+        FileTypes.Clear();
+        foreach (var type in prefs.FileTypes) FileTypes.Add(type);
 
-        if (!File.Exists(_appSettingsPath))
+        if (File.Exists(_appSettingsPath))
         {
             try
             {
@@ -84,6 +101,44 @@ public partial class SettingsViewModel : ObservableObject
             catch{}
         }
     }
+
+    [RelayCommand]
+    private void AddSector()
+    {
+        if (string.IsNullOrWhiteSpace(NewSectorName)) return;
+        
+        Sectors.Add(new SectorItem {Name = NewSectorName, ColorHex = SectorColorPicker.HexColor});
+        NewSectorName = string.Empty;
+        SectorColorPicker.SetHex("#FFFFFF");
+    }
+
+    [RelayCommand]
+    private void RemoveSector(SectorItem sector)
+    {
+        if (sector != null) Sectors.Remove(sector);
+    }
+
+    [RelayCommand]
+    private void AddFileType()
+    {
+        if (string.IsNullOrWhiteSpace(NewFileTypeName)) return;
+        
+        FileTypes.Add(NewFileTypeName);
+        NewFileTypeName = string.Empty;
+    }
+
+    [RelayCommand]
+    private void RemoveFileType(string fileType)
+    {
+        if (fileType != null) FileTypes.Remove(fileType);
+    }
+
+    [RelayCommand]
+    private void OpenColorPicker() => IsColorPickerOpen = true;
+    
+    [RelayCommand]
+    private void CloseColorPicker() => IsColorPickerOpen = false;
+    
 
     [RelayCommand]
     private async Task TestDatabaseConnectionAsync()
@@ -131,7 +186,10 @@ public partial class SettingsViewModel : ObservableObject
             DefaultPaginationSize = this.DefaultPaginationSize,
             DefaultExportDirectory = this.DefaultExportDirectory,
             AutoBackupEnabled = this.AutoBackupEnabled,
-            AutoBackupDirectory = this.AutoBackupDirectory
+            AutoBackupDirectory = this.AutoBackupDirectory,
+            
+            Sectors = new List<SectorItem>(this.Sectors),
+            FileTypes = new List<string>(this.FileTypes)
         };
         
         _preferencesService.SavePreferences(prefs);
@@ -169,6 +227,8 @@ public partial class SettingsViewModel : ObservableObject
         ShowStatus("Settings saved successfully! (App restart required for Database changes to apply).", "#4CAF50");
         
     }
+    
+    
 
     private void ShowStatus(string message, string color)
     {

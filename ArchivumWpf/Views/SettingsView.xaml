@@ -3,10 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
              xmlns:converters="clr-namespace:ArchivumWpf.Converters" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              Background="Transparent">
     
     <UserControl.Resources>
         <converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+        <converters:HexToColorConverter x:Key="HexToColorConverter" />
+        <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
     </UserControl.Resources>
 
     <Grid Margin="10">
@@ -95,7 +98,7 @@
                 </Border>
             </TabItem>
 
-<TabItem Header="Database &amp; Backups">
+            <TabItem Header="Database &amp; Backups">
                 <Border Background="#1E1E1E" Padding="20" CornerRadius="0,8,8,8">
                     <StackPanel MaxWidth="600" HorizontalAlignment="Left">
                         
@@ -154,11 +157,220 @@
             </TabItem>
 
             <TabItem Header="Vault Categories">
-                <Border Background="#1E1E1E" Padding="20" CornerRadius="0,8,8,8">
-                    <TextBlock Text="Sector color coding and File Type management will go here in Step 3..." Foreground="Gray" FontSize="16"/>
-                </Border>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Border Grid.Column="0" Background="#1E1E1E" Padding="20" CornerRadius="0,8,8,8">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0" Text="MANAGE SECTORS" Foreground="#d4af37" FontWeight="Bold" Margin="0,0,0,15"/>
+
+                            <Border Grid.Row="1" Background="#252525" CornerRadius="5" Padding="15" Margin="0,0,0,15">
+                                <StackPanel>
+                                    <TextBlock Text="Add New Sector" Foreground="Gray" Margin="0,0,0,10"/>
+                                    <TextBox Text="{Binding NewSectorName, UpdateSourceTrigger=PropertyChanged}" materialDesign:HintAssist.Hint="Sector Name (e.g., ඉඩම්)" Height="35" Background="#1E1E1E" Foreground="White" BorderThickness="1" BorderBrush="#333" Margin="0,0,0,15"/>
+                                    
+                                    <TextBlock Text="Optional Color Tag (Type Hex or Open Palette):" Foreground="Gray" FontSize="11" Margin="0,0,0,5"/>
+                                    
+                                    <Grid Margin="0,0,0,15">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        
+                                        <Border Grid.Column="0" Width="35" Height="35" CornerRadius="4" BorderBrush="#555" BorderThickness="1" Margin="0,0,10,0">
+                                            <Border.Background>
+                                                <SolidColorBrush Color="{Binding SectorColorPicker.HexColor, Converter={StaticResource HexToColorConverter}}"/>
+                                            </Border.Background>
+                                        </Border>
+                                        
+                                        <TextBox Grid.Column="1" Text="{Binding SectorColorPicker.HexColor, UpdateSourceTrigger=PropertyChanged}" materialDesign:HintAssist.Hint="#Hex Code" Height="35" Background="#1E1E1E" Foreground="White" BorderThickness="1" BorderBrush="#333" VerticalContentAlignment="Center" Padding="5,0"/>
+                                    </Grid>
+                                    
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="10"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Button Grid.Column="0" Command="{Binding OpenColorPickerCommand}" Content="Color Palette" Background="#333333" Foreground="White" BorderThickness="0"/>
+                                        <Button Grid.Column="2" Command="{Binding AddSectorCommand}" Content="+ Add Sector" Background="#d4af37" Foreground="Black" FontWeight="Bold" BorderThickness="0"/>
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
+
+                            <ListBox Grid.Row="2" ItemsSource="{Binding Sectors}" Background="Transparent" BorderThickness="0" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Background="#252525" CornerRadius="5" Padding="10" Margin="0,0,0,5" Width="350">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                
+                                                <Ellipse Grid.Column="0" Width="16" Height="16" Margin="0,0,15,0" Stroke="#555" StrokeThickness="1">
+                                                    <Ellipse.Fill>
+                                                        <SolidColorBrush Color="{Binding ColorHex, Converter={StaticResource HexToColorConverter}}"/>
+                                                    </Ellipse.Fill>
+                                                </Ellipse>
+
+                                                <TextBlock Grid.Column="1" Text="{Binding Name}" Foreground="White" VerticalAlignment="Center" FontSize="14" FontWeight="Bold"/>
+                                                
+                                                <Button Grid.Column="2" Command="{Binding DataContext.RemoveSectorCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" Background="Transparent" BorderThickness="0" Foreground="#F44336" Padding="5,0">
+                                                    <fa:ImageAwesome Icon="Trash" Width="12" Height="12" Foreground="#F44336"/>
+                                                </Button>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </Grid>
+                    </Border>
+
+                    <Border Grid.Column="2" Background="#1E1E1E" Padding="20" CornerRadius="8">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0" Text="MANAGE FILE TYPES" Foreground="#d4af37" FontWeight="Bold" Margin="0,0,0,15"/>
+
+                            <Border Grid.Row="1" Background="#252525" CornerRadius="5" Padding="15" Margin="0,0,0,15">
+                                <StackPanel>
+                                    <TextBlock Text="Add New File Type" Foreground="Gray" Margin="0,0,0,10"/>
+                                    <TextBox Text="{Binding NewFileTypeName, UpdateSourceTrigger=PropertyChanged}" materialDesign:HintAssist.Hint="File Type (e.g., Confidential)" Height="35" Background="#1E1E1E" Foreground="White" BorderThickness="1" BorderBrush="#333" Margin="0,0,0,15"/>
+                                    <Button Command="{Binding AddFileTypeCommand}" Content="+ Add File Type" Background="#d4af37" Foreground="Black" FontWeight="Bold" BorderThickness="0"/>
+                                </StackPanel>
+                            </Border>
+
+                            <ListBox Grid.Row="2" ItemsSource="{Binding FileTypes}" Background="Transparent" BorderThickness="0" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Background="#252525" CornerRadius="5" Padding="10" Margin="0,0,0,5" Width="350">
+                                            <Grid>
+                                                <TextBlock Text="{Binding}" Foreground="White" VerticalAlignment="Center" FontSize="14" FontWeight="Bold" HorizontalAlignment="Left"/>
+                                                <Button Command="{Binding DataContext.RemoveFileTypeCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" Background="Transparent" BorderThickness="0" Foreground="#F44336" HorizontalAlignment="Right" Padding="5,0">
+                                                    <fa:ImageAwesome Icon="Trash" Width="12" Height="12" Foreground="#F44336"/>
+                                                </Button>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </Grid>
+                    </Border>
+                </Grid>
             </TabItem>
 
         </TabControl>
+        
+        <Grid Grid.Row="0" Grid.RowSpan="2" 
+              Visibility="{Binding IsColorPickerOpen, Converter={StaticResource BoolToVisConverter}}" 
+              Background="#99000000" Panel.ZIndex="100">
+            
+            <Border Background="#1E1E1E" CornerRadius="10" Padding="25" HorizontalAlignment="Center" VerticalAlignment="Center" BorderBrush="#333" BorderThickness="1">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="30" ShadowDepth="10" Opacity="0.5"/>
+                </Border.Effect>
+                
+                <StackPanel Width="400">
+                    <TextBlock Text="COLOR PICKER" Foreground="#d4af37" FontSize="16" FontWeight="Bold" Margin="0,0,0,20"/>
+                    
+                    <Border Background="#252525" CornerRadius="5" Padding="10" Margin="0,0,0,20">
+                        <materialDesign:ColorPicker Height="150" Color="{Binding SectorColorPicker.HexColor, Converter={StaticResource HexToColorConverter}, UpdateSourceTrigger=PropertyChanged}" />
+                    </Border>
+
+                    <Grid Margin="0,0,0,20">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="RGB_Label"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="60"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="5"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="5"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="5"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        
+                        <Grid.Resources>
+                            <Style TargetType="Slider">
+                                <Setter Property="Minimum" Value="0"/>
+                                <Setter Property="Maximum" Value="255"/>
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="TickFrequency" Value="1"/>
+                                <Setter Property="IsSnapToTickEnabled" Value="True"/>
+                            </Style>
+                            <Style TargetType="TextBox">
+                                <Setter Property="Foreground" Value="White"/>
+                                <Setter Property="Background" Value="#252525"/>
+                                <Setter Property="BorderThickness" Value="1"/>
+                                <Setter Property="BorderBrush" Value="#333"/>
+                                <Setter Property="Padding" Value="5,0"/>
+                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                                <Setter Property="Height" Value="28"/>
+                            </Style>
+                        </Grid.Resources>
+
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Alpha" Foreground="Gray" VerticalAlignment="Center"/>
+                        <Slider Grid.Row="0" Grid.Column="2" Value="{Binding SectorColorPicker.Alpha, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBox Grid.Row="0" Grid.Column="4" Text="{Binding SectorColorPicker.Alpha, UpdateSourceTrigger=PropertyChanged}" FontWeight="Bold"/>
+
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Red" Foreground="Gray" VerticalAlignment="Center"/>
+                        <Slider Grid.Row="2" Grid.Column="2" Value="{Binding SectorColorPicker.Red, UpdateSourceTrigger=PropertyChanged}" Foreground="#F44336"/>
+                        <TextBox Grid.Row="2" Grid.Column="4" Text="{Binding SectorColorPicker.Red, UpdateSourceTrigger=PropertyChanged}" FontWeight="Bold"/>
+
+                        <TextBlock Grid.Row="4" Grid.Column="0" Text="Green" Foreground="Gray" VerticalAlignment="Center"/>
+                        <Slider Grid.Row="4" Grid.Column="2" Value="{Binding SectorColorPicker.Green, UpdateSourceTrigger=PropertyChanged}" Foreground="#4CAF50"/>
+                        <TextBox Grid.Row="4" Grid.Column="4" Text="{Binding SectorColorPicker.Green, UpdateSourceTrigger=PropertyChanged}" FontWeight="Bold"/>
+
+                        <TextBlock Grid.Row="6" Grid.Column="0" Text="Blue" Foreground="Gray" VerticalAlignment="Center"/>
+                        <Slider Grid.Row="6" Grid.Column="2" Value="{Binding SectorColorPicker.Blue, UpdateSourceTrigger=PropertyChanged}" Foreground="#2196F3"/>
+                        <TextBox Grid.Row="6" Grid.Column="4" Text="{Binding SectorColorPicker.Blue, UpdateSourceTrigger=PropertyChanged}" FontWeight="Bold"/>
+                    </Grid>
+
+                    <TextBlock Text="Hex Code / final ARGB Output:" Foreground="Gray" FontSize="11" Margin="0,0,0,5"/>
+                    <Grid Margin="0,0,0,25">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Border Grid.Column="0" Width="40" Height="40" CornerRadius="4" BorderBrush="#555" BorderThickness="1">
+                            <Border.Background>
+                                <SolidColorBrush Color="{Binding SectorColorPicker.HexColor, Converter={StaticResource HexToColorConverter}}"/>
+                            </Border.Background>
+                        </Border>
+
+                        <TextBox Grid.Column="2" Text="{Binding SectorColorPicker.HexColor, UpdateSourceTrigger=PropertyChanged}" Height="40" Background="#252525" Foreground="White" BorderThickness="1" BorderBrush="#333" VerticalContentAlignment="Center" FontSize="14" FontWeight="Bold" Padding="5,0"/>
+                    </Grid>
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Command="{Binding CloseColorPickerCommand}" Content="CANCEL" Background="Transparent" Foreground="#E57373" BorderThickness="0" Margin="0,0,10,0"/>
+                        <Button Command="{Binding CloseColorPickerCommand}" Content="CHOOSE" Background="#d4af37" Foreground="Black" FontWeight="Bold" BorderThickness="0" Height="40" Width="100"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Grid>
     </Grid>
 </UserControl>
