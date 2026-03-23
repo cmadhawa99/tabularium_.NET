@@ -27,13 +27,15 @@ public interface IArchiveService
         string fileName, string filetype, DateTime? startDate, DateTime? endDate,
         string totalPages, string shelfNumber, string deckNumber, string fileNumber,
         string currentStatus, bool? isRemoved, DateTime? toBeRemovedDate, DateTime? removedDate,
+        DateTime? addedDateFrom, DateTime? addedDateTo,
         int pageNumber, int pageSize);
 
     Task<List<FileRecord>> GetFullFilteredExportAsync(
         string serialNumber, string rrNumber, string sector, string subjectNumber,
         string fileName, string fileType, DateTime? startDate, DateTime? endDate,
         string totalPages, string shelfNumber, string deckNumber, string fileNumber,
-        string currentStatus, bool? isRemoved, DateTime? toBeRemovedDate, DateTime? removedDate);
+        string currentStatus, bool? isRemoved, DateTime? toBeRemovedDate, DateTime? removedDate,
+        DateTime? addedDateFrom, DateTime? addedDateTo);
 
     Task<(bool Success, string Message)> BackupDatabaseAsync(string backupPath);
 
@@ -169,6 +171,8 @@ public class ArchiveService : IArchiveService
                 
             newFile.CurrentStatus = "Available";
             newFile.IsRemoved = false;
+            
+            newFile.AddedDateTime = DateTime.Now;
 
             _context.FileRecords.Add(newFile);
             await _context.SaveChangesAsync();
@@ -190,7 +194,8 @@ public class ArchiveService : IArchiveService
         string serialNumber, string rrNumber, string sector, string subjectNumber,
         string fileName, string fileType, DateTime? startDate, DateTime? endDate,
         string totalPages, string shelfNumber, string deckNumber, string fileNumber,
-        string currentStatus, bool? isRemoved, DateTime? toBeRemovedDate, DateTime? removedDate)
+        string currentStatus, bool? isRemoved, DateTime? toBeRemovedDate, DateTime? removedDate,
+        DateTime? addedDateFrom, DateTime? addedDateTo)
     {
         var query = _context.FileRecords.AsQueryable();
 
@@ -242,6 +247,10 @@ public class ArchiveService : IArchiveService
         if (removedDate.HasValue) 
             query = query.Where(f => f.RemovedDate >= removedDate.Value);
         
+        //
+        if (addedDateFrom.HasValue) query = query.Where(f => f.AddedDateTime >= addedDateFrom.Value);
+        if (addedDateTo.HasValue) query = query.Where(f => f.AddedDateTime <= addedDateTo.Value);
+        
         return query.OrderBy(f => f.SerialNumber);
     }
 
@@ -250,11 +259,13 @@ public class ArchiveService : IArchiveService
         string fileName, string fileType, DateTime? startDate, DateTime? endDate,
         string totalPages, string shelfNumber, string deckNumber, string fileNumber,
         string currentStatus, bool? isRemoved, DateTime? toBeRemovedDate, DateTime? removedDate,
+        DateTime? addedDateFrom, DateTime? addedDateTo,
         int pageNumber, int pageSize)
     {
         var query = BuildReportQuery(
             serialNumber, rrNumber, sector, subjectNumber, fileName, fileType, startDate, endDate, 
-            totalPages, shelfNumber, deckNumber, fileNumber, currentStatus, isRemoved, toBeRemovedDate, removedDate);
+            totalPages, shelfNumber, deckNumber, fileNumber, currentStatus, isRemoved, toBeRemovedDate, removedDate,
+            addedDateFrom, addedDateTo);
         
         int totalCount = await query.CountAsync();
         
@@ -267,11 +278,13 @@ public class ArchiveService : IArchiveService
         string serialNumber, string rrNumber, string sector, string subjectNumber,
         string fileName, string fileType, DateTime? startDate, DateTime? endDate,
         string totalPages, string shelfNumber, string deckNumber, string fileNumber,
-        string currentStatus, bool? isRemoved, DateTime? toBeRemovedDate, DateTime? removedDate)
+        string currentStatus, bool? isRemoved, DateTime? toBeRemovedDate, DateTime? removedDate,
+        DateTime? addedDateFrom, DateTime? addedDateTo)
     {
         var query = BuildReportQuery(
             serialNumber, rrNumber, sector, subjectNumber, fileName, fileType, startDate, endDate, 
-            totalPages, shelfNumber, deckNumber, fileNumber, currentStatus, isRemoved, toBeRemovedDate, removedDate);
+            totalPages, shelfNumber, deckNumber, fileNumber, currentStatus, isRemoved, toBeRemovedDate, removedDate,
+            addedDateFrom, addedDateTo);
 
         return await query.ToListAsync();
     }

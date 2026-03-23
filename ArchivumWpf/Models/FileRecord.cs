@@ -58,5 +58,7 @@ public class FileRecord
     [Column("is_removed")]
     public bool IsRemoved { get; set; } = false;
     
+    public DateTime AddedDateTime {get; set;} = DateTime.Now;
+    
     public virtual ICollection<BorrowRecord> BorrowHistory { get; set; } = new List<BorrowRecord>();
 }
