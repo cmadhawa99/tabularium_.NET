@@ -2,9 +2,9 @@
 
 namespace ArchivumWpf.Views;
 
-public partial class AddFileView : UserControl
+public partial class EntryView : UserControl
 {
-    public AddFileView()
+    public EntryView()
     {
         InitializeComponent();
     }

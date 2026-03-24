@@ -24,8 +24,8 @@
             <views:CirculationView />
         </DataTemplate>
         
-        <DataTemplate DataType="{x:Type viewmodels:AddFileViewModel}">
-            <views:AddFileView />
+        <DataTemplate DataType="{x:Type viewmodels:EntryViewModel}">
+            <views:EntryView />
         </DataTemplate>
         
         <DataTemplate DataType="{x:Type viewmodels:ReportsViewModel}">
@@ -80,7 +80,7 @@
                         Background="Transparent" BorderThickness="0" Foreground="White" HorizontalContentAlignment="Left">
                     <StackPanel Orientation="Horizontal" Margin="20,0,0,0">
                         <fa:ImageAwesome Icon="Plus" Width="16" Height="16" Foreground="#8f9bb3" Margin="0,0,15,0"/>
-                        <TextBlock Text="New Entry" VerticalAlignment="Center"/>
+                        <TextBlock Text="Entry" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
                 

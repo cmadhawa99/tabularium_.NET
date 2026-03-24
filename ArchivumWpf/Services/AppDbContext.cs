@@ -19,6 +19,8 @@ public class AppDbContext : DbContext
     public DbSet<BorrowRecord> BorrowRecords { get; set; }
     public DbSet<User> Users { get; set; }
     //public DbSet<DisposedRecord> DisposedRecords { get; set; }
+    
+    public DbSet<EntryHistoryRecord> EntryHistoryRecords { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

@@ -29,9 +29,8 @@ public partial class App : Application
             .AddJsonFile("appsettings.json", optional:false, reloadOnChange: true)
             .Build();
         
-        services.AddDbContext<AppDbContext>(options =>
-            options.UseNpgsql(config.GetConnectionString("DefaultConnection")),
-            ServiceLifetime.Transient);
+        services.AddDbContextFactory<AppDbContext>(options =>
+            options.UseNpgsql(config.GetConnectionString("DefaultConnection")));
         
         services.AddSingleton<IPreferencesService, PreferencesService>();
         
@@ -42,7 +41,7 @@ public partial class App : Application
         services.AddSingleton<DashboardViewModel>();
         services.AddSingleton<SearchViewModel>();
         services.AddSingleton<CirculationViewModel>();
-        services.AddSingleton<AddFileViewModel>();
+        services.AddSingleton<EntryViewModel>();
         services.AddSingleton<ReportsViewModel>();
         services.AddSingleton<SettingsViewModel>();
         services.AddSingleton<DisposalViewModel>();
@@ -55,6 +54,7 @@ public partial class App : Application
     // Note: Changed to 'async void' so we can await the seeder task
     protected override async void OnStartup(StartupEventArgs e)
     {
+        // THIS IS A TEST SCRIPT
         // =========================================================================
         // ================== [REMOVE BEFORE DEPLOYMENT START] =====================
         // =========================================================================
@@ -70,7 +70,8 @@ public partial class App : Application
             try
             {
                 // Grab the perfectly configured DbContext from your existing Services setup!
-                var context = Services.GetRequiredService<AppDbContext>();
+                var factory = Services.GetRequiredService<IDbContextFactory<AppDbContext>>();
+                using var context = await factory.CreateDbContextAsync();
                 var seeder = new DatabaseSeeder(context);
                 
                 await seeder.SeedFileRecordsAsync(count);

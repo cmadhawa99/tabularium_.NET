@@ -10,7 +10,7 @@ public partial class MainViewModel : ObservableObject
     private readonly DashboardViewModel _dashboardVm;
     private readonly SearchViewModel _searchVm;
     private readonly CirculationViewModel _circulationVm;
-    private readonly AddFileViewModel _addFileVm;
+    private readonly EntryViewModel _entryVm;
     private readonly ReportsViewModel _reportsVm;
     private readonly SettingsViewModel _settingsVm;
     private readonly DisposalViewModel _disposalVm;
@@ -19,7 +19,7 @@ public partial class MainViewModel : ObservableObject
         DashboardViewModel dashboardVm,
         SearchViewModel searchVm,
         CirculationViewModel circulationVm,
-        AddFileViewModel addFileVm,
+        EntryViewModel entryVm,
         ReportsViewModel reportsVm,
         SettingsViewModel settingsVm,
         DisposalViewModel disposalVm
@@ -28,7 +28,7 @@ public partial class MainViewModel : ObservableObject
         _dashboardVm = dashboardVm;
         _searchVm = searchVm;
         _circulationVm = circulationVm;
-        _addFileVm = addFileVm;
+        _entryVm = entryVm;
         _reportsVm = reportsVm;
         _settingsVm = settingsVm;
         _disposalVm = disposalVm;
@@ -46,7 +46,7 @@ public partial class MainViewModel : ObservableObject
     private void NavigateToCirculation() => CurrentPageViewModel = _circulationVm;
 
     [RelayCommand]
-    private void NavigateToAddFile() => CurrentPageViewModel = _addFileVm;
+    private void NavigateToAddFile() => CurrentPageViewModel = _entryVm;
 
     [RelayCommand]
     private void NavigateToReports() => CurrentPageViewModel = _reportsVm;
