@@ -11,10 +11,12 @@ namespace ArchivumWpf;
 
 public partial class App : Application
 {
+    
     public IServiceProvider Services { get; }
 
     public App()
     {
+        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         Services = ConfigureServices();
     }
 
@@ -50,8 +52,46 @@ public partial class App : Application
         return services.BuildServiceProvider();
     }
 
-    protected override void OnStartup(StartupEventArgs e)
+    // Note: Changed to 'async void' so we can await the seeder task
+    protected override async void OnStartup(StartupEventArgs e)
     {
+        // =========================================================================
+        // ================== [REMOVE BEFORE DEPLOYMENT START] =====================
+        // =========================================================================
+        // This block intercepts the terminal commands. E.g. "dotnet run -- seed 250"
+        if (e.Args.Length > 0 && e.Args[0].ToLower() == "seed")
+        {
+            int count = 100; // Default count
+            if (e.Args.Length > 1 && int.TryParse(e.Args[1], out int parsedCount))
+            {
+                count = parsedCount;
+            }
+
+            try
+            {
+                // Grab the perfectly configured DbContext from your existing Services setup!
+                var context = Services.GetRequiredService<AppDbContext>();
+                var seeder = new DatabaseSeeder(context);
+                
+                await seeder.SeedFileRecordsAsync(count);
+                
+                MessageBox.Show($"Successfully seeded {count} fake Sinhala records into the database!", 
+                    "Terminal Seeder", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Database seeding failed: {ex.Message}", 
+                    "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+            // CRITICAL: Shut down the app so the normal UI does not open
+            Current.Shutdown();
+            return; 
+        }
+        // =========================================================================
+        // =================== [REMOVE BEFORE DEPLOYMENT END] ======================
+        // =========================================================================
+
         base.OnStartup(e);
         
         var mainWindow = Services.GetRequiredService<MainWindow>();

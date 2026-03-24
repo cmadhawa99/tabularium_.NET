@@ -230,11 +230,13 @@ public partial class SettingsViewModel : ObservableObject
         
     }
     
-    
 
     private void ShowStatus(string message, string color)
     {
         StatusMessage =  message;
         StatusColor = color;
     }
+    
+
+    
 }
