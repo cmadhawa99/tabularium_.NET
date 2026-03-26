@@ -76,7 +76,23 @@ namespace ArchivumWpf.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int?>("DeckNumber")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int?>("FileNumber")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("FileSerialNumber")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("FileType")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -88,6 +104,12 @@ namespace ArchivumWpf.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int?>("ShelfNumber")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("StartDate")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("text");
@@ -98,6 +120,9 @@ namespace ArchivumWpf.Migrations
 
                     b.Property<DateTime>("Timestamp")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<int?>("TotalPages")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 

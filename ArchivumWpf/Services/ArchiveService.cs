@@ -38,7 +38,8 @@ public interface IArchiveService
     Task<(bool Success, string Message)> UpdateFileAsync(FileRecord updatedFile);
     Task<List<EntryHistoryRecord>> GetEntryHistoryAsync();
     
-    Task<EntryHistoryRecord> GetPreviousHistoryRecordAsync(string rrNumber, DateTime currentTimestamp);
+// Change string rrNumber to int fileSerialNumber
+    Task<EntryHistoryRecord> GetPreviousHistoryRecordAsync(int fileSerialNumber, DateTime currentTimestamp);
 }
 
 public class ArchiveService : IArchiveService
@@ -181,11 +182,22 @@ public class ArchiveService : IArchiveService
 
             var history = new EntryHistoryRecord
             {
+                FileSerialNumber = newFile.SerialNumber,
                 RrNumber = newFile.RrNumber,
                 SubjectNumber = newFile.SubjectNumber,
                 FileName = newFile.FileName,
                 Sector = newFile.Sector,
                 Status = newFile.CurrentStatus,
+                
+                FileType = newFile.FileType,
+                StartDate = newFile.StartDate,
+                EndDate = newFile.EndDate,
+                TotalPages =  newFile.TotalPages,
+                ShelfNumber = newFile.ShelfNumber,
+                DeckNumber = newFile.DeckNumber,
+                FileNumber = newFile.FileNumber,
+                
+                
                 ActionType = "Created",
                 Timestamp = DateTime.Now
             };
@@ -221,11 +233,21 @@ public class ArchiveService : IArchiveService
 
             var history = new EntryHistoryRecord
             {
+                FileSerialNumber =  updatedFile.SerialNumber,
                 RrNumber = updatedFile.RrNumber,
                 SubjectNumber = updatedFile.SubjectNumber,
                 FileName = updatedFile.FileName,
                 Sector = updatedFile.Sector,
                 Status = updatedFile.CurrentStatus,
+                
+                FileType = updatedFile.FileType,
+                StartDate = updatedFile.StartDate,
+                EndDate = updatedFile.EndDate,
+                TotalPages = updatedFile.TotalPages,
+                ShelfNumber = updatedFile.ShelfNumber,
+                DeckNumber = updatedFile.DeckNumber,
+                FileNumber = updatedFile.FileNumber,
+                
                 ActionType = "Edited",
                 Timestamp = DateTime.Now
             };
@@ -250,12 +272,12 @@ public class ArchiveService : IArchiveService
             .ToListAsync();
     }
 
-    public async Task<EntryHistoryRecord> GetPreviousHistoryRecordAsync(string rrNumber, DateTime currentTimestamp)
+    public async Task<EntryHistoryRecord> GetPreviousHistoryRecordAsync(int fileSerialNumber, DateTime currentTimestamp)
     {
         using var context = await _contextFactory.CreateDbContextAsync();
         
         return await context.EntryHistoryRecords
-            .Where(h => h.RrNumber == rrNumber && h.Timestamp < currentTimestamp)
+            .Where (h => h.FileSerialNumber == fileSerialNumber && h.Timestamp < currentTimestamp)
             .OrderByDescending(h => h.Timestamp)
             .FirstOrDefaultAsync();
     }

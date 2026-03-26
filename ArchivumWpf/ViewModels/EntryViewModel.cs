@@ -246,16 +246,23 @@ public partial class EntryViewModel : ObservableObject
             RecordChanges.Add(new ChangeItem { FieldName = "Sector", OldValue = "-", NewValue = SelectedHistoryRecord.Sector });
             RecordChanges.Add(new ChangeItem { FieldName = "File Name", OldValue = "-", NewValue = SelectedHistoryRecord.FileName });
             RecordChanges.Add(new ChangeItem { FieldName = "Subject Number", OldValue = "-", NewValue = SelectedHistoryRecord.SubjectNumber ?? "None" });
+            RecordChanges.Add(new ChangeItem { FieldName = "File Type", OldValue = "-", NewValue = SelectedHistoryRecord.FileType ?? "None" });
+            RecordChanges.Add(new ChangeItem { FieldName = "Total Pages", OldValue = "-", NewValue = SelectedHistoryRecord.TotalPages?.ToString() ?? "None" });
+            RecordChanges.Add(new ChangeItem { FieldName = "Shelf Number", OldValue = "-", NewValue = SelectedHistoryRecord.ShelfNumber?.ToString() ?? "None" });
+            RecordChanges.Add(new ChangeItem { FieldName = "Deck Number", OldValue = "-", NewValue = SelectedHistoryRecord.DeckNumber?.ToString() ?? "None" });
+            RecordChanges.Add(new ChangeItem { FieldName = "File Number", OldValue = "-", NewValue = SelectedHistoryRecord.FileNumber?.ToString() ?? "None" });
             RecordChanges.Add(new ChangeItem { FieldName = "Status", OldValue = "-", NewValue = SelectedHistoryRecord.Status });
         }
 
         else
         {
             DialogTitle = $"Edits for : {SelectedHistoryRecord.RrNumber}";
-            var previous = await _archiveService.GetPreviousHistoryRecordAsync(SelectedHistoryRecord.RrNumber, SelectedHistoryRecord.Timestamp);
+            var previous = await _archiveService.GetPreviousHistoryRecordAsync(SelectedHistoryRecord.FileSerialNumber, SelectedHistoryRecord.Timestamp);
 
             if (previous != null)
             {
+                if (previous.RrNumber != SelectedHistoryRecord.RrNumber) RecordChanges.Add(new ChangeItem { FieldName = "RR Number", OldValue = previous.RrNumber, NewValue = SelectedHistoryRecord.RrNumber });
+                
                 if (previous.Sector != SelectedHistoryRecord.Sector)
                     RecordChanges.Add(new ChangeItem { FieldName = "Sector", OldValue = previous.Sector, NewValue = SelectedHistoryRecord.Sector });
                     
@@ -264,7 +271,31 @@ public partial class EntryViewModel : ObservableObject
                     
                 if (previous.SubjectNumber != SelectedHistoryRecord.SubjectNumber)
                     RecordChanges.Add(new ChangeItem { FieldName = "Subject Number", OldValue = previous.SubjectNumber ?? "None", NewValue = SelectedHistoryRecord.SubjectNumber ?? "None" });
-                    
+                
+                if (previous.FileType != SelectedHistoryRecord.FileType) 
+                    RecordChanges.Add(new ChangeItem { FieldName = "File Type", OldValue = previous.FileType ?? "None", NewValue = SelectedHistoryRecord.FileType ?? "None" });
+                
+                if (previous.StartDate != SelectedHistoryRecord.StartDate) 
+                    RecordChanges.Add(new ChangeItem { FieldName = "Start Date", OldValue = previous.StartDate?.ToString("yyyy-MM-dd") ?? "None", NewValue = SelectedHistoryRecord.StartDate?.ToString("yyyy-MM-dd") ?? "None" });
+                
+                if (previous.EndDate != SelectedHistoryRecord.EndDate)
+                    RecordChanges.Add(new ChangeItem { FieldName = "End Date", OldValue = previous.EndDate?.ToString("yyyy-MM-dd") ?? "None", NewValue = SelectedHistoryRecord.EndDate?.ToString("yyyy-MM-dd") ?? "None" });
+                
+                if (previous.TotalPages != SelectedHistoryRecord.TotalPages) 
+                    RecordChanges.Add(new ChangeItem { FieldName = "Total Pages", OldValue = previous.TotalPages?.ToString() ?? "None", NewValue = SelectedHistoryRecord.TotalPages?.ToString() ?? "None" });
+                
+                if (previous.ShelfNumber != SelectedHistoryRecord.ShelfNumber) 
+                    RecordChanges.Add(new ChangeItem { FieldName = "Shelf Number", OldValue = previous.ShelfNumber?.ToString() ?? "None", NewValue = SelectedHistoryRecord.ShelfNumber?.ToString() ?? "None" });
+                
+                if (previous.DeckNumber != SelectedHistoryRecord.DeckNumber) 
+                    RecordChanges.Add(new ChangeItem { FieldName = "Deck Number", OldValue = previous.DeckNumber?.ToString() ?? "None", NewValue = SelectedHistoryRecord.DeckNumber?.ToString() ?? "None" });
+                
+                if (previous.FileNumber != SelectedHistoryRecord.FileNumber) 
+                    RecordChanges.Add(new ChangeItem { FieldName = "File Number", OldValue = previous.FileNumber?.ToString() ?? "None", NewValue = SelectedHistoryRecord.FileNumber?.ToString() ?? "None" });
+                
+                
+                //----
+                
                 if (previous.Status != SelectedHistoryRecord.Status)
                     RecordChanges.Add(new ChangeItem { FieldName = "Status", OldValue = previous.Status, NewValue = SelectedHistoryRecord.Status });
 

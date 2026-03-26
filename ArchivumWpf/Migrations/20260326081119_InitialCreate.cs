@@ -18,11 +18,19 @@ namespace ArchivumWpf.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    FileSerialNumber = table.Column<int>(type: "integer", nullable: false),
                     RrNumber = table.Column<string>(type: "text", nullable: false),
                     SubjectNumber = table.Column<string>(type: "text", nullable: false),
                     FileName = table.Column<string>(type: "text", nullable: false),
                     Sector = table.Column<string>(type: "text", nullable: false),
                     Status = table.Column<string>(type: "text", nullable: false),
+                    FileType = table.Column<string>(type: "text", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    EndDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    TotalPages = table.Column<int>(type: "integer", nullable: true),
+                    ShelfNumber = table.Column<int>(type: "integer", nullable: true),
+                    DeckNumber = table.Column<int>(type: "integer", nullable: true),
+                    FileNumber = table.Column<int>(type: "integer", nullable: true),
                     ActionType = table.Column<string>(type: "text", nullable: false),
                     Timestamp = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
