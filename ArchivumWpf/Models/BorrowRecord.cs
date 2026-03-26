@@ -12,6 +12,9 @@ public class BorrowRecord
     [Column("id")]
     public int Id { get; set; }
     
+    [Column("file_serial_number")]
+    public int FileSerialNumber { get; set; }
+    
     [Column("file_rr_number")]
     public string FileRrNumber { get; set; } = null!;
 
@@ -27,6 +30,6 @@ public class BorrowRecord
     [Column("is_returned")]
     public bool IsReturned { get; set; } = false;
     
-    [ForeignKey(nameof(FileRrNumber))]
+    [ForeignKey(nameof(FileSerialNumber))]
     public virtual FileRecord File { get; set; } = null!;
 }

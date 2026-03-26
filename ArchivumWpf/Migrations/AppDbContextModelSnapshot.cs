@@ -45,6 +45,10 @@ namespace ArchivumWpf.Migrations
                         .HasColumnType("text")
                         .HasColumnName("file_rr_number");
 
+                    b.Property<int>("FileSerialNumber")
+                        .HasColumnType("integer")
+                        .HasColumnName("file_serial_number");
+
                     b.Property<bool>("IsReturned")
                         .HasColumnType("boolean")
                         .HasColumnName("is_returned");
@@ -55,7 +59,7 @@ namespace ArchivumWpf.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FileRrNumber");
+                    b.HasIndex("FileSerialNumber");
 
                     b.ToTable("borrow_records");
                 });
@@ -102,9 +106,9 @@ namespace ArchivumWpf.Migrations
 
             modelBuilder.Entity("ArchivumWpf.Models.FileRecord", b =>
                 {
-                    b.Property<string>("RrNumber")
-                        .HasColumnType("text")
-                        .HasColumnName("rr_number");
+                    b.Property<int>("SerialNumber")
+                        .HasColumnType("integer")
+                        .HasColumnName("serial_number");
 
                     b.Property<DateTime>("AddedDateTime")
                         .HasColumnType("timestamp with time zone");
@@ -143,14 +147,15 @@ namespace ArchivumWpf.Migrations
                         .HasColumnType("date")
                         .HasColumnName("removed_date");
 
+                    b.Property<string>("RrNumber")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("rr_number");
+
                     b.Property<string>("Sector")
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("sector");
-
-                    b.Property<int>("SerialNumber")
-                        .HasColumnType("integer")
-                        .HasColumnName("serial_number");
 
                     b.Property<int?>("ShelfNumber")
                         .HasColumnType("integer")
@@ -172,7 +177,10 @@ namespace ArchivumWpf.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("total_pages");
 
-                    b.HasKey("RrNumber");
+                    b.HasKey("SerialNumber");
+
+                    b.HasIndex("RrNumber")
+                        .IsUnique();
 
                     b.ToTable("file_records");
                 });
@@ -218,7 +226,7 @@ namespace ArchivumWpf.Migrations
                 {
                     b.HasOne("ArchivumWpf.Models.FileRecord", "File")
                         .WithMany("BorrowHistory")
-                        .HasForeignKey("FileRrNumber")
+                        .HasForeignKey("FileSerialNumber")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

@@ -13,11 +13,30 @@ namespace ArchivumWpf.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "entry_history_record",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    RrNumber = table.Column<string>(type: "text", nullable: false),
+                    SubjectNumber = table.Column<string>(type: "text", nullable: false),
+                    FileName = table.Column<string>(type: "text", nullable: false),
+                    Sector = table.Column<string>(type: "text", nullable: false),
+                    Status = table.Column<string>(type: "text", nullable: false),
+                    ActionType = table.Column<string>(type: "text", nullable: false),
+                    Timestamp = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_entry_history_record", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "file_records",
                 columns: table => new
                 {
-                    rr_number = table.Column<string>(type: "text", nullable: false),
                     serial_number = table.Column<int>(type: "integer", nullable: false),
+                    rr_number = table.Column<string>(type: "text", nullable: false),
                     sector = table.Column<string>(type: "text", nullable: false),
                     subject_number = table.Column<string>(type: "text", nullable: true),
                     file_name = table.Column<string>(type: "text", nullable: false),
@@ -36,7 +55,7 @@ namespace ArchivumWpf.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_file_records", x => x.rr_number);
+                    table.PrimaryKey("PK_file_records", x => x.serial_number);
                 });
 
             migrationBuilder.CreateTable(
@@ -62,6 +81,7 @@ namespace ArchivumWpf.Migrations
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    file_serial_number = table.Column<int>(type: "integer", nullable: false),
                     file_rr_number = table.Column<string>(type: "text", nullable: false),
                     borrower_name = table.Column<string>(type: "text", nullable: false),
                     borrowed_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -72,17 +92,23 @@ namespace ArchivumWpf.Migrations
                 {
                     table.PrimaryKey("PK_borrow_records", x => x.id);
                     table.ForeignKey(
-                        name: "FK_borrow_records_file_records_file_rr_number",
-                        column: x => x.file_rr_number,
+                        name: "FK_borrow_records_file_records_file_serial_number",
+                        column: x => x.file_serial_number,
                         principalTable: "file_records",
-                        principalColumn: "rr_number",
+                        principalColumn: "serial_number",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_borrow_records_file_rr_number",
+                name: "IX_borrow_records_file_serial_number",
                 table: "borrow_records",
-                column: "file_rr_number");
+                column: "file_serial_number");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_file_records_rr_number",
+                table: "file_records",
+                column: "rr_number",
+                unique: true);
         }
 
         /// <inheritdoc />
@@ -90,6 +116,9 @@ namespace ArchivumWpf.Migrations
         {
             migrationBuilder.DropTable(
                 name: "borrow_records");
+
+            migrationBuilder.DropTable(
+                name: "entry_history_record");
 
             migrationBuilder.DropTable(
                 name: "users");

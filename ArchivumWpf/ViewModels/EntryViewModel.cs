@@ -40,6 +40,8 @@ public partial class EntryViewModel : ObservableObject
     
     private FileRecord _currentEditingFile;
     
+    [ObservableProperty] private string _editRrNumber = string.Empty;
+    
     [ObservableProperty] private string _editSector = string.Empty;
     [ObservableProperty] private string _editSubjectNumber = string.Empty;
     [ObservableProperty] private string _editFileName = string.Empty;
@@ -50,6 +52,11 @@ public partial class EntryViewModel : ObservableObject
     [ObservableProperty] private string _editShelfNumber = string.Empty;
     [ObservableProperty] private string _editDeckNumber = string.Empty;
     [ObservableProperty] private string _editFileNumber = string.Empty;
+
+    [ObservableProperty] private bool _isDialogOpen = false;
+    [ObservableProperty] private string _dialogTitle = string.Empty;
+    [ObservableProperty] private EntryHistoryRecord _selectedHistoryRecord;
+    public ObservableCollection<ChangeItem> RecordChanges { get; } = new();
     
     [ObservableProperty] private string _statusMessage = string.Empty;
     [ObservableProperty] private string _statusColor = "White";
@@ -87,7 +94,7 @@ public partial class EntryViewModel : ObservableObject
     //Add tab
     
     [RelayCommand]
-    private async Task SaveFileAsync()
+    private async Task SaveNewFileAsync()
     {
         if (string.IsNullOrWhiteSpace(AddRrNumber) || string.IsNullOrWhiteSpace(AddFileName) ||
             string.IsNullOrWhiteSpace(AddSector))
@@ -155,7 +162,8 @@ public partial class EntryViewModel : ObservableObject
             IsEditFormEnabled = false;
             return;
         }
-        
+
+        EditRrNumber = _currentEditingFile.RrNumber;
         EditSector = _currentEditingFile.Sector;
         EditSubjectNumber = _currentEditingFile.SubjectNumber;
         EditFileName = _currentEditingFile.FileName;
@@ -180,7 +188,8 @@ public partial class EntryViewModel : ObservableObject
             ShowStatus("File Name and Sector cannot be empty.", "#F44336");
             return;
         }
-        
+
+        _currentEditingFile.RrNumber = EditRrNumber;
         _currentEditingFile.Sector = EditSector;
         _currentEditingFile.SubjectNumber = string.IsNullOrWhiteSpace(EditSubjectNumber) ? null : EditSubjectNumber;
         _currentEditingFile.FileName = EditFileName;
@@ -209,6 +218,8 @@ public partial class EntryViewModel : ObservableObject
         SearchRrNumber = string.Empty;
         IsEditFormEnabled = false;
         _currentEditingFile = null;
+        
+        EditRrNumber = string.Empty;
         EditSector = string.Empty; 
         EditSubjectNumber = string.Empty; 
         EditFileName = string.Empty;
@@ -219,6 +230,59 @@ public partial class EntryViewModel : ObservableObject
         EditShelfNumber = string.Empty; 
         EditDeckNumber = string.Empty; 
         EditFileNumber = string.Empty;
+    }
+
+    [RelayCommand]
+    private async Task ShowHistoryDetailsAsync()
+    {
+        if (_selectedHistoryRecord == null) return;
+        
+        RecordChanges.Clear();
+        IsDialogOpen = true;
+
+        if (SelectedHistoryRecord.ActionType == "Created")
+        {
+            DialogTitle = $"Initial Entry: {SelectedHistoryRecord.RrNumber}";
+            RecordChanges.Add(new ChangeItem { FieldName = "Sector", OldValue = "-", NewValue = SelectedHistoryRecord.Sector });
+            RecordChanges.Add(new ChangeItem { FieldName = "File Name", OldValue = "-", NewValue = SelectedHistoryRecord.FileName });
+            RecordChanges.Add(new ChangeItem { FieldName = "Subject Number", OldValue = "-", NewValue = SelectedHistoryRecord.SubjectNumber ?? "None" });
+            RecordChanges.Add(new ChangeItem { FieldName = "Status", OldValue = "-", NewValue = SelectedHistoryRecord.Status });
+        }
+
+        else
+        {
+            DialogTitle = $"Edits for : {SelectedHistoryRecord.RrNumber}";
+            var previous = await _archiveService.GetPreviousHistoryRecordAsync(SelectedHistoryRecord.RrNumber, SelectedHistoryRecord.Timestamp);
+
+            if (previous != null)
+            {
+                if (previous.Sector != SelectedHistoryRecord.Sector)
+                    RecordChanges.Add(new ChangeItem { FieldName = "Sector", OldValue = previous.Sector, NewValue = SelectedHistoryRecord.Sector });
+                    
+                if (previous.FileName != SelectedHistoryRecord.FileName)
+                    RecordChanges.Add(new ChangeItem { FieldName = "File Name", OldValue = previous.FileName, NewValue = SelectedHistoryRecord.FileName });
+                    
+                if (previous.SubjectNumber != SelectedHistoryRecord.SubjectNumber)
+                    RecordChanges.Add(new ChangeItem { FieldName = "Subject Number", OldValue = previous.SubjectNumber ?? "None", NewValue = SelectedHistoryRecord.SubjectNumber ?? "None" });
+                    
+                if (previous.Status != SelectedHistoryRecord.Status)
+                    RecordChanges.Add(new ChangeItem { FieldName = "Status", OldValue = previous.Status, NewValue = SelectedHistoryRecord.Status });
+
+                if (RecordChanges.Count == 0)
+                    RecordChanges.Add(new ChangeItem { FieldName = "No tracked fields changed", OldValue = "-", NewValue = "-" });
+            }
+
+            else
+            {
+                RecordChanges.Add(new ChangeItem { FieldName = "System Note", OldValue = "-", NewValue = "Previous record not found." });
+            }
+        }
+    }
+
+    [RelayCommand]
+    private void CloseDialog()
+    {
+        IsDialogOpen = false;
     }
     
 

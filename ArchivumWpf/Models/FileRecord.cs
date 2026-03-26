@@ -2,20 +2,24 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace ArchivumWpf.Models;
 
 [Table("file_records")]
+[Index(nameof(RrNumber), IsUnique = true)]
+
 public class FileRecord
 {
     [Key]
-    [Column("rr_number")]
-    public string RrNumber { get; set; } = null!;
-
     [Column("serial_number")]
     [DatabaseGenerated(DatabaseGeneratedOption.None)]
     public int SerialNumber { get; set; }
 
+    [Required]
+    [Column("rr_number")]
+    public string RrNumber { get; set; } = null!;
+    
     [Column("sector")]
     public string Sector { get; set; } = null!;
 

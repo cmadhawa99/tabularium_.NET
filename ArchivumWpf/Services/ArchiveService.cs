@@ -37,6 +37,8 @@ public interface IArchiveService
     Task<FileRecord> GetFileByRrNumberAsync(string rrNumber);
     Task<(bool Success, string Message)> UpdateFileAsync(FileRecord updatedFile);
     Task<List<EntryHistoryRecord>> GetEntryHistoryAsync();
+    
+    Task<EntryHistoryRecord> GetPreviousHistoryRecordAsync(string rrNumber, DateTime currentTimestamp);
 }
 
 public class ArchiveService : IArchiveService
@@ -114,6 +116,7 @@ public class ArchiveService : IArchiveService
 
         var record = new BorrowRecord
         {
+            FileSerialNumber = file.SerialNumber,
             FileRrNumber = rrNumber,
             BorrowerName = borrowerName,
             BorrowedDate = DateTime.Now.Date,
@@ -137,7 +140,7 @@ public class ArchiveService : IArchiveService
         file.CurrentStatus = "Available";
 
         var activeRecord = await context.BorrowRecords
-            .FirstOrDefaultAsync(b => b.FileRrNumber == rrNumber && b.IsReturned == false);
+            .FirstOrDefaultAsync(b => b.FileSerialNumber == file.SerialNumber && b.IsReturned == false);
 
         if (activeRecord != null)
         {
@@ -245,6 +248,16 @@ public class ArchiveService : IArchiveService
             .OrderByDescending(h => h.Timestamp)
             .Take(100)
             .ToListAsync();
+    }
+
+    public async Task<EntryHistoryRecord> GetPreviousHistoryRecordAsync(string rrNumber, DateTime currentTimestamp)
+    {
+        using var context = await _contextFactory.CreateDbContextAsync();
+        
+        return await context.EntryHistoryRecords
+            .Where(h => h.RrNumber == rrNumber && h.Timestamp < currentTimestamp)
+            .OrderByDescending(h => h.Timestamp)
+            .FirstOrDefaultAsync();
     }
     
     // Records

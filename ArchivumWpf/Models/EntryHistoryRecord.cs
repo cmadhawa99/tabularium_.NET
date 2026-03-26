@@ -16,6 +16,9 @@ public class EntryHistoryRecord
     public string FileName { get; set; }
     public string Sector { get; set; }
     public string Status { get; set; }
+    
+    
+    
     public string ActionType { get; set; }
     public DateTime Timestamp { get; set; } =  DateTime.Now;
 }
