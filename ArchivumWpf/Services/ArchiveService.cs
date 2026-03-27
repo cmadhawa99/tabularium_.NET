@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using ArchivumWpf.Models;
+using Bogus.DataSets;
 
 namespace ArchivumWpf.Services;
 
@@ -37,9 +38,11 @@ public interface IArchiveService
     Task<FileRecord> GetFileByRrNumberAsync(string rrNumber);
     Task<(bool Success, string Message)> UpdateFileAsync(FileRecord updatedFile);
     Task<List<EntryHistoryRecord>> GetEntryHistoryAsync();
-    
-// Change string rrNumber to int fileSerialNumber
     Task<EntryHistoryRecord> GetPreviousHistoryRecordAsync(int fileSerialNumber, DateTime currentTimestamp);
+    
+    Task<(bool Success, string Message)> UpdateDisposalQueueAsync(string rrNumber, DateTime? toBeRemovedDate);
+    Task<(bool Success, string Message)> DisposeFileAsync(string rrNumber, string reason, string authorizedBy);
+    
 }
 
 public class ArchiveService : IArchiveService
@@ -227,6 +230,12 @@ public class ArchiveService : IArchiveService
     {
         try
         {
+            if (updatedFile.IsRemoved)
+            {
+                return (false,
+                    "Error: This file has been disposed and it permanently locked. Modifications are forbidden");
+            }
+            
             using var context = await _contextFactory.CreateDbContextAsync();
             
             context.FileRecords.Update(updatedFile);
@@ -425,5 +434,73 @@ public class ArchiveService : IArchiveService
         {
             return (false, $"Failed to start backup process. Is PostgresSQL installed and in your PATH? Error: {ex.Message}");
         }
+    }
+    
+    
+    // ---- Disposal ----
+
+    public async Task<(bool Success, string Message)> UpdateDisposalQueueAsync(string rrNumber,
+        DateTime? toBeRemovedDate)
+    {
+        using var context = await _contextFactory.CreateDbContextAsync();
+        var file = await context.FileRecords.FirstOrDefaultAsync(f => f.RrNumber == rrNumber);
+
+        if (file == null) return (false, "File not found.");
+        if (file.IsRemoved) return (false, "File is already disposed and locked.");
+
+        file.ToBeRemovedDate = toBeRemovedDate;
+        await context.SaveChangesAsync();
+        
+        string msg = toBeRemovedDate.HasValue
+            ? $"File scheduled for disposal on {toBeRemovedDate.Value:yyyy-MM-dd}." 
+            : "File removed from disposal queue.";
+        
+        return  (true, msg);
+
+    }
+
+
+    public async Task<(bool Success, string Message)> DisposeFileAsync(string rrNumber, string reason,
+        string authorizedBy)
+    {
+        using var context = await _contextFactory.CreateDbContextAsync();
+        var file = await context.FileRecords.FirstOrDefaultAsync(f => f.RrNumber == rrNumber);
+
+        if (file == null) return (false, "File not found");
+        if (file.IsRemoved) return (false, "FIle is already disposed.");
+        if (file.CurrentStatus == "Borrowed") return (false, "Cannot dispose a file that is currently borrowed.");
+
+        if (file.ToBeRemovedDate == null)
+        {
+            file.ToBeRemovedDate = DateTime.Now.Date;
+        }
+
+        file.IsRemoved = true;
+        file.CurrentStatus = "Removed";
+        file.RemovedDate = DateTime.Now.Date;
+
+        var disposalRecord = new DisposedRecord
+        {
+            FIleSerialNumber = file.SerialNumber,
+            Reason = reason,
+            AuthorizedBy = authorizedBy,
+            ToBeRemovedDate = file.ToBeRemovedDate,
+            RemovedDate = file.RemovedDate.Value
+        };
+        context.DisposedRecords.Add(disposalRecord);
+
+        var history = new EntryHistoryRecord
+        {
+            FileSerialNumber = file.SerialNumber,
+            RrNumber = file.RrNumber,
+            SubjectNumber = file.SubjectNumber,
+            FileName = file.FileName,
+            Sector = file.Sector,
+            Status = "Removed",
+            ActionType = "Disposed",
+            Timestamp = DateTime.Now
+        };
+        await context.SaveChangesAsync();
+        return (true, $"File {rrNumber} has been permanently locked and disposed.");
     }
 }

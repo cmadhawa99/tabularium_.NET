@@ -107,9 +107,37 @@ namespace ArchivumWpf.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "disposed_records",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    file_serial_number = table.Column<int>(type: "integer", nullable: false),
+                    reason_for_disposal = table.Column<string>(type: "text", nullable: false),
+                    authorized_by = table.Column<string>(type: "text", nullable: false),
+                    to_be_removed_date = table.Column<DateTime>(type: "date", nullable: true),
+                    removed_date = table.Column<DateTime>(type: "date", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_disposed_records", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_disposed_records_file_records_file_serial_number",
+                        column: x => x.file_serial_number,
+                        principalTable: "file_records",
+                        principalColumn: "serial_number",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_borrow_records_file_serial_number",
                 table: "borrow_records",
+                column: "file_serial_number");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_disposed_records_file_serial_number",
+                table: "disposed_records",
                 column: "file_serial_number");
 
             migrationBuilder.CreateIndex(
@@ -124,6 +152,9 @@ namespace ArchivumWpf.Migrations
         {
             migrationBuilder.DropTable(
                 name: "borrow_records");
+
+            migrationBuilder.DropTable(
+                name: "disposed_records");
 
             migrationBuilder.DropTable(
                 name: "entry_history_record");

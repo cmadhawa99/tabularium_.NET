@@ -21,6 +21,8 @@ public class AppDbContext : DbContext
     //public DbSet<DisposedRecord> DisposedRecords { get; set; }
     
     public DbSet<EntryHistoryRecord> EntryHistoryRecords { get; set; }
+    
+    public DbSet<DisposedRecord> DisposedRecords { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

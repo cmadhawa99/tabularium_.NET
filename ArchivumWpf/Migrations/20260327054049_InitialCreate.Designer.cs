@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ArchivumWpf.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260326081119_InitialCreate")]
+    [Migration("20260327054049_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -65,6 +65,43 @@ namespace ArchivumWpf.Migrations
                     b.HasIndex("FileSerialNumber");
 
                     b.ToTable("borrow_records");
+                });
+
+            modelBuilder.Entity("ArchivumWpf.Models.DisposedRecord", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AuthorizedBy")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("authorized_by");
+
+                    b.Property<int>("FIleSerialNumber")
+                        .HasColumnType("integer")
+                        .HasColumnName("file_serial_number");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("reason_for_disposal");
+
+                    b.Property<DateTime?>("RemovedDate")
+                        .HasColumnType("date")
+                        .HasColumnName("removed_date");
+
+                    b.Property<DateTime?>("ToBeRemovedDate")
+                        .HasColumnType("date")
+                        .HasColumnName("to_be_removed_date");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FIleSerialNumber");
+
+                    b.ToTable("disposed_records");
                 });
 
             modelBuilder.Entity("ArchivumWpf.Models.EntryHistoryRecord", b =>
@@ -255,6 +292,17 @@ namespace ArchivumWpf.Migrations
                     b.HasOne("ArchivumWpf.Models.FileRecord", "File")
                         .WithMany("BorrowHistory")
                         .HasForeignKey("FileSerialNumber")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("File");
+                });
+
+            modelBuilder.Entity("ArchivumWpf.Models.DisposedRecord", b =>
+                {
+                    b.HasOne("ArchivumWpf.Models.FileRecord", "File")
+                        .WithMany()
+                        .HasForeignKey("FIleSerialNumber")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
