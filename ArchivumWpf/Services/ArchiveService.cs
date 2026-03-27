@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using Microsoft.EntityFrameworkCore;
 using ArchivumWpf.Models;
 using Bogus.DataSets;
@@ -42,7 +43,11 @@ public interface IArchiveService
     
     Task<(bool Success, string Message)> UpdateDisposalQueueAsync(string rrNumber, DateTime? toBeRemovedDate);
     Task<(bool Success, string Message)> DisposeFileAsync(string rrNumber, string reason, string authorizedBy);
-    
+    Task<(bool Success, string Message)> RecoverFileAsync(string rrNumber);
+    Task<List<FileRecord>> GetPendingDisposalsAsync();
+    Task<List<DisposedRecord>> GetDisposedHistoryAsync();
+    Task<int> GetTodayDisposalCountAsync();
+
 }
 
 public class ArchiveService : IArchiveService
@@ -503,4 +508,44 @@ public class ArchiveService : IArchiveService
         await context.SaveChangesAsync();
         return (true, $"File {rrNumber} has been permanently locked and disposed.");
     }
+
+    public async Task<List<FileRecord>> GetPendingDisposalsAsync()
+    {
+        using var context = await _contextFactory.CreateDbContextAsync();
+        return await context.FileRecords
+            .Where(f => f.ToBeRemovedDate != null && f.IsRemoved == false)
+            .OrderBy(f => f.ToBeRemovedDate)
+            .ToListAsync();
+    }
+
+    public async Task<List<DisposedRecord>> GetDisposedHistoryAsync()
+    {
+        using var context = await _contextFactory.CreateDbContextAsync();
+        return await context.DisposedRecords
+            .Include(d => d.File)
+            .OrderByDescending(d => d.RemovedDate)
+            .ToListAsync();
+    }
+
+    public async Task<(bool Success, string Message)> RecoverFileAsync(string rrNumber)
+    {
+        using var context = await _contextFactory.CreateDbContextAsync();
+        var file = await context.FileRecords.FirstOrDefaultAsync(f => f.RrNumber == rrNumber);
+        
+        if (file == null) return (false, "File not found.");
+        if (file.IsRemoved) return (false, "Cannot recover a permanently disposed file.");
+
+        file.ToBeRemovedDate = null;
+        await context.SaveChangesAsync();
+        return (true, $"File {rrNumber} recovered back to active vault.");
+    }
+
+    public async Task<int> GetTodayDisposalCountAsync()
+    {
+        using var context = await _contextFactory.CreateDbContextAsync();
+        var today = DateTime.Now.Date;
+        return await context.FileRecords
+            .CountAsync(f => f.ToBeRemovedDate != null && f.ToBeRemovedDate <= today && f.IsRemoved == false);
+    }
+    
 }
