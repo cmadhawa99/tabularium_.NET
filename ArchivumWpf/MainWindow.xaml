@@ -9,6 +9,8 @@
         WindowStartupLocation="CenterScreen">
     
     <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
+
         <DataTemplate DataType="{x:Type viewmodels:DashboardViewModel}">
             <views:DashboardView />
         </DataTemplate>
@@ -120,6 +122,15 @@
 
             <ContentControl Grid.Row="1" Content="{Binding CurrentPageViewModel}" Margin="30"/>
             
+            <Border Grid.Row="1" Background="#F44336" CornerRadius="8" Padding="15,10" 
+                    HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,15,30,0"
+                    Visibility="{Binding HasDisposalAlert, Converter={StaticResource BoolToVisConverter}}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding DisposalAlertText}" Foreground="White" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,15,0"/>
+                    <Button Command="{Binding GoToDisposalQueueCommand}" Content="Review" Background="#B71C1C" Foreground="White" BorderThickness="0" Padding="15,5" Cursor="Hand"/>
+                </StackPanel>
+            </Border>
+
         </Grid>
     </Grid>
 </Window>

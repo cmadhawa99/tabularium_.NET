@@ -41,6 +41,9 @@ public partial class DisposalViewModel : ObservableObject
     [ObservableProperty] private string _popupBorderColor = "#333333";
     [ObservableProperty] private int _selectedTabIndex = 0;
 
+    [ObservableProperty] private bool _isDisposalPromptOpen = false;
+    [ObservableProperty] private string _pendingDisposalRrNumber = string.Empty;
+
     public DisposalViewModel (IArchiveService archiveService, IPreferencesService preferencesService)
     {
         _archiveService = archiveService;
@@ -65,13 +68,13 @@ public partial class DisposalViewModel : ObservableObject
     {
         if (string.IsNullOrWhiteSpace(SearchRrNumber)) return;
 
-        string cleanSearchKeu = SearchRrNumber.Trim();
+        string cleanSearchKey = SearchRrNumber.Trim();
 
-        var file = await _archiveService.GetFileByRrNumberAsync(cleanSearchKeu);
+        var file = await _archiveService.GetFileByRrNumberAsync(cleanSearchKey);
 
         if (file == null)
         {
-            ShowStatus($"No file found with RR Number: {cleanSearchKeu}", "#F44336");
+            ShowStatus($"No file found with RR Number: {cleanSearchKey}", "#F44336");
             ClearLoadedFile();
             return;
         }
@@ -79,7 +82,6 @@ public partial class DisposalViewModel : ObservableObject
         LoadedRrNumber = file.RrNumber;
         LoadedFileName = file.FileName;
         LoadedSector = file.Sector;
-        LoadedStatus = file.IsRemoved ? "PERMANENTLY DISPOSED" : file.CurrentStatus;
         ScheduledDate = file.ToBeRemovedDate;
         
         IsFileLoaded = true;
@@ -112,16 +114,32 @@ public partial class DisposalViewModel : ObservableObject
         
         await LoadTablesAsync();
     }
+    
+    // Replaced ExecuteDisposalAsync method with following three methods
 
     [RelayCommand]
-    private async Task ExecuteDisposalAsync(string rrNumber)
+    private void PromptDisposal(string rrNumber)
     {
         string targetRr = string.IsNullOrEmpty(rrNumber) ? LoadedRrNumber : rrNumber;
-
         if (string.IsNullOrEmpty(targetRr)) return;
         
+        PendingDisposalRrNumber = targetRr;
+        DisposalReason = string.Empty;
+        AuthorizedBy = string.Empty;
+        IsDisposalPromptOpen = true;
+    }
+
+    [RelayCommand]
+    private async Task ConfirmDisposalAsync()
+    {
+        if (string.IsNullOrWhiteSpace(DisposalReason) || string.IsNullOrWhiteSpace(AuthorizedBy))
+        {
+            ShowStatus("Reason and Authorization are strictly required!", "#F44336");
+            return;
+        }
+        
         var firstWarning = MessageBox.Show(
-            $"Are you sure you want to permanently dispose of File '{targetRr}'?\n\nThis will remove it from the active vault.",
+            $"Are you sure you want to permanently dispose of File '{PendingDisposalRrNumber}'?\n\nThis will remove it from the active vault.",
             "Confirm Disposal",
             MessageBoxButton.YesNo,
             MessageBoxImage.Warning);
@@ -136,14 +154,12 @@ public partial class DisposalViewModel : ObservableObject
         
         if (secondWarning != MessageBoxResult.Yes) return;
         
-        string reason = string.IsNullOrEmpty(DisposalReason) ? "Scheduled Disposal" : DisposalReason;
-        string auth = string.IsNullOrEmpty(AuthorizedBy) ? "System/Admin" : AuthorizedBy;
-        
-        var result = await _archiveService.DisposeFileAsync(targetRr, reason, auth);
+        var result = await _archiveService.DisposeFileAsync(PendingDisposalRrNumber, DisposalReason, AuthorizedBy);
 
         if (result.Success)
         {
             ShowStatus(result.Message, "#4CAF50");
+            IsDisposalPromptOpen = false;
             ClearLoadedFile();
             await LoadTablesAsync();
         }
@@ -153,6 +169,16 @@ public partial class DisposalViewModel : ObservableObject
         }
         
     }
+
+    [RelayCommand]
+    private void CancelDisposalPrompt()
+    {
+        IsDisposalPromptOpen = false;
+        PendingDisposalRrNumber = string.Empty;
+        DisposalReason = string.Empty;
+        AuthorizedBy = string.Empty;
+    }
+    
 
     [RelayCommand]
     private async Task RecoverFileAsync(string rrNumber)
@@ -165,7 +191,7 @@ public partial class DisposalViewModel : ObservableObject
         if (result.Success) await LoadTablesAsync();
     }
     
-    //pop up 
+    //alert pop ups
     [RelayCommand]
     private void OpenPendingDetails(FileRecord file)
     {
@@ -212,6 +238,7 @@ public partial class DisposalViewModel : ObservableObject
         ScheduledDate = null;
         DisposalReason = string.Empty;
         AuthorizedBy = string.Empty;
+        SearchRrNumber = string.Empty;
     }
     
     
