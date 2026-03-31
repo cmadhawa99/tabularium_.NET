@@ -41,15 +41,35 @@
         <Style x:Key="CleanComboBox" TargetType="ComboBox">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Foreground" Value="{DynamicResource PrimaryAccent}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="FontSize" Value="11"/>
             <Setter Property="Cursor" Value="Hand"/>
-            <Style.Resources>
-                <SolidColorBrush x:Key="{x:Static SystemColors.WindowBrushKey}" Color="#1E1E1E"/>
-                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#333333"/>
-                <SolidColorBrush x:Key="{x:Static SystemColors.WindowTextBrushKey}" Color="#f2ca50"/>
-                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="#f2ca50"/>
-            </Style.Resources>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <ToggleButton x:Name="ToggleButton" Grid.Column="2" Focusable="false" IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" ClickMode="Press">
+                                <ToggleButton.Template>
+                                    <ControlTemplate TargetType="ToggleButton">
+                                        <Border Background="Transparent" CornerRadius="12">
+                                            <fa:ImageAwesome Icon="ChevronDown" Width="10" Height="10" Foreground="{DynamicResource TextMuted}" HorizontalAlignment="Right" Margin="0,0,10,0"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </ToggleButton.Template>
+                            </ToggleButton>
+                            <ContentPresenter x:Name="ContentSite" IsHitTestVisible="False" Content="{TemplateBinding SelectionBoxItem}" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" Margin="10,3,30,3" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                            <Popup x:Name="Popup" Placement="Bottom" IsOpen="{TemplateBinding IsDropDownOpen}" AllowsTransparency="True" Focusable="False" PopupAnimation="Slide">
+                                <Border x:Name="DropDownBorder" Background="{DynamicResource CardBackground}" BorderThickness="1" BorderBrush="{DynamicResource BorderColor}" CornerRadius="8" Margin="0,5,0,0" MinWidth="{TemplateBinding ActualWidth}" MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                    <ScrollViewer Margin="4,6,4,6" SnapsToDevicePixels="True">
+                                        <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
+                                    </ScrollViewer>
+                                </Border>
+                            </Popup>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
 
         <Style x:Key="PaginationButtonStyle" TargetType="Button">
@@ -75,348 +95,422 @@
         </Style>
     </UserControl.Resources>
     
-    <Grid>
-        <Ellipse Width="900" Height="900" Fill="{DynamicResource PrimaryAccent}" Opacity="0.08" 
-                 HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-400,-200,0" IsHitTestVisible="False">
-            <Ellipse.Effect>
-                <BlurEffect Radius="250"/>
-            </Ellipse.Effect>
-        </Ellipse>
+    <Grid Margin="0,10,20,20" MaxWidth="1600">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>   
+        </Grid.RowDefinitions>
 
-        <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="0,0,20,20">
-            <StackPanel MaxWidth="1600" Margin="0,10,0,0">
+        <Border Grid.Row="0" Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="28" Padding="6" Margin="0,0,0,25">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/> <ColumnDefinition Width="*"/> <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
                 
-                <Border Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="28" Padding="6" Margin="0,0,0,30">
+                <ToggleButton Grid.Column="0" IsChecked="{Binding IsStrictRrSearch}" Background="Transparent" BorderThickness="0" Margin="20,0,15,0" Cursor="Hand" ToolTip="Toggle Strict RR Number Search">
+                    <ToggleButton.Template>
+                        <ControlTemplate TargetType="ToggleButton">
+                            <Border Background="Transparent">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </ToggleButton.Template>
                     <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/> <ColumnDefinition Width="*"/> <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        
-                        <fa:ImageAwesome Grid.Column="0" Icon="Database" Width="18" Height="18" Foreground="{DynamicResource PrimaryAccent}" Margin="20,0,15,0"/>
-                        
-                        <TextBox Grid.Column="1" Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}" 
-                                 Background="Transparent" Foreground="{DynamicResource TextMain}" BorderThickness="0" 
-                                 FontSize="16" FontFamily="Georgia" VerticalContentAlignment="Center" Margin="0,0,20,0">
-                            <TextBox.Style>
-                                <Style TargetType="TextBox">
+                        <fa:ImageAwesome Icon="Search" Width="18" Height="18" Foreground="{DynamicResource PrimaryAccent}">
+                            <fa:ImageAwesome.Style>
+                                <Style TargetType="fa:ImageAwesome">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
                                     <Style.Triggers>
-                                        <Trigger Property="Text" Value="">
-                                            <Setter Property="Background">
-                                                <Setter.Value>
-                                                    <VisualBrush Stretch="None" AlignmentX="Left">
-                                                        <VisualBrush.Visual>
-                                                            <TextBlock Text="Enter record identifier, subject, or curator name..." Foreground="{DynamicResource TextMuted}" Opacity="0.5" FontSize="16" FontFamily="Georgia"/>
-                                                        </VisualBrush.Visual>
-                                                    </VisualBrush>
-                                                </Setter.Value>
-                                            </Setter>
-                                        </Trigger>
+                                        <DataTrigger Binding="{Binding IsStrictRrSearch}" Value="False">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
-                            </TextBox.Style>
-                        </TextBox>
-                        
-                        <Button Grid.Column="2" Command="{Binding PerformSearchCommand}" 
-                                Background="{DynamicResource PrimaryAccent}" Foreground="{DynamicResource WindowBackground}" 
-                                FontWeight="Bold" BorderThickness="0" Padding="35,14" Cursor="Hand">
-                            <Button.Template>
-                                <ControlTemplate TargetType="Button">
-                                    <Border Background="{TemplateBinding Background}" CornerRadius="22">
-                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}">
-                                            <fa:ImageAwesome Icon="Search" Width="14" Height="14" Foreground="{TemplateBinding Foreground}" Margin="0,0,10,0"/>
-                                            <TextBlock Text="Execute Search" FontSize="13"/>
-                                        </StackPanel>
-                                    </Border>
-                                </ControlTemplate>
-                            </Button.Template>
-                        </Button>
+                            </fa:ImageAwesome.Style>
+                        </fa:ImageAwesome>
+
+                        <Border Width="20" Height="20" CornerRadius="4" BorderBrush="{DynamicResource PrimaryAccent}" BorderThickness="2" Background="{DynamicResource PrimaryAccent}">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsStrictRrSearch}" Value="True">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <TextBlock Text="R" Foreground="{DynamicResource WindowBackground}" FontSize="12" FontWeight="Black" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
                     </Grid>
-                </Border>
+                </ToggleButton>
                 
-                <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
-                    <TextBlock Text="FILTER BY DATE:" Foreground="{DynamicResource TextMuted}" FontSize="10" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,25,0"/>
-                    
-                    <Border BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="12" Padding="15,6" Margin="0,0,15,0" Background="{DynamicResource CardBackground}">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="YEAR:" Foreground="{DynamicResource TextMuted}" FontSize="9" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,8,0"/>
-                            <ComboBox ItemsSource="{Binding AvailableYears}" SelectedItem="{Binding SelectedYear}" Style="{StaticResource CleanComboBox}" Width="70"/>
-                        </StackPanel>
-                    </Border>
-
-                    <Border BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="12" Padding="15,6" Background="{DynamicResource CardBackground}">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="MONTH:" Foreground="{DynamicResource TextMuted}" FontSize="9" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,8,0"/>
-                            <ComboBox ItemsSource="{Binding AvailableMonths}" SelectedItem="{Binding SelectedMonth}" Style="{StaticResource CleanComboBox}" Width="90"/>
-                        </StackPanel>
-                    </Border>
-                </StackPanel>
-
-                <StackPanel Orientation="Horizontal" Margin="0,0,0,40">
-                    <TextBlock Text="QUICK FILTERS:" Foreground="{DynamicResource TextMuted}" FontSize="10" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,25,0"/>
-                    
-                    <Border BorderBrush="{DynamicResource PrimaryAccent}" BorderThickness="1" CornerRadius="18" Padding="15,6" Margin="0,0,10,0" Background="#0A000000">
-                        <ComboBox ItemsSource="{Binding AvailableSectors}" SelectedItem="{Binding SelectedSector}" Style="{StaticResource CleanComboBox}"/>
-                    </Border>
-
-                    <ToggleButton Content="Recent (24h)" IsChecked="{Binding IsRecentActive}" Style="{StaticResource FilterToggleStyle}"/>
-                    <ToggleButton Content="Available Only" IsChecked="{Binding IsAvailableActive}" Style="{StaticResource FilterToggleStyle}"/>
-                    <ToggleButton Content="Removed" IsChecked="{Binding IsRemovedActive}" Style="{StaticResource FilterToggleStyle}"/>
-                </StackPanel>
-
-                <Grid Margin="0,0,0,15">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/> <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    
-                    <StackPanel Grid.Column="0">
-                        <TextBlock Text="Registry Ledger" Foreground="{DynamicResource TextMain}" FontSize="22" FontFamily="Georgia" FontWeight="Bold"/>
-                        <TextBlock Foreground="{DynamicResource TextMuted}" FontSize="12" Margin="0,4,0,0">
-                            <Run Text="Showing "/>
-                            <Run Text="{Binding TotalResultsCount, Mode=OneWay}"/>
-                            <Run Text=" synchronized records"/>
-                        </TextBlock>
-                    </StackPanel>
-
-                    <Border Grid.Column="1" Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="8" Padding="15,8" VerticalAlignment="Bottom">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="SORT BY:" Foreground="{DynamicResource TextMuted}" FontSize="9" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                            <TextBlock Text="Date Added" Foreground="{DynamicResource PrimaryAccent}" FontSize="11" VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </Border>
-                </Grid>
-
-                <Border Background="{DynamicResource CardBackground}" CornerRadius="16" Padding="0,10">
-                    <StackPanel>
-                        <DataGrid ItemsSource="{Binding SearchResults}" SelectedItem="{Binding SelectedFile}"
-                                  AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True"
-                                  Background="Transparent" Foreground="{DynamicResource TextMain}" 
-                                  RowBackground="Transparent" AlternatingRowBackground="Transparent" 
-                                  HeadersVisibility="Column" GridLinesVisibility="None" BorderThickness="0" MinHeight="350" Margin="10,0">
-                            
-                            <DataGrid.InputBindings>
-                                <MouseBinding Gesture="LeftDoubleClick" Command="{Binding OpenDetailsCommand}"/>
-                            </DataGrid.InputBindings>
-                            
-                            <DataGrid.Resources>
-                                <Style TargetType="DataGridColumnHeader">
-                                    <Setter Property="Background" Value="Transparent"/>
-                                    <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
-                                    <Setter Property="FontWeight" Value="Bold"/>
-                                    <Setter Property="FontSize" Value="10"/>
-                                    <Setter Property="Padding" Value="20,15"/>
-                                    <Setter Property="BorderThickness" Value="0,0,0,1"/>
-                                    <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
-                                </Style>
-                                <Style TargetType="DataGridRow">
-                                    <Setter Property="Padding" Value="0,15"/>
-                                    <Setter Property="BorderThickness" Value="0,0,0,1"/>
-                                    <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
-                                    <Setter Property="Cursor" Value="Hand"/>
-                                    <Style.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="#05000000"/>
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </DataGrid.Resources>
-                            
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="IDENTIFIER" Binding="{Binding RrNumber}" Foreground="{DynamicResource PrimaryAccent}" FontFamily="Consolas" Width="140"/>
-                                
-                                <DataGridTemplateColumn Header="SUBJECT NAME" Width="*">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate DataType="{x:Type models:FileRecord}">
-                                            <StackPanel VerticalAlignment="Center">
-                                                <TextBlock Text="{Binding FileName}" Foreground="{DynamicResource TextMain}" FontFamily="Georgia" FontSize="15" Margin="0,0,0,4"/>
-                                                <TextBlock Text="{Binding SubjectNumber, TargetNullValue='No Secondary ID'}" Foreground="{DynamicResource TextMuted}" FontSize="10"/>
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-
-                                <DataGridTemplateColumn Header="SECTOR" Width="150">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate DataType="{x:Type models:FileRecord}">
-                                            <Border BorderBrush="{Binding SectorColorHex}" BorderThickness="1" CornerRadius="4" Padding="8,4" HorizontalAlignment="Left" VerticalAlignment="Center">
-                                                <Border.Background>
-                                                    <SolidColorBrush Color="{Binding SectorColorHex}" Opacity="0.1"/>
-                                                </Border.Background>
-                                                <TextBlock Text="{Binding Sector}" Foreground="{Binding SectorColorHex}" FontSize="10" FontWeight="Bold"/>
-                                            </Border>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-                                
-                                <DataGridTemplateColumn Header="ORIGIN DATE" Width="140">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate DataType="{x:Type models:FileRecord}">
-                                            <StackPanel VerticalAlignment="Center">
-                                                <TextBlock Text="{Binding AddedDateTime, StringFormat=MMM dd}" Foreground="{DynamicResource TextMuted}" FontSize="12" Margin="0,0,0,2"/>
-                                                <TextBlock Text="{Binding AddedDateTime, StringFormat=yyyy}" Foreground="{DynamicResource TextMuted}" FontSize="12"/>
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-
-                                <DataGridTemplateColumn Header="STATUS" Width="150">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate DataType="{x:Type models:FileRecord}">
-                                            <Border BorderThickness="1" CornerRadius="12" Padding="12,4" HorizontalAlignment="Left" VerticalAlignment="Center">
-                                                <Border.Style>
-                                                    <Style TargetType="Border">
-                                                        <Setter Property="BorderBrush" Value="{DynamicResource PrimaryAccent}"/>
-                                                        <Setter Property="Background" Value="#1AFFE088"/> 
-                                                        <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding CurrentStatus}" Value="Removed">
-                                                                <Setter Property="BorderBrush" Value="{DynamicResource DangerAccent}"/>
-                                                                <Setter Property="Background" Value="#1AFFB4AB"/>
-                                                            </DataTrigger>
-                                                            <DataTrigger Binding="{Binding CurrentStatus}" Value="Borrowed">
-                                                                <Setter Property="BorderBrush" Value="#E5C365"/>
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </Border.Style>
-                                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                                    <Ellipse Width="4" Height="4" Margin="0,0,6,0">
-                                                        <Ellipse.Style>
-                                                            <Style TargetType="Ellipse">
-                                                                <Setter Property="Fill" Value="{DynamicResource PrimaryAccent}"/>
-                                                                <Style.Triggers>
-                                                                    <DataTrigger Binding="{Binding CurrentStatus}" Value="Removed">
-                                                                        <Setter Property="Fill" Value="{DynamicResource DangerAccent}"/>
-                                                                    </DataTrigger>
-                                                                </Style.Triggers>
-                                                            </Style>
-                                                        </Ellipse.Style>
-                                                    </Ellipse>
-                                                    <TextBlock Text="{Binding CurrentStatus}" FontSize="9" FontWeight="Bold" VerticalAlignment="Center">
+                <TextBox Grid.Column="1" Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}" 
+                         Background="Transparent" Foreground="{DynamicResource TextMain}" BorderThickness="0" 
+                         FontSize="16" FontFamily="Georgia" VerticalContentAlignment="Center" Margin="0,0,20,0">
+                    <TextBox.Style>
+                        <Style TargetType="TextBox">
+                            <Style.Triggers>
+                                <Trigger Property="Text" Value="">
+                                    <Setter Property="Background">
+                                        <Setter.Value>
+                                            <VisualBrush Stretch="None" AlignmentX="Left">
+                                                <VisualBrush.Visual>
+                                                    <TextBlock Opacity="0.5" FontSize="16" FontFamily="Georgia">
                                                         <TextBlock.Style>
                                                             <Style TargetType="TextBlock">
-                                                                <Setter Property="Foreground" Value="{DynamicResource PrimaryAccent}"/>
+                                                                <Setter Property="Text" Value="Enter record identifier, subject, or curator name..."/>
+                                                                <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
                                                                 <Style.Triggers>
-                                                                    <DataTrigger Binding="{Binding CurrentStatus}" Value="Removed">
-                                                                        <Setter Property="Foreground" Value="{DynamicResource DangerAccent}"/>
+                                                                    <DataTrigger Binding="{Binding IsStrictRrSearch}" Value="True">
+                                                                        <Setter Property="Text" Value="STRICT MODE: Enter exact RR Number..."/>
+                                                                        <Setter Property="Foreground" Value="{DynamicResource PrimaryAccent}"/>
                                                                     </DataTrigger>
                                                                 </Style.Triggers>
                                                             </Style>
                                                         </TextBlock.Style>
                                                     </TextBlock>
-                                                </StackPanel>
-                                            </Border>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-                                
-                                <DataGridTemplateColumn Header="ACTIONS" Width="80">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate DataType="{x:Type models:FileRecord}">
-                                            <Button Background="Transparent" BorderThickness="0" Cursor="Hand" HorizontalAlignment="Right" Padding="10">
-                                                <fa:ImageAwesome Icon="EllipsisV" Width="4" Height="14" Foreground="{DynamicResource TextMuted}"/>
-                                            </Button>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-                            </DataGrid.Columns>
-                        </DataGrid>
-                        
-                        <Border BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,1,0,0" Padding="30,20" Background="{DynamicResource CardBackground}" CornerRadius="0,0,16,16">
-                            <Grid>
-                                <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="{DynamicResource TextMuted}" FontSize="12">
-                                    <Run Text="Showing matching results"/>
-                                </TextBlock>
-
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                                    <Button Command="{Binding PreviousPageCommand}" Style="{StaticResource PaginationButtonStyle}" Padding="12,8" Margin="0,0,10,0">
-                                        <fa:ImageAwesome Icon="ChevronLeft" Width="10" Height="10" Foreground="{DynamicResource TextMuted}"/>
-                                    </Button>
-                                    
-                                    <Border Background="{DynamicResource PrimaryAccent}" CornerRadius="8" Padding="16,8" Margin="0,0,10,0">
-                                        <TextBlock Foreground="{DynamicResource WindowBackground}" FontWeight="Bold" FontSize="12" VerticalAlignment="Center">
-                                            <Run Text="{Binding CurrentPage, Mode=OneWay}"/>
-                                        </TextBlock>
-                                    </Border>
-                                    
-                                    <Button Command="{Binding NextPageCommand}" Style="{StaticResource PaginationButtonStyle}" Padding="12,8">
-                                        <fa:ImageAwesome Icon="ChevronRight" Width="10" Height="10" Foreground="{DynamicResource TextMuted}"/>
-                                    </Button>
+                                                </VisualBrush.Visual>
+                                            </VisualBrush>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
+                
+                <Button Grid.Column="2" Command="{Binding PerformSearchCommand}" 
+                        Background="{DynamicResource PrimaryAccent}" Foreground="{DynamicResource WindowBackground}" 
+                        FontWeight="Bold" BorderThickness="0" Padding="35,14" Cursor="Hand">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}" CornerRadius="22">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}">
+                                    <fa:ImageAwesome Icon="Search" Width="14" Height="14" Foreground="{TemplateBinding Foreground}" Margin="0,0,10,0"/>
+                                    <TextBlock Text="Execute Search" FontSize="13"/>
                                 </StackPanel>
-                            </Grid>
-                        </Border>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </Grid>
+        </Border>
+        
+        <StackPanel Grid.Row="1" Margin="0,0,0,25">
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
+                <TextBlock Text="FILTER BY DATE:" Foreground="{DynamicResource TextMuted}" FontSize="10" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,25,0"/>
+                
+                <Border BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="12" Padding="10,6" Margin="0,0,15,0" Background="{DynamicResource CardBackground}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="YEAR:" Foreground="{DynamicResource TextMuted}" FontSize="9" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <ComboBox ItemsSource="{Binding AvailableYears}" SelectedItem="{Binding SelectedYear}" Style="{StaticResource CleanComboBox}" Width="80"/>
+                    </StackPanel>
+                </Border>
+
+                <Border BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="12" Padding="10,6" Background="{DynamicResource CardBackground}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="MONTH:" Foreground="{DynamicResource TextMuted}" FontSize="9" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <ComboBox ItemsSource="{Binding AvailableMonths}" SelectedItem="{Binding SelectedMonth}" Style="{StaticResource CleanComboBox}" Width="100"/>
                     </StackPanel>
                 </Border>
             </StackPanel>
-        </ScrollViewer>
-        
-        <Grid Visibility="{Binding IsDetailsOpen, Converter={StaticResource BoolToVisConverter}}" Background="#CC000000" Panel.ZIndex="100">
-            <Border Background="{DynamicResource CardBackground}" CornerRadius="16" Padding="35" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="550" BorderBrush="{Binding PopupBorderColor}" BorderThickness="2">
-                <StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,25">
-                        <fa:ImageAwesome Icon="FileText" Width="24" Height="24" Foreground="{Binding PopupBorderColor}" Margin="0,0,15,0"/>
-                        <TextBlock Text="IMPERIAL DOSSIER" Foreground="{Binding PopupBorderColor}" FontSize="20" FontFamily="Georgia" FontWeight="Bold"/>
-                    </StackPanel>
-                    
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="160"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="35"/> <RowDefinition Height="35"/> <RowDefinition Height="35"/>
-                            <RowDefinition Height="Auto"/> <RowDefinition Height="35"/> <RowDefinition Height="35"/>
-                            <RowDefinition Height="35"/> <RowDefinition Height="35"/> <RowDefinition Height="35"/>
-                            <RowDefinition Height="35"/> <RowDefinition Height="35"/>
-                        </Grid.RowDefinitions>
 
-                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Serial Number:" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
-                        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding SelectedFile.SerialNumber}" Foreground="{DynamicResource TextMain}" FontWeight="Bold" FontFamily="Consolas" VerticalAlignment="Center"/>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="QUICK FILTERS:" Foreground="{DynamicResource TextMuted}" FontSize="10" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,25,0"/>
+                
+                <Border BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="18" Padding="10,6" Margin="0,0,10,0" Background="{DynamicResource CardBackground}">
+                    <ComboBox ItemsSource="{Binding AvailableSectors}" SelectedItem="{Binding SelectedSector}" Style="{StaticResource CleanComboBox}" MinWidth="100"/>
+                </Border>
 
-                        <TextBlock Grid.Row="1" Grid.Column="0" Text="RR Number:" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
-                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding SelectedFile.RrNumber}" Foreground="{DynamicResource PrimaryAccent}" FontWeight="Bold" FontFamily="Consolas" VerticalAlignment="Center"/>
+                <ToggleButton Content="Recent (24h)" IsChecked="{Binding IsRecentActive}" Style="{StaticResource FilterToggleStyle}"/>
+                <ToggleButton Content="Available Only" IsChecked="{Binding IsAvailableActive}" Style="{StaticResource FilterToggleStyle}"/>
+                <ToggleButton Content="Removed" IsChecked="{Binding IsRemovedActive}" Style="{StaticResource FilterToggleStyle}"/>
+            </StackPanel>
+        </StackPanel>
 
-                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Sector:" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
-                        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding SelectedFile.Sector}" Foreground="{Binding PopupBorderColor}" FontWeight="Bold" VerticalAlignment="Center"/>
+        <StackPanel Grid.Row="2" Margin="0,0,0,15">
+            <Grid Margin="0,0,0,15">
+                <Rectangle Height="1" Fill="{DynamicResource BorderColor}" VerticalAlignment="Center"/>
+                <Rectangle Width="8" Height="8" Fill="{DynamicResource BorderColor}" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Center">
+                    <Rectangle.RenderTransform>
+                        <RotateTransform Angle="45"/>
+                    </Rectangle.RenderTransform>
+                </Rectangle>
+            </Grid>
 
-                        <TextBlock Grid.Row="3" Grid.Column="0" Text="Subject / File Name:" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Top" Margin="0,8,0,0"/>
-                        <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding SelectedFile.FileName}" Foreground="{DynamicResource TextMain}" FontWeight="Bold" TextWrapping="Wrap" Margin="0,8,0,15"/>
-
-                        <TextBlock Grid.Row="4" Grid.Column="0" Text="Subject Number:" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
-                        <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding SelectedFile.SubjectNumber}" Foreground="{DynamicResource TextMain}" FontWeight="Bold" VerticalAlignment="Center"/>
-
-                        <TextBlock Grid.Row="5" Grid.Column="0" Text="File Type:" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
-                        <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding SelectedFile.FileType}" Foreground="{DynamicResource TextMain}" FontWeight="Bold" VerticalAlignment="Center"/>
-
-                        <TextBlock Grid.Row="6" Grid.Column="0" Text="Chronological Span:" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
-                        <StackPanel Grid.Row="6" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                            <TextBlock Text="{Binding SelectedFile.StartDate, StringFormat=dd MMM yyyy}" Foreground="{DynamicResource TextMain}" FontWeight="Bold"/>
-                            <TextBlock Text=" to " Foreground="{DynamicResource TextMuted}"/>
-                            <TextBlock Text="{Binding SelectedFile.EndDate, StringFormat=dd MMM yyyy}" Foreground="{DynamicResource TextMain}" FontWeight="Bold"/>
-                        </StackPanel>
-
-                        <TextBlock Grid.Row="7" Grid.Column="0" Text="Total Pages:" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
-                        <TextBlock Grid.Row="7" Grid.Column="1" Text="{Binding SelectedFile.TotalPages}" Foreground="{DynamicResource TextMain}" FontWeight="Bold" VerticalAlignment="Center"/>
-
-                        <TextBlock Grid.Row="8" Grid.Column="0" Text="Physical Location:" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
-                        <StackPanel Grid.Row="8" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                            <TextBlock Text="Shelf " Foreground="{DynamicResource TextMuted}"/>
-                            <TextBlock Text="{Binding SelectedFile.ShelfNumber}" Foreground="{DynamicResource TextMain}" FontWeight="Bold" Margin="0,0,10,0"/>
-                            <TextBlock Text="Deck " Foreground="{DynamicResource TextMuted}"/>
-                            <TextBlock Text="{Binding SelectedFile.DeckNumber}" Foreground="{DynamicResource TextMain}" FontWeight="Bold"/>
-                        </StackPanel>
-                    </Grid>
-
-                    <Button Command="{Binding CloseDetailsCommand}" Content="Close Dossier" 
-                            Height="45" Margin="0,30,0,0" Background="{DynamicResource BorderColor}" 
-                            Foreground="{DynamicResource TextMain}" FontWeight="Bold" BorderThickness="0" Cursor="Hand">
-                        <Button.Template>
-                            <ControlTemplate TargetType="Button">
-                                <Border Background="{TemplateBinding Background}" CornerRadius="8">
-                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                </Border>
-                            </ControlTemplate>
-                        </Button.Template>
-                    </Button>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/> <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="Registry Ledger" Foreground="{DynamicResource TextMain}" FontSize="22" FontFamily="Georgia" FontWeight="Bold"/>
+                    <TextBlock Foreground="{DynamicResource TextMuted}" FontSize="12" Margin="0,4,0,0">
+                        <Run Text="Showing "/>
+                        <Run Text="{Binding TotalResultsCount, Mode=OneWay}"/>
+                        <Run Text=" synchronized records"/>
+                    </TextBlock>
                 </StackPanel>
+
+                <Border Grid.Column="1" Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="8" Padding="15,8" VerticalAlignment="Bottom">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="SORT BY:" Foreground="{DynamicResource TextMuted}" FontSize="9" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <TextBlock Text="Date Added" Foreground="{DynamicResource PrimaryAccent}" FontSize="11" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </StackPanel>
+
+        <Border Grid.Row="3" Background="{DynamicResource CardBackground}" CornerRadius="16" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" Padding="3">
+            <Border BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="13">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <DataGrid Grid.Row="0" ItemsSource="{Binding SearchResults}" SelectedItem="{Binding SelectedFile}"
+                              AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True"
+                              Background="Transparent" Foreground="{DynamicResource TextMain}" 
+                              RowBackground="Transparent" AlternatingRowBackground="Transparent" 
+                              HeadersVisibility="Column" GridLinesVisibility="None" BorderThickness="0" Margin="10,0">
+                        
+                        <DataGrid.InputBindings>
+                            <MouseBinding Gesture="LeftDoubleClick" Command="{Binding OpenDetailsCommand}"/>
+                        </DataGrid.InputBindings>
+                        
+                        <DataGrid.Resources>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
+                                <Setter Property="FontWeight" Value="Bold"/>
+                                <Setter Property="FontSize" Value="10"/>
+                                <Setter Property="Padding" Value="20,15"/>
+                                <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                                <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
+                            </Style>
+                            <Style TargetType="DataGridRow">
+                                <Setter Property="Padding" Value="0,15"/>
+                                <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                                <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
+                                <Setter Property="Cursor" Value="Hand"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#05000000"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.Resources>
+                        
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="IDENTIFIER" Binding="{Binding RrNumber}" Foreground="{DynamicResource PrimaryAccent}" FontFamily="Consolas" Width="140"/>
+                            
+                            <DataGridTemplateColumn Header="SUBJECT NAME" Width="*">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate DataType="{x:Type models:FileRecord}">
+                                        <StackPanel VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding FileName}" Foreground="{DynamicResource TextMain}" FontFamily="Georgia" FontSize="15" Margin="0,0,0,4"/>
+                                            <TextBlock Text="{Binding SubjectNumber, TargetNullValue='No Secondary ID'}" Foreground="{DynamicResource TextMuted}" FontSize="10"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <DataGridTemplateColumn Header="SECTOR" Width="150">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate DataType="{x:Type models:FileRecord}">
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                            <Ellipse Width="10" Height="10" Fill="{Binding SectorColorHex}" Stroke="{DynamicResource TextMain}" StrokeThickness="1" Margin="0,0,8,0"/>
+                                            <TextBlock Text="{Binding Sector}" Foreground="{DynamicResource TextMain}"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            
+                            <DataGridTemplateColumn Header="ORIGIN DATE" Width="140">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate DataType="{x:Type models:FileRecord}">
+                                        <StackPanel VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding AddedDateTime, StringFormat=MMM dd}" Foreground="{DynamicResource TextMuted}" FontSize="12" Margin="0,0,0,2"/>
+                                            <TextBlock Text="{Binding AddedDateTime, StringFormat=yyyy}" Foreground="{DynamicResource TextMuted}" FontSize="12"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <DataGridTemplateColumn Header="STATUS" Width="150">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate DataType="{x:Type models:FileRecord}">
+                                        <Border BorderThickness="1" CornerRadius="12" Padding="12,4" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Setter Property="BorderBrush" Value="{DynamicResource PrimaryAccent}"/>
+                                                    <Setter Property="Background" Value="#1AFFE088"/> 
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding CurrentStatus}" Value="Removed">
+                                                            <Setter Property="BorderBrush" Value="{DynamicResource DangerAccent}"/>
+                                                            <Setter Property="Background" Value="#1AFFB4AB"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding CurrentStatus}" Value="Borrowed">
+                                                            <Setter Property="BorderBrush" Value="#E5C365"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                <Ellipse Width="4" Height="4" Margin="0,0,6,0">
+                                                    <Ellipse.Style>
+                                                        <Style TargetType="Ellipse">
+                                                            <Setter Property="Fill" Value="{DynamicResource PrimaryAccent}"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding CurrentStatus}" Value="Removed">
+                                                                    <Setter Property="Fill" Value="{DynamicResource DangerAccent}"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Ellipse.Style>
+                                                </Ellipse>
+                                                <TextBlock Text="{Binding CurrentStatus}" FontSize="9" FontWeight="Bold" VerticalAlignment="Center">
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="Foreground" Value="{DynamicResource PrimaryAccent}"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding CurrentStatus}" Value="Removed">
+                                                                    <Setter Property="Foreground" Value="{DynamicResource DangerAccent}"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
+                                            </StackPanel>
+                                        </Border>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            
+                            <DataGridTemplateColumn Header="ACTIONS" Width="80">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate DataType="{x:Type models:FileRecord}">
+                                        <Button Background="Transparent" BorderThickness="0" Cursor="Hand" HorizontalAlignment="Right" Padding="10">
+                                            <fa:ImageAwesome Icon="EllipsisV" Width="4" Height="14" Foreground="{DynamicResource TextMuted}"/>
+                                        </Button>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    
+                    <Border Grid.Row="1" BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,1,0,0" Padding="30,20" Background="{DynamicResource CardBackground}" CornerRadius="0,0,13,13">
+                        <Grid>
+                            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="{DynamicResource TextMuted}" FontSize="12">
+                                <Run Text="Showing matching results"/>
+                            </TextBlock>
+
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                <Button Command="{Binding PreviousPageCommand}" Style="{StaticResource PaginationButtonStyle}" Padding="12,8" Margin="0,0,10,0">
+                                    <fa:ImageAwesome Icon="ChevronLeft" Width="10" Height="10" Foreground="{DynamicResource TextMuted}"/>
+                                </Button>
+                                
+                                <Border Background="{DynamicResource PrimaryAccent}" CornerRadius="8" Padding="16,8" Margin="0,0,10,0">
+                                    <TextBlock Foreground="{DynamicResource WindowBackground}" FontWeight="Bold" FontSize="12" VerticalAlignment="Center">
+                                        <Run Text="{Binding CurrentPage, Mode=OneWay}"/>
+                                    </TextBlock>
+                                </Border>
+                                
+                                <Button Command="{Binding NextPageCommand}" Style="{StaticResource PaginationButtonStyle}" Padding="12,8">
+                                    <fa:ImageAwesome Icon="ChevronRight" Width="10" Height="10" Foreground="{DynamicResource TextMuted}"/>
+                                </Button>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Border>
+        </Border>
+        
+        <Grid Grid.Row="0" Grid.RowSpan="4" Visibility="{Binding IsDetailsOpen, Converter={StaticResource BoolToVisConverter}}" Panel.ZIndex="100">
+            
+            <Border Background="#CC000000" CornerRadius="16"/>
+            
+            <Border Background="{DynamicResource CardBackground}" CornerRadius="16" Padding="35" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="550" BorderBrush="{DynamicResource PrimaryAccent}" BorderThickness="2" ClipToBounds="True">
+                <Grid>
+                    <Canvas HorizontalAlignment="Right" VerticalAlignment="Top" Width="1" Height="1" Margin="0,-35,-35,0">
+                        <Ellipse Width="150" Height="150" Fill="{Binding PopupBorderColor}" Stroke="{DynamicResource TextMain}" StrokeThickness="4" Canvas.Left="-100" Canvas.Top="-50" Opacity="0.8"/>
+                        <Ellipse Width="35" Height="35" Fill="{Binding PopupBorderColor}" Stroke="{DynamicResource TextMain}" StrokeThickness="3" Canvas.Left="-130" Canvas.Top="80" Opacity="0.8"/>
+                        <Ellipse Width="20" Height="20" Fill="{Binding PopupBorderColor}" Stroke="{DynamicResource TextMain}" StrokeThickness="2" Canvas.Left="-40" Canvas.Top="110" Opacity="0.8"/>
+                    </Canvas>
+
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,25">
+                            <fa:ImageAwesome Icon="FileText" Width="24" Height="24" Foreground="{DynamicResource PrimaryAccent}" Margin="0,0,15,0"/>
+                            
+                            <TextBlock Text="FILE RECORDS" Foreground="{DynamicResource PrimaryAccent}" FontSize="20" FontFamily="Georgia" FontWeight="Bold"/>
+                        </StackPanel>
+                        
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="160"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="35"/> <RowDefinition Height="35"/> <RowDefinition Height="35"/>
+                                <RowDefinition Height="Auto"/> <RowDefinition Height="35"/> <RowDefinition Height="35"/>
+                                <RowDefinition Height="35"/> <RowDefinition Height="35"/> <RowDefinition Height="35"/>
+                                <RowDefinition Height="35"/> <RowDefinition Height="35"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Serial Number:" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding SelectedFile.SerialNumber}" Foreground="{DynamicResource TextMain}" FontWeight="Bold" FontFamily="Consolas" VerticalAlignment="Center"/>
+
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="RR Number:" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding SelectedFile.RrNumber}" Foreground="{DynamicResource PrimaryAccent}" FontWeight="Bold" FontFamily="Consolas" VerticalAlignment="Center"/>
+
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="Sector:" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding SelectedFile.Sector}" Foreground="{DynamicResource TextMain}" FontWeight="Bold" VerticalAlignment="Center"/>
+
+                            <TextBlock Grid.Row="3" Grid.Column="0" Text="Subject / File Name:" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Top" Margin="0,8,0,0"/>
+                            <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding SelectedFile.FileName}" Foreground="{DynamicResource TextMain}" FontWeight="Bold" TextWrapping="Wrap" Margin="0,8,0,15"/>
+
+                            <TextBlock Grid.Row="4" Grid.Column="0" Text="Subject Number:" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding SelectedFile.SubjectNumber}" Foreground="{DynamicResource TextMain}" FontWeight="Bold" VerticalAlignment="Center"/>
+
+                            <TextBlock Grid.Row="5" Grid.Column="0" Text="File Type:" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding SelectedFile.FileType}" Foreground="{DynamicResource TextMain}" FontWeight="Bold" VerticalAlignment="Center"/>
+
+                            <TextBlock Grid.Row="6" Grid.Column="0" Text="Chronological Span:" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
+                            <StackPanel Grid.Row="6" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBlock Text="{Binding SelectedFile.StartDate, StringFormat=dd MMM yyyy}" Foreground="{DynamicResource TextMain}" FontWeight="Bold"/>
+                                <TextBlock Text=" to " Foreground="{DynamicResource TextMuted}"/>
+                                <TextBlock Text="{Binding SelectedFile.EndDate, StringFormat=dd MMM yyyy}" Foreground="{DynamicResource TextMain}" FontWeight="Bold"/>
+                            </StackPanel>
+
+                            <TextBlock Grid.Row="7" Grid.Column="0" Text="Total Pages:" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Row="7" Grid.Column="1" Text="{Binding SelectedFile.TotalPages}" Foreground="{DynamicResource TextMain}" FontWeight="Bold" VerticalAlignment="Center"/>
+
+                            <TextBlock Grid.Row="8" Grid.Column="0" Text="Physical Location:" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
+                            <StackPanel Grid.Row="8" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBlock Text="Shelf " Foreground="{DynamicResource TextMuted}"/>
+                                <TextBlock Text="{Binding SelectedFile.ShelfNumber}" Foreground="{DynamicResource TextMain}" FontWeight="Bold" Margin="0,0,10,0"/>
+                                <TextBlock Text="Deck " Foreground="{DynamicResource TextMuted}"/>
+                                <TextBlock Text="{Binding SelectedFile.DeckNumber}" Foreground="{DynamicResource TextMain}" FontWeight="Bold"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <Button Command="{Binding CloseDetailsCommand}" Content="Close Dossier" 
+                                Height="45" Margin="0,30,0,0" Background="{DynamicResource BorderColor}" 
+                                Foreground="{DynamicResource TextMain}" FontWeight="Bold" BorderThickness="0" Cursor="Hand" Panel.ZIndex="10">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}" CornerRadius="8">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                    </StackPanel>
+                </Grid>
             </Border>
         </Grid>
     </Grid>

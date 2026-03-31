@@ -34,6 +34,7 @@ public partial class SearchViewModel : ObservableObject
     [ObservableProperty] private bool _isRecentActive;
     [ObservableProperty] private bool _isAvailableActive;
     [ObservableProperty] private bool _isRemovedActive;
+    [ObservableProperty] private bool _isStrictRrSearch;
     
     //Pagination
     [ObservableProperty] private int _currentPage = 1;
@@ -152,6 +153,7 @@ public partial class SearchViewModel : ObservableObject
             IsRecentActive,
             IsAvailableActive,
             IsRemovedActive,
+            IsStrictRrSearch,
             CurrentPage,
             PageSize);
         
@@ -171,4 +173,10 @@ public partial class SearchViewModel : ObservableObject
         
         IsSearching = false;
     }
+
+    partial void OnIsStrictRrSearchChanged(bool value)
+    {
+        CurrentPage = 1; _ = LoadDataAsync();
+    }
+    
 }

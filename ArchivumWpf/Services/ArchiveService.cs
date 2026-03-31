@@ -16,7 +16,7 @@ public interface IArchiveService
 
     Task<(List<FileRecord> Items, int TotalCount)> SearchFilesPaginatedAsync(string searchTerm, string sectorFilter,
         int? yearFilter,
-        int? monthFilter, bool isRecentOnly, bool isAvailableOnly, bool isRemovedOnly, int pageNumber, int pageSize);
+        int? monthFilter, bool isRecentOnly, bool isAvailableOnly, bool isRemovedOnly, bool isStrictRrSearch, int pageNumber, int pageSize);
    
     Task<List<string>> GetExistingSectorsAsync();
     
@@ -85,17 +85,26 @@ public class ArchiveService : IArchiveService
     //Search
 
     public async Task<(List<FileRecord> Items, int TotalCount)> SearchFilesPaginatedAsync(string searchTerm, string sectorFilter, int? yearFilter,
-    int? monthFilter, bool isRecentOnly, bool isAvailableOnly, bool isRemovedOnly, int pageNumber, int pageSize)
+    int? monthFilter, bool isRecentOnly, bool isAvailableOnly, bool isRemovedOnly, bool isStrictRrSearch, int pageNumber, int pageSize)
     {
         using var context = await _contextFactory.CreateDbContextAsync();
         var query = context.FileRecords.AsQueryable();
 
         if (!string.IsNullOrWhiteSpace(searchTerm))
         {
-            searchTerm = searchTerm.ToLower();
-            query = query.Where(f => f.RrNumber.ToLower().Contains(searchTerm) || 
-                                     f.FileName.ToLower().Contains(searchTerm) ||
-                                     f.Sector.ToLower().Contains(searchTerm));
+            searchTerm = searchTerm.ToLower().Trim();
+
+            if (isStrictRrSearch)
+            {
+                query = query.Where(f => f.RrNumber.ToLower() == searchTerm);
+            }
+
+            else
+            {
+                query = query.Where(f => f.RrNumber.ToLower().Contains(searchTerm) || 
+                                         f.FileName.ToLower().Contains(searchTerm) ||
+                                         f.Sector.ToLower().Contains(searchTerm));
+            }
         }
 
         if (!string.IsNullOrEmpty(sectorFilter) && sectorFilter != "All Sectors")
