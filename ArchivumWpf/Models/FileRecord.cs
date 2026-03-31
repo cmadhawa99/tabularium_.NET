@@ -64,5 +64,9 @@ public class FileRecord
     
     public DateTime AddedDateTime {get; set;} = DateTime.Now;
     
+    //This property is ignored by db, for UI only
+    [System.ComponentModel.DataAnnotations.Schema.NotMapped]
+    public string SectorColorHex {get; set;} = "#8f9bb3";
+    
     public virtual ICollection<BorrowRecord> BorrowHistory { get; set; } = new List<BorrowRecord>();
 }
