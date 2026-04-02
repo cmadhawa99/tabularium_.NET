@@ -53,6 +53,7 @@ public interface IArchiveService
     Task<List<FileRecord>> GetPendingDisposalsAsync();
     Task<List<DisposedRecord>> GetDisposedHistoryAsync();
     Task<int> GetTodayDisposalCountAsync();
+    Task<(List<BorrowRecord> Items, int TotalCount)> GetBorrowHistoryPaginatedAsync (string searchTerm, int pageNumber, int pageSize);
 
 }
 
@@ -222,6 +223,28 @@ public class ArchiveService : IArchiveService
         await context.SaveChangesAsync();
 
         return (true, $"Success: File {rrNumber} has been returned to the vault.");
+    }
+    
+
+    public async Task<(List<BorrowRecord> Items, int TotalCount)> GetBorrowHistoryPaginatedAsync(string searchTerm,
+        int pageNumber, int pageSize)
+    {
+        using var context = await _contextFactory.CreateDbContextAsync();
+        
+        var query = context.BorrowRecords.Include(b => b.File).AsQueryable();
+        
+        if (!string.IsNullOrWhiteSpace(searchTerm))
+        {
+            searchTerm = searchTerm.ToLower();
+            query = query.Where(b=> b.FileRrNumber.ToLower().Contains(searchTerm));
+        }
+        
+        query = query.OrderByDescending(b => b.BorrowedDate);
+        
+        int totalCount = await query.CountAsync();
+        var items = await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+        
+        return (items, totalCount);
     }
     
     // Entry
