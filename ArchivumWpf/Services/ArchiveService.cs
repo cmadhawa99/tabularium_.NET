@@ -12,8 +12,14 @@ namespace ArchivumWpf.Services;
 
 public interface IArchiveService
 {
-    Task<DashboardStats> GetDashboardStatsAsync();   
-    Task<(List<FileRecord> Items, int TotalCount)> SearchFilesPaginatedAsync(string searchTerm, int pageNumber, int pageSize); 
+    Task<DashboardStats> GetDashboardStatsAsync();
+
+    Task<(List<FileRecord> Items, int TotalCount)> SearchFilesPaginatedAsync(string searchTerm, string sectorFilter,
+        int? yearFilter,
+        int? monthFilter, bool isRecentOnly, bool isAvailableOnly, bool isRemovedOnly, bool isStrictRrSearch, int pageNumber, int pageSize);
+   
+    Task<List<string>> GetExistingSectorsAsync();
+    
     Task<List<BorrowRecord>> GetActiveLoansAsync();
     Task<(bool Success, string Message)> IssueFileAsync(string rrNumber, string borrowerName);
     Task<(bool Success, string Message)> ReturnFileASync(string rrNumber);
@@ -75,19 +81,63 @@ public class ArchiveService : IArchiveService
             ArchivedPurged = removed,
         };
     }
+    
+    //Search
 
-    public async Task<(List<FileRecord> Items, int TotalCount)> SearchFilesPaginatedAsync(string searchTerm, int pageNumber, int pageSize)
+    public async Task<(List<FileRecord> Items, int TotalCount)> SearchFilesPaginatedAsync(string searchTerm, string sectorFilter, int? yearFilter,
+    int? monthFilter, bool isRecentOnly, bool isAvailableOnly, bool isRemovedOnly, bool isStrictRrSearch, int pageNumber, int pageSize)
     {
         using var context = await _contextFactory.CreateDbContextAsync();
         var query = context.FileRecords.AsQueryable();
 
         if (!string.IsNullOrWhiteSpace(searchTerm))
         {
-            searchTerm = searchTerm.ToLower();
-            query = query.Where(f => f.RrNumber.ToLower().Contains(searchTerm) || 
-                                     f.FileName.ToLower().Contains(searchTerm) ||
-                                     f.Sector.ToLower().Contains(searchTerm));
+            searchTerm = searchTerm.ToLower().Trim();
+
+            if (isStrictRrSearch)
+            {
+                query = query.Where(f => f.RrNumber.ToLower() == searchTerm);
+            }
+
+            else
+            {
+                query = query.Where(f => f.RrNumber.ToLower().Contains(searchTerm) || 
+                                         f.FileName.ToLower().Contains(searchTerm) ||
+                                         f.Sector.ToLower().Contains(searchTerm));
+            }
         }
+
+        if (!string.IsNullOrEmpty(sectorFilter) && sectorFilter != "All Sectors")
+        {
+            query = query.Where(f => f.Sector == sectorFilter);
+        }
+
+        if (yearFilter.HasValue)
+        {
+            query = query.Where(f => f.AddedDateTime.Year == yearFilter.Value);
+        }
+
+        if (monthFilter.HasValue)
+        {
+            query = query.Where(f => f.AddedDateTime.Month == monthFilter.Value);
+        }
+
+        if (isRecentOnly)
+        {
+            var yesterday = DateTime.Now.AddDays(-1);
+            query = query.Where(f => f.AddedDateTime >= yesterday);
+        }
+
+        if (isAvailableOnly)
+        {
+            query = query.Where(f => f.CurrentStatus == "Available" && !f.IsRemoved);
+        }
+
+        if (isRemovedOnly)
+        {
+            query = query.Where(f => f.IsRemoved);
+        }
+        
 
         query = query.OrderByDescending(f => f.SerialNumber);
 
@@ -100,6 +150,18 @@ public class ArchiveService : IArchiveService
         
         return (items, totalCount);
     }
+
+    public async Task<List<string>> GetExistingSectorsAsync()
+    {
+        using var context = await _contextFactory.CreateDbContextAsync();
+
+        return await context.FileRecords
+            .Select(f => f.Sector)
+            .Distinct()
+            .OrderBy(s => s)
+            .ToListAsync();
+    }
+    
     
     // Circulation
     public async Task<List<BorrowRecord>> GetActiveLoansAsync()

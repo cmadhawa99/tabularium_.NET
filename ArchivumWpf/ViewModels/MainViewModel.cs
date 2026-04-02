@@ -8,8 +8,11 @@ namespace ArchivumWpf.ViewModels;
 public partial class MainViewModel : ObservableObject
 {
     [ObservableProperty] private ObservableObject _currentPageViewModel;
+    [ObservableProperty] private bool _isDarkMode = true;
     [ObservableProperty] private bool _hasDisposalAlert = false;
     [ObservableProperty] private string _disposalAlertText = string.Empty;
+    
+    [ObservableProperty] private string _activePage = "Dashboard";
 
     private readonly IArchiveService _archiveService;
     private readonly DashboardViewModel _dashboardVm;
@@ -61,25 +64,61 @@ public partial class MainViewModel : ObservableObject
         _disposalVm.SelectedTabIndex = 1;
         NavigateToDisposal();
     }
+
+    [RelayCommand]
+    private void NavigateToDashboard()
+    {
+        CurrentPageViewModel = _dashboardVm; ActivePage = "Dashboard";
+    }
+
+    [RelayCommand]
+    private void NavigateToSearch()
+    {
+        CurrentPageViewModel =  _searchVm; ActivePage =  "Search";
+    }
+
+    [RelayCommand]
+    private void NavigateToCirculation()
+    {
+        CurrentPageViewModel =  _circulationVm; ActivePage =  "Circulation";
+    }
+
+    [RelayCommand]
+    private void NavigateToAddFile()
+    {
+        CurrentPageViewModel = _entryVm; ActivePage = "Entry";
+    }
+
+    [RelayCommand]
+    private void NavigateToReports()
+    {
+        CurrentPageViewModel = _reportsVm; ActivePage =  "Reports";
+    }
+
+    [RelayCommand]
+    private void NavigateToSettings()
+    {
+        CurrentPageViewModel = _settingsVm; ActivePage =  "Settings";
+    }
+
+    [RelayCommand]
+    private void NavigateToDisposal()
+    {
+        CurrentPageViewModel = _disposalVm; ActivePage =  "Disposal";
+    }
     
-    [RelayCommand]
-    private void NavigateToDashboard() => CurrentPageViewModel = _dashboardVm;
 
     [RelayCommand]
-    private void NavigateToSearch() => CurrentPageViewModel = _searchVm;
-
-    [RelayCommand]
-    private void NavigateToCirculation() => CurrentPageViewModel = _circulationVm;
-
-    [RelayCommand]
-    private void NavigateToAddFile() => CurrentPageViewModel = _entryVm;
-
-    [RelayCommand]
-    private void NavigateToReports() => CurrentPageViewModel = _reportsVm;
-
-    [RelayCommand]
-    private void NavigateToSettings() => CurrentPageViewModel = _settingsVm;
-
-    [RelayCommand]
-    private void NavigateToDisposal() => CurrentPageViewModel = _disposalVm;
+    private void ToggleTheme()
+    {
+        IsDarkMode = !IsDarkMode;
+        var app = System.Windows.Application.Current;
+        var dict = new System.Windows.ResourceDictionary
+        {
+            Source = new System.Uri(IsDarkMode ? "Themes/DarkTheme.xaml" : "Themes/LightTheme.xaml", System.UriKind.Relative)
+        };
+        
+        app.Resources.MergedDictionaries.Clear();
+        app.Resources.MergedDictionaries.Add(dict);
+    }
 }
