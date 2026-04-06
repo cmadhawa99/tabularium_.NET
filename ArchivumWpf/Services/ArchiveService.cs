@@ -189,10 +189,21 @@ public class ArchiveService : IArchiveService
         var record = new BorrowRecord
         {
             FileSerialNumber = file.SerialNumber,
-            FileRrNumber = rrNumber,
             BorrowerName = borrowerName,
             BorrowedDate = DateTime.Now.Date,
-            IsReturned = false
+            IsReturned = false,
+            
+            SnapshotRrNumber =  file.RrNumber,
+            SnapshotFileName = file.FileName,
+            SnapshotSector = file.Sector,
+            SnapshotSubjectNumber =  file.SubjectNumber,
+            SnapshotFileType =  file.FileType,
+            SnapshotStartDate =  file.StartDate,
+            SnapshotEndDate =  file.EndDate,
+            SnapshotTotalPages =   file.TotalPages,
+            SnapshotShelfNumber =   file.ShelfNumber,
+            SnapshotDeckNumber =   file.DeckNumber,
+            SnapshotFileNumber = file.FileNumber
         };
 
         context.BorrowRecords.Add(record);
@@ -236,10 +247,10 @@ public class ArchiveService : IArchiveService
         if (!string.IsNullOrWhiteSpace(searchTerm))
         {
             searchTerm = searchTerm.ToLower();
-            query = query.Where(b=> b.FileRrNumber.ToLower().Contains(searchTerm));
+            query = query.Where(b=> b.SnapshotRrNumber.ToLower().Contains(searchTerm));
         }
         
-        query = query.OrderByDescending(b => b.BorrowedDate);
+        query = query.OrderByDescending(b => b.Id);
         
         int totalCount = await query.CountAsync();
         var items = await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
