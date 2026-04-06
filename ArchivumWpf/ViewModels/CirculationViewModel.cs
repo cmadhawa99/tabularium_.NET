@@ -93,7 +93,7 @@ public partial class CirculationViewModel : ObservableObject
             return;
         }
 
-        var result = await _archiveService.IssueFileAsync(LoadedFile.RrNumber, BorrowerName);
+        var result = await _archiveService.IssueFileAsync(LoadedFile.RrNumber, BorrowerName, LoadedFileColor);
         ShowStatus(result.Message, result.Success ? "#4CAF50" : "#F44336");
 
         if (result.Success)
@@ -179,10 +179,17 @@ public partial class CirculationViewModel : ObservableObject
     private void ShowHistoryDetails()
     {
         if (SelectedHistoryRecord == null) return;
-        
-        var prefs = _preferencesService.GetPreferences();
-        var sectorInfo = prefs.Sectors.FirstOrDefault(s => s.Name == SelectedHistoryRecord.File?.Sector);
-        PopupBorderColor = sectorInfo?.ColorHex ?? "#f2ca50";
+
+        if (!string.IsNullOrEmpty(SelectedHistoryRecord.SnapshotSectorColor))
+        {
+            PopupBorderColor = SelectedHistoryRecord.SnapshotSectorColor;
+        }
+        else
+        {
+            var prefs = _preferencesService.GetPreferences();
+            var sectorInfo = prefs.Sectors.FirstOrDefault(s => s.Name == SelectedHistoryRecord.File?.Sector);
+            PopupBorderColor = sectorInfo?.ColorHex ?? "#f2ca50";
+        }
 
         DialogTitle = $"Loan Record: {SelectedHistoryRecord.SnapshotRrNumber}";
         IsDialogOpen = true;

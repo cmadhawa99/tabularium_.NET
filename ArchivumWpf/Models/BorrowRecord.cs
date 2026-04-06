@@ -37,6 +37,9 @@ public class BorrowRecord
 
     [Column("snapshot_sector")]
     public string SnapshotSector { get; set; } = null!;
+    
+    [Column("snapshot_sector_color")]
+    public string? SnapshotSectorColor { get; set; }
 
     [Column("snapshot_subject_number")]
     public string? SnapshotSubjectNumber { get; set; }

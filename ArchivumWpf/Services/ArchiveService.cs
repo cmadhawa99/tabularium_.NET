@@ -21,7 +21,7 @@ public interface IArchiveService
     Task<List<string>> GetExistingSectorsAsync();
     
     Task<List<BorrowRecord>> GetActiveLoansAsync();
-    Task<(bool Success, string Message)> IssueFileAsync(string rrNumber, string borrowerName);
+    Task<(bool Success, string Message)> IssueFileAsync(string rrNumber, string borrowerName, string sectorColorHex);
     Task<(bool Success, string Message)> ReturnFileASync(string rrNumber);
     Task<(bool Success, string Message)> AddNewFileAsync(FileRecord newFile);
 
@@ -175,7 +175,7 @@ public class ArchiveService : IArchiveService
             .ToListAsync();
     }
 
-    public async Task<(bool Success, string Message)> IssueFileAsync(string rrNumber, string borrowerName)
+    public async Task<(bool Success, string Message)> IssueFileAsync(string rrNumber, string borrowerName, string sectorColorHex)
     {
         using var context = await _contextFactory.CreateDbContextAsync();
         var file = await context.FileRecords.FirstOrDefaultAsync(f => f.RrNumber == rrNumber);
@@ -196,6 +196,7 @@ public class ArchiveService : IArchiveService
             SnapshotRrNumber =  file.RrNumber,
             SnapshotFileName = file.FileName,
             SnapshotSector = file.Sector,
+            SnapshotSectorColor = sectorColorHex,
             SnapshotSubjectNumber =  file.SubjectNumber,
             SnapshotFileType =  file.FileType,
             SnapshotStartDate =  file.StartDate,
