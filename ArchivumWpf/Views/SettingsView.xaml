@@ -4,6 +4,7 @@
              xmlns:fa="http://schemas.fontawesome.io/icons/"
              xmlns:converters="clr-namespace:ArchivumWpf.Converters" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:loc="clr-namespace:ArchivumWpf.Localization"
              Background="Transparent">
     
     <UserControl.Resources>
@@ -119,8 +120,8 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" Margin="0,0,0,10">
-            <TextBlock Text="System Settings &amp; Configuration" Foreground="{DynamicResource PrimaryAccent}" FontSize="32" FontFamily="Georgia" FontWeight="Black" Margin="0,0,0,5"/>
-            <TextBlock Text="Manage local parameters, database connections, and classification schemas." Foreground="{DynamicResource TextMuted}" FontSize="14" Margin="0,0,0,10"/>
+            <TextBlock Text="{x:Static loc:Strings.Settings_MainTitle}" Foreground="{DynamicResource PrimaryAccent}" FontSize="32" FontFamily="Georgia" FontWeight="Black" Margin="0,0,0,5"/>
+            <TextBlock Text="{x:Static loc:Strings.Settings_MainDesc}" Foreground="{DynamicResource TextMuted}" FontSize="14" Margin="0,0,0,10"/>
             
             <Grid Margin="0,10,0,15">
                 <Rectangle Height="1" Fill="{DynamicResource BorderColor}" VerticalAlignment="Center"/>
@@ -161,13 +162,13 @@
                 </Style>
             </TabControl.Resources>
 
-            <TabItem Header="General &amp; Display">
+            <TabItem Header="{x:Static loc:Strings.Settings_TabGeneral}">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <StackPanel HorizontalAlignment="Stretch" MaxWidth="900" Margin="0,20,0,0">
                         <Border Background="{DynamicResource CardBackground}" CornerRadius="16" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" Padding="3" Margin="0,0,0,25">
                             <Border BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="13" Padding="35">
                                 <StackPanel>
-                                    <TextBlock Text="ORGANIZATION DETAILS" Foreground="{DynamicResource PrimaryAccent}" FontSize="12" FontWeight="Bold" Margin="0,0,0,20"/>
+                                    <TextBlock Text="{x:Static loc:Strings.Settings_OrgDetails}" Foreground="{DynamicResource PrimaryAccent}" FontSize="12" FontWeight="Bold" Margin="0,0,0,20"/>
                                     
                                     <Grid Margin="0,0,0,25">
                                         <Grid.ColumnDefinitions>
@@ -175,19 +176,19 @@
                                         </Grid.ColumnDefinitions>
                                         
                                         <StackPanel Grid.Column="0">
-                                            <TextBlock Text="Application Title" Style="{StaticResource FormLabel}"/>
+                                            <TextBlock Text="{x:Static loc:Strings.Settings_AppTitle}" Style="{StaticResource FormLabel}"/>
                                             <TextBox Text="{Binding AppTitle}" Style="{StaticResource CleanTextBox}"/>
                                         </StackPanel>
                                         
                                         <StackPanel Grid.Column="2">
-                                            <TextBlock Text="Organization Name" Style="{StaticResource FormLabel}"/>
+                                            <TextBlock Text="{x:Static loc:Strings.Settings_OrgName}" Style="{StaticResource FormLabel}"/>
                                             <TextBox Text="{Binding OrganizationName}" Style="{StaticResource CleanTextBox}"/>
                                         </StackPanel>
                                     </Grid>
 
                                     <Rectangle Height="1" Fill="{DynamicResource BorderColor}" Margin="0,5,0,25"/>
 
-                                    <TextBlock Text="LOCALIZATION &amp; USER" Foreground="{DynamicResource PrimaryAccent}" FontSize="12" FontWeight="Bold" Margin="0,0,0,20"/>
+                                    <TextBlock Text="{x:Static loc:Strings.Settings_LocUser}" Foreground="{DynamicResource PrimaryAccent}" FontSize="12" FontWeight="Bold" Margin="0,0,0,20"/>
                                     
                                     <Grid Margin="0,0,0,25">
                                         <Grid.ColumnDefinitions>
@@ -195,19 +196,19 @@
                                         </Grid.ColumnDefinitions>
                                         
                                         <StackPanel Grid.Column="0">
-                                            <TextBlock Text="Current User / Librarian" Style="{StaticResource FormLabel}"/>
+                                            <TextBlock Text="{x:Static loc:Strings.Settings_CurrentUser}" Style="{StaticResource FormLabel}"/>
                                             <TextBox Text="{Binding CurrentUser}" Style="{StaticResource CleanTextBox}"/>
                                         </StackPanel>
                                         
                                         <StackPanel Grid.Column="2">
-                                            <TextBlock Text="System Language" Style="{StaticResource FormLabel}"/>
+                                            <TextBlock Text="{x:Static loc:Strings.Settings_SysLanguage}" Style="{StaticResource FormLabel}"/>
                                             <ComboBox ItemsSource="{Binding AvailableLanguages}" SelectedItem="{Binding SelectedLanguage}" Style="{StaticResource CleanComboBox}"/>
                                         </StackPanel>
                                     </Grid>
 
                                     <Rectangle Height="1" Fill="{DynamicResource BorderColor}" Margin="0,5,0,25"/>
 
-                                    <TextBlock Text="SYSTEM DEFAULTS" Foreground="{DynamicResource PrimaryAccent}" FontSize="12" FontWeight="Bold" Margin="0,0,0,20"/>
+                                    <TextBlock Text="{x:Static loc:Strings.Settings_SysDefaults}" Foreground="{DynamicResource PrimaryAccent}" FontSize="12" FontWeight="Bold" Margin="0,0,0,20"/>
                                     
                                     <Grid Margin="0,0,0,25">
                                         <Grid.ColumnDefinitions>
@@ -215,18 +216,18 @@
                                         </Grid.ColumnDefinitions>
                                         
                                         <StackPanel Grid.Column="0">
-                                            <TextBlock Text="Default Pagination Size" Style="{StaticResource FormLabel}"/>
+                                            <TextBlock Text="{x:Static loc:Strings.Settings_DefPageSize}" Style="{StaticResource FormLabel}"/>
                                             <ComboBox ItemsSource="{Binding PaginationOptions}" SelectedItem="{Binding DefaultPaginationSize}" Style="{StaticResource CleanComboBox}"/>
                                         </StackPanel>
                                         
                                         <StackPanel Grid.Column="2">
-                                            <TextBlock Text="UI Theme" Style="{StaticResource FormLabel}"/>
+                                            <TextBlock Text="{x:Static loc:Strings.Settings_UITheme}" Style="{StaticResource FormLabel}"/>
                                             <ComboBox ItemsSource="{Binding AvailableThemes}" SelectedItem="{Binding SelectedTheme}" Style="{StaticResource CleanComboBox}"/>
                                         </StackPanel>
                                     </Grid>
 
                                     <StackPanel>
-                                        <TextBlock Text="Default Export Directory" Style="{StaticResource FormLabel}"/>
+                                        <TextBlock Text="{x:Static loc:Strings.Settings_DefExportDir}" Style="{StaticResource FormLabel}"/>
                                         <TextBox Text="{Binding DefaultExportDirectory}" Style="{StaticResource CleanTextBox}"/>
                                     </StackPanel>
                                 </StackPanel>
@@ -241,7 +242,7 @@
                                         <Border Background="{TemplateBinding Background}" CornerRadius="12">
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}">
                                                 <fa:ImageAwesome Icon="Save" Width="14" Height="14" Margin="0,0,10,0" Foreground="{DynamicResource WindowBackground}"/>
-                                                <TextBlock Text="Save General Settings"/>
+                                                <TextBlock Text="{x:Static loc:Strings.Settings_SaveGeneral}"/>
                                             </StackPanel>
                                         </Border>
                                     </ControlTemplate>
@@ -252,13 +253,13 @@
                 </ScrollViewer>
             </TabItem>
 
-            <TabItem Header="Database &amp; Backups">
+            <TabItem Header="{x:Static loc:Strings.Settings_TabDatabase}">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <StackPanel HorizontalAlignment="Stretch" MaxWidth="900" Margin="0,20,0,0">
                         <Border Background="{DynamicResource CardBackground}" CornerRadius="16" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" Padding="3" Margin="0,0,0,25">
                             <Border BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="13" Padding="35">
                                 <StackPanel>
-                                    <TextBlock Text="POSTGRESQL CONNECTION" Foreground="{DynamicResource PrimaryAccent}" FontSize="12" FontWeight="Bold" Margin="0,0,0,20"/>
+                                    <TextBlock Text="{x:Static loc:Strings.Settings_DbConnection}" Foreground="{DynamicResource PrimaryAccent}" FontSize="12" FontWeight="Bold" Margin="0,0,0,20"/>
                                     
                                     <Grid Margin="0,0,0,25">
                                         <Grid.ColumnDefinitions>
@@ -266,12 +267,12 @@
                                         </Grid.ColumnDefinitions>
                                         
                                         <StackPanel Grid.Column="0">
-                                            <TextBlock Text="Host Server (e.g., localhost)" Style="{StaticResource FormLabel}"/>
+                                            <TextBlock Text="{x:Static loc:Strings.Settings_DbHost}" Style="{StaticResource FormLabel}"/>
                                             <TextBox Text="{Binding DbHost}" Style="{StaticResource CleanTextBox}"/>
                                         </StackPanel>
                                         
                                         <StackPanel Grid.Column="2">
-                                            <TextBlock Text="Database Name" Style="{StaticResource FormLabel}"/>
+                                            <TextBlock Text="{x:Static loc:Strings.Settings_DbName}" Style="{StaticResource FormLabel}"/>
                                             <TextBox Text="{Binding DbName}" Style="{StaticResource CleanTextBox}"/>
                                         </StackPanel>
                                     </Grid>
@@ -282,12 +283,12 @@
                                         </Grid.ColumnDefinitions>
                                         
                                         <StackPanel Grid.Column="0">
-                                            <TextBlock Text="Username" Style="{StaticResource FormLabel}"/>
+                                            <TextBlock Text="{x:Static loc:Strings.Settings_DbUser}" Style="{StaticResource FormLabel}"/>
                                             <TextBox Text="{Binding DbUser}" Style="{StaticResource CleanTextBox}"/>
                                         </StackPanel>
                                         
                                         <StackPanel Grid.Column="2">
-                                            <TextBlock Text="Password" Style="{StaticResource FormLabel}"/>
+                                            <TextBlock Text="{x:Static loc:Strings.Settings_DbPassword}" Style="{StaticResource FormLabel}"/>
                                             <TextBox Text="{Binding DbPassword}" Style="{StaticResource CleanTextBox}"/>
                                         </StackPanel>
                                     </Grid>
@@ -298,7 +299,7 @@
                                                 <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="12">
                                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}">
                                                         <fa:ImageAwesome Icon="Plug" Width="14" Height="14" Margin="0,0,10,0" Foreground="{DynamicResource PrimaryAccent}"/>
-                                                        <TextBlock Text="Test Connection"/>
+                                                        <TextBlock Text="{x:Static loc:Strings.Settings_TestConnection}"/>
                                                     </StackPanel>
                                                 </Border>
                                                 <ControlTemplate.Triggers>
@@ -315,12 +316,12 @@
 
                                     <Rectangle Height="1" Fill="{DynamicResource BorderColor}" Margin="0,30,0,25"/>
 
-                                    <TextBlock Text="AUTOMATED SQL BACKUPS" Foreground="{DynamicResource PrimaryAccent}" FontSize="12" FontWeight="Bold" Margin="0,0,0,20"/>
+                                    <TextBlock Text="{x:Static loc:Strings.Settings_AutoBackups}" Foreground="{DynamicResource PrimaryAccent}" FontSize="12" FontWeight="Bold" Margin="0,0,0,20"/>
                                     
-                                    <CheckBox IsChecked="{Binding AutoBackupEnabled}" Content="Enable Daily Automated SQL Database Backup" Foreground="{DynamicResource TextMain}" FontWeight="Bold" Margin="0,0,0,20"/>
+                                    <CheckBox IsChecked="{Binding AutoBackupEnabled}" Content="{x:Static loc:Strings.Settings_EnableAutoBackup}" Foreground="{DynamicResource TextMain}" FontWeight="Bold" Margin="0,0,0,20"/>
                                     
                                     <StackPanel>
-                                        <TextBlock Text="Backup Destination Folder (Local or Cloud Sync Folder)" Style="{StaticResource FormLabel}"/>
+                                        <TextBlock Text="{x:Static loc:Strings.Settings_BackupDest}" Style="{StaticResource FormLabel}"/>
                                         <TextBox Text="{Binding AutoBackupDirectory}" IsEnabled="{Binding AutoBackupEnabled}" Style="{StaticResource CleanTextBox}"/>
                                     </StackPanel>
                                 </StackPanel>
@@ -335,7 +336,7 @@
                                         <Border Background="{TemplateBinding Background}" CornerRadius="12">
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}">
                                                 <fa:ImageAwesome Icon="Save" Width="14" Height="14" Margin="0,0,10,0" Foreground="{DynamicResource WindowBackground}"/>
-                                                <TextBlock Text="Save Database Settings"/>
+                                                <TextBlock Text="{x:Static loc:Strings.Settings_SaveDatabase}"/>
                                             </StackPanel>
                                         </Border>
                                         <ControlTemplate.Triggers>
@@ -351,7 +352,7 @@
                 </ScrollViewer>
             </TabItem>
 
-            <TabItem Header="Vault Categories">
+            <TabItem Header="{x:Static loc:Strings.Settings_TabVault}">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <StackPanel HorizontalAlignment="Stretch" Margin="0,20,0,0">
                         <Grid>
@@ -370,14 +371,14 @@
                                             <RowDefinition Height="*"/>
                                         </Grid.RowDefinitions>
 
-                                        <TextBlock Grid.Row="0" Text="MANAGE SECTORS" Foreground="{DynamicResource PrimaryAccent}" FontSize="12" FontWeight="Bold" Margin="0,0,0,20"/>
+                                        <TextBlock Grid.Row="0" Text="{x:Static loc:Strings.Settings_ManageSectors}" Foreground="{DynamicResource PrimaryAccent}" FontSize="12" FontWeight="Bold" Margin="0,0,0,20"/>
 
                                         <Border Grid.Row="1" Background="#0A000000" BorderBrush="{DynamicResource PrimaryAccent}" BorderThickness="1" CornerRadius="12" Padding="20" Margin="0,0,0,25">
                                             <StackPanel>
-                                                <TextBlock Text="Add New Sector" Style="{StaticResource FormLabel}"/>
-                                                <TextBox Text="{Binding NewSectorName, UpdateSourceTrigger=PropertyChanged}" materialDesign:HintAssist.Hint="Sector Name (e.g., ඉඩම්)" Style="{StaticResource CleanTextBox}" Margin="0,0,0,20"/>
+                                                <TextBlock Text="{x:Static loc:Strings.Settings_AddSector}" Style="{StaticResource FormLabel}"/>
+                                                <TextBox Text="{Binding NewSectorName, UpdateSourceTrigger=PropertyChanged}" materialDesign:HintAssist.Hint="{x:Static loc:Strings.Settings_SectorNameHint}" Style="{StaticResource CleanTextBox}" Margin="0,0,0,20"/>
                                                 
-                                                <TextBlock Text="Optional Color Tag (Type Hex or Open Palette):" Style="{StaticResource FormLabel}"/>
+                                                <TextBlock Text="{x:Static loc:Strings.Settings_ColorTag}" Style="{StaticResource FormLabel}"/>
                                                 
                                                 <Grid Margin="0,0,0,25">
                                                     <Grid.ColumnDefinitions>
@@ -391,7 +392,7 @@
                                                         </Border.Background>
                                                     </Border>
                                                     
-                                                    <TextBox Grid.Column="1" Text="{Binding SectorColorPicker.HexColor, UpdateSourceTrigger=PropertyChanged}" materialDesign:HintAssist.Hint="#Hex Code" Style="{StaticResource CleanTextBox}"/>
+                                                    <TextBox Grid.Column="1" Text="{Binding SectorColorPicker.HexColor, UpdateSourceTrigger=PropertyChanged}" materialDesign:HintAssist.Hint="{x:Static loc:Strings.Settings_HexHint}" Style="{StaticResource CleanTextBox}"/>
                                                 </Grid>
                                                 
                                                 <Grid>
@@ -405,7 +406,7 @@
                                                                 <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="8">
                                                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                                                                         <fa:ImageAwesome Icon="PaintBrush" Width="12" Height="12" Margin="0,0,8,0" Foreground="{DynamicResource TextMuted}"/>
-                                                                        <TextBlock Text="Color Palette"/>
+                                                                        <TextBlock Text="{x:Static loc:Strings.Settings_ColorPalette}"/>
                                                                     </StackPanel>
                                                                 </Border>
                                                             </ControlTemplate>
@@ -416,7 +417,7 @@
                                                         <Button.Template>
                                                             <ControlTemplate TargetType="Button">
                                                                 <Border Background="{TemplateBinding Background}" CornerRadius="8">
-                                                                    <TextBlock Text="+ Add Sector" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                                    <TextBlock Text="{x:Static loc:Strings.Settings_BtnAddSector}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                                                 </Border>
                                                             </ControlTemplate>
                                                         </Button.Template>
@@ -482,18 +483,18 @@
                                             <RowDefinition Height="*"/>
                                         </Grid.RowDefinitions>
 
-                                        <TextBlock Grid.Row="0" Text="MANAGE FILE TYPES" Foreground="{DynamicResource PrimaryAccent}" FontSize="12" FontWeight="Bold" Margin="0,0,0,20"/>
+                                        <TextBlock Grid.Row="0" Text="{x:Static loc:Strings.Settings_ManageFileTypes}" Foreground="{DynamicResource PrimaryAccent}" FontSize="12" FontWeight="Bold" Margin="0,0,0,20"/>
 
                                         <Border Grid.Row="1" Background="#0A000000" BorderBrush="{DynamicResource PrimaryAccent}" BorderThickness="1" CornerRadius="12" Padding="20" Margin="0,0,0,25">
                                             <StackPanel>
-                                                <TextBlock Text="Add New File Type" Style="{StaticResource FormLabel}"/>
-                                                <TextBox Text="{Binding NewFileTypeName, UpdateSourceTrigger=PropertyChanged}" materialDesign:HintAssist.Hint="File Type (e.g., Confidential)" Style="{StaticResource CleanTextBox}" Margin="0,0,0,20"/>
+                                                <TextBlock Text="{x:Static loc:Strings.Settings_AddFileType}" Style="{StaticResource FormLabel}"/>
+                                                <TextBox Text="{Binding NewFileTypeName, UpdateSourceTrigger=PropertyChanged}" materialDesign:HintAssist.Hint="{x:Static loc:Strings.Settings_FileTypeHint}" Style="{StaticResource CleanTextBox}" Margin="0,0,0,20"/>
                                                 
                                                 <Button Command="{Binding AddFileTypeCommand}" Height="40" Background="{DynamicResource PrimaryAccent}" Foreground="{DynamicResource WindowBackground}" FontWeight="Bold" BorderThickness="0" Cursor="Hand">
                                                     <Button.Template>
                                                         <ControlTemplate TargetType="Button">
                                                             <Border Background="{TemplateBinding Background}" CornerRadius="8">
-                                                                <TextBlock Text="+ Add File Type" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                                <TextBlock Text="{x:Static loc:Strings.Settings_BtnAddFileType}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                                             </Border>
                                                         </ControlTemplate>
                                                     </Button.Template>
@@ -551,7 +552,7 @@
                                         <Border Background="{TemplateBinding Background}" CornerRadius="12">
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}">
                                                 <fa:ImageAwesome Icon="Save" Width="14" Height="14" Margin="0,0,10,0" Foreground="{DynamicResource WindowBackground}"/>
-                                                <TextBlock Text="Save Category Settings"/>
+                                                <TextBlock Text="{x:Static loc:Strings.Settings_SaveCategory}"/>
                                             </StackPanel>
                                         </Border>
                                     </ControlTemplate>
@@ -574,7 +575,7 @@
                     <StackPanel Width="400">
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,25">
                             <fa:ImageAwesome Icon="PaintBrush" Width="20" Height="20" Foreground="{DynamicResource PrimaryAccent}" Margin="0,0,15,0"/>
-                            <TextBlock Text="SECTOR COLOR PICKER" Foreground="{DynamicResource PrimaryAccent}" FontSize="18" FontFamily="Georgia" FontWeight="Bold"/>
+                            <TextBlock Text="{x:Static loc:Strings.Settings_ColorPickerTitle}" Foreground="{DynamicResource PrimaryAccent}" FontSize="18" FontFamily="Georgia" FontWeight="Bold"/>
                         </StackPanel>
                         
                         <Border Background="#0A000000" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="12" Padding="15" Margin="0,0,0,25">
@@ -612,24 +613,24 @@
                                 </Style>
                             </Grid.Resources>
 
-                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Alpha" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Static loc:Strings.Settings_Alpha}" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
                             <Slider Grid.Row="0" Grid.Column="2" Value="{Binding SectorColorPicker.Alpha, UpdateSourceTrigger=PropertyChanged}" Foreground="{DynamicResource TextMuted}"/>
                             <TextBox Grid.Row="0" Grid.Column="4" Text="{Binding SectorColorPicker.Alpha, UpdateSourceTrigger=PropertyChanged}" FontWeight="Bold"/>
 
-                            <TextBlock Grid.Row="2" Grid.Column="0" Text="Red" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="{x:Static loc:Strings.Settings_Red}" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
                             <Slider Grid.Row="2" Grid.Column="2" Value="{Binding SectorColorPicker.Red, UpdateSourceTrigger=PropertyChanged}" Foreground="#E57373"/>
                             <TextBox Grid.Row="2" Grid.Column="4" Text="{Binding SectorColorPicker.Red, UpdateSourceTrigger=PropertyChanged}" FontWeight="Bold"/>
 
-                            <TextBlock Grid.Row="4" Grid.Column="0" Text="Green" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Row="4" Grid.Column="0" Text="{x:Static loc:Strings.Settings_Green}" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
                             <Slider Grid.Row="4" Grid.Column="2" Value="{Binding SectorColorPicker.Green, UpdateSourceTrigger=PropertyChanged}" Foreground="#81C784"/>
                             <TextBox Grid.Row="4" Grid.Column="4" Text="{Binding SectorColorPicker.Green, UpdateSourceTrigger=PropertyChanged}" FontWeight="Bold"/>
 
-                            <TextBlock Grid.Row="6" Grid.Column="0" Text="Blue" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Row="6" Grid.Column="0" Text="{x:Static loc:Strings.Settings_Blue}" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
                             <Slider Grid.Row="6" Grid.Column="2" Value="{Binding SectorColorPicker.Blue, UpdateSourceTrigger=PropertyChanged}" Foreground="#64B5F6"/>
                             <TextBox Grid.Row="6" Grid.Column="4" Text="{Binding SectorColorPicker.Blue, UpdateSourceTrigger=PropertyChanged}" FontWeight="Bold"/>
                         </Grid>
 
-                        <TextBlock Text="Final ARGB Output Code" Style="{StaticResource FormLabel}"/>
+                        <TextBlock Text="{x:Static loc:Strings.Settings_FinalArgb}" Style="{StaticResource FormLabel}"/>
                         <Grid Margin="0,0,0,35">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
@@ -647,7 +648,7 @@
                         </Grid>
 
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                            <Button Command="{Binding CloseColorPickerCommand}" Content="Cancel Selection" Width="130" Height="45" Background="Transparent" Foreground="{DynamicResource TextMuted}" BorderThickness="0" Margin="0,0,15,0" Cursor="Hand"/>
+                            <Button Command="{Binding CloseColorPickerCommand}" Content="{x:Static loc:Strings.Settings_CancelSelection}" Width="130" Height="45" Background="Transparent" Foreground="{DynamicResource TextMuted}" BorderThickness="0" Margin="0,0,15,0" Cursor="Hand"/>
                             
                             <Button Command="{Binding CloseColorPickerCommand}" Height="45" Background="{DynamicResource PrimaryAccent}" Foreground="{DynamicResource WindowBackground}" FontWeight="Bold" BorderThickness="0" Cursor="Hand" Padding="25,0">
                                 <Button.Template>
@@ -655,7 +656,7 @@
                                         <Border Background="{TemplateBinding Background}" CornerRadius="12">
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}">
                                                 <fa:ImageAwesome Icon="Check" Width="14" Height="14" Margin="0,0,10,0" Foreground="{DynamicResource WindowBackground}"/>
-                                                <TextBlock Text="Confirm Color"/>
+                                                <TextBlock Text="{x:Static loc:Strings.Settings_ConfirmColor}"/>
                                             </StackPanel>
                                         </Border>
                                     </ControlTemplate>

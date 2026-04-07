@@ -1,0 +1,159 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="root" msdata:IsDataSet="true">
+            
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="Settings_MainTitle" xml:space="preserve">
+        <value>System Settings &amp; Configuration</value>
+    </data>
+    <data name="Settings_MainDesc" xml:space="preserve">
+        <value>Manage local parameters, database connections, and classification schemas.</value>
+    </data>
+    <data name="Settings_TabGeneral" xml:space="preserve">
+        <value>General &amp; Display</value>
+    </data>
+    <data name="Settings_OrgDetails" xml:space="preserve">
+        <value>ORGANIZATION DETAILS</value>
+    </data>
+    <data name="Settings_AppTitle" xml:space="preserve">
+        <value>Application Title</value>
+    </data>
+    <data name="Settings_OrgName" xml:space="preserve">
+        <value>Organization Name</value>
+    </data>
+    <data name="Settings_LocUser" xml:space="preserve">
+        <value>LOCALIZATION &amp; USER</value>
+    </data>
+    <data name="Settings_CurrentUser" xml:space="preserve">
+        <value>Current User</value>
+    </data>
+    <data name="Settings_SysLanguage" xml:space="preserve">
+        <value>System Language</value>
+    </data>
+    <data name="Settings_SysDefaults" xml:space="preserve">
+        <value>SYSTEM DEFAULTS</value>
+    </data>
+    <data name="Settings_DefPageSize" xml:space="preserve">
+        <value>Default Pagination Size</value>
+    </data>
+    <data name="Settings_UITheme" xml:space="preserve">
+        <value>UI Theme</value>
+    </data>
+    <data name="Settings_DefExportDir" xml:space="preserve">
+        <value>Default Export Directory</value>
+    </data>
+    <data name="Settings_SaveGeneral" xml:space="preserve">
+        <value>Save General Settings</value>
+    </data>
+    <data name="Settings_TabDatabase" xml:space="preserve">
+        <value>Database &amp; Backups</value>
+    </data>
+    <data name="Settings_DbConnection" xml:space="preserve">
+        <value>POSTGRESQL CONNECTION</value>
+    </data>
+    <data name="Settings_DbHost" xml:space="preserve">
+        <value>Host Server (e.g., localhost)</value>
+    </data>
+    <data name="Settings_DbName" xml:space="preserve">
+        <value>Database Name</value>
+    </data>
+    <data name="Settings_DbUser" xml:space="preserve">
+        <value>Password</value>
+    </data>
+    <data name="Settings_DbPassword" xml:space="preserve">
+        <value>Username</value>
+    </data>
+    <data name="Settings_TestConnection" xml:space="preserve">
+        <value>Test Connection</value>
+    </data>
+    <data name="Settings_AutoBackups" xml:space="preserve">
+        <value>AUTOMATED SQL BACKUPS</value>
+    </data>
+    <data name="Settings_EnableAutoBackup" xml:space="preserve">
+        <value>Enable Daily Automated SQL Database Backup</value>
+    </data>
+    <data name="Settings_BackupDest" xml:space="preserve">
+        <value>Backup Destination Folder (Local or Cloud Sync)</value>
+    </data>
+    <data name="Settings_SaveDatabase" xml:space="preserve">
+        <value>Save Database Settings</value>
+    </data>
+    <data name="Settings_TabVault" xml:space="preserve">
+        <value>Vault Categories</value>
+    </data>
+    <data name="Settings_ManageSectors" xml:space="preserve">
+        <value>MANAGE SECTORS</value>
+    </data>
+    <data name="Settings_AddSector" xml:space="preserve">
+        <value>Add New Sector</value>
+    </data>
+    <data name="Settings_SectorNameHint" xml:space="preserve">
+        <value>Sector Name</value>
+    </data>
+    <data name="Settings_ColorTag" xml:space="preserve">
+        <value>Optional Color Tag (Type Hex or Open Palette):</value>
+    </data>
+    <data name="Settings_HexHint" xml:space="preserve">
+        <value>#Hex Code</value>
+    </data>
+    <data name="Settings_ColorPalette" xml:space="preserve">
+        <value>Color Palette</value>
+    </data>
+    <data name="Settings_BtnAddSector" xml:space="preserve">
+        <value>+ Add Sector</value>
+    </data>
+    <data name="Settings_ManageFileTypes" xml:space="preserve">
+        <value>MANAGE FILE TYPES</value>
+    </data>
+    <data name="Settings_AddFileType" xml:space="preserve">
+        <value>Add New File Type</value>
+    </data>
+    <data name="Settings_FileTypeHint" xml:space="preserve">
+        <value>File Type</value>
+    </data>
+    <data name="Settings_BtnAddFileType" xml:space="preserve">
+        <value>+ Add File Type</value>
+    </data>
+    <data name="Settings_SaveCategory" xml:space="preserve">
+        <value>Save Category Settings</value>
+    </data>
+    <data name="Settings_ColorPickerTitle" xml:space="preserve">
+        <value>SECTOR COLOR PICKER</value>
+    </data>
+    <data name="Settings_Alpha" xml:space="preserve">
+        <value>Alpha</value>
+    </data>
+    <data name="Settings_Red" xml:space="preserve">
+        <value>Red</value>
+    </data>
+    <data name="Settings_Green" xml:space="preserve">
+        <value>Green</value>
+    </data>
+    <data name="Settings_Blue" xml:space="preserve">
+        <value>Blue</value>
+    </data>
+    <data name="Settings_FinalArgb" xml:space="preserve">
+        <value>Final ARGB Output Code</value>
+    </data>
+    <data name="Settings_CancelSelection" xml:space="preserve">
+        <value>Cancel Selection</value>
+    </data>
+    <data name="Settings_ConfirmColor" xml:space="preserve">
+        <value>Confirm Color</value>
+    </data>
+</root>
