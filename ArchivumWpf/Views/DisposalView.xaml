@@ -6,110 +6,384 @@
 
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
+
+        <Style x:Key="CleanTextBox" TargetType="TextBox">
+            <Setter Property="Background" Value="{DynamicResource CardBackground}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="15,10"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="12">
+                            <ScrollViewer x:Name="PART_ContentHost" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsKeyboardFocused" Value="True">
+                    <Setter Property="BorderBrush" Value="{DynamicResource DangerAccent}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="ModernCalendarStyle" TargetType="Calendar">
+            <Style.Resources>
+                <SolidColorBrush x:Key="{x:Static SystemColors.WindowBrushKey}" Color="#1E1E1E"/>
+                <SolidColorBrush x:Key="{x:Static SystemColors.WindowTextBrushKey}" Color="#e5e2e1"/>
+                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#f2ca50"/>
+                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="#131313"/>
+                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#252525"/>
+                <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}" Color="#e5e2e1"/>
+                <Style TargetType="CalendarDayButton">
+                    <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
+                </Style>
+                <Style TargetType="CalendarButton">
+                    <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
+                </Style>
+            </Style.Resources>
+            <Setter Property="Background" Value="{DynamicResource CardBackground}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+
+        <Style TargetType="DatePickerTextBox">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="DatePickerTextBox">
+                        <Grid>
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="0" VerticalAlignment="Center"/>
+                            <TextBlock x:Name="PART_Watermark" Text="Select a date..." Foreground="{DynamicResource TextMuted}" Opacity="0.5" VerticalAlignment="Center" Margin="4,0,0,0" IsHitTestVisible="False">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Text, RelativeSource={RelativeSource AncestorType=DatePickerTextBox}}" Value="">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="CleanDatePicker" TargetType="DatePicker">
+            <Setter Property="CalendarStyle" Value="{StaticResource ModernCalendarStyle}"/>
+            <Setter Property="Background" Value="{DynamicResource CardBackground}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="15,10"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="DatePicker">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="12">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <DatePickerTextBox x:Name="PART_TextBox" Grid.Column="0" Margin="{TemplateBinding Padding}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" FontFamily="Georgia" FontSize="13"/>
+                                <Button x:Name="PART_Button" Grid.Column="1" Width="30" Margin="0,0,10,0" Background="Transparent" BorderThickness="0" Cursor="Hand" Focusable="False">
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border Background="Transparent">
+                                                <fa:ImageAwesome Icon="Calendar" Width="14" Height="14" Foreground="{DynamicResource PrimaryAccent}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+                                <Popup x:Name="PART_Popup" AllowsTransparency="True" Placement="Bottom" PlacementTarget="{Binding ElementName=PART_TextBox}" StaysOpen="False"/>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="FormLabel" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Margin" Value="5,0,0,6"/>
+        </Style>
+
+        <Style TargetType="DataGridCell">
+            <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        </Style>
+
     </UserControl.Resources>
 
-    <Grid>
-        <Grid Margin="10">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+    <Grid Margin="0,10,20,20" MaxWidth="1600">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-            <TextBlock Grid.Row="0" Text="RETENTION &amp; DISPOSAL" Foreground="#E57373" FontSize="20" FontWeight="Bold" Margin="0,0,0,5"/>
-            <TextBlock Grid.Row="1" Text="{Binding StatusMessage}" Foreground="{Binding StatusColor}" FontSize="14" FontWeight="Bold" Margin="0,0,0,15"/>
+        <StackPanel Grid.Row="0" Margin="0,0,0,10">
+            <TextBlock Text="Retention &amp; Disposal Authority" Foreground="{DynamicResource PrimaryAccent}" FontSize="32" FontFamily="Georgia" FontWeight="Black" Margin="0,0,0,5"/>
+            <TextBlock Text="Schedule archival purges, execute permanent disposals, and review the destruction ledger." Foreground="{DynamicResource TextMuted}" FontSize="14" Margin="0,0,0,10"/>
+            
+            <Grid Margin="0,10,0,15">
+                <Rectangle Height="1" Fill="{DynamicResource BorderColor}" VerticalAlignment="Center"/>
+                <Rectangle Width="8" Height="8" Fill="{DynamicResource BorderColor}" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Center">
+                    <Rectangle.RenderTransform>
+                        <RotateTransform Angle="45"/>
+                    </Rectangle.RenderTransform>
+                </Rectangle>
+            </Grid>
+            
+            <TextBlock Text="{Binding StatusMessage}" Foreground="{Binding StatusColor}" FontSize="12" FontWeight="Bold" Margin="0,0,0,10"/>
+        </StackPanel>
 
-            <TabControl Grid.Row="2" Background="Transparent" BorderThickness="0" SelectedIndex="{Binding SelectedTabIndex}">
-                <TabControl.Resources>
-                    <Style TargetType="TabItem">
-                        <Setter Property="Background" Value="#252525"/>
-                        <Setter Property="Foreground" Value="Gray"/>
-                        <Setter Property="Padding" Value="15,10"/>
-                        <Setter Property="Margin" Value="0,0,5,0"/>
-                        <Setter Property="BorderThickness" Value="0"/>
-                        <Style.Triggers>
-                            <Trigger Property="IsSelected" Value="True">
-                                <Setter Property="Background" Value="#1E1E1E"/>
-                                <Setter Property="Foreground" Value="#E57373"/>
-                                <Setter Property="FontWeight" Value="Bold"/>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </TabControl.Resources>
+        <TabControl Grid.Row="1" Background="Transparent" BorderThickness="0" SelectedIndex="{Binding SelectedTabIndex}">
+            <TabControl.Resources>
+                <Style TargetType="TabItem">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="TabItem">
+                                <Border x:Name="Border" Padding="25,12" Margin="0,0,15,15" CornerRadius="20" BorderThickness="1" BorderBrush="{DynamicResource BorderColor}" Background="{DynamicResource CardBackground}" Cursor="Hand">
+                                    <ContentPresenter x:Name="ContentSite" VerticalAlignment="Center" HorizontalAlignment="Center" ContentSource="Header"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter TargetName="Border" Property="Background" Value="#0A000000"/>
+                                        <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource PrimaryAccent}"/>
+                                        <Setter Property="Foreground" Value="{DynamicResource PrimaryAccent}"/>
+                                        <Setter Property="FontWeight" Value="Bold"/>
+                                    </Trigger>
+                                    <Trigger Property="IsSelected" Value="False">
+                                        <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
+                                    </Trigger>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource PrimaryAccent}"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </TabControl.Resources>
 
-                <TabItem Header="Search &amp; Target">
-                    <ScrollViewer VerticalScrollBarVisibility="Auto">
-                        <StackPanel MaxWidth="900" HorizontalAlignment="Left" Margin="0,20,0,0">
+            <TabItem Header="Search &amp; Target">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel HorizontalAlignment="Stretch" Margin="0,30,0,20">
+                        
+                        <Border Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="32" Padding="8" Margin="0,0,0,40" Width="800" HorizontalAlignment="Center">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/> <ColumnDefinition Width="*"/> <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                
+                                <fa:ImageAwesome Grid.Column="0" Icon="Crosshairs" Width="22" Height="22" Foreground="{DynamicResource DangerAccent}" Margin="25,0,20,0"/>
+                                
+                                <TextBox Grid.Column="1" Text="{Binding SearchRrNumber, UpdateSourceTrigger=PropertyChanged}" 
+                                         Background="Transparent" Foreground="{DynamicResource TextMain}" BorderThickness="0" 
+                                         FontSize="18" FontFamily="Georgia" VerticalContentAlignment="Center" Margin="0,0,10,0">
+                                    <TextBox.Style>
+                                        <Style TargetType="TextBox">
+                                            <Style.Triggers>
+                                                <Trigger Property="Text" Value="">
+                                                    <Setter Property="Background">
+                                                        <Setter.Value>
+                                                            <VisualBrush Stretch="None" AlignmentX="Left">
+                                                                <VisualBrush.Visual>
+                                                                    <TextBlock Text="Target exact RR Number for disposal..." Foreground="{DynamicResource TextMuted}" Opacity="0.5" FontSize="16" FontFamily="Georgia"/>
+                                                                </VisualBrush.Visual>
+                                                            </VisualBrush>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBox.Style>
+                                </TextBox>
+                                
+                                <Button Grid.Column="2" Command="{Binding SearchFileCommand}" 
+                                        Background="{DynamicResource BorderColor}" Foreground="{DynamicResource TextMain}" 
+                                        FontWeight="Bold" BorderThickness="0" Padding="35,16" Cursor="Hand">
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border Background="{TemplateBinding Background}" CornerRadius="24">
+                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}">
+                                                    <fa:ImageAwesome Icon="Search" Width="14" Height="14" Foreground="{TemplateBinding Foreground}" Margin="0,0,10,0"/>
+                                                    <TextBlock Text="Locate Dossier" FontSize="14"/>
+                                                </StackPanel>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+                            </Grid>
+                        </Border>
+
+                        <StackPanel HorizontalAlignment="Center" Margin="0,20,0,0">
+                            <StackPanel.Style>
+                                <Style TargetType="StackPanel">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsFileLoaded}" Value="False">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </StackPanel.Style>
                             
-                            <Border Background="#1E1E1E" CornerRadius="8" Padding="25" Margin="0,0,0,20">
+                            <fa:ImageAwesome Icon="Archive" Width="120" Height="120" Foreground="{DynamicResource TextMuted}" Opacity="0.1" HorizontalAlignment="Center" Margin="0,0,0,25"/>
+                            <TextBlock Text="AWAITING TARGET DOSSIER" Foreground="{DynamicResource TextMuted}" Opacity="0.5" FontSize="18" FontWeight="Bold" FontFamily="Georgia" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+                            <TextBlock Text="Scan or input a valid RR Number above to retrieve the file record for scheduling or permanent destruction." Foreground="{DynamicResource TextMuted}" Opacity="0.4" FontSize="14" HorizontalAlignment="Center"/>
+                        </StackPanel>
+
+                        <Grid Visibility="{Binding IsFileLoaded, Converter={StaticResource BoolToVisConverter}}" MaxWidth="1000" HorizontalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/> <ColumnDefinition Width="30"/> <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Border Grid.Column="0" Background="{DynamicResource CardBackground}" CornerRadius="16" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" Padding="35" ClipToBounds="True">
                                 <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/> <ColumnDefinition Width="Auto"/>
-                                    </Grid.ColumnDefinitions>
-                                    <StackPanel Grid.Column="0" Margin="0,0,15,0">
-                                        <TextBlock Text="Search File by RR Number" Foreground="#4FC3F7" FontWeight="Bold" Margin="0,0,0,5"/>
-                                        <TextBox Text="{Binding SearchRrNumber}" Height="35" Background="#252525" Foreground="White" BorderBrush="#333333" Padding="5,0"/>
+                                    <fa:ImageAwesome Icon="ClockOutline" Width="120" Height="120" Foreground="{DynamicResource PrimaryAccent}" Opacity="0.05" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-25,-25,0" IsHitTestVisible="False"/>
+                                    
+                                    <StackPanel>
+                                        <TextBlock Text="1. SCHEDULE DISPOSAL" Foreground="{DynamicResource PrimaryAccent}" FontSize="14" FontWeight="Bold" Margin="0,0,0,10"/>
+                                        <TextBlock Text="Set a future date to automatically flag this file for removal in system reports." Foreground="{DynamicResource TextMuted}" FontSize="13" TextWrapping="Wrap" Margin="0,0,0,30"/>
+                                        
+                                        <TextBlock Text="To-Be-Removed Date" Foreground="{DynamicResource TextMuted}" FontSize="11" FontWeight="Bold" Margin="5,0,0,6"/>
+                                        <DatePicker SelectedDate="{Binding ScheduledDate}" Style="{StaticResource CleanDatePicker}" Margin="0,0,0,30"/>
+                                        
+                                        <Button Command="{Binding UpdateQueueCommand}" Height="50" Background="{DynamicResource BorderColor}" Foreground="{DynamicResource TextMain}" FontWeight="Bold" BorderThickness="0" Cursor="Hand" HorizontalAlignment="Left" Padding="30,0">
+                                            <Button.Template>
+                                                <ControlTemplate TargetType="Button">
+                                                    <Border Background="{TemplateBinding Background}" CornerRadius="12">
+                                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}">
+                                                            <fa:ImageAwesome Icon="CalendarCheckOutline" Width="16" Height="16" Margin="0,0,12,0" Foreground="{DynamicResource PrimaryAccent}"/>
+                                                            <TextBlock Text="Update Queue Status" FontSize="13"/>
+                                                        </StackPanel>
+                                                    </Border>
+                                                </ControlTemplate>
+                                            </Button.Template>
+                                        </Button>
                                     </StackPanel>
-                                    <Button Grid.Column="1" Command="{Binding SearchFileCommand}" Content="Search Vault" Width="120" Height="35" VerticalAlignment="Bottom" Background="#333333" Foreground="White" BorderThickness="0"/>
                                 </Grid>
                             </Border>
 
-                            <Grid Visibility="{Binding IsFileLoaded, Converter={StaticResource BoolToVisConverter}}">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/> <ColumnDefinition Width="20"/> <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
+                            <Border Grid.Column="2" Background="#0A000000" BorderBrush="{DynamicResource DangerAccent}" BorderThickness="1" CornerRadius="16" Padding="35" ClipToBounds="True">
+                                <Grid>
+                                    <fa:ImageAwesome Icon="Trash" Width="120" Height="120" Foreground="{DynamicResource DangerAccent}" Opacity="0.05" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-25,-25,0" IsHitTestVisible="False"/>
 
-                                <Border Grid.Column="0" Background="#1E1E1E" CornerRadius="8" Padding="25">
                                     <StackPanel>
-                                        <TextBlock Text="1. SCHEDULE DISPOSAL" Foreground="#4FC3F7" FontWeight="Bold" Margin="0,0,0,5"/>
-                                        <TextBlock Text="Set a future date to automatically flag this file for removal in reports." Foreground="Gray" FontSize="12" TextWrapping="Wrap" Margin="0,0,0,15"/>
+                                        <TextBlock Text="2. PERMANENT DISPOSAL" Foreground="{DynamicResource DangerAccent}" FontSize="14" FontWeight="Bold" Margin="0,0,0,10"/>
+                                        <TextBlock Text="Instantly lock this record and log it in the destruction database. This action is irreversible." Foreground="{DynamicResource TextMuted}" FontSize="13" TextWrapping="Wrap" Margin="0,0,0,30"/>
                                         
-                                        <TextBlock Text="To-Be-Removed Date" Foreground="Gray" Margin="0,0,0,5"/>
-                                        <DatePicker SelectedDate="{Binding ScheduledDate}" Height="35" Background="#252525" Foreground="White" BorderBrush="#333333" Margin="0,0,0,20"/>
-                                        
-                                        <Button Command="{Binding UpdateQueueCommand}" Height="40" Background="#333333" Foreground="White" BorderThickness="0">
-                                            <StackPanel Orientation="Horizontal">
-                                                <fa:ImageAwesome Icon="Calendar" Width="14" Height="14" Margin="0,0,8,0" Foreground="White"/>
-                                                <TextBlock Text="Update Queue Status"/>
-                                            </StackPanel>
+                                        <Button Command="{Binding PromptDisposalCommand}" CommandParameter="" Height="50" Background="{DynamicResource DangerAccent}" Foreground="{DynamicResource WindowBackground}" FontWeight="Bold" BorderThickness="0" Margin="0,65,0,0" Cursor="Hand" HorizontalAlignment="Left" Padding="30,0">
+                                            <Button.Template>
+                                                <ControlTemplate TargetType="Button">
+                                                    <Border Background="{TemplateBinding Background}" CornerRadius="12">
+                                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}">
+                                                            <fa:ImageAwesome Icon="Warning" Width="16" Height="16" Margin="0,0,12,0" Foreground="{DynamicResource WindowBackground}"/>
+                                                            <TextBlock Text="EXECUTE DISPOSAL" FontSize="13"/>
+                                                        </StackPanel>
+                                                    </Border>
+                                                </ControlTemplate>
+                                            </Button.Template>
                                         </Button>
                                     </StackPanel>
-                                </Border>
+                                </Grid>
+                            </Border>
+                        </Grid>
 
-                                <Border Grid.Column="2" Background="#2A1A1A" BorderBrush="#F44336" BorderThickness="1" CornerRadius="8" Padding="25">
-                                    <StackPanel>
-                                        <TextBlock Text="2. PERMANENT DISPOSAL" Foreground="#F44336" FontWeight="Bold" Margin="0,0,0,5"/>
-                                        <TextBlock Text="Instantly lock this record and log it in the disposal database." Foreground="Gray" FontSize="12" TextWrapping="Wrap" Margin="0,0,0,15"/>
-                                        
-                                        <Button Command="{Binding PromptDisposalCommand}" CommandParameter="" Content="PERMANENTLY DISPOSE" Height="40" Background="#F44336" Foreground="White" FontWeight="Bold" BorderThickness="0" Margin="0,20,0,0"/>
-                                    </StackPanel>
-                                </Border>
-                            </Grid>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
 
-                        </StackPanel>
-                    </ScrollViewer>
-                </TabItem>
-
-                <TabItem Header="To Be Removed Queue">
-                    <Border Background="#1E1E1E" CornerRadius="0,8,8,8" Padding="15">
+            <TabItem Header="To Be Removed Queue">
+                <Border Background="{DynamicResource CardBackground}" CornerRadius="16" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" Padding="3">
+                    <Border BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="13">
                         <DataGrid ItemsSource="{Binding PendingRecords}" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True"
-                                  Background="Transparent" Foreground="White" RowBackground="#252525" AlternatingRowBackground="#1E1E1E" 
-                                  HeadersVisibility="Column" GridLinesVisibility="None">
+                                  Background="Transparent" Foreground="{DynamicResource TextMain}" RowBackground="Transparent" AlternatingRowBackground="Transparent" 
+                                  HeadersVisibility="Column" GridLinesVisibility="None" Margin="10,0">
+                            
                             <DataGrid.InputBindings>
                                 <MouseBinding Gesture="LeftDoubleClick" Command="{Binding OpenPendingDetailsCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=DataGrid}, Path=SelectedItem}" />
                             </DataGrid.InputBindings>
+                            
+                            <DataGrid.Resources>
+                                <Style TargetType="DataGridColumnHeader">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                    <Setter Property="FontSize" Value="10"/>
+                                    <Setter Property="Padding" Value="20,15"/>
+                                    <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                                    <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
+                                </Style>
+                                <Style TargetType="DataGridRow">
+                                    <Setter Property="Padding" Value="0,15"/>
+                                    <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                                    <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
+                                    <Setter Property="Cursor" Value="Hand"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#05000000"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGrid.Resources>
+
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Scheduled For" Binding="{Binding ToBeRemovedDate, StringFormat=yyyy-MM-dd}" Foreground="#E57373" FontWeight="Bold"/>
-                                <DataGridTextColumn Header="RR Number" Binding="{Binding RrNumber}"/>
-                                <DataGridTextColumn Header="File Name" Binding="{Binding FileName}" Width="*"/>
-                                <DataGridTextColumn Header="Sector" Binding="{Binding Sector}"/>
+                                <DataGridTextColumn Header="SCHEDULED FOR" Binding="{Binding ToBeRemovedDate, StringFormat=yyyy-MM-dd}" Foreground="{DynamicResource DangerAccent}" FontWeight="Bold"/>
+                                <DataGridTextColumn Header="RR NUMBER" Binding="{Binding RrNumber}" Foreground="{DynamicResource PrimaryAccent}" FontFamily="Consolas"/>
                                 
-                                <DataGridTemplateColumn Header="Actions">
+                                <DataGridTemplateColumn Header="FILE NAME" Width="*">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <StackPanel Orientation="Horizontal">
-                                                <Button Command="{Binding DataContext.RecoverFileCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding RrNumber}" Content="Recover" Background="#4CAF50" Foreground="White" BorderThickness="0" Height="25" Margin="0,0,5,0" Padding="10,0"/>
-                                                <Button Command="{Binding DataContext.PromptDisposalCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding RrNumber}" Content="Dispose" Background="#F44336" Foreground="White" BorderThickness="0" Height="25" Padding="10,0"/>
+                                            <TextBlock Text="{Binding FileName}" ToolTip="{Binding FileName}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+                                <DataGridTemplateColumn Header="SECTOR" Width="150">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Sector}" ToolTip="{Binding Sector}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                
+                                <DataGridTemplateColumn Header="ACTIONS" Width="180">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                <Button Command="{Binding DataContext.RecoverFileCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding RrNumber}" Content="Recover" Background="{DynamicResource BorderColor}" Foreground="{DynamicResource TextMain}" BorderThickness="0" Height="28" Margin="0,0,8,0" Padding="15,0" Cursor="Hand">
+                                                    <Button.Template>
+                                                        <ControlTemplate TargetType="Button">
+                                                            <Border Background="{TemplateBinding Background}" CornerRadius="6">
+                                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
+                                                            </Border>
+                                                        </ControlTemplate>
+                                                    </Button.Template>
+                                                </Button>
+                                                <Button Command="{Binding DataContext.PromptDisposalCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding RrNumber}" Content="Dispose" Background="{DynamicResource DangerAccent}" Foreground="{DynamicResource WindowBackground}" FontWeight="Bold" BorderThickness="0" Height="28" Padding="15,0" Cursor="Hand">
+                                                    <Button.Template>
+                                                        <ControlTemplate TargetType="Button">
+                                                            <Border Background="{TemplateBinding Background}" CornerRadius="6">
+                                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
+                                                            </Border>
+                                                        </ControlTemplate>
+                                                    </Button.Template>
+                                                </Button>
                                             </StackPanel>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
@@ -117,81 +391,179 @@
                             </DataGrid.Columns>
                         </DataGrid>
                     </Border>
-                </TabItem>
+                </Border>
+            </TabItem>
 
-                <TabItem Header="Disposed Audit Log">
-                    <Border Background="#1E1E1E" CornerRadius="0,8,8,8" Padding="15">
+            <TabItem Header="Disposed Audit Log">
+                <Border Background="{DynamicResource CardBackground}" CornerRadius="16" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" Padding="3">
+                    <Border BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="13">
                         <DataGrid ItemsSource="{Binding DisposedHistory}" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True"
-                                  Background="Transparent" Foreground="White" RowBackground="#252525" AlternatingRowBackground="#1E1E1E" 
-                                  HeadersVisibility="Column" GridLinesVisibility="None">
+                                  Background="Transparent" Foreground="{DynamicResource TextMain}" RowBackground="Transparent" AlternatingRowBackground="Transparent" 
+                                  HeadersVisibility="Column" GridLinesVisibility="None" Margin="10,0">
+                            
                             <DataGrid.InputBindings>
                                 <MouseBinding Gesture="LeftDoubleClick" Command="{Binding OpenDisposedDetailsCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=DataGrid}, Path=SelectedItem}" />
                             </DataGrid.InputBindings>
+                            
+                            <DataGrid.Resources>
+                                <Style TargetType="DataGridColumnHeader">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                    <Setter Property="FontSize" Value="10"/>
+                                    <Setter Property="Padding" Value="20,15"/>
+                                    <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                                    <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
+                                </Style>
+                                <Style TargetType="DataGridRow">
+                                    <Setter Property="Padding" Value="0,15"/>
+                                    <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                                    <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
+                                    <Setter Property="Cursor" Value="Hand"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#05000000"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGrid.Resources>
+
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Date Disposed" Binding="{Binding RemovedDate, StringFormat=yyyy-MM-dd}"/>
-                                <DataGridTextColumn Header="RR Number" Binding="{Binding File.RrNumber}"/>
-                                <DataGridTextColumn Header="File Name" Binding="{Binding File.FileName}" Width="*"/>
-                                <DataGridTextColumn Header="Authorized By" Binding="{Binding AuthorizedBy}"/>
-                                <DataGridTextColumn Header="Reason" Binding="{Binding Reason}"/>
+                                <DataGridTextColumn Header="DATE DISPOSED" Binding="{Binding RemovedDate, StringFormat=yyyy-MM-dd}" Foreground="{DynamicResource TextMuted}"/>
+                                <DataGridTextColumn Header="RR NUMBER" Binding="{Binding File.RrNumber}" Foreground="{DynamicResource DangerAccent}" FontFamily="Consolas"/>
+                                
+                                <DataGridTemplateColumn Header="FILE NAME" Width="*">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding File.FileName}" ToolTip="{Binding File.FileName}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+                                <DataGridTemplateColumn Header="AUTHORIZED BY" Width="150">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding AuthorizedBy}" ToolTip="{Binding AuthorizedBy}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+                                <DataGridTemplateColumn Header="REASON" Width="*">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Reason}" ToolTip="{Binding Reason}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
                             </DataGrid.Columns>
                         </DataGrid>
                     </Border>
-                </TabItem>
-            </TabControl>
-        </Grid>
+                </Border>
+            </TabItem>
+        </TabControl>
 
-        <Grid Visibility="{Binding IsDialogOpen, Converter={StaticResource BoolToVisConverter}}" Background="#99000000" Panel.ZIndex="100">
-            <Border Background="#1E1E1E" CornerRadius="12" Padding="30" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="450" BorderThickness="3" BorderBrush="{Binding PopupBorderColor}">
-                <StackPanel>
-                    <TextBlock Text="{Binding PopupFileData.RrNumber}" Foreground="{Binding PopupBorderColor}" FontSize="22" FontWeight="Bold" Margin="0,0,0,5"/>
-                    <TextBlock Text="{Binding PopupFileData.FileName}" Foreground="White" FontSize="16" TextWrapping="Wrap" Margin="0,0,0,15"/>
-                    
-                    <Grid Margin="0,0,0,20">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="150"/> <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="30"/> <RowDefinition Height="30"/> <RowDefinition Height="30"/>
-                        </Grid.RowDefinitions>
-                        
-                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Sector:" Foreground="Gray"/>
-                        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding PopupFileData.Sector}" Foreground="White" FontWeight="Bold"/>
-                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Status:" Foreground="Gray"/>
-                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding PopupFileData.CurrentStatus}" Foreground="White" FontWeight="Bold"/>
-                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Disposal Scheduled:" Foreground="Gray"/>
-                        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding PopupFileData.ToBeRemovedDate, StringFormat=yyyy-MM-dd}" Foreground="#E57373" FontWeight="Bold"/>
+        <Grid Grid.Row="0" Grid.RowSpan="2" Visibility="{Binding IsDialogOpen, Converter={StaticResource BoolToVisConverter}}" Panel.ZIndex="100">
+            <Border Background="#CC000000" CornerRadius="16"/>
+            
+            <Border Background="{DynamicResource CardBackground}" CornerRadius="16" Padding="35" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="550" BorderBrush="{Binding PopupBorderColor, FallbackValue='#f2ca50'}" BorderThickness="2" ClipToBounds="True">
+                <Grid>
+                    <Grid Width="180" Height="180" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-30,-30,0" Opacity="0.15" IsHitTestVisible="False">
+                        <fa:ImageAwesome Icon="FileText" Foreground="{DynamicResource TextMain}" Margin="-4,0,4,0"/>
+                        <fa:ImageAwesome Icon="FileText" Foreground="{DynamicResource TextMain}" Margin="4,0,-4,0"/>
+                        <fa:ImageAwesome Icon="FileText" Foreground="{DynamicResource TextMain}" Margin="0,-4,0,4"/>
+                        <fa:ImageAwesome Icon="FileText" Foreground="{DynamicResource TextMain}" Margin="0,4,0,-4"/>
+                        <fa:ImageAwesome Icon="FileText" Foreground="{Binding PopupBorderColor, FallbackValue='#f2ca50'}"/>
                     </Grid>
 
-                    <Border Background="#2A1A1A" Padding="15" CornerRadius="5" Visibility="{Binding PopupDisposalData, Converter={StaticResource BoolToVisConverter}}">
-                        <StackPanel>
-                            <TextBlock Text="PERMANENTLY DISPOSED" Foreground="#F44336" FontWeight="Bold" Margin="0,0,0,10"/>
-                            <TextBlock Text="{Binding PopupDisposalData.Reason, StringFormat='Reason: {0}'}" Foreground="White" Margin="0,0,0,5"/>
-                            <TextBlock Text="{Binding PopupDisposalData.AuthorizedBy, StringFormat='Auth: {0}'}" Foreground="White"/>
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,25">
+                            <fa:ImageAwesome Icon="FileText" Width="24" Height="24" Foreground="{Binding PopupBorderColor, FallbackValue='#f2ca50'}" Margin="0,0,15,0"/>
+                            <TextBlock Text="{Binding PopupFileData.RrNumber}" Foreground="{Binding PopupBorderColor, FallbackValue='#f2ca50'}" FontSize="20" FontFamily="Georgia" FontWeight="Bold"/>
                         </StackPanel>
-                    </Border>
 
-                    <Button Command="{Binding CloseDialogCommand}" Content="Close Details" Height="40" Margin="0,20,0,0" Background="#333333" Foreground="White" BorderThickness="0"/>
-                </StackPanel>
+                        <TextBlock Text="{Binding PopupFileData.FileName}" Foreground="{DynamicResource TextMain}" FontSize="16" TextWrapping="Wrap" Margin="0,0,0,25"/>
+                        
+                        <Grid Margin="0,0,0,20">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150"/> <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="35"/> <RowDefinition Height="35"/> <RowDefinition Height="35"/>
+                            </Grid.RowDefinitions>
+                            
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Sector:" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding PopupFileData.Sector}" Foreground="{DynamicResource TextMain}" FontWeight="Bold" VerticalAlignment="Center"/>
+                            
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="Status:" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding PopupFileData.CurrentStatus}" Foreground="{DynamicResource TextMain}" FontWeight="Bold" VerticalAlignment="Center"/>
+                            
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="Disposal Scheduled:" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding PopupFileData.ToBeRemovedDate, StringFormat=yyyy-MM-dd}" Foreground="{DynamicResource DangerAccent}" FontWeight="Bold" VerticalAlignment="Center"/>
+                        </Grid>
+
+                        <Border Background="#0A000000" BorderBrush="{DynamicResource DangerAccent}" BorderThickness="1" Padding="20" CornerRadius="12" Visibility="{Binding PopupDisposalData, Converter={StaticResource BoolToVisConverter}}">
+                            <StackPanel>
+                                <TextBlock Text="PERMANENTLY DISPOSED" Foreground="{DynamicResource DangerAccent}" FontWeight="Bold" Margin="0,0,0,10"/>
+                                <TextBlock Text="{Binding PopupDisposalData.Reason, StringFormat='Reason: {0}'}" Foreground="{DynamicResource TextMain}" TextWrapping="Wrap" Margin="0,0,0,5"/>
+                                <TextBlock Text="{Binding PopupDisposalData.AuthorizedBy, StringFormat='Auth: {0}'}" Foreground="{DynamicResource TextMuted}"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Button Command="{Binding CloseDialogCommand}" Content="Close Dossier" 
+                                Height="45" Margin="0,30,0,0" Background="{DynamicResource BorderColor}" 
+                                Foreground="{DynamicResource TextMain}" FontWeight="Bold" BorderThickness="0" Cursor="Hand" Panel.ZIndex="10">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}" CornerRadius="8">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                    </StackPanel>
+                </Grid>
             </Border>
         </Grid>
 
-        <Grid Visibility="{Binding IsDisposalPromptOpen, Converter={StaticResource BoolToVisConverter}}" Background="#CC000000" Panel.ZIndex="110">
-            <Border Background="#1E1E1E" CornerRadius="12" Padding="35" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="450" BorderThickness="1" BorderBrush="#F44336">
-                <StackPanel>
-                    <TextBlock Text="AUTHORIZE DISPOSAL" Foreground="#F44336" FontSize="20" FontWeight="Bold" Margin="0,0,0,5"/>
-                    <TextBlock Text="{Binding PendingDisposalRrNumber, StringFormat='Target File: {0}'}" Foreground="White" FontSize="16" FontWeight="Bold" Margin="0,0,0,20"/>
+        <Grid Grid.Row="0" Grid.RowSpan="2" Visibility="{Binding IsDisposalPromptOpen, Converter={StaticResource BoolToVisConverter}}" Panel.ZIndex="110">
+            <Border Background="#CC000000" CornerRadius="16"/>
+            
+            <Border Background="{DynamicResource CardBackground}" CornerRadius="16" Padding="35" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="500" BorderBrush="{DynamicResource DangerAccent}" BorderThickness="2" ClipToBounds="True">
+                <Grid>
+                    <fa:ImageAwesome Icon="Warning" Width="150" Height="150" Foreground="{DynamicResource DangerAccent}" Opacity="0.05" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-20,-20,0" IsHitTestVisible="False"/>
 
-                    <TextBlock Text="Reason for Disposal *" Foreground="#E57373" Margin="0,0,0,5"/>
-                    <TextBox Text="{Binding DisposalReason, UpdateSourceTrigger=PropertyChanged}" Height="35" Background="#2A1A1A" Foreground="White" BorderBrush="#F44336" Padding="5,0" Margin="0,0,0,15"/>
-                    
-                    <TextBlock Text="Authorized By *" Foreground="#E57373" Margin="0,0,0,5"/>
-                    <TextBox Text="{Binding AuthorizedBy, UpdateSourceTrigger=PropertyChanged}" Height="35" Background="#2A1A1A" Foreground="White" BorderBrush="#F44336" Padding="5,0" Margin="0,0,0,30"/>
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,25">
+                            <fa:ImageAwesome Icon="Warning" Width="24" Height="24" Foreground="{DynamicResource DangerAccent}" Margin="0,0,15,0"/>
+                            <TextBlock Text="AUTHORIZE DISPOSAL" Foreground="{DynamicResource DangerAccent}" FontSize="20" FontFamily="Georgia" FontWeight="Bold"/>
+                        </StackPanel>
 
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Button Command="{Binding CancelDisposalPromptCommand}" Content="Cancel" Width="100" Height="40" Background="Transparent" Foreground="Gray" BorderThickness="0" Margin="0,0,10,0"/>
-                        <Button Command="{Binding ConfirmDisposalCommand}" Content="CONFIRM &amp; DISPOSE" Width="160" Height="40" Background="#F44336" Foreground="White" FontWeight="Bold" BorderThickness="0"/>
+                        <TextBlock Text="{Binding PendingDisposalRrNumber, StringFormat='Target File: {0}'}" Foreground="{DynamicResource TextMain}" FontSize="16" FontWeight="Bold" Margin="0,0,0,25"/>
+
+                        <TextBlock Text="Reason for Disposal *" Style="{StaticResource FormLabel}"/>
+                        <TextBox Text="{Binding DisposalReason, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CleanTextBox}" Margin="0,0,0,15"/>
+                        
+                        <TextBlock Text="Authorized By *" Style="{StaticResource FormLabel}"/>
+                        <TextBox Text="{Binding AuthorizedBy, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CleanTextBox}" Margin="0,0,0,35"/>
+
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Button Command="{Binding CancelDisposalPromptCommand}" Content="Cancel Request" Width="130" Height="45" Background="Transparent" Foreground="{DynamicResource TextMuted}" BorderThickness="0" Margin="0,0,15,0" Cursor="Hand"/>
+                            
+                            <Button Command="{Binding ConfirmDisposalCommand}" Height="45" Background="{DynamicResource DangerAccent}" Foreground="{DynamicResource WindowBackground}" FontWeight="Bold" BorderThickness="0" Cursor="Hand" Padding="25,0">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}" CornerRadius="12">
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}">
+                                                <fa:ImageAwesome Icon="Trash" Width="14" Height="14" Margin="0,0,10,0" Foreground="{DynamicResource WindowBackground}"/>
+                                                <TextBlock Text="CONFIRM DESTRUCTION"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                        </StackPanel>
                     </StackPanel>
-                </StackPanel>
+                </Grid>
             </Border>
         </Grid>
 

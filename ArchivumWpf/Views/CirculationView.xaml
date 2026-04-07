@@ -111,26 +111,20 @@
             </TabControl.Resources>
 
             <TabItem Header="Circulation Desk">
-                <Grid Margin="0,0,0,20">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="450"/>
-                        <ColumnDefinition Width="30"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-
-                    <StackPanel Grid.Column="0">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel HorizontalAlignment="Stretch" Margin="0,30,0,20">
                         
-                        <Border Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="28" Padding="6" Margin="0,0,0,20">
+                        <Border Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="32" Padding="8" Margin="0,0,0,40" Width="800" HorizontalAlignment="Center">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/> <ColumnDefinition Width="*"/> <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
                                 
-                                <fa:ImageAwesome Grid.Column="0" Icon="Crosshairs" Width="18" Height="18" Foreground="{DynamicResource PrimaryAccent}" Margin="20,0,15,0"/>
+                                <fa:ImageAwesome Grid.Column="0" Icon="Crosshairs" Width="22" Height="22" Foreground="{DynamicResource PrimaryAccent}" Margin="25,0,20,0"/>
                                 
                                 <TextBox Grid.Column="1" Text="{Binding TargetRrNumber, UpdateSourceTrigger=PropertyChanged}" 
                                          Background="Transparent" Foreground="{DynamicResource TextMain}" BorderThickness="0" 
-                                         FontSize="16" FontFamily="Georgia" VerticalContentAlignment="Center" Margin="0,0,10,0">
+                                         FontSize="18" FontFamily="Georgia" VerticalContentAlignment="Center" Margin="0,0,10,0">
                                     <TextBox.Style>
                                         <Style TargetType="TextBox">
                                             <Style.Triggers>
@@ -139,7 +133,7 @@
                                                         <Setter.Value>
                                                             <VisualBrush Stretch="None" AlignmentX="Left">
                                                                 <VisualBrush.Visual>
-                                                                    <TextBlock Text="Target exact RR Number..." Foreground="{DynamicResource TextMuted}" Opacity="0.5" FontSize="14" FontFamily="Georgia"/>
+                                                                    <TextBlock Text="Target exact RR Number for circulation..." Foreground="{DynamicResource TextMuted}" Opacity="0.5" FontSize="16" FontFamily="Georgia"/>
                                                                 </VisualBrush.Visual>
                                                             </VisualBrush>
                                                         </Setter.Value>
@@ -152,13 +146,13 @@
                                 
                                 <Button Grid.Column="2" Command="{Binding CheckFileCommand}" 
                                         Background="{DynamicResource BorderColor}" Foreground="{DynamicResource TextMain}" 
-                                        FontWeight="Bold" BorderThickness="0" Padding="25,10" Cursor="Hand">
+                                        FontWeight="Bold" BorderThickness="0" Padding="35,16" Cursor="Hand">
                                     <Button.Template>
                                         <ControlTemplate TargetType="Button">
-                                            <Border Background="{TemplateBinding Background}" CornerRadius="22">
+                                            <Border Background="{TemplateBinding Background}" CornerRadius="24">
                                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}">
-                                                    <fa:ImageAwesome Icon="Search" Width="12" Height="12" Foreground="{TemplateBinding Foreground}" Margin="0,0,8,0"/>
-                                                    <TextBlock Text="Assess" FontSize="12"/>
+                                                    <fa:ImageAwesome Icon="Search" Width="14" Height="14" Foreground="{TemplateBinding Foreground}" Margin="0,0,10,0"/>
+                                                    <TextBlock Text="Assess Dossier" FontSize="14"/>
                                                 </StackPanel>
                                             </Border>
                                         </ControlTemplate>
@@ -167,115 +161,155 @@
                             </Grid>
                         </Border>
 
-                        <Border Visibility="{Binding IsFileLoaded, Converter={StaticResource BoolToVisConverter}}" Background="{DynamicResource CardBackground}" CornerRadius="16" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" Padding="3" Margin="0,0,0,20">
-                            <Border BorderBrush="{Binding LoadedFileColor}" BorderThickness="1" CornerRadius="13" Padding="25" ClipToBounds="True">
-                                <Grid>
-                                    
-                                    <Grid Width="120" Height="120" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-20,-20,0" Opacity="0.2" IsHitTestVisible="False">
-                                        <fa:ImageAwesome Icon="Exchange" Foreground="{DynamicResource TextMain}" Margin="-3,0,3,0"/>
-                                        <fa:ImageAwesome Icon="Exchange" Foreground="{DynamicResource TextMain}" Margin="3,0,-3,0"/>
-                                        <fa:ImageAwesome Icon="Exchange" Foreground="{DynamicResource TextMain}" Margin="0,-3,0,3"/>
-                                        <fa:ImageAwesome Icon="Exchange" Foreground="{DynamicResource TextMain}" Margin="0,3,0,-3"/>
-                                        <fa:ImageAwesome Icon="Exchange" Foreground="{Binding LoadedFileColor}"/>
-                                    </Grid>
+                        <StackPanel HorizontalAlignment="Center" Margin="0,20,0,0">
+                            <StackPanel.Style>
+                                <Style TargetType="StackPanel">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsFileLoaded}" Value="False">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </StackPanel.Style>
+                            
+                            <fa:ImageAwesome Icon="Book" Width="120" Height="120" Foreground="{DynamicResource TextMuted}" Opacity="0.1" HorizontalAlignment="Center" Margin="0,0,0,25"/>
+                            <TextBlock Text="AWAITING DOSSIER SCAN" Foreground="{DynamicResource TextMuted}" Opacity="0.5" FontSize="18" FontWeight="Bold" FontFamily="Georgia" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+                            <TextBlock Text="Scan or input an RR Number above to assess the file for issuance or return." Foreground="{DynamicResource TextMuted}" Opacity="0.4" FontSize="14" HorizontalAlignment="Center"/>
+                        </StackPanel>
 
-                                    <StackPanel>
-                                        <TextBlock Text="DOSSIER INTELLIGENCE" Foreground="{Binding LoadedFileColor}" FontSize="11" FontWeight="Bold" Margin="0,0,0,15"/>
+                        <Grid Visibility="{Binding IsFileLoaded, Converter={StaticResource BoolToVisConverter}}" MaxWidth="1100" HorizontalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/> <ColumnDefinition Width="40"/> <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Border Grid.Column="0" Background="{DynamicResource CardBackground}" CornerRadius="16" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" Padding="3" ClipToBounds="True">
+                                <Border BorderBrush="{Binding LoadedFileColor}" BorderThickness="1" CornerRadius="13" Padding="35" ClipToBounds="True">
+                                    <Grid>
                                         
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="110"/>
-                                                <ColumnDefinition Width="*"/>
-                                            </Grid.ColumnDefinitions>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="30"/>
-                                                <RowDefinition Height="Auto"/>
-                                                <RowDefinition Height="30"/>
-                                                <RowDefinition Height="30"/>
-                                            </Grid.RowDefinitions>
-
-                                            <TextBlock Grid.Row="0" Grid.Column="0" Text="RR Number:" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center" FontSize="11"/>
-                                            <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding LoadedFile.RrNumber}" Foreground="{DynamicResource PrimaryAccent}" FontWeight="Bold" FontFamily="Consolas" VerticalAlignment="Center" FontSize="14"/>
-
-                                            <TextBlock Grid.Row="1" Grid.Column="0" Text="Subject Name:" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Top" Margin="0,5,0,0" FontSize="11"/>
-                                            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding LoadedFile.FileName}" Foreground="{DynamicResource TextMain}" FontWeight="Bold" TextWrapping="Wrap" Margin="0,5,0,10" FontSize="13"/>
-
-                                            <TextBlock Grid.Row="2" Grid.Column="0" Text="Sector:" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center" FontSize="11"/>
-                                            <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding LoadedFile.Sector}" Foreground="{DynamicResource TextMain}" FontWeight="Bold" VerticalAlignment="Center" FontSize="12"/>
-
-                                            <TextBlock Grid.Row="3" Grid.Column="0" Text="Current Status:" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center" FontSize="11"/>
-                                            <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding LoadedFile.CurrentStatus}" Foreground="{DynamicResource TextMain}" FontWeight="Bold" VerticalAlignment="Center" FontSize="13"/>
+                                        <Grid Width="120" Height="120" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-20,-20,0" Opacity="0.2" IsHitTestVisible="False">
+                                            <Grid.RenderTransform>
+                                                <RotateTransform Angle="15" CenterX="60" CenterY="60"/>
+                                            </Grid.RenderTransform>
+                                            
+                                            <fa:ImageAwesome Icon="AddressCardOutline" Foreground="{DynamicResource TextMain}" Margin="-2,0,2,0"/>
+                                            <fa:ImageAwesome Icon="AddressCardOutline" Foreground="{DynamicResource TextMain}" Margin="2,0,-2,0"/>
+                                            <fa:ImageAwesome Icon="AddressCardOutline" Foreground="{DynamicResource TextMain}" Margin="0,-2,0,2"/>
+                                            <fa:ImageAwesome Icon="AddressCardOutline" Foreground="{DynamicResource TextMain}" Margin="0,2,0,-2"/>
+                                            <fa:ImageAwesome Icon="AddressCardOutline" Foreground="{DynamicResource TextMain}" Margin="-2,-2,2,2"/>
+                                            <fa:ImageAwesome Icon="AddressCardOutline" Foreground="{DynamicResource TextMain}" Margin="2,2,-2,-2"/>
+                                            <fa:ImageAwesome Icon="AddressCardOutline" Foreground="{DynamicResource TextMain}" Margin="-2,2,2,-2"/>
+                                            <fa:ImageAwesome Icon="AddressCardOutline" Foreground="{DynamicResource TextMain}" Margin="2,-2,-2,2"/>
+                                            
+                                            <fa:ImageAwesome Icon="AddressCardOutline" Foreground="{Binding LoadedFileColor}"/>
                                         </Grid>
-                                    </StackPanel>
-                                </Grid>
+
+                                        <StackPanel>
+                                            <TextBlock Text="DOSSIER INTELLIGENCE" Foreground="{Binding LoadedFileColor}" FontSize="13" FontWeight="Bold" Margin="0,0,0,20"/>
+                                            
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="130"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="35"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="35"/>
+                                                    <RowDefinition Height="35"/>
+                                                </Grid.RowDefinitions>
+
+                                                <TextBlock Grid.Row="0" Grid.Column="0" Text="RR Number:" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center" FontSize="12"/>
+                                                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding LoadedFile.RrNumber}" Foreground="{DynamicResource PrimaryAccent}" FontWeight="Bold" FontFamily="Consolas" VerticalAlignment="Center" FontSize="16"/>
+
+                                                <TextBlock Grid.Row="1" Grid.Column="0" Text="Subject Name:" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Top" Margin="0,8,0,0" FontSize="12"/>
+                                                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding LoadedFile.FileName}" Foreground="{DynamicResource TextMain}" FontWeight="Bold" TextWrapping="Wrap" Margin="0,8,0,15" FontSize="15"/>
+
+                                                <TextBlock Grid.Row="2" Grid.Column="0" Text="Sector:" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center" FontSize="12"/>
+                                                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding LoadedFile.Sector}" Foreground="{Binding LoadedFileColor}" FontWeight="Bold" VerticalAlignment="Center" FontSize="14"/>
+
+                                                <TextBlock Grid.Row="3" Grid.Column="0" Text="Current Status:" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center" FontSize="12"/>
+                                                <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding LoadedFile.CurrentStatus}" Foreground="{DynamicResource TextMain}" FontWeight="Bold" VerticalAlignment="Center" FontSize="14"/>
+                                            </Grid>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
                             </Border>
-                        </Border>
 
-                        <Border Visibility="{Binding CanIssue, Converter={StaticResource BoolToVisConverter}}" Background="#0A000000" BorderBrush="{DynamicResource PrimaryAccent}" BorderThickness="1" CornerRadius="16" Padding="25" ClipToBounds="True">
-                            <Grid>
-                                <fa:ImageAwesome Icon="SignOut" Width="100" Height="100" Foreground="{DynamicResource PrimaryAccent}" Opacity="0.05" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-20,-20,0" IsHitTestVisible="False"/>
-                                <StackPanel>
-                                    <TextBlock Text="ISSUE TO BORROWER" Foreground="{DynamicResource PrimaryAccent}" FontSize="12" FontWeight="Bold" Margin="0,0,0,15"/>
-                                    
-                                    <TextBox Text="{Binding BorrowerName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CleanTextBox}" Margin="0,0,0,15"/>
-                                    
-                                    <TextBlock Text="Enter designated borrower name / ID..." Foreground="{DynamicResource TextMuted}" Opacity="0.5" IsHitTestVisible="False" Margin="15,-40,0,25" FontSize="13" FontFamily="Georgia">
-                                        <TextBlock.Style>
-                                            <Style TargetType="TextBlock">
-                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding BorrowerName}" Value="">
-                                                        <Setter Property="Visibility" Value="Visible"/>
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding BorrowerName}" Value="{x:Null}">
-                                                        <Setter Property="Visibility" Value="Visible"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
+                            <Grid Grid.Column="2">
+                                
+                                <Border Visibility="{Binding CanIssue, Converter={StaticResource BoolToVisConverter}}" Background="#0A000000" BorderBrush="{DynamicResource PrimaryAccent}" BorderThickness="1" CornerRadius="16" Padding="35" ClipToBounds="True">
+                                    <Grid>
+                                        <fa:ImageAwesome Icon="SignOut" Width="120" Height="120" Foreground="{DynamicResource PrimaryAccent}" Opacity="0.05" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-25,-25,0" IsHitTestVisible="False"/>
+                                        <StackPanel VerticalAlignment="Center">
+                                            <TextBlock Text="ISSUE TO BORROWER" Foreground="{DynamicResource PrimaryAccent}" FontSize="14" FontWeight="Bold" Margin="0,0,0,20"/>
+                                            
+                                            <TextBox Text="{Binding BorrowerName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CleanTextBox}" Margin="0,0,0,20"/>
+                                            
+                                            <TextBlock Text="Enter designated borrower name / ID..." Foreground="{DynamicResource TextMuted}" Opacity="0.5" IsHitTestVisible="False" Margin="15,-45,0,30" FontSize="14" FontFamily="Georgia">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding BorrowerName}" Value="">
+                                                                <Setter Property="Visibility" Value="Visible"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding BorrowerName}" Value="{x:Null}">
+                                                                <Setter Property="Visibility" Value="Visible"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
 
-                                    <Button Command="{Binding ExecuteIssueCommand}" Height="45" Background="{DynamicResource PrimaryAccent}" Foreground="{DynamicResource WindowBackground}" FontWeight="Bold" BorderThickness="0" Cursor="Hand" HorizontalAlignment="Right" Padding="30,0">
-                                        <Button.Template>
-                                            <ControlTemplate TargetType="Button">
-                                                <Border Background="{TemplateBinding Background}" CornerRadius="12">
-                                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}">
-                                                        <fa:ImageAwesome Icon="SignOut" Width="14" Height="14" Margin="0,0,10,0" Foreground="{DynamicResource WindowBackground}"/>
-                                                        <TextBlock Text="Authorize Issuance"/>
-                                                    </StackPanel>
-                                                </Border>
-                                            </ControlTemplate>
-                                        </Button.Template>
-                                    </Button>
-                                </StackPanel>
+                                            <Button Command="{Binding ExecuteIssueCommand}" Height="50" Background="{DynamicResource PrimaryAccent}" Foreground="{DynamicResource WindowBackground}" FontWeight="Bold" BorderThickness="0" Cursor="Hand" HorizontalAlignment="Right" Padding="30,0">
+                                                <Button.Template>
+                                                    <ControlTemplate TargetType="Button">
+                                                        <Border Background="{TemplateBinding Background}" CornerRadius="12">
+                                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}">
+                                                                <fa:ImageAwesome Icon="SignOut" Width="16" Height="16" Margin="0,0,12,0" Foreground="{DynamicResource WindowBackground}"/>
+                                                                <TextBlock Text="Authorize Issuance" FontSize="13"/>
+                                                            </StackPanel>
+                                                        </Border>
+                                                    </ControlTemplate>
+                                                </Button.Template>
+                                            </Button>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+
+                                <Border Visibility="{Binding CanReturn, Converter={StaticResource BoolToVisConverter}}" Background="#0A000000" BorderBrush="{DynamicResource PrimaryAccent}" BorderThickness="1" CornerRadius="16" Padding="35" ClipToBounds="True">
+                                    <Grid>
+                                        <fa:ImageAwesome Icon="SignIn" Width="120" Height="120" Foreground="{DynamicResource PrimaryAccent}" Opacity="0.05" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-25,-25,0" IsHitTestVisible="False"/>
+                                        <StackPanel VerticalAlignment="Center">
+                                            <TextBlock Text="AUTHORIZE RETURN" Foreground="{DynamicResource PrimaryAccent}" FontSize="14" FontWeight="Bold" Margin="0,0,0,15"/>
+                                            <TextBlock Text="This dossier is currently active in the field. Confirm physical return to vault." Foreground="{DynamicResource TextMuted}" FontSize="14" Margin="0,0,0,35" TextWrapping="Wrap"/>
+                                            
+                                            <Button Command="{Binding ExecuteReturnCommand}" Height="50" Background="{DynamicResource PrimaryAccent}" Foreground="{DynamicResource WindowBackground}" FontWeight="Bold" BorderThickness="0" Cursor="Hand" HorizontalAlignment="Right" Padding="30,0">
+                                                <Button.Template>
+                                                    <ControlTemplate TargetType="Button">
+                                                        <Border Background="{TemplateBinding Background}" CornerRadius="12">
+                                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}">
+                                                                <fa:ImageAwesome Icon="SignIn" Width="16" Height="16" Margin="0,0,12,0" Foreground="{DynamicResource WindowBackground}"/>
+                                                                <TextBlock Text="Process Return" FontSize="13"/>
+                                                            </StackPanel>
+                                                        </Border>
+                                                    </ControlTemplate>
+                                                </Button.Template>
+                                            </Button>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+
                             </Grid>
-                        </Border>
-
-                        <Border Visibility="{Binding CanReturn, Converter={StaticResource BoolToVisConverter}}" Background="#0A000000" BorderBrush="{DynamicResource PrimaryAccent}" BorderThickness="1" CornerRadius="16" Padding="25" ClipToBounds="True">
-                            <Grid>
-                                <fa:ImageAwesome Icon="SignIn" Width="100" Height="100" Foreground="{DynamicResource PrimaryAccent}" Opacity="0.05" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-20,-20,0" IsHitTestVisible="False"/>
-                                <StackPanel>
-                                    <TextBlock Text="AUTHORIZE RETURN" Foreground="{DynamicResource PrimaryAccent}" FontSize="12" FontWeight="Bold" Margin="0,0,0,15"/>
-                                    <TextBlock Text="This dossier is currently active in the field. Confirm physical return to vault." Foreground="{DynamicResource TextMuted}" FontSize="13" Margin="0,0,0,20" TextWrapping="Wrap"/>
-                                    
-                                    <Button Command="{Binding ExecuteReturnCommand}" Height="45" Background="{DynamicResource PrimaryAccent}" Foreground="{DynamicResource WindowBackground}" FontWeight="Bold" BorderThickness="0" Cursor="Hand" HorizontalAlignment="Right" Padding="30,0">
-                                        <Button.Template>
-                                            <ControlTemplate TargetType="Button">
-                                                <Border Background="{TemplateBinding Background}" CornerRadius="12">
-                                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}">
-                                                        <fa:ImageAwesome Icon="SignIn" Width="14" Height="14" Margin="0,0,10,0" Foreground="{DynamicResource WindowBackground}"/>
-                                                        <TextBlock Text="Process Return"/>
-                                                    </StackPanel>
-                                                </Border>
-                                            </ControlTemplate>
-                                        </Button.Template>
-                                    </Button>
-                                </StackPanel>
-                            </Grid>
-                        </Border>
+                        </Grid>
                     </StackPanel>
+                </ScrollViewer>
+            </TabItem>
 
-                    <Border Grid.Column="2" Background="{DynamicResource CardBackground}" CornerRadius="16" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" Padding="3">
+            <TabItem Header="Active Field Loans">
+                <StackPanel HorizontalAlignment="Stretch">
+                    <Border Background="{DynamicResource CardBackground}" CornerRadius="16" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" Padding="3">
                         <Border BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="13">
                             <Grid>
                                 <Grid.RowDefinitions>
@@ -283,10 +317,10 @@
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
                                 
-                                <Border Grid.Row="0" BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,0,0,1" Padding="20,15">
+                                <Border Grid.Row="0" BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,0,0,1" Padding="25,20">
                                     <StackPanel Orientation="Horizontal">
-                                        <fa:ImageAwesome Icon="Book" Width="14" Height="14" Foreground="#E5C365" Margin="0,0,10,0"/>
-                                        <TextBlock Text="ACTIVE FIELD LOANS" Foreground="#E5C365" FontSize="12" FontWeight="Bold"/>
+                                        <fa:ImageAwesome Icon="Book" Width="16" Height="16" Foreground="#E5C365" Margin="0,0,12,0"/>
+                                        <TextBlock Text="ACTIVE FIELD LOANS" Foreground="#E5C365" FontSize="14" FontWeight="Bold"/>
                                     </StackPanel>
                                 </Border>
 
@@ -294,7 +328,7 @@
                                           AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True"
                                           Background="Transparent" Foreground="{DynamicResource TextMain}" 
                                           RowBackground="Transparent" AlternatingRowBackground="Transparent" 
-                                          HeadersVisibility="Column" GridLinesVisibility="None" BorderThickness="0" Margin="5">
+                                          HeadersVisibility="Column" GridLinesVisibility="None" BorderThickness="0" Margin="10,0" MinHeight="400">
                                     
                                     <DataGrid.Resources>
                                         <Style TargetType="DataGridColumnHeader">
@@ -302,12 +336,12 @@
                                             <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
                                             <Setter Property="FontWeight" Value="Bold"/>
                                             <Setter Property="FontSize" Value="10"/>
-                                            <Setter Property="Padding" Value="15,10"/>
+                                            <Setter Property="Padding" Value="20,15"/>
                                             <Setter Property="BorderThickness" Value="0,0,0,1"/>
                                             <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
                                         </Style>
                                         <Style TargetType="DataGridRow">
-                                            <Setter Property="Padding" Value="0,10"/>
+                                            <Setter Property="Padding" Value="0,15"/>
                                             <Setter Property="BorderThickness" Value="0,0,0,1"/>
                                             <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
                                             <Style.Triggers>
@@ -329,18 +363,18 @@
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
 
-                                        <DataGridTemplateColumn Header="SECTOR" Width="100">
+                                        <DataGridTemplateColumn Header="SECTOR" Width="150">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                                        <Ellipse Width="8" Height="8" Fill="{Binding SnapshotSectorColor, TargetNullValue='#8f9bb3'}" Stroke="{DynamicResource TextMain}" StrokeThickness="1" Margin="0,0,8,0"/>
+                                                        <Ellipse Width="10" Height="10" Fill="{Binding SnapshotSectorColor, TargetNullValue='#8f9bb3'}" Stroke="{DynamicResource TextMain}" StrokeThickness="1" Margin="0,0,8,0"/>
                                                         <TextBlock Text="{Binding SnapshotSector}" ToolTip="{Binding SnapshotSector}" Foreground="{DynamicResource TextMain}" TextTrimming="CharacterEllipsis"/>
                                                     </StackPanel>
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
 
-                                        <DataGridTemplateColumn Header="BORROWER" Width="120">
+                                        <DataGridTemplateColumn Header="BORROWER" Width="250">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <TextBlock Text="{Binding BorrowerName}" ToolTip="{Binding BorrowerName}" Foreground="{DynamicResource TextMain}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
@@ -348,13 +382,13 @@
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
                                         
-                                        <DataGridTextColumn Header="ISSUE DATE" Binding="{Binding BorrowedDate, StringFormat=MMM dd}" Foreground="{DynamicResource TextMuted}"/>
+                                        <DataGridTextColumn Header="ISSUE DATE" Binding="{Binding BorrowedDate, StringFormat=MMM dd yyyy}" Foreground="{DynamicResource TextMuted}" Width="150"/>
                                     </DataGrid.Columns>
                                 </DataGrid>
                             </Grid>
                         </Border>
                     </Border>
-                </Grid>
+                </StackPanel>
             </TabItem>
 
             <TabItem Header="Circulation Ledger">
@@ -542,11 +576,20 @@
                 <Grid>
                     
                     <Grid Width="180" Height="180" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-30,-30,0" Opacity="0.15" IsHitTestVisible="False">
-                        <fa:ImageAwesome Icon="Exchange" Foreground="{DynamicResource TextMain}" Margin="-4,0,4,0"/>
-                        <fa:ImageAwesome Icon="Exchange" Foreground="{DynamicResource TextMain}" Margin="4,0,-4,0"/>
-                        <fa:ImageAwesome Icon="Exchange" Foreground="{DynamicResource TextMain}" Margin="0,-4,0,4"/>
-                        <fa:ImageAwesome Icon="Exchange" Foreground="{DynamicResource TextMain}" Margin="0,4,0,-4"/>
-                        <fa:ImageAwesome Icon="Exchange" Foreground="{Binding PopupBorderColor, FallbackValue='#f2ca50'}"/>
+                        <Grid.RenderTransform>
+                            <RotateTransform Angle="15" CenterX="90" CenterY="90"/>
+                        </Grid.RenderTransform>
+                        
+                        <fa:ImageAwesome Icon="AddressCardOutline" Foreground="{DynamicResource TextMain}" Margin="-2,0,2,0"/>
+                        <fa:ImageAwesome Icon="AddressCardOutline" Foreground="{DynamicResource TextMain}" Margin="2,0,-2,0"/>
+                        <fa:ImageAwesome Icon="AddressCardOutline" Foreground="{DynamicResource TextMain}" Margin="0,-2,0,2"/>
+                        <fa:ImageAwesome Icon="AddressCardOutline" Foreground="{DynamicResource TextMain}" Margin="0,2,0,-2"/>
+                        <fa:ImageAwesome Icon="AddressCardOutline" Foreground="{DynamicResource TextMain}" Margin="-2,-2,2,2"/>
+                        <fa:ImageAwesome Icon="AddressCardOutline" Foreground="{DynamicResource TextMain}" Margin="2,2,-2,-2"/>
+                        <fa:ImageAwesome Icon="AddressCardOutline" Foreground="{DynamicResource TextMain}" Margin="-2,2,2,-2"/>
+                        <fa:ImageAwesome Icon="AddressCardOutline" Foreground="{DynamicResource TextMain}" Margin="2,-2,-2,2"/>
+                        
+                        <fa:ImageAwesome Icon="AddressCardOutline" Foreground="{Binding PopupBorderColor, FallbackValue='#f2ca50'}"/>
                     </Grid>
 
                     <StackPanel>
@@ -584,7 +627,7 @@
                             <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding SelectedHistoryRecord.SnapshotRrNumber}" Foreground="{DynamicResource PrimaryAccent}" FontWeight="Bold" FontFamily="Consolas" VerticalAlignment="Center"/>
 
                             <TextBlock Grid.Row="6" Grid.Column="0" Text="Sector:" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
-                            <TextBlock Grid.Row="6" Grid.Column="1" Text="{Binding SelectedHistoryRecord.SnapshotSector}" Foreground="{DynamicResource TextMain}" FontWeight="Bold" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Row="6" Grid.Column="1" Text="{Binding SelectedHistoryRecord.SnapshotSector}" Foreground="{Binding PopupBorderColor}" FontWeight="Bold" VerticalAlignment="Center"/>
 
                             <TextBlock Grid.Row="7" Grid.Column="0" Text="Subject / File Name:" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Top" Margin="0,8,0,0"/>
                             <TextBlock Grid.Row="7" Grid.Column="1" Text="{Binding SelectedHistoryRecord.SnapshotFileName}" Foreground="{DynamicResource TextMain}" FontWeight="Bold" TextWrapping="Wrap" Margin="0,8,0,15"/>
