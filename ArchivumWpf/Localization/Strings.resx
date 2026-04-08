@@ -156,4 +156,151 @@
     <data name="Settings_ConfirmColor" xml:space="preserve">
         <value>Confirm Color</value>
     </data>
+    <data name="Circ_MainTitle" xml:space="preserve">
+        <value>Dossier Circulation Administration</value>
+    </data>
+    <data name="Circ_MainDesc" xml:space="preserve">
+        <value>Process dossier requests, manage active loans, and returning dossiers.</value>
+    </data>
+    <data name="Circ_TabDesk" xml:space="preserve">
+        <value>Circulation Desk</value>
+    </data>
+    <data name="Circ_TabActiveLoans" xml:space="preserve">
+        <value>Active Field Loans</value>
+    </data>
+    <data name="Circ_TabLedger" xml:space="preserve">
+        <value>Circulation Ledger</value>
+    </data>
+    <data name="Circ_SearchWatermark" xml:space="preserve">
+        <value>Target exact RR Number for circulation...</value>
+    </data>
+    <data name="Circ_BtnAssess" xml:space="preserve">
+        <value>Assess Dossier</value>
+    </data>
+    <data name="Circ_AwaitingScanTitle" xml:space="preserve">
+        <value>AWAITING DOSSIER SCAN</value>
+    </data>
+    <data name="Circ_AwaitingScanDesc" xml:space="preserve">
+        <value>Input an RR Number above to assess the file for issuance or return.</value>
+    </data>
+    <data name="Circ_DossierIntel" xml:space="preserve">
+        <value>DOSSIER INTELLIGENCE</value>
+    </data>
+    <data name="Circ_LblRrNumber" xml:space="preserve">
+        <value>RR Number:</value>
+    </data>
+    <data name="Circ_LblSubjectName" xml:space="preserve">
+        <value>Subject Name:</value>
+    </data>
+    <data name="Circ_LblSector" xml:space="preserve">
+        <value>Sector:</value>
+    </data>
+    <data name="Circ_LblCurrentStatus" xml:space="preserve">
+        <value>Current Status:</value>
+    </data>
+    <data name="Circ_IssueTitle" xml:space="preserve">
+        <value>ISSUE TO BORROWER</value>
+    </data>
+    <data name="Circ_BorrowerWatermark" xml:space="preserve">
+        <value>Enter designated borrower name / ID...</value>
+    </data>
+    <data name="Circ_BtnAuthorizeIssue" xml:space="preserve">
+        <value>Authorize Issuance</value>
+    </data>
+    <data name="Circ_ReturnTitle" xml:space="preserve">
+        <value>AUTHORIZE RETURN</value>
+    </data>
+    <data name="Circ_ReturnDesc" xml:space="preserve">
+        <value>This dossier is currently active in the field. Confirm physical return to vault.</value>
+    </data>
+    <data name="Circ_BtnProcessReturn" xml:space="preserve">
+        <value>Process Return</value>
+    </data>
+    <data name="Circ_ActiveLoansHeader" xml:space="preserve">
+        <value>ACTIVE FIELD LOANS</value>
+    </data>
+    <data name="Circ_ColRrNumber" xml:space="preserve">
+        <value>RR NUMBER</value>
+    </data>
+    <data name="Circ_ColFileName" xml:space="preserve">
+        <value>FILE NAME</value>
+    </data>
+    <data name="Circ_ColSector" xml:space="preserve">
+        <value>SECTOR</value>
+    </data>
+    <data name="Circ_ColBorrower" xml:space="preserve">
+        <value>BORROWER</value>
+    </data>
+    <data name="Circ_ColIssueDate" xml:space="preserve">
+        <value>ISSUE DATE</value>
+    </data>
+    <data name="Circ_LedgerSearchWatermark" xml:space="preserve">
+        <value>Filter history by exact RR Number...</value>
+    </data>
+    <data name="Circ_ColStatus" xml:space="preserve">
+        <value>STATUS</value>
+    </data>
+    <data name="Circ_ColReturnDate" xml:space="preserve">
+        <value>RETURN DATE</value>
+    </data>
+    <data name="Circ_StatusReturned" xml:space="preserve">
+        <value>RETURNED</value>
+    </data>
+    <data name="Circ_StatusActiveLoan" xml:space="preserve">
+        <value>ACTIVE LOAN</value>
+    </data>
+    <data name="Circ_TotalHistoryRecords" xml:space="preserve">
+        <value>Total History Records:</value>
+    </data>
+    <data name="Circ_LblTransactionId" xml:space="preserve">
+        <value>Transaction ID:</value>
+    </data>
+    <data name="Circ_LblBorrowerName" xml:space="preserve">
+        <value>Borrower Name:</value>
+    </data>
+    <data name="Circ_LblIssueDate" xml:space="preserve">
+        <value>Issue Date:</value>
+    </data>
+    <data name="Circ_LblReturnDate" xml:space="preserve">
+        <value>Return Date:</value>
+    </data>
+    <data name="Circ_LblSubjectFileName" xml:space="preserve">
+        <value>Subject / File Name:</value>
+    </data>
+    <data name="Circ_LblSubjectNumber" xml:space="preserve">
+        <value>Subject Number:</value>
+    </data>
+    <data name="Circ_LblFileType" xml:space="preserve">
+        <value>File Type:</value>
+    </data>
+    <data name="Circ_LblChronoSpan" xml:space="preserve">
+        <value>Chronological Span:</value>
+    </data>
+    <data name="Circ_LblTo" xml:space="preserve">
+        <value>to</value>
+    </data>
+    <data name="Circ_LblPhysicalLocation" xml:space="preserve">
+        <value>Physical Location:</value>
+    </data>
+    <data name="Circ_LblPages" xml:space="preserve">
+        <value>Pages:</value>
+    </data>
+    <data name="Circ_LblShelf" xml:space="preserve">
+        <value>Shelf:</value>
+    </data>
+    <data name="Circ_LblDeck" xml:space="preserve">
+        <value>Deck:</value>
+    </data>
+    <data name="Circ_BtnCloseRecord" xml:space="preserve">
+        <value>Close Record</value>
+    </data>
+    <data name="Circ_PendingReturn" xml:space="preserve">
+        <value>Pending Return</value>
+    </data>
+    <data name="Circ_None" xml:space="preserve">
+        <value>None</value>
+    </data>
+    <data name="Circ_NA" xml:space="preserve">
+        <value>N/A</value>
+    </data>
 </root>

@@ -60,6 +60,447 @@ namespace ArchivumWpf.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ACTIVE FIELD LOANS.
+        /// </summary>
+        public static string Circ_ActiveLoansHeader {
+            get {
+                return ResourceManager.GetString("Circ_ActiveLoansHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Input an RR Number above to assess the file for issuance or return..
+        /// </summary>
+        public static string Circ_AwaitingScanDesc {
+            get {
+                return ResourceManager.GetString("Circ_AwaitingScanDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AWAITING DOSSIER SCAN.
+        /// </summary>
+        public static string Circ_AwaitingScanTitle {
+            get {
+                return ResourceManager.GetString("Circ_AwaitingScanTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter designated borrower name / ID....
+        /// </summary>
+        public static string Circ_BorrowerWatermark {
+            get {
+                return ResourceManager.GetString("Circ_BorrowerWatermark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Assess Dossier.
+        /// </summary>
+        public static string Circ_BtnAssess {
+            get {
+                return ResourceManager.GetString("Circ_BtnAssess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Authorize Issuance.
+        /// </summary>
+        public static string Circ_BtnAuthorizeIssue {
+            get {
+                return ResourceManager.GetString("Circ_BtnAuthorizeIssue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Close Record.
+        /// </summary>
+        public static string Circ_BtnCloseRecord {
+            get {
+                return ResourceManager.GetString("Circ_BtnCloseRecord", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Process Return.
+        /// </summary>
+        public static string Circ_BtnProcessReturn {
+            get {
+                return ResourceManager.GetString("Circ_BtnProcessReturn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BORROWER.
+        /// </summary>
+        public static string Circ_ColBorrower {
+            get {
+                return ResourceManager.GetString("Circ_ColBorrower", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FILE NAME.
+        /// </summary>
+        public static string Circ_ColFileName {
+            get {
+                return ResourceManager.GetString("Circ_ColFileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ISSUE DATE.
+        /// </summary>
+        public static string Circ_ColIssueDate {
+            get {
+                return ResourceManager.GetString("Circ_ColIssueDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to RETURN DATE.
+        /// </summary>
+        public static string Circ_ColReturnDate {
+            get {
+                return ResourceManager.GetString("Circ_ColReturnDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to RR NUMBER.
+        /// </summary>
+        public static string Circ_ColRrNumber {
+            get {
+                return ResourceManager.GetString("Circ_ColRrNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SECTOR.
+        /// </summary>
+        public static string Circ_ColSector {
+            get {
+                return ResourceManager.GetString("Circ_ColSector", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to STATUS.
+        /// </summary>
+        public static string Circ_ColStatus {
+            get {
+                return ResourceManager.GetString("Circ_ColStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DOSSIER INTELLIGENCE.
+        /// </summary>
+        public static string Circ_DossierIntel {
+            get {
+                return ResourceManager.GetString("Circ_DossierIntel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ISSUE TO BORROWER.
+        /// </summary>
+        public static string Circ_IssueTitle {
+            get {
+                return ResourceManager.GetString("Circ_IssueTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Borrower Name:.
+        /// </summary>
+        public static string Circ_LblBorrowerName {
+            get {
+                return ResourceManager.GetString("Circ_LblBorrowerName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chronological Span:.
+        /// </summary>
+        public static string Circ_LblChronoSpan {
+            get {
+                return ResourceManager.GetString("Circ_LblChronoSpan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current Status:.
+        /// </summary>
+        public static string Circ_LblCurrentStatus {
+            get {
+                return ResourceManager.GetString("Circ_LblCurrentStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deck:.
+        /// </summary>
+        public static string Circ_LblDeck {
+            get {
+                return ResourceManager.GetString("Circ_LblDeck", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File Type:.
+        /// </summary>
+        public static string Circ_LblFileType {
+            get {
+                return ResourceManager.GetString("Circ_LblFileType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Issue Date:.
+        /// </summary>
+        public static string Circ_LblIssueDate {
+            get {
+                return ResourceManager.GetString("Circ_LblIssueDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pages:.
+        /// </summary>
+        public static string Circ_LblPages {
+            get {
+                return ResourceManager.GetString("Circ_LblPages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Physical Location:.
+        /// </summary>
+        public static string Circ_LblPhysicalLocation {
+            get {
+                return ResourceManager.GetString("Circ_LblPhysicalLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Return Date:.
+        /// </summary>
+        public static string Circ_LblReturnDate {
+            get {
+                return ResourceManager.GetString("Circ_LblReturnDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to RR Number:.
+        /// </summary>
+        public static string Circ_LblRrNumber {
+            get {
+                return ResourceManager.GetString("Circ_LblRrNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sector:.
+        /// </summary>
+        public static string Circ_LblSector {
+            get {
+                return ResourceManager.GetString("Circ_LblSector", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shelf:.
+        /// </summary>
+        public static string Circ_LblShelf {
+            get {
+                return ResourceManager.GetString("Circ_LblShelf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Subject / File Name:.
+        /// </summary>
+        public static string Circ_LblSubjectFileName {
+            get {
+                return ResourceManager.GetString("Circ_LblSubjectFileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Subject Name:.
+        /// </summary>
+        public static string Circ_LblSubjectName {
+            get {
+                return ResourceManager.GetString("Circ_LblSubjectName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Subject Number:.
+        /// </summary>
+        public static string Circ_LblSubjectNumber {
+            get {
+                return ResourceManager.GetString("Circ_LblSubjectNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to to.
+        /// </summary>
+        public static string Circ_LblTo {
+            get {
+                return ResourceManager.GetString("Circ_LblTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transaction ID:.
+        /// </summary>
+        public static string Circ_LblTransactionId {
+            get {
+                return ResourceManager.GetString("Circ_LblTransactionId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filter history by exact RR Number....
+        /// </summary>
+        public static string Circ_LedgerSearchWatermark {
+            get {
+                return ResourceManager.GetString("Circ_LedgerSearchWatermark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Process dossier requests, manage active loans, and returning dossiers..
+        /// </summary>
+        public static string Circ_MainDesc {
+            get {
+                return ResourceManager.GetString("Circ_MainDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dossier Circulation Administration.
+        /// </summary>
+        public static string Circ_MainTitle {
+            get {
+                return ResourceManager.GetString("Circ_MainTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to N/A.
+        /// </summary>
+        public static string Circ_NA {
+            get {
+                return ResourceManager.GetString("Circ_NA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to None.
+        /// </summary>
+        public static string Circ_None {
+            get {
+                return ResourceManager.GetString("Circ_None", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pending Return.
+        /// </summary>
+        public static string Circ_PendingReturn {
+            get {
+                return ResourceManager.GetString("Circ_PendingReturn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This dossier is currently active in the field. Confirm physical return to vault..
+        /// </summary>
+        public static string Circ_ReturnDesc {
+            get {
+                return ResourceManager.GetString("Circ_ReturnDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AUTHORIZE RETURN.
+        /// </summary>
+        public static string Circ_ReturnTitle {
+            get {
+                return ResourceManager.GetString("Circ_ReturnTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Target exact RR Number for circulation....
+        /// </summary>
+        public static string Circ_SearchWatermark {
+            get {
+                return ResourceManager.GetString("Circ_SearchWatermark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ACTIVE LOAN.
+        /// </summary>
+        public static string Circ_StatusActiveLoan {
+            get {
+                return ResourceManager.GetString("Circ_StatusActiveLoan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to RETURNED.
+        /// </summary>
+        public static string Circ_StatusReturned {
+            get {
+                return ResourceManager.GetString("Circ_StatusReturned", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Active Field Loans.
+        /// </summary>
+        public static string Circ_TabActiveLoans {
+            get {
+                return ResourceManager.GetString("Circ_TabActiveLoans", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Circulation Desk.
+        /// </summary>
+        public static string Circ_TabDesk {
+            get {
+                return ResourceManager.GetString("Circ_TabDesk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Circulation Ledger.
+        /// </summary>
+        public static string Circ_TabLedger {
+            get {
+                return ResourceManager.GetString("Circ_TabLedger", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total History Records:.
+        /// </summary>
+        public static string Circ_TotalHistoryRecords {
+            get {
+                return ResourceManager.GetString("Circ_TotalHistoryRecords", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add New File Type.
         /// </summary>
         public static string Settings_AddFileType {

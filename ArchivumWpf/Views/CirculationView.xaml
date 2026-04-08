@@ -2,6 +2,7 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
+             xmlns:loc="clr-namespace:ArchivumWpf.Localization"
              Background="Transparent">
 
     <UserControl.Resources>
@@ -66,8 +67,8 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" Margin="0,0,0,10">
-            <TextBlock Text="Circulation Authority" Foreground="{DynamicResource PrimaryAccent}" FontSize="32" FontFamily="Georgia" FontWeight="Black" Margin="0,0,0,5"/>
-            <TextBlock Text="Process file requests, manage active loans, and secure returning dossiers." Foreground="{DynamicResource TextMuted}" FontSize="14" Margin="0,0,0,10"/>
+            <TextBlock Text="{x:Static loc:Strings.Circ_MainTitle}" Foreground="{DynamicResource PrimaryAccent}" FontSize="32" FontFamily="Georgia" FontWeight="Black" Margin="0,0,0,5"/>
+            <TextBlock Text="{x:Static loc:Strings.Circ_MainDesc}" Foreground="{DynamicResource TextMuted}" FontSize="14" Margin="0,0,0,10"/>
             
             <Grid Margin="0,10,0,15">
                 <Rectangle Height="1" Fill="{DynamicResource BorderColor}" VerticalAlignment="Center"/>
@@ -110,7 +111,7 @@
                 </Style>
             </TabControl.Resources>
 
-            <TabItem Header="Circulation Desk">
+            <TabItem Header="{x:Static loc:Strings.Circ_TabDesk}">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <StackPanel HorizontalAlignment="Stretch" Margin="0,30,0,20">
                         
@@ -133,7 +134,7 @@
                                                         <Setter.Value>
                                                             <VisualBrush Stretch="None" AlignmentX="Left">
                                                                 <VisualBrush.Visual>
-                                                                    <TextBlock Text="Target exact RR Number for circulation..." Foreground="{DynamicResource TextMuted}" Opacity="0.5" FontSize="16" FontFamily="Georgia"/>
+                                                                    <TextBlock Text="{x:Static loc:Strings.Circ_SearchWatermark}" Foreground="{DynamicResource TextMuted}" Opacity="0.5" FontSize="16" FontFamily="Georgia"/>
                                                                 </VisualBrush.Visual>
                                                             </VisualBrush>
                                                         </Setter.Value>
@@ -152,7 +153,7 @@
                                             <Border Background="{TemplateBinding Background}" CornerRadius="24">
                                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}">
                                                     <fa:ImageAwesome Icon="Search" Width="14" Height="14" Foreground="{TemplateBinding Foreground}" Margin="0,0,10,0"/>
-                                                    <TextBlock Text="Assess Dossier" FontSize="14"/>
+                                                    <TextBlock Text="{x:Static loc:Strings.Circ_BtnAssess}" FontSize="14"/>
                                                 </StackPanel>
                                             </Border>
                                         </ControlTemplate>
@@ -174,8 +175,8 @@
                             </StackPanel.Style>
                             
                             <fa:ImageAwesome Icon="Book" Width="120" Height="120" Foreground="{DynamicResource TextMuted}" Opacity="0.1" HorizontalAlignment="Center" Margin="0,0,0,25"/>
-                            <TextBlock Text="AWAITING DOSSIER SCAN" Foreground="{DynamicResource TextMuted}" Opacity="0.5" FontSize="18" FontWeight="Bold" FontFamily="Georgia" HorizontalAlignment="Center" Margin="0,0,0,10"/>
-                            <TextBlock Text="Scan or input an RR Number above to assess the file for issuance or return." Foreground="{DynamicResource TextMuted}" Opacity="0.4" FontSize="14" HorizontalAlignment="Center"/>
+                            <TextBlock Text="{x:Static loc:Strings.Circ_AwaitingScanTitle}" Foreground="{DynamicResource TextMuted}" Opacity="0.5" FontSize="18" FontWeight="Bold" FontFamily="Georgia" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+                            <TextBlock Text="{x:Static loc:Strings.Circ_AwaitingScanDesc}" Foreground="{DynamicResource TextMuted}" Opacity="0.4" FontSize="14" HorizontalAlignment="Center"/>
                         </StackPanel>
 
                         <Grid Visibility="{Binding IsFileLoaded, Converter={StaticResource BoolToVisConverter}}" MaxWidth="1100" HorizontalAlignment="Center">
@@ -186,12 +187,10 @@
                             <Border Grid.Column="0" Background="{DynamicResource CardBackground}" CornerRadius="16" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" Padding="3" ClipToBounds="True">
                                 <Border BorderBrush="{Binding LoadedFileColor}" BorderThickness="1" CornerRadius="13" Padding="35" ClipToBounds="True">
                                     <Grid>
-                                        
                                         <Grid Width="120" Height="120" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-20,-20,0" Opacity="0.2" IsHitTestVisible="False">
                                             <Grid.RenderTransform>
                                                 <RotateTransform Angle="15" CenterX="60" CenterY="60"/>
                                             </Grid.RenderTransform>
-                                            
                                             <fa:ImageAwesome Icon="AddressCardOutline" Foreground="{DynamicResource TextMain}" Margin="-2,0,2,0"/>
                                             <fa:ImageAwesome Icon="AddressCardOutline" Foreground="{DynamicResource TextMain}" Margin="2,0,-2,0"/>
                                             <fa:ImageAwesome Icon="AddressCardOutline" Foreground="{DynamicResource TextMain}" Margin="0,-2,0,2"/>
@@ -200,12 +199,11 @@
                                             <fa:ImageAwesome Icon="AddressCardOutline" Foreground="{DynamicResource TextMain}" Margin="2,2,-2,-2"/>
                                             <fa:ImageAwesome Icon="AddressCardOutline" Foreground="{DynamicResource TextMain}" Margin="-2,2,2,-2"/>
                                             <fa:ImageAwesome Icon="AddressCardOutline" Foreground="{DynamicResource TextMain}" Margin="2,-2,-2,2"/>
-                                            
                                             <fa:ImageAwesome Icon="AddressCardOutline" Foreground="{Binding LoadedFileColor}"/>
                                         </Grid>
 
                                         <StackPanel>
-                                            <TextBlock Text="DOSSIER INTELLIGENCE" Foreground="{Binding LoadedFileColor}" FontSize="13" FontWeight="Bold" Margin="0,0,0,20"/>
+                                            <TextBlock Text="{x:Static loc:Strings.Circ_DossierIntel}" Foreground="{Binding LoadedFileColor}" FontSize="13" FontWeight="Bold" Margin="0,0,0,20"/>
                                             
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
@@ -219,16 +217,16 @@
                                                     <RowDefinition Height="35"/>
                                                 </Grid.RowDefinitions>
 
-                                                <TextBlock Grid.Row="0" Grid.Column="0" Text="RR Number:" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center" FontSize="12"/>
+                                                <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Static loc:Strings.Circ_LblRrNumber}" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center" FontSize="12"/>
                                                 <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding LoadedFile.RrNumber}" Foreground="{DynamicResource PrimaryAccent}" FontWeight="Bold" FontFamily="Consolas" VerticalAlignment="Center" FontSize="16"/>
 
-                                                <TextBlock Grid.Row="1" Grid.Column="0" Text="Subject Name:" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Top" Margin="0,8,0,0" FontSize="12"/>
+                                                <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static loc:Strings.Circ_LblSubjectName}" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Top" Margin="0,8,0,0" FontSize="12"/>
                                                 <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding LoadedFile.FileName}" Foreground="{DynamicResource TextMain}" FontWeight="Bold" TextWrapping="Wrap" Margin="0,8,0,15" FontSize="15"/>
 
-                                                <TextBlock Grid.Row="2" Grid.Column="0" Text="Sector:" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center" FontSize="12"/>
+                                                <TextBlock Grid.Row="2" Grid.Column="0" Text="{x:Static loc:Strings.Circ_LblSector}" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center" FontSize="12"/>
                                                 <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding LoadedFile.Sector}" Foreground="{Binding LoadedFileColor}" FontWeight="Bold" VerticalAlignment="Center" FontSize="14"/>
 
-                                                <TextBlock Grid.Row="3" Grid.Column="0" Text="Current Status:" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center" FontSize="12"/>
+                                                <TextBlock Grid.Row="3" Grid.Column="0" Text="{x:Static loc:Strings.Circ_LblCurrentStatus}" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center" FontSize="12"/>
                                                 <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding LoadedFile.CurrentStatus}" Foreground="{DynamicResource TextMain}" FontWeight="Bold" VerticalAlignment="Center" FontSize="14"/>
                                             </Grid>
                                         </StackPanel>
@@ -242,11 +240,11 @@
                                     <Grid>
                                         <fa:ImageAwesome Icon="SignOut" Width="120" Height="120" Foreground="{DynamicResource PrimaryAccent}" Opacity="0.05" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-25,-25,0" IsHitTestVisible="False"/>
                                         <StackPanel VerticalAlignment="Center">
-                                            <TextBlock Text="ISSUE TO BORROWER" Foreground="{DynamicResource PrimaryAccent}" FontSize="14" FontWeight="Bold" Margin="0,0,0,20"/>
+                                            <TextBlock Text="{x:Static loc:Strings.Circ_IssueTitle}" Foreground="{DynamicResource PrimaryAccent}" FontSize="14" FontWeight="Bold" Margin="0,0,0,20"/>
                                             
                                             <TextBox Text="{Binding BorrowerName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CleanTextBox}" Margin="0,0,0,20"/>
                                             
-                                            <TextBlock Text="Enter designated borrower name / ID..." Foreground="{DynamicResource TextMuted}" Opacity="0.5" IsHitTestVisible="False" Margin="15,-45,0,30" FontSize="14" FontFamily="Georgia">
+                                            <TextBlock Text="{x:Static loc:Strings.Circ_BorrowerWatermark}" Foreground="{DynamicResource TextMuted}" Opacity="0.5" IsHitTestVisible="False" Margin="15,-45,0,30" FontSize="14" FontFamily="Georgia">
                                                 <TextBlock.Style>
                                                     <Style TargetType="TextBlock">
                                                         <Setter Property="Visibility" Value="Collapsed"/>
@@ -268,7 +266,7 @@
                                                         <Border Background="{TemplateBinding Background}" CornerRadius="12">
                                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}">
                                                                 <fa:ImageAwesome Icon="SignOut" Width="16" Height="16" Margin="0,0,12,0" Foreground="{DynamicResource WindowBackground}"/>
-                                                                <TextBlock Text="Authorize Issuance" FontSize="13"/>
+                                                                <TextBlock Text="{x:Static loc:Strings.Circ_BtnAuthorizeIssue}" FontSize="13"/>
                                                             </StackPanel>
                                                         </Border>
                                                     </ControlTemplate>
@@ -282,8 +280,8 @@
                                     <Grid>
                                         <fa:ImageAwesome Icon="SignIn" Width="120" Height="120" Foreground="{DynamicResource PrimaryAccent}" Opacity="0.05" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-25,-25,0" IsHitTestVisible="False"/>
                                         <StackPanel VerticalAlignment="Center">
-                                            <TextBlock Text="AUTHORIZE RETURN" Foreground="{DynamicResource PrimaryAccent}" FontSize="14" FontWeight="Bold" Margin="0,0,0,15"/>
-                                            <TextBlock Text="This dossier is currently active in the field. Confirm physical return to vault." Foreground="{DynamicResource TextMuted}" FontSize="14" Margin="0,0,0,35" TextWrapping="Wrap"/>
+                                            <TextBlock Text="{x:Static loc:Strings.Circ_ReturnTitle}" Foreground="{DynamicResource PrimaryAccent}" FontSize="14" FontWeight="Bold" Margin="0,0,0,15"/>
+                                            <TextBlock Text="{x:Static loc:Strings.Circ_ReturnDesc}" Foreground="{DynamicResource TextMuted}" FontSize="14" Margin="0,0,0,35" TextWrapping="Wrap"/>
                                             
                                             <Button Command="{Binding ExecuteReturnCommand}" Height="50" Background="{DynamicResource PrimaryAccent}" Foreground="{DynamicResource WindowBackground}" FontWeight="Bold" BorderThickness="0" Cursor="Hand" HorizontalAlignment="Right" Padding="30,0">
                                                 <Button.Template>
@@ -291,7 +289,7 @@
                                                         <Border Background="{TemplateBinding Background}" CornerRadius="12">
                                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}">
                                                                 <fa:ImageAwesome Icon="SignIn" Width="16" Height="16" Margin="0,0,12,0" Foreground="{DynamicResource WindowBackground}"/>
-                                                                <TextBlock Text="Process Return" FontSize="13"/>
+                                                                <TextBlock Text="{x:Static loc:Strings.Circ_BtnProcessReturn}" FontSize="13"/>
                                                             </StackPanel>
                                                         </Border>
                                                     </ControlTemplate>
@@ -307,7 +305,7 @@
                 </ScrollViewer>
             </TabItem>
 
-            <TabItem Header="Active Field Loans">
+            <TabItem Header="{x:Static loc:Strings.Circ_TabActiveLoans}">
                 <StackPanel HorizontalAlignment="Stretch">
                     <Border Background="{DynamicResource CardBackground}" CornerRadius="16" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" Padding="3">
                         <Border BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="13">
@@ -320,7 +318,7 @@
                                 <Border Grid.Row="0" BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,0,0,1" Padding="25,20">
                                     <StackPanel Orientation="Horizontal">
                                         <fa:ImageAwesome Icon="Book" Width="16" Height="16" Foreground="#E5C365" Margin="0,0,12,0"/>
-                                        <TextBlock Text="ACTIVE FIELD LOANS" Foreground="#E5C365" FontSize="14" FontWeight="Bold"/>
+                                        <TextBlock Text="{x:Static loc:Strings.Circ_ActiveLoansHeader}" Foreground="#E5C365" FontSize="14" FontWeight="Bold"/>
                                     </StackPanel>
                                 </Border>
 
@@ -353,9 +351,9 @@
                                     </DataGrid.Resources>
 
                                     <DataGrid.Columns>
-                                        <DataGridTextColumn Header="RR NUMBER" Binding="{Binding SnapshotRrNumber}" Foreground="{DynamicResource PrimaryAccent}" FontFamily="Consolas"/>
+                                        <DataGridTextColumn Header="{x:Static loc:Strings.Circ_ColRrNumber}" Binding="{Binding SnapshotRrNumber}" Foreground="{DynamicResource PrimaryAccent}" FontFamily="Consolas"/>
                                         
-                                        <DataGridTemplateColumn Header="FILE NAME" Width="*">
+                                        <DataGridTemplateColumn Header="{x:Static loc:Strings.Circ_ColFileName}" Width="*">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <TextBlock Text="{Binding SnapshotFileName}" ToolTip="{Binding SnapshotFileName}" Foreground="{DynamicResource TextMain}" FontFamily="Georgia" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
@@ -363,7 +361,7 @@
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
 
-                                        <DataGridTemplateColumn Header="SECTOR" Width="150">
+                                        <DataGridTemplateColumn Header="{x:Static loc:Strings.Circ_ColSector}" Width="150">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
@@ -374,7 +372,7 @@
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
 
-                                        <DataGridTemplateColumn Header="BORROWER" Width="250">
+                                        <DataGridTemplateColumn Header="{x:Static loc:Strings.Circ_ColBorrower}" Width="250">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <TextBlock Text="{Binding BorrowerName}" ToolTip="{Binding BorrowerName}" Foreground="{DynamicResource TextMain}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
@@ -382,7 +380,7 @@
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
                                         
-                                        <DataGridTextColumn Header="ISSUE DATE" Binding="{Binding BorrowedDate, StringFormat=MMM dd yyyy}" Foreground="{DynamicResource TextMuted}" Width="150"/>
+                                        <DataGridTextColumn Header="{x:Static loc:Strings.Circ_ColIssueDate}" Binding="{Binding BorrowedDate, StringFormat=MMM dd yyyy}" Foreground="{DynamicResource TextMuted}" Width="150"/>
                                     </DataGrid.Columns>
                                 </DataGrid>
                             </Grid>
@@ -391,7 +389,7 @@
                 </StackPanel>
             </TabItem>
 
-            <TabItem Header="Circulation Ledger">
+            <TabItem Header="{x:Static loc:Strings.Circ_TabLedger}">
                 <StackPanel HorizontalAlignment="Stretch">
                     
                     <Border Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="20" Padding="6" Margin="0,0,0,20" MaxWidth="600" HorizontalAlignment="Left">
@@ -411,7 +409,7 @@
                                                     <Setter.Value>
                                                         <VisualBrush Stretch="None" AlignmentX="Left">
                                                             <VisualBrush.Visual>
-                                                                <TextBlock Text="Filter history by exact RR Number..." Foreground="{DynamicResource TextMuted}" Opacity="0.5" FontSize="14" FontFamily="Georgia"/>
+                                                                <TextBlock Text="{x:Static loc:Strings.Circ_LedgerSearchWatermark}" Foreground="{DynamicResource TextMuted}" Opacity="0.5" FontSize="14" FontFamily="Georgia"/>
                                                             </VisualBrush.Visual>
                                                         </VisualBrush>
                                                     </Setter.Value>
@@ -467,9 +465,9 @@
                                     </DataGrid.Resources>
 
                                     <DataGrid.Columns>
-                                        <DataGridTextColumn Header="RR NUMBER" Binding="{Binding SnapshotRrNumber}" Foreground="{DynamicResource PrimaryAccent}" FontFamily="Consolas" Width="140"/>
+                                        <DataGridTextColumn Header="{x:Static loc:Strings.Circ_ColRrNumber}" Binding="{Binding SnapshotRrNumber}" Foreground="{DynamicResource PrimaryAccent}" FontFamily="Consolas" Width="140"/>
                                         
-                                        <DataGridTemplateColumn Header="FILE NAME" Width="*">
+                                        <DataGridTemplateColumn Header="{x:Static loc:Strings.Circ_ColFileName}" Width="*">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <TextBlock Text="{Binding SnapshotFileName}" ToolTip="{Binding SnapshotFileName}" Foreground="{DynamicResource TextMain}" FontFamily="Georgia" FontSize="14" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
@@ -477,7 +475,7 @@
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
 
-                                        <DataGridTemplateColumn Header="SECTOR" Width="120">
+                                        <DataGridTemplateColumn Header="{x:Static loc:Strings.Circ_ColSector}" Width="120">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
@@ -488,7 +486,7 @@
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
 
-                                        <DataGridTemplateColumn Header="BORROWER" Width="150">
+                                        <DataGridTemplateColumn Header="{x:Static loc:Strings.Circ_ColBorrower}" Width="150">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <TextBlock Text="{Binding BorrowerName}" ToolTip="{Binding BorrowerName}" Foreground="{DynamicResource TextMain}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
@@ -496,9 +494,9 @@
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
                                         
-                                        <DataGridTextColumn Header="ISSUE DATE" Binding="{Binding BorrowedDate, StringFormat=MMM dd yyyy}" Foreground="{DynamicResource TextMuted}" Width="110"/>
+                                        <DataGridTextColumn Header="{x:Static loc:Strings.Circ_ColIssueDate}" Binding="{Binding BorrowedDate, StringFormat=MMM dd yyyy}" Foreground="{DynamicResource TextMuted}" Width="110"/>
 
-                                        <DataGridTemplateColumn Header="STATUS" Width="150">
+                                        <DataGridTemplateColumn Header="{x:Static loc:Strings.Circ_ColStatus}" Width="150">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <Border BorderThickness="1" CornerRadius="12" Padding="12,4" HorizontalAlignment="Left" VerticalAlignment="Center">
@@ -517,11 +515,11 @@
                                                         <TextBlock FontSize="9" FontWeight="Bold" VerticalAlignment="Center">
                                                             <TextBlock.Style>
                                                                 <Style TargetType="TextBlock">
-                                                                    <Setter Property="Text" Value="RETURNED"/>
+                                                                    <Setter Property="Text" Value="{x:Static loc:Strings.Circ_StatusReturned}"/>
                                                                     <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
                                                                     <Style.Triggers>
                                                                         <DataTrigger Binding="{Binding IsReturned}" Value="False">
-                                                                            <Setter Property="Text" Value="ACTIVE LOAN"/>
+                                                                            <Setter Property="Text" Value="{x:Static loc:Strings.Circ_StatusActiveLoan}"/>
                                                                             <Setter Property="Foreground" Value="#E5C365"/>
                                                                         </DataTrigger>
                                                                     </Style.Triggers>
@@ -533,14 +531,14 @@
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
                                         
-                                        <DataGridTextColumn Header="RETURN DATE" Binding="{Binding ReturnedDate, StringFormat=MMM dd yyyy, TargetNullValue='-'}" Foreground="{DynamicResource TextMuted}" Width="130"/>
+                                        <DataGridTextColumn Header="{x:Static loc:Strings.Circ_ColReturnDate}" Binding="{Binding ReturnedDate, StringFormat=MMM dd\\ yyyy, TargetNullValue={x:Static loc:Strings.Circ_PendingReturn}}" Foreground="{DynamicResource TextMuted}" Width="130"/>
                                     </DataGrid.Columns>
                                 </DataGrid>
                                 
                                 <Border Grid.Row="1" BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,1,0,0" Padding="30,20" Background="{DynamicResource CardBackground}" CornerRadius="0,0,13,13">
                                     <Grid>
                                         <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="{DynamicResource TextMuted}" FontSize="12">
-                                            <Run Text="Total History Records: "/>
+                                            <Run Text="{x:Static loc:Strings.Circ_TotalHistoryRecords}"/>
                                             <Run Text="{Binding HistoryTotalCount, Mode=OneWay}" Foreground="{DynamicResource TextMain}" FontWeight="Bold"/>
                                         </TextBlock>
 
@@ -609,54 +607,54 @@
                                 <RowDefinition Height="35"/> <RowDefinition Height="35"/> <RowDefinition Height="Auto"/> <RowDefinition Height="35"/> <RowDefinition Height="35"/> <RowDefinition Height="35"/> <RowDefinition Height="35"/>
                             </Grid.RowDefinitions>
 
-                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Transaction ID:" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Static loc:Strings.Circ_LblTransactionId}" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
                             <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding SelectedHistoryRecord.Id}" Foreground="{DynamicResource TextMain}" FontWeight="Bold" FontFamily="Consolas" VerticalAlignment="Center"/>
 
-                            <TextBlock Grid.Row="1" Grid.Column="0" Text="Borrower Name:" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static loc:Strings.Circ_LblBorrowerName}" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
                             <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding SelectedHistoryRecord.BorrowerName}" Foreground="{DynamicResource TextMain}" FontWeight="Bold" VerticalAlignment="Center"/>
 
-                            <TextBlock Grid.Row="2" Grid.Column="0" Text="Issue Date:" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="{x:Static loc:Strings.Circ_LblIssueDate}" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
                             <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding SelectedHistoryRecord.BorrowedDate, StringFormat=dd MMM yyyy}" Foreground="{DynamicResource TextMain}" FontWeight="Bold" VerticalAlignment="Center"/>
 
-                            <TextBlock Grid.Row="3" Grid.Column="0" Text="Return Date:" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
-                            <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding SelectedHistoryRecord.ReturnedDate, StringFormat=dd MMM yyyy, TargetNullValue='Pending Return'}" Foreground="{DynamicResource TextMain}" FontWeight="Bold" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Row="3" Grid.Column="0" Text="{x:Static loc:Strings.Circ_LblReturnDate}" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding SelectedHistoryRecord.ReturnedDate, StringFormat=dd MMM yyyy, TargetNullValue={x:Static loc:Strings.Circ_PendingReturn}}" Foreground="{DynamicResource TextMain}" FontWeight="Bold" VerticalAlignment="Center"/>
 
                             <Rectangle Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Height="1" Fill="{DynamicResource BorderColor}" VerticalAlignment="Center"/>
 
-                            <TextBlock Grid.Row="5" Grid.Column="0" Text="RR Number:" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Row="5" Grid.Column="0" Text="{x:Static loc:Strings.Circ_LblRrNumber}" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
                             <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding SelectedHistoryRecord.SnapshotRrNumber}" Foreground="{DynamicResource PrimaryAccent}" FontWeight="Bold" FontFamily="Consolas" VerticalAlignment="Center"/>
 
-                            <TextBlock Grid.Row="6" Grid.Column="0" Text="Sector:" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Row="6" Grid.Column="0" Text="{x:Static loc:Strings.Circ_LblSector}" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
                             <TextBlock Grid.Row="6" Grid.Column="1" Text="{Binding SelectedHistoryRecord.SnapshotSector}" Foreground="{Binding PopupBorderColor}" FontWeight="Bold" VerticalAlignment="Center"/>
 
-                            <TextBlock Grid.Row="7" Grid.Column="0" Text="Subject / File Name:" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Top" Margin="0,8,0,0"/>
+                            <TextBlock Grid.Row="7" Grid.Column="0" Text="{x:Static loc:Strings.Circ_LblSubjectFileName}" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Top" Margin="0,8,0,0"/>
                             <TextBlock Grid.Row="7" Grid.Column="1" Text="{Binding SelectedHistoryRecord.SnapshotFileName}" Foreground="{DynamicResource TextMain}" FontWeight="Bold" TextWrapping="Wrap" Margin="0,8,0,15"/>
 
-                            <TextBlock Grid.Row="8" Grid.Column="0" Text="Subject Number:" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
-                            <TextBlock Grid.Row="8" Grid.Column="1" Text="{Binding SelectedHistoryRecord.SnapshotSubjectNumber, TargetNullValue='None'}" Foreground="{DynamicResource TextMain}" FontWeight="Bold" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Row="8" Grid.Column="0" Text="{x:Static loc:Strings.Circ_LblSubjectNumber}" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Row="8" Grid.Column="1" Text="{Binding SelectedHistoryRecord.SnapshotSubjectNumber, TargetNullValue={x:Static loc:Strings.Circ_None}}" Foreground="{DynamicResource TextMain}" FontWeight="Bold" VerticalAlignment="Center"/>
 
-                            <TextBlock Grid.Row="9" Grid.Column="0" Text="File Type:" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
-                            <TextBlock Grid.Row="9" Grid.Column="1" Text="{Binding SelectedHistoryRecord.SnapshotFileType, TargetNullValue='None'}" Foreground="{DynamicResource TextMain}" FontWeight="Bold" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Row="9" Grid.Column="0" Text="{x:Static loc:Strings.Circ_LblFileType}" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Row="9" Grid.Column="1" Text="{Binding SelectedHistoryRecord.SnapshotFileType, TargetNullValue={x:Static loc:Strings.Circ_None}}" Foreground="{DynamicResource TextMain}" FontWeight="Bold" VerticalAlignment="Center"/>
 
-                            <TextBlock Grid.Row="10" Grid.Column="0" Text="Chronological Span:" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Row="10" Grid.Column="0" Text="{x:Static loc:Strings.Circ_LblChronoSpan}" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
                             <StackPanel Grid.Row="10" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                                <TextBlock Text="{Binding SelectedHistoryRecord.SnapshotStartDate, StringFormat=dd MMM yyyy, TargetNullValue='N/A'}" Foreground="{DynamicResource TextMain}" FontWeight="Bold"/>
-                                <TextBlock Text=" to " Foreground="{DynamicResource TextMuted}"/>
-                                <TextBlock Text="{Binding SelectedHistoryRecord.SnapshotEndDate, StringFormat=dd MMM yyyy, TargetNullValue='N/A'}" Foreground="{DynamicResource TextMain}" FontWeight="Bold"/>
+                                <TextBlock Text="{Binding SelectedHistoryRecord.SnapshotStartDate, StringFormat=dd MMM yyyy, TargetNullValue={x:Static loc:Strings.Circ_NA}}" Foreground="{DynamicResource TextMain}" FontWeight="Bold"/>
+                                <TextBlock Text="{x:Static loc:Strings.Circ_LblTo}" Foreground="{DynamicResource TextMuted}"/>
+                                <TextBlock Text="{Binding SelectedHistoryRecord.SnapshotEndDate, StringFormat=dd MMM yyyy, TargetNullValue={x:Static loc:Strings.Circ_NA}}" Foreground="{DynamicResource TextMain}" FontWeight="Bold"/>
                             </StackPanel>
 
-                            <TextBlock Grid.Row="11" Grid.Column="0" Text="Physical Location:" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Row="11" Grid.Column="0" Text="{x:Static loc:Strings.Circ_LblPhysicalLocation}" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
                             <StackPanel Grid.Row="11" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                                <TextBlock Text="Pages: " Foreground="{DynamicResource TextMuted}"/>
+                                <TextBlock Text="{x:Static loc:Strings.Circ_LblPages}" Foreground="{DynamicResource TextMuted}"/>
                                 <TextBlock Text="{Binding SelectedHistoryRecord.SnapshotTotalPages, TargetNullValue='?'}" Foreground="{DynamicResource TextMain}" FontWeight="Bold" Margin="0,0,15,0"/>
-                                <TextBlock Text="Shelf: " Foreground="{DynamicResource TextMuted}"/>
+                                <TextBlock Text="{x:Static loc:Strings.Circ_LblShelf}" Foreground="{DynamicResource TextMuted}"/>
                                 <TextBlock Text="{Binding SelectedHistoryRecord.SnapshotShelfNumber, TargetNullValue='?'}" Foreground="{DynamicResource TextMain}" FontWeight="Bold" Margin="0,0,15,0"/>
-                                <TextBlock Text="Deck: " Foreground="{DynamicResource TextMuted}"/>
+                                <TextBlock Text="{x:Static loc:Strings.Circ_LblDeck}" Foreground="{DynamicResource TextMuted}"/>
                                 <TextBlock Text="{Binding SelectedHistoryRecord.SnapshotDeckNumber, TargetNullValue='?'}" Foreground="{DynamicResource TextMain}" FontWeight="Bold"/>
                             </StackPanel>
                         </Grid>
 
-                        <Button Command="{Binding CloseDialogCommand}" Content="Close Record" 
+                        <Button Command="{Binding CloseDialogCommand}" Content="{x:Static loc:Strings.Circ_BtnCloseRecord}" 
                                 Height="45" Margin="0,30,0,0" Background="{DynamicResource BorderColor}" 
                                 Foreground="{DynamicResource TextMain}" FontWeight="Bold" BorderThickness="0" Cursor="Hand" Panel.ZIndex="10">
                             <Button.Template>

@@ -98,4 +98,151 @@
     <data name="Settings_SaveCategory" xml:space="preserve">
         <value>Category සැකසුම් සුරකින්න</value>
     </data>
+    <data name="Circ_MainTitle" xml:space="preserve">
+        <value>ලිපිගොනු සංසරණ පරිපාලනය</value>
+    </data>
+    <data name="Circ_MainDesc" xml:space="preserve">
+        <value>ලිපිගොනු ඉල්ලීම් සැකසීම, නිකුත් කළ ලිපිගොනු කළමනාකරණය සහ ලිපි ගොනු නැවත භාර ගැනීම.</value>
+    </data>
+    <data name="Circ_TabDesk" xml:space="preserve">
+        <value>සංසරණ කවුළුව</value>
+    </data>
+    <data name="Circ_TabActiveLoans" xml:space="preserve">
+        <value>නිකුත් කර ඇති ලිපිගොනු</value>
+    </data>
+    <data name="Circ_TabLedger" xml:space="preserve">
+        <value>සංසරණ ලේඛනය</value>
+    </data>
+    <data name="Circ_SearchWatermark" xml:space="preserve">
+        <value>සෙවීම සඳහා නිශ්චිත RR අංකය ඇතුළත් කරන්න...</value>
+    </data>
+    <data name="Circ_BtnAssess" xml:space="preserve">
+        <value>ලිපිගොනුව පරීක්ෂා කරන්න</value>
+    </data>
+    <data name="Circ_AwaitingScanTitle" xml:space="preserve">
+        <value>ලිපිගොනුව ස්කෑන් කිරීම අපේක්ෂිතයි</value>
+    </data>
+    <data name="Circ_AwaitingScanDesc" xml:space="preserve">
+        <value>ලිපිගොනුව නිකුත් කිරීමට හෝ ආපසු භාර ගැනීමට, ඉහතින් RR අංකය ඇතුළත් කිරීම සිදු කරන්න.</value>
+    </data>
+    <data name="Circ_DossierIntel" xml:space="preserve">
+        <value>ලිපිගොනු තොරතුරු</value>
+    </data>
+    <data name="Circ_LblRrNumber" xml:space="preserve">
+        <value>RR අංකය:</value>
+    </data>
+    <data name="Circ_LblSubjectName" xml:space="preserve">
+        <value>විෂය නාමය:</value>
+    </data>
+    <data name="Circ_LblSector" xml:space="preserve">
+        <value>අංශය:</value>
+    </data>
+    <data name="Circ_LblCurrentStatus" xml:space="preserve">
+        <value>වත්මන් තත්ත්වය:</value>
+    </data>
+    <data name="Circ_IssueTitle" xml:space="preserve">
+        <value>බැහැර ගෙනයන්නාට නිකුත් කිරීම</value>
+    </data>
+    <data name="Circ_BorrowerWatermark" xml:space="preserve">
+        <value>බැහැර ගෙනයන්නාගේ නම / හැඳුනුම්පත් අංකය ඇතුළත් කරන්න...</value>
+    </data>
+    <data name="Circ_BtnAuthorizeIssue" xml:space="preserve">
+        <value>නිකුත් කිරීම අනුමත කරන්න</value>
+    </data>
+    <data name="Circ_ReturnTitle" xml:space="preserve">
+        <value>ආපසු භාරදීම අනුමත කරන්න</value>
+    </data>
+    <data name="Circ_ReturnDesc" xml:space="preserve">
+        <value>මෙම ලිපිගොනුව මේ වන විට පිටතට නිකුත් කර ඇත. ආපසු භාරදීම තහවුරු කරන්න.</value>
+    </data>
+    <data name="Circ_BtnProcessReturn" xml:space="preserve">
+        <value>භාරගැනීම ක්‍රියාත්මක කරන්න</value>
+    </data>
+    <data name="Circ_ActiveLoansHeader" xml:space="preserve">
+        <value>නිකුත් කර ඇති ලිපිගොනු</value>
+    </data>
+    <data name="Circ_ColRrNumber" xml:space="preserve">
+        <value>RR අංකය</value>
+    </data>
+    <data name="Circ_ColFileName" xml:space="preserve">
+        <value>ලිපිගොනුවේ නම</value>
+    </data>
+    <data name="Circ_ColSector" xml:space="preserve">
+        <value>අංශය</value>
+    </data>
+    <data name="Circ_LblBorrowerName" xml:space="preserve">
+        <value>ලබා ගත් පාර්ශවයගේ නම:</value>
+    </data>
+    <data name="Circ_ColIssueDate" xml:space="preserve">
+        <value>නිකුත් කළ දිනය</value>
+    </data>
+    <data name="Circ_LedgerSearchWatermark" xml:space="preserve">
+        <value>නිශ්චිත RR අංකය මඟින් ඉතිහාසය පරීක්ෂා කරන්න...</value>
+    </data>
+    <data name="Circ_ColStatus" xml:space="preserve">
+        <value>තත්ත්වය</value>
+    </data>
+    <data name="Circ_ColReturnDate" xml:space="preserve">
+        <value>ආපසු භාරදුන් දිනය</value>
+    </data>
+    <data name="Circ_StatusReturned" xml:space="preserve">
+        <value>භාර දී ඇත</value>
+    </data>
+    <data name="Circ_StatusActiveLoan" xml:space="preserve">
+        <value>නිකුත් කර ඇත</value>
+    </data>
+    <data name="Circ_TotalHistoryRecords" xml:space="preserve">
+        <value>මුළු වාර්තා ගණන:</value>
+    </data>
+    <data name="Circ_LblTransactionId" xml:space="preserve">
+        <value>ගනුදෙනු අංකය:</value>
+    </data>
+    <data name="Circ_LblIssueDate" xml:space="preserve">
+        <value>නිකුත් කළ දිනය:</value>
+    </data>
+    <data name="Circ_LblReturnDate" xml:space="preserve">
+        <value>ආපසු භාරදුන් දිනය:</value>
+    </data>
+    <data name="Circ_LblSubjectFileName" xml:space="preserve">
+        <value>විෂය / ලිපිගොනුවේ නම:</value>
+    </data>
+    <data name="Circ_LblSubjectNumber" xml:space="preserve">
+        <value>විෂය අංකය:</value>
+    </data>
+    <data name="Circ_LblFileType" xml:space="preserve">
+        <value>ලිපිගොනු වර්ගය:</value>
+    </data>
+    <data name="Circ_LblChronoSpan" xml:space="preserve">
+        <value>අදාළ කාලසීමාව:</value>
+    </data>
+    <data name="Circ_LblTo" xml:space="preserve">
+        <value> සිට </value>
+    </data>
+    <data name="Circ_LblPhysicalLocation" xml:space="preserve">
+        <value>භෞතික ස්ථානය:</value>
+    </data>
+    <data name="Circ_LblPages" xml:space="preserve">
+        <value>පිටු ගණන:</value>
+    </data>
+    <data name="Circ_LblShelf" xml:space="preserve">
+        <value>රාක්කය:</value>
+    </data>
+    <data name="Circ_LblDeck" xml:space="preserve">
+        <value>තට්ටුව:</value>
+    </data>
+    <data name="Circ_BtnCloseRecord" xml:space="preserve">
+        <value>වාර්තාව වසන්න</value>
+    </data>
+    <data name="Circ_PendingReturn" xml:space="preserve">
+        <value>ආපසු භාරදීමට නියමිත</value>
+    </data>
+    <data name="Circ_None" xml:space="preserve">
+        <value>කිසිවක් නැත</value>
+    </data>
+    <data name="Circ_NA" xml:space="preserve">
+        <value>N/A</value>
+    </data>
+    <data name="Circ_ColBorrower" xml:space="preserve">
+        <value>බැහැරගෙන ගිය පාර්ශවය</value>
+    </data>
 </root>
