@@ -501,6 +501,357 @@ namespace ArchivumWpf.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to AUTHORIZE DISPOSAL.
+        /// </summary>
+        public static string Dis_AuthorizeDisposalTitle {
+            get {
+                return ResourceManager.GetString("Dis_AuthorizeDisposalTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Input a valid RR Number above to retrieve the file record for scheduling or permanent destruction..
+        /// </summary>
+        public static string Dis_AwaitingTargetDesc {
+            get {
+                return ResourceManager.GetString("Dis_AwaitingTargetDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AWAITING TARGET DOSSIER.
+        /// </summary>
+        public static string Dis_AwaitingTargetTitle {
+            get {
+                return ResourceManager.GetString("Dis_AwaitingTargetTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel Request.
+        /// </summary>
+        public static string Dis_BtnCancelRequest {
+            get {
+                return ResourceManager.GetString("Dis_BtnCancelRequest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Close Dossier.
+        /// </summary>
+        public static string Dis_BtnCloseDossier {
+            get {
+                return ResourceManager.GetString("Dis_BtnCloseDossier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CONFIRM DESTRUCTION.
+        /// </summary>
+        public static string Dis_BtnConfirmDestruction {
+            get {
+                return ResourceManager.GetString("Dis_BtnConfirmDestruction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dispose.
+        /// </summary>
+        public static string Dis_BtnDispose {
+            get {
+                return ResourceManager.GetString("Dis_BtnDispose", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to EXECUTE DISPOSAL.
+        /// </summary>
+        public static string Dis_BtnExecuteDisposal {
+            get {
+                return ResourceManager.GetString("Dis_BtnExecuteDisposal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Locate Dossier.
+        /// </summary>
+        public static string Dis_BtnLocate {
+            get {
+                return ResourceManager.GetString("Dis_BtnLocate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recover.
+        /// </summary>
+        public static string Dis_BtnRecover {
+            get {
+                return ResourceManager.GetString("Dis_BtnRecover", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update Queue Status.
+        /// </summary>
+        public static string Dis_BtnUpdateQueue {
+            get {
+                return ResourceManager.GetString("Dis_BtnUpdateQueue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ACTIONS.
+        /// </summary>
+        public static string Dis_ColActions {
+            get {
+                return ResourceManager.GetString("Dis_ColActions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AUTHORIZED BY.
+        /// </summary>
+        public static string Dis_ColAuthorizedBy {
+            get {
+                return ResourceManager.GetString("Dis_ColAuthorizedBy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DATE DISPOSED.
+        /// </summary>
+        public static string Dis_ColDateDisposed {
+            get {
+                return ResourceManager.GetString("Dis_ColDateDisposed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FILE NAME.
+        /// </summary>
+        public static string Dis_ColFileName {
+            get {
+                return ResourceManager.GetString("Dis_ColFileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to REASON.
+        /// </summary>
+        public static string Dis_ColReason {
+            get {
+                return ResourceManager.GetString("Dis_ColReason", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to RR NUMBER.
+        /// </summary>
+        public static string Dis_ColRrNumber {
+            get {
+                return ResourceManager.GetString("Dis_ColRrNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SCHEDULED FOR.
+        /// </summary>
+        public static string Dis_ColScheduledFor {
+            get {
+                return ResourceManager.GetString("Dis_ColScheduledFor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SECTOR.
+        /// </summary>
+        public static string Dis_ColSector {
+            get {
+                return ResourceManager.GetString("Dis_ColSector", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Auth:.
+        /// </summary>
+        public static string Dis_LblAuthFormat {
+            get {
+                return ResourceManager.GetString("Dis_LblAuthFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Authorized By *.
+        /// </summary>
+        public static string Dis_LblAuthorizedBy {
+            get {
+                return ResourceManager.GetString("Dis_LblAuthorizedBy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disposal Scheduled:.
+        /// </summary>
+        public static string Dis_LblDisposalScheduled {
+            get {
+                return ResourceManager.GetString("Dis_LblDisposalScheduled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reason for Disposal *.
+        /// </summary>
+        public static string Dis_LblReasonForDisposal {
+            get {
+                return ResourceManager.GetString("Dis_LblReasonForDisposal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reason:.
+        /// </summary>
+        public static string Dis_LblReasonFormat {
+            get {
+                return ResourceManager.GetString("Dis_LblReasonFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sector:.
+        /// </summary>
+        public static string Dis_LblSector {
+            get {
+                return ResourceManager.GetString("Dis_LblSector", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Status:.
+        /// </summary>
+        public static string Dis_LblStatus {
+            get {
+                return ResourceManager.GetString("Dis_LblStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Target File:.
+        /// </summary>
+        public static string Dis_LblTargetFileFormat {
+            get {
+                return ResourceManager.GetString("Dis_LblTargetFileFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To-Be-Removed Date.
+        /// </summary>
+        public static string Dis_LblToBeRemovedDate {
+            get {
+                return ResourceManager.GetString("Dis_LblToBeRemovedDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Schedule archival purges, execute permanent disposals, and review the destruction ledger..
+        /// </summary>
+        public static string Dis_MainDesc {
+            get {
+                return ResourceManager.GetString("Dis_MainDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dossier Retention &amp; Disposal Administration.
+        /// </summary>
+        public static string Dis_MainTitle {
+            get {
+                return ResourceManager.GetString("Dis_MainTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Instantly log this record in the destruction database. This action is irreversible..
+        /// </summary>
+        public static string Dis_PermanentDesc {
+            get {
+                return ResourceManager.GetString("Dis_PermanentDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 2. PERMANENT DISPOSAL.
+        /// </summary>
+        public static string Dis_PermanentTitle {
+            get {
+                return ResourceManager.GetString("Dis_PermanentTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PERMANENTLY DISPOSED.
+        /// </summary>
+        public static string Dis_PermDisposedTitle {
+            get {
+                return ResourceManager.GetString("Dis_PermDisposedTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set a future date to flag this file for removal in system reports..
+        /// </summary>
+        public static string Dis_ScheduleDesc {
+            get {
+                return ResourceManager.GetString("Dis_ScheduleDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 1. SCHEDULE DISPOSAL.
+        /// </summary>
+        public static string Dis_ScheduleTitle {
+            get {
+                return ResourceManager.GetString("Dis_ScheduleTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Target exact RR Number for disposal....
+        /// </summary>
+        public static string Dis_SearchWatermark {
+            get {
+                return ResourceManager.GetString("Dis_SearchWatermark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disposed Log.
+        /// </summary>
+        public static string Dis_TabAudit {
+            get {
+                return ResourceManager.GetString("Dis_TabAudit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To Be Removed Queue.
+        /// </summary>
+        public static string Dis_TabQueue {
+            get {
+                return ResourceManager.GetString("Dis_TabQueue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search &amp; Target.
+        /// </summary>
+        public static string Dis_TabSearch {
+            get {
+                return ResourceManager.GetString("Dis_TabSearch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add New File Type.
         /// </summary>
         public static string Settings_AddFileType {

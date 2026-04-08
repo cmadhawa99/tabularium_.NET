@@ -303,4 +303,121 @@
     <data name="Circ_NA" xml:space="preserve">
         <value>N/A</value>
     </data>
+    <data name="Dis_MainTitle" xml:space="preserve">
+        <value>Dossier Retention &amp; Disposal Administration</value>
+    </data>
+    <data name="Dis_MainDesc" xml:space="preserve">
+        <value>Schedule archival purges, execute permanent disposals, and review the destruction ledger.</value>
+    </data>
+    <data name="Dis_TabSearch" xml:space="preserve">
+        <value>Search &amp; Target</value>
+    </data>
+    <data name="Dis_TabQueue" xml:space="preserve">
+        <value>To Be Removed Queue</value>
+    </data>
+    <data name="Dis_TabAudit" xml:space="preserve">
+        <value>Disposed Log</value>
+    </data>
+    <data name="Dis_SearchWatermark" xml:space="preserve">
+        <value>Target exact RR Number for disposal...</value>
+    </data>
+    <data name="Dis_BtnLocate" xml:space="preserve">
+        <value>Locate Dossier</value>
+    </data>
+    <data name="Dis_AwaitingTargetTitle" xml:space="preserve">
+        <value>AWAITING TARGET DOSSIER</value>
+    </data>
+    <data name="Dis_AwaitingTargetDesc" xml:space="preserve">
+        <value>Input a valid RR Number above to retrieve the file record for scheduling or permanent destruction.</value>
+    </data>
+    <data name="Dis_ScheduleTitle" xml:space="preserve">
+        <value>1. SCHEDULE DISPOSAL</value>
+    </data>
+    <data name="Dis_ScheduleDesc" xml:space="preserve">
+        <value>Set a future date to flag this file for removal in system reports.</value>
+    </data>
+    <data name="Dis_LblToBeRemovedDate" xml:space="preserve">
+        <value>To-Be-Removed Date</value>
+    </data>
+    <data name="Dis_BtnUpdateQueue" xml:space="preserve">
+        <value>Update Queue Status</value>
+    </data>
+    <data name="Dis_PermanentTitle" xml:space="preserve">
+        <value>2. PERMANENT DISPOSAL</value>
+    </data>
+    <data name="Dis_PermanentDesc" xml:space="preserve">
+        <value>Instantly log this record in the destruction database. This action is irreversible.</value>
+    </data>
+    <data name="Dis_BtnExecuteDisposal" xml:space="preserve">
+        <value>EXECUTE DISPOSAL</value>
+    </data>
+    <data name="Dis_ColScheduledFor" xml:space="preserve">
+        <value>SCHEDULED FOR</value>
+    </data>
+    <data name="Dis_ColRrNumber" xml:space="preserve">
+        <value>RR NUMBER</value>
+    </data>
+    <data name="Dis_ColFileName" xml:space="preserve">
+        <value>FILE NAME</value>
+    </data>
+    <data name="Dis_ColSector" xml:space="preserve">
+        <value>SECTOR</value>
+    </data>
+    <data name="Dis_ColActions" xml:space="preserve">
+        <value>ACTIONS</value>
+    </data>
+    <data name="Dis_BtnRecover" xml:space="preserve">
+        <value>Recover</value>
+    </data>
+    <data name="Dis_BtnDispose" xml:space="preserve">
+        <value>Dispose</value>
+    </data>
+    <data name="Dis_ColDateDisposed" xml:space="preserve">
+        <value>DATE DISPOSED</value>
+    </data>
+    <data name="Dis_ColAuthorizedBy" xml:space="preserve">
+        <value>AUTHORIZED BY</value>
+    </data>
+    <data name="Dis_ColReason" xml:space="preserve">
+        <value>REASON</value>
+    </data>
+    <data name="Dis_LblSector" xml:space="preserve">
+        <value>Sector:</value>
+    </data>
+    <data name="Dis_LblStatus" xml:space="preserve">
+        <value>Status:</value>
+    </data>
+    <data name="Dis_LblDisposalScheduled" xml:space="preserve">
+        <value>Disposal Scheduled:</value>
+    </data>
+    <data name="Dis_PermDisposedTitle" xml:space="preserve">
+        <value>PERMANENTLY DISPOSED</value>
+    </data>
+    <data name="Dis_LblReasonFormat" xml:space="preserve">
+        <value>Reason:</value>
+    </data>
+    <data name="Dis_LblAuthFormat" xml:space="preserve">
+        <value>Auth:</value>
+    </data>
+    <data name="Dis_BtnCloseDossier" xml:space="preserve">
+        <value>Close Dossier</value>
+    </data>
+    <data name="Dis_AuthorizeDisposalTitle" xml:space="preserve">
+        <value>AUTHORIZE DISPOSAL</value>
+    </data>
+    <data name="Dis_LblTargetFileFormat" xml:space="preserve">
+        <value>Target File:</value>
+    </data>
+    <data name="Dis_LblReasonForDisposal" xml:space="preserve">
+        <value>Reason for Disposal *</value>
+    </data>
+    <data name="Dis_LblAuthorizedBy" xml:space="preserve">
+        <value>Authorized By *</value>
+    </data>
+    <data name="Dis_BtnCancelRequest" xml:space="preserve">
+        <value>Cancel Request</value>
+    </data>
+    <data name="Dis_BtnConfirmDestruction" xml:space="preserve">
+        <value>CONFIRM DESTRUCTION</value>
+    </data>
 </root>

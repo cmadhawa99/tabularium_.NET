@@ -245,4 +245,121 @@
     <data name="Circ_ColBorrower" xml:space="preserve">
         <value>බැහැරගෙන ගිය පාර්ශවය</value>
     </data>
+    <data name="Dis_MainTitle" xml:space="preserve">
+        <value>ලිපිගොනු රඳවා තබා ගැනීම් සහ අපහරණය කිරීම් පරිපාලනය</value>
+    </data>
+    <data name="Dis_MainDesc" xml:space="preserve">
+        <value>සංරක්ෂිත ලිපිගොනු ඉවත් කිරීම කාලසටහන්ගත කිරීම, ස්ථිරවම අපහරණය සිදු කිරීම සහ අපහරණය කිරීමේ ලේඛනය සමාලෝචනය කිරීම.</value>
+    </data>
+    <data name="Dis_TabSearch" xml:space="preserve">
+        <value>සෙවීම සහ තේරීම</value>
+    </data>
+    <data name="Dis_TabQueue" xml:space="preserve">
+        <value>අපහරණය කිරීමට නියමිත ලිපිගොනු ලේඛන</value>
+    </data>
+    <data name="Dis_TabAudit" xml:space="preserve">
+        <value>අපහරණ කළ ලිපිගොනු වාර්තාව</value>
+    </data>
+    <data name="Dis_SearchWatermark" xml:space="preserve">
+        <value>අපහරණය කිරීම සඳහා නිශ්චිත RR අංකය ඇතුළත් කරන්න...</value>
+    </data>
+    <data name="Dis_BtnLocate" xml:space="preserve">
+        <value>ලිපිගොනුව සොයන්න</value>
+    </data>
+    <data name="Dis_AwaitingTargetTitle" xml:space="preserve">
+        <value>අදාළ ලිපිගොනුව අපේක්ෂිතයි</value>
+    </data>
+    <data name="Dis_AwaitingTargetDesc" xml:space="preserve">
+        <value>කාලසටහන්ගත කිරීම හෝ ස්ථිරවම අපහරණය කිරීම සඳහා ගොනු වාර්තාව ලබා ගැනීමට ඉහතින් වලංගු RR අංකයක් ඇතුළත් කිරීම සිදු කරන්න.</value>
+    </data>
+    <data name="Dis_ScheduleTitle" xml:space="preserve">
+        <value>1. අපහරණය කිරීම කාලසටහන්ගත කිරීම</value>
+    </data>
+    <data name="Dis_ScheduleDesc" xml:space="preserve">
+        <value>පද්ධති වාර්තා තුළින් මෙම ලිපිගොනුව අපහරණය කිරීම සඳහා අනාගත දිනයක් නියම කරන්න.</value>
+    </data>
+    <data name="Dis_LblToBeRemovedDate" xml:space="preserve">
+        <value>අපහරණය කිරීමට නියමිත දිනය</value>
+    </data>
+    <data name="Dis_BtnUpdateQueue" xml:space="preserve">
+        <value>ලේඛන තත්ත්වය යාවත්කාලීන කරන්න</value>
+    </data>
+    <data name="Dis_PermanentTitle" xml:space="preserve">
+        <value>2. ස්ථිරවම අපහරණය කිරීම</value>
+    </data>
+    <data name="Dis_PermanentDesc" xml:space="preserve">
+        <value>මෙම වාර්තාව වහාම අපහරණය කළ ලේඛන දත්ත ගබඩාවට ඇතුළත් කිරීම. මෙම ක්‍රියාව ආපසු හැරවිය නොහැක.</value>
+    </data>
+    <data name="Dis_BtnExecuteDisposal" xml:space="preserve">
+        <value>අපහරණය ක්‍රියාත්මක කරන්න</value>
+    </data>
+    <data name="Dis_ColScheduledFor" xml:space="preserve">
+        <value>කාලසටහන්ගත කළ දිනය</value>
+    </data>
+    <data name="Dis_ColRrNumber" xml:space="preserve">
+        <value>RR අංකය</value>
+    </data>
+    <data name="Dis_ColFileName" xml:space="preserve">
+        <value>ලිපිගොනුවේ නම</value>
+    </data>
+    <data name="Dis_ColSector" xml:space="preserve">
+        <value>අංශය</value>
+    </data>
+    <data name="Dis_ColActions" xml:space="preserve">
+        <value>ක්‍රියාවන්</value>
+    </data>
+    <data name="Dis_BtnRecover" xml:space="preserve">
+        <value>ප්‍රතිසාධනය කරන්න</value>
+    </data>
+    <data name="Dis_BtnDispose" xml:space="preserve">
+        <value>අපහරණය කරන්න</value>
+    </data>
+    <data name="Dis_ColDateDisposed" xml:space="preserve">
+        <value>ඉවත් කළ දිනය</value>
+    </data>
+    <data name="Dis_ColAuthorizedBy" xml:space="preserve">
+        <value>අනුමත කළේ</value>
+    </data>
+    <data name="Dis_ColReason" xml:space="preserve">
+        <value>හේතුව</value>
+    </data>
+    <data name="Dis_LblSector" xml:space="preserve">
+        <value>අංශය:</value>
+    </data>
+    <data name="Dis_LblStatus" xml:space="preserve">
+        <value>තත්ත්වය:</value>
+    </data>
+    <data name="Dis_LblDisposalScheduled" xml:space="preserve">
+        <value>ඉවත් කිරීම කාලසටහන්ගත කර ඇත:</value>
+    </data>
+    <data name="Dis_PermDisposedTitle" xml:space="preserve">
+        <value>ස්ථිරවම අපහරණය කර ඇත</value>
+    </data>
+    <data name="Dis_LblReasonFormat" xml:space="preserve">
+        <value>හේතුව:</value>
+    </data>
+    <data name="Dis_LblAuthFormat" xml:space="preserve">
+        <value>අනුමැතිය:</value>
+    </data>
+    <data name="Dis_BtnCloseDossier" xml:space="preserve">
+        <value>ලිපිගොනුව වසන්න</value>
+    </data>
+    <data name="Dis_AuthorizeDisposalTitle" xml:space="preserve">
+        <value>අපහරණය කිරීම අනුමත කරන්න</value>
+    </data>
+    <data name="Dis_LblTargetFileFormat" xml:space="preserve">
+        <value>අදාළ ලිපිගොනුව:</value>
+    </data>
+    <data name="Dis_LblReasonForDisposal" xml:space="preserve">
+        <value>අපහරණය කිරීමට හේතුව *</value>
+    </data>
+    <data name="Dis_LblAuthorizedBy" xml:space="preserve">
+        <value>අනුමත කළේ *</value>
+    </data>
+    <data name="Dis_BtnCancelRequest" xml:space="preserve">
+        <value>ඉල්ලීම අවලංගු කරන්න</value>
+    </data>
+    <data name="Dis_BtnConfirmDestruction" xml:space="preserve">
+        <value>අපහරණය කිරීම තහවුරු කරන්න</value>
+    </data>
 </root>
