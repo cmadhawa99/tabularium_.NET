@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Test Script
+
+using System;
+using System.Globalization;
+using System.Threading;
 using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
@@ -11,7 +15,6 @@ namespace ArchivumWpf;
 
 public partial class App : Application
 {
-    
     public IServiceProvider Services { get; }
 
     public App()
@@ -35,41 +38,74 @@ public partial class App : Application
         services.AddSingleton<IPreferencesService, PreferencesService>();
         
         services.AddTransient<IArchiveService, ArchiveService>();
-        //services.AddTransient<IArchiveService, DummyArchiveService>();
         
         services.AddSingleton<MainViewModel>();
         services.AddSingleton<DashboardViewModel>();
         services.AddSingleton<SearchViewModel>();
         services.AddSingleton<CirculationViewModel>();
+        services.AddSingleton<DisposalViewModel>();
         services.AddSingleton<EntryViewModel>();
         services.AddSingleton<ReportsViewModel>();
         services.AddSingleton<SettingsViewModel>();
-        services.AddSingleton<DisposalViewModel>();
-
-        services.AddSingleton<MainWindow>();
         
+        services.AddSingleton<MainWindow>();
+
         return services.BuildServiceProvider();
     }
 
-    // Note: Changed to 'async void' so we can await the seeder task
     protected override async void OnStartup(StartupEventArgs e)
     {
-        // THIS IS A TEST SCRIPT
         // =========================================================================
-        // ================== [REMOVE BEFORE DEPLOYMENT START] =====================
+        // 1. APPLY SAVED LANGUAGE AT STARTUP (Bulletproof Method)
         // =========================================================================
-        // This block intercepts the terminal commands. E.g. "dotnet run -- seed 250"
-        if (e.Args.Length > 0 && e.Args[0].ToLower() == "seed")
+        var preferencesService = Services.GetRequiredService<IPreferencesService>();
+        var prefs = preferencesService.GetPreferences();
+        
+        string languageCode = "en-US"; // Default
+        
+        if (prefs.Language == "Sinhala")
         {
-            int count = 100; // Default count
-            if (e.Args.Length > 1 && int.TryParse(e.Args[1], out int parsedCount))
+            languageCode = "si-LK";
+        }
+        else if (prefs.Language == "Tamil")
+        {
+            languageCode = "ta-LK";
+        }
+
+        // Create the Culture Object
+        var culture = new CultureInfo(languageCode);
+
+        // FIX A: Force the active threads to use the culture
+        Thread.CurrentThread.CurrentCulture = culture;
+        Thread.CurrentThread.CurrentUICulture = culture;
+        CultureInfo.DefaultThreadCurrentCulture = culture;
+        CultureInfo.DefaultThreadCurrentUICulture = culture;
+
+        // FIX B: Force internal WPF controls (like DatePickers) to translate
+        FrameworkElement.LanguageProperty.OverrideMetadata(
+            typeof(FrameworkElement),
+            new FrameworkPropertyMetadata(System.Windows.Markup.XmlLanguage.GetLanguage(culture.IetfLanguageTag)));
+
+        // FIX C: Directly command your auto-generated Strings file to switch!
+        ArchivumWpf.Localization.Strings.Culture = culture;
+        // =========================================================================
+
+
+        // =========================================================================
+        // =================== [REMOVE BEFORE DEPLOYMENT START] ====================
+        // =========================================================================
+        string[] args = e.Args;
+        
+        if (args.Length > 0 && args[0].ToLower() == "--seed")
+        {
+            int count = 50; 
+            if (args.Length > 1 && int.TryParse(args[1], out int parsedCount))
             {
                 count = parsedCount;
             }
 
             try
             {
-                // Grab the perfectly configured DbContext from your existing Services setup!
                 var factory = Services.GetRequiredService<IDbContextFactory<AppDbContext>>();
                 using var context = await factory.CreateDbContextAsync();
                 var seeder = new DatabaseSeeder(context);
@@ -85,7 +121,6 @@ public partial class App : Application
                     "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
-            // CRITICAL: Shut down the app so the normal UI does not open
             Current.Shutdown();
             return; 
         }
@@ -96,9 +131,7 @@ public partial class App : Application
         base.OnStartup(e);
         
         var mainWindow = Services.GetRequiredService<MainWindow>();
-        
         mainWindow.DataContext = Services.GetRequiredService<MainViewModel>();
-        
         mainWindow.Show();
     }
 }

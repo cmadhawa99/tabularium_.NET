@@ -30,7 +30,7 @@
         <value>ආයතනයේ නම</value>
     </data>
     <data name="Settings_CurrentUser" xml:space="preserve">
-        <value>වත්මන් පරිශීලකයා</value>
+        <value>වත්මන් පරිශීලක</value>
     </data>
     <data name="Settings_LocUser" xml:space="preserve">
         <value>භාෂාව සහ පරිශීලක</value>
@@ -42,15 +42,60 @@
         <value>පද්ධති පෙරනිමි</value>
     </data>
     <data name="Settings_DefPageSize" xml:space="preserve">
-        <value>පෙරනිමි පිටු ප්‍රමාණය</value>
+        <value>එක් පිටුවක පෙන්වන දත්ත ප්‍රමාණය</value>
     </data>
     <data name="Settings_UITheme" xml:space="preserve">
-        <value>තේමාව</value>
+        <value>පද්ධතියේ තේමාව</value>
     </data>
     <data name="Settings_DefExportDir" xml:space="preserve">
         <value>පෙරනිමි අපනයන ෆෝල්ඩරය</value>
     </data>
     <data name="Settings_SaveGeneral" xml:space="preserve">
         <value>සාමාන්‍ය සැකසුම් සුරකින්න</value>
+    </data>
+    <data name="Settings_DbHost" xml:space="preserve">
+        <value>ප්‍රධාන සේවාදායකය (උදා: localhost)</value>
+    </data>
+    <data name="Settings_DbName" xml:space="preserve">
+        <value>දත්ත සමුදායේ නම</value>
+    </data>
+    <data name="Settings_DbPassword" xml:space="preserve">
+        <value>පරිශීලක නාමය</value>
+    </data>
+    <data name="Settings_DbUser" xml:space="preserve">
+        <value>මුරපදය</value>
+    </data>
+    <data name="Settings_TestConnection" xml:space="preserve">
+        <value>සම්බන්ධතාවය පරීක්ෂා කරන්න</value>
+    </data>
+    <data name="Settings_ManageSectors" xml:space="preserve">
+        <value>අංශ කළමනාකරණය</value>
+    </data>
+    <data name="Settings_AddSector" xml:space="preserve">
+        <value>නව අංශයක් එක් කරන්න</value>
+    </data>
+    <data name="Settings_SectorNameHint" xml:space="preserve">
+        <value>අංශයේ නම</value>
+    </data>
+    <data name="Settings_HexHint" xml:space="preserve">
+        <value>#Hex කේතය</value>
+    </data>
+    <data name="Settings_BtnAddSector" xml:space="preserve">
+        <value>+ අංශය එක් කරන්න</value>
+    </data>
+    <data name="Settings_ManageFileTypes" xml:space="preserve">
+        <value>ගොනු වර්ග කළමනාකරණය</value>
+    </data>
+    <data name="Settings_AddFileType" xml:space="preserve">
+        <value>නව ගොනු වර්ගයක් එක් කරන්න</value>
+    </data>
+    <data name="Settings_FileTypeHint" xml:space="preserve">
+        <value>ගොනු වර්ගය (උදා: රහසිගත)</value>
+    </data>
+    <data name="Settings_BtnAddFileType" xml:space="preserve">
+        <value>+ ගොනු වර්ගය එක් කරන්න</value>
+    </data>
+    <data name="Settings_SaveCategory" xml:space="preserve">
+        <value>Category සැකසුම් සුරකින්න</value>
     </data>
 </root>

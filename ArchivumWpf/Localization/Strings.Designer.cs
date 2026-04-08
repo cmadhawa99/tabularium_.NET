@@ -21,7 +21,7 @@ namespace ArchivumWpf.Localization {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Strings {
+    public class Strings {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -35,7 +35,7 @@ namespace ArchivumWpf.Localization {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ArchivumWpf.Localization.Strings", typeof(Strings).Assembly);
@@ -50,7 +50,7 @@ namespace ArchivumWpf.Localization {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -62,7 +62,7 @@ namespace ArchivumWpf.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Add New File Type.
         /// </summary>
-        internal static string Settings_AddFileType {
+        public static string Settings_AddFileType {
             get {
                 return ResourceManager.GetString("Settings_AddFileType", resourceCulture);
             }
@@ -71,7 +71,7 @@ namespace ArchivumWpf.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Add New Sector.
         /// </summary>
-        internal static string Settings_AddSector {
+        public static string Settings_AddSector {
             get {
                 return ResourceManager.GetString("Settings_AddSector", resourceCulture);
             }
@@ -80,7 +80,7 @@ namespace ArchivumWpf.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Alpha.
         /// </summary>
-        internal static string Settings_Alpha {
+        public static string Settings_Alpha {
             get {
                 return ResourceManager.GetString("Settings_Alpha", resourceCulture);
             }
@@ -89,7 +89,7 @@ namespace ArchivumWpf.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Application Title.
         /// </summary>
-        internal static string Settings_AppTitle {
+        public static string Settings_AppTitle {
             get {
                 return ResourceManager.GetString("Settings_AppTitle", resourceCulture);
             }
@@ -98,7 +98,7 @@ namespace ArchivumWpf.Localization {
         /// <summary>
         ///   Looks up a localized string similar to AUTOMATED SQL BACKUPS.
         /// </summary>
-        internal static string Settings_AutoBackups {
+        public static string Settings_AutoBackups {
             get {
                 return ResourceManager.GetString("Settings_AutoBackups", resourceCulture);
             }
@@ -107,7 +107,7 @@ namespace ArchivumWpf.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Backup Destination Folder (Local or Cloud Sync).
         /// </summary>
-        internal static string Settings_BackupDest {
+        public static string Settings_BackupDest {
             get {
                 return ResourceManager.GetString("Settings_BackupDest", resourceCulture);
             }
@@ -116,7 +116,7 @@ namespace ArchivumWpf.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Blue.
         /// </summary>
-        internal static string Settings_Blue {
+        public static string Settings_Blue {
             get {
                 return ResourceManager.GetString("Settings_Blue", resourceCulture);
             }
@@ -125,7 +125,7 @@ namespace ArchivumWpf.Localization {
         /// <summary>
         ///   Looks up a localized string similar to + Add File Type.
         /// </summary>
-        internal static string Settings_BtnAddFileType {
+        public static string Settings_BtnAddFileType {
             get {
                 return ResourceManager.GetString("Settings_BtnAddFileType", resourceCulture);
             }
@@ -134,7 +134,7 @@ namespace ArchivumWpf.Localization {
         /// <summary>
         ///   Looks up a localized string similar to + Add Sector.
         /// </summary>
-        internal static string Settings_BtnAddSector {
+        public static string Settings_BtnAddSector {
             get {
                 return ResourceManager.GetString("Settings_BtnAddSector", resourceCulture);
             }
@@ -143,7 +143,7 @@ namespace ArchivumWpf.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Cancel Selection.
         /// </summary>
-        internal static string Settings_CancelSelection {
+        public static string Settings_CancelSelection {
             get {
                 return ResourceManager.GetString("Settings_CancelSelection", resourceCulture);
             }
@@ -152,7 +152,7 @@ namespace ArchivumWpf.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Color Palette.
         /// </summary>
-        internal static string Settings_ColorPalette {
+        public static string Settings_ColorPalette {
             get {
                 return ResourceManager.GetString("Settings_ColorPalette", resourceCulture);
             }
@@ -161,7 +161,7 @@ namespace ArchivumWpf.Localization {
         /// <summary>
         ///   Looks up a localized string similar to SECTOR COLOR PICKER.
         /// </summary>
-        internal static string Settings_ColorPickerTitle {
+        public static string Settings_ColorPickerTitle {
             get {
                 return ResourceManager.GetString("Settings_ColorPickerTitle", resourceCulture);
             }
@@ -170,7 +170,7 @@ namespace ArchivumWpf.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Optional Color Tag (Type Hex or Open Palette):.
         /// </summary>
-        internal static string Settings_ColorTag {
+        public static string Settings_ColorTag {
             get {
                 return ResourceManager.GetString("Settings_ColorTag", resourceCulture);
             }
@@ -179,7 +179,7 @@ namespace ArchivumWpf.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Confirm Color.
         /// </summary>
-        internal static string Settings_ConfirmColor {
+        public static string Settings_ConfirmColor {
             get {
                 return ResourceManager.GetString("Settings_ConfirmColor", resourceCulture);
             }
@@ -188,7 +188,7 @@ namespace ArchivumWpf.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Current User.
         /// </summary>
-        internal static string Settings_CurrentUser {
+        public static string Settings_CurrentUser {
             get {
                 return ResourceManager.GetString("Settings_CurrentUser", resourceCulture);
             }
@@ -197,7 +197,7 @@ namespace ArchivumWpf.Localization {
         /// <summary>
         ///   Looks up a localized string similar to POSTGRESQL CONNECTION.
         /// </summary>
-        internal static string Settings_DbConnection {
+        public static string Settings_DbConnection {
             get {
                 return ResourceManager.GetString("Settings_DbConnection", resourceCulture);
             }
@@ -206,7 +206,7 @@ namespace ArchivumWpf.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Host Server (e.g., localhost).
         /// </summary>
-        internal static string Settings_DbHost {
+        public static string Settings_DbHost {
             get {
                 return ResourceManager.GetString("Settings_DbHost", resourceCulture);
             }
@@ -215,7 +215,7 @@ namespace ArchivumWpf.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Database Name.
         /// </summary>
-        internal static string Settings_DbName {
+        public static string Settings_DbName {
             get {
                 return ResourceManager.GetString("Settings_DbName", resourceCulture);
             }
@@ -224,7 +224,7 @@ namespace ArchivumWpf.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Username.
         /// </summary>
-        internal static string Settings_DbPassword {
+        public static string Settings_DbPassword {
             get {
                 return ResourceManager.GetString("Settings_DbPassword", resourceCulture);
             }
@@ -233,7 +233,7 @@ namespace ArchivumWpf.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Password.
         /// </summary>
-        internal static string Settings_DbUser {
+        public static string Settings_DbUser {
             get {
                 return ResourceManager.GetString("Settings_DbUser", resourceCulture);
             }
@@ -242,7 +242,7 @@ namespace ArchivumWpf.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Default Export Directory.
         /// </summary>
-        internal static string Settings_DefExportDir {
+        public static string Settings_DefExportDir {
             get {
                 return ResourceManager.GetString("Settings_DefExportDir", resourceCulture);
             }
@@ -251,7 +251,7 @@ namespace ArchivumWpf.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Default Pagination Size.
         /// </summary>
-        internal static string Settings_DefPageSize {
+        public static string Settings_DefPageSize {
             get {
                 return ResourceManager.GetString("Settings_DefPageSize", resourceCulture);
             }
@@ -260,16 +260,16 @@ namespace ArchivumWpf.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Enable Daily Automated SQL Database Backup.
         /// </summary>
-        internal static string Settings_EnableAutoBackup {
+        public static string Settings_EnableAutoBackup {
             get {
                 return ResourceManager.GetString("Settings_EnableAutoBackup", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to File Type.
+        ///   Looks up a localized string similar to File Type (e.g., Confidential).
         /// </summary>
-        internal static string Settings_FileTypeHint {
+        public static string Settings_FileTypeHint {
             get {
                 return ResourceManager.GetString("Settings_FileTypeHint", resourceCulture);
             }
@@ -278,7 +278,7 @@ namespace ArchivumWpf.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Final ARGB Output Code.
         /// </summary>
-        internal static string Settings_FinalArgb {
+        public static string Settings_FinalArgb {
             get {
                 return ResourceManager.GetString("Settings_FinalArgb", resourceCulture);
             }
@@ -287,7 +287,7 @@ namespace ArchivumWpf.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Green.
         /// </summary>
-        internal static string Settings_Green {
+        public static string Settings_Green {
             get {
                 return ResourceManager.GetString("Settings_Green", resourceCulture);
             }
@@ -296,7 +296,7 @@ namespace ArchivumWpf.Localization {
         /// <summary>
         ///   Looks up a localized string similar to #Hex Code.
         /// </summary>
-        internal static string Settings_HexHint {
+        public static string Settings_HexHint {
             get {
                 return ResourceManager.GetString("Settings_HexHint", resourceCulture);
             }
@@ -305,7 +305,7 @@ namespace ArchivumWpf.Localization {
         /// <summary>
         ///   Looks up a localized string similar to LOCALIZATION &amp; USER.
         /// </summary>
-        internal static string Settings_LocUser {
+        public static string Settings_LocUser {
             get {
                 return ResourceManager.GetString("Settings_LocUser", resourceCulture);
             }
@@ -314,7 +314,7 @@ namespace ArchivumWpf.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Manage local parameters, database connections, and classification schemas..
         /// </summary>
-        internal static string Settings_MainDesc {
+        public static string Settings_MainDesc {
             get {
                 return ResourceManager.GetString("Settings_MainDesc", resourceCulture);
             }
@@ -323,7 +323,7 @@ namespace ArchivumWpf.Localization {
         /// <summary>
         ///   Looks up a localized string similar to System Settings &amp; Configuration.
         /// </summary>
-        internal static string Settings_MainTitle {
+        public static string Settings_MainTitle {
             get {
                 return ResourceManager.GetString("Settings_MainTitle", resourceCulture);
             }
@@ -332,7 +332,7 @@ namespace ArchivumWpf.Localization {
         /// <summary>
         ///   Looks up a localized string similar to MANAGE FILE TYPES.
         /// </summary>
-        internal static string Settings_ManageFileTypes {
+        public static string Settings_ManageFileTypes {
             get {
                 return ResourceManager.GetString("Settings_ManageFileTypes", resourceCulture);
             }
@@ -341,7 +341,7 @@ namespace ArchivumWpf.Localization {
         /// <summary>
         ///   Looks up a localized string similar to MANAGE SECTORS.
         /// </summary>
-        internal static string Settings_ManageSectors {
+        public static string Settings_ManageSectors {
             get {
                 return ResourceManager.GetString("Settings_ManageSectors", resourceCulture);
             }
@@ -350,7 +350,7 @@ namespace ArchivumWpf.Localization {
         /// <summary>
         ///   Looks up a localized string similar to ORGANIZATION DETAILS.
         /// </summary>
-        internal static string Settings_OrgDetails {
+        public static string Settings_OrgDetails {
             get {
                 return ResourceManager.GetString("Settings_OrgDetails", resourceCulture);
             }
@@ -359,7 +359,7 @@ namespace ArchivumWpf.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Organization Name.
         /// </summary>
-        internal static string Settings_OrgName {
+        public static string Settings_OrgName {
             get {
                 return ResourceManager.GetString("Settings_OrgName", resourceCulture);
             }
@@ -368,7 +368,7 @@ namespace ArchivumWpf.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Red.
         /// </summary>
-        internal static string Settings_Red {
+        public static string Settings_Red {
             get {
                 return ResourceManager.GetString("Settings_Red", resourceCulture);
             }
@@ -377,7 +377,7 @@ namespace ArchivumWpf.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Save Category Settings.
         /// </summary>
-        internal static string Settings_SaveCategory {
+        public static string Settings_SaveCategory {
             get {
                 return ResourceManager.GetString("Settings_SaveCategory", resourceCulture);
             }
@@ -386,7 +386,7 @@ namespace ArchivumWpf.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Save Database Settings.
         /// </summary>
-        internal static string Settings_SaveDatabase {
+        public static string Settings_SaveDatabase {
             get {
                 return ResourceManager.GetString("Settings_SaveDatabase", resourceCulture);
             }
@@ -395,7 +395,7 @@ namespace ArchivumWpf.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Save General Settings.
         /// </summary>
-        internal static string Settings_SaveGeneral {
+        public static string Settings_SaveGeneral {
             get {
                 return ResourceManager.GetString("Settings_SaveGeneral", resourceCulture);
             }
@@ -404,7 +404,7 @@ namespace ArchivumWpf.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Sector Name.
         /// </summary>
-        internal static string Settings_SectorNameHint {
+        public static string Settings_SectorNameHint {
             get {
                 return ResourceManager.GetString("Settings_SectorNameHint", resourceCulture);
             }
@@ -413,7 +413,7 @@ namespace ArchivumWpf.Localization {
         /// <summary>
         ///   Looks up a localized string similar to SYSTEM DEFAULTS.
         /// </summary>
-        internal static string Settings_SysDefaults {
+        public static string Settings_SysDefaults {
             get {
                 return ResourceManager.GetString("Settings_SysDefaults", resourceCulture);
             }
@@ -422,7 +422,7 @@ namespace ArchivumWpf.Localization {
         /// <summary>
         ///   Looks up a localized string similar to System Language.
         /// </summary>
-        internal static string Settings_SysLanguage {
+        public static string Settings_SysLanguage {
             get {
                 return ResourceManager.GetString("Settings_SysLanguage", resourceCulture);
             }
@@ -431,7 +431,7 @@ namespace ArchivumWpf.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Database &amp; Backups.
         /// </summary>
-        internal static string Settings_TabDatabase {
+        public static string Settings_TabDatabase {
             get {
                 return ResourceManager.GetString("Settings_TabDatabase", resourceCulture);
             }
@@ -440,7 +440,7 @@ namespace ArchivumWpf.Localization {
         /// <summary>
         ///   Looks up a localized string similar to General &amp; Display.
         /// </summary>
-        internal static string Settings_TabGeneral {
+        public static string Settings_TabGeneral {
             get {
                 return ResourceManager.GetString("Settings_TabGeneral", resourceCulture);
             }
@@ -449,7 +449,7 @@ namespace ArchivumWpf.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Vault Categories.
         /// </summary>
-        internal static string Settings_TabVault {
+        public static string Settings_TabVault {
             get {
                 return ResourceManager.GetString("Settings_TabVault", resourceCulture);
             }
@@ -458,16 +458,16 @@ namespace ArchivumWpf.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Test Connection.
         /// </summary>
-        internal static string Settings_TestConnection {
+        public static string Settings_TestConnection {
             get {
                 return ResourceManager.GetString("Settings_TestConnection", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to UI Theme.
+        ///   Looks up a localized string similar to System Theme.
         /// </summary>
-        internal static string Settings_UITheme {
+        public static string Settings_UITheme {
             get {
                 return ResourceManager.GetString("Settings_UITheme", resourceCulture);
             }

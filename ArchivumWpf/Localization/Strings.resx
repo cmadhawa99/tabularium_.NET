@@ -52,7 +52,7 @@
         <value>Default Pagination Size</value>
     </data>
     <data name="Settings_UITheme" xml:space="preserve">
-        <value>UI Theme</value>
+        <value>System Theme</value>
     </data>
     <data name="Settings_DefExportDir" xml:space="preserve">
         <value>Default Export Directory</value>
@@ -124,7 +124,7 @@
         <value>Add New File Type</value>
     </data>
     <data name="Settings_FileTypeHint" xml:space="preserve">
-        <value>File Type</value>
+        <value>File Type (e.g., Confidential)</value>
     </data>
     <data name="Settings_BtnAddFileType" xml:space="preserve">
         <value>+ Add File Type</value>
