@@ -476,4 +476,118 @@
     <data name="Sea_BtnCloseDossier" xml:space="preserve">
         <value>ලිපිගොනුව වසන්න</value>
     </data>
+    <data name="Ent_MainTitle" xml:space="preserve">
+        <value>ලිපිගොනු ඇතුළත් කිරීම් කළමනාකරණය</value>
+    </data>
+    <data name="Ent_MainDesc" xml:space="preserve">
+        <value>නව වාර්තා ඇතුළත් කිරීම, පවතින ලිපිගොනු සංශෝධනය කිරීම හෝ සම්පූර්ණ විගණන ඉතිහාසය සමාලෝචනය කිරීම.</value>
+    </data>
+    <data name="Ent_DatePickerWatermark" xml:space="preserve">
+        <value>දිනයක් තෝරන්න...</value>
+    </data>
+    <data name="Ent_TabAdd" xml:space="preserve">
+        <value>නව වාර්තාවක් එක් කරන්න</value>
+    </data>
+    <data name="Ent_PrimaryClass" xml:space="preserve">
+        <value>ප්‍රාථමික වර්ගීකරණය</value>
+    </data>
+    <data name="Ent_LblRrNumber" xml:space="preserve">
+        <value>RR අංකය *</value>
+    </data>
+    <data name="Ent_LblSector" xml:space="preserve">
+        <value>අංශය *</value>
+    </data>
+    <data name="Ent_LblSubjectName" xml:space="preserve">
+        <value>ලිපිගොනුවේ නම *</value>
+    </data>
+    <data name="Ent_LblSecondaryIdOptional" xml:space="preserve">
+        <value>විෂය අංකය *</value>
+    </data>
+    <data name="Ent_LblFileType" xml:space="preserve">
+        <value>ලිපිගොනුවේ වර්ගය</value>
+    </data>
+    <data name="Ent_ChronoPhysicalData" xml:space="preserve">
+        <value>කාලානුක්‍රමික සහ භෞතික දත්ත</value>
+    </data>
+    <data name="Ent_LblStartDate" xml:space="preserve">
+        <value>ආරම්භක දිනය</value>
+    </data>
+    <data name="Ent_LblEndDate" xml:space="preserve">
+        <value>අවසන් දිනය</value>
+    </data>
+    <data name="Ent_LblTotalPages" xml:space="preserve">
+        <value>මුළු පිටු ගණන</value>
+    </data>
+    <data name="Ent_LblShelfNumber" xml:space="preserve">
+        <value>රාක්ක අංකය</value>
+    </data>
+    <data name="Ent_LblDeckNumber" xml:space="preserve">
+        <value>තට්ටු අංකය</value>
+    </data>
+    <data name="Ent_LblFileNumber" xml:space="preserve">
+        <value>ලිපිගොනු අංකය</value>
+    </data>
+    <data name="Ent_BtnClearForm" xml:space="preserve">
+        <value>පෝරමය හිස් කරන්න</value>
+    </data>
+    <data name="Ent_BtnSaveRecord" xml:space="preserve">
+        <value>වාර්තාව සුරකින්න</value>
+    </data>
+    <data name="Ent_TabAmend" xml:space="preserve">
+        <value>වාර්තාව සංශෝධනය කරන්න</value>
+    </data>
+    <data name="Ent_AmendSearchWatermark" xml:space="preserve">
+        <value>සංශෝධනය කිරීම සඳහා නිශ්චිත RR අංකය ඇතුළත් කරන්න...</value>
+    </data>
+    <data name="Ent_BtnLocateRecord" xml:space="preserve">
+        <value>වාර්තාව සොයන්න</value>
+    </data>
+    <data name="Ent_LblRrNumberLockEdit" xml:space="preserve">
+        <value>RR අංකය (සංස්කරණය කිරීමට අගුල හරින්න)</value>
+    </data>
+    <data name="Ent_TooltipUnlockEdit" xml:space="preserve">
+        <value>RR අංකය සංස්කරණය කිරීම සඳහා අගුල හරින්න</value>
+    </data>
+    <data name="Ent_LblSecondaryId" xml:space="preserve">
+        <value>විෂය අංකය</value>
+    </data>
+    <data name="Ent_BtnCancelAmendment" xml:space="preserve">
+        <value>සංශෝධනය අවලංගු කරන්න</value>
+    </data>
+    <data name="Ent_BtnCommitChanges" xml:space="preserve">
+        <value>වෙනස්කම් තහවුරු කරන්න</value>
+    </data>
+    <data name="Ent_TabAudit" xml:space="preserve">
+        <value>විගණන ඉතිහාස වාර්තාව</value>
+    </data>
+    <data name="Ent_ColTimestamp" xml:space="preserve">
+        <value>දිනය සහ වේලාව</value>
+    </data>
+    <data name="Ent_ColAction" xml:space="preserve">
+        <value>ක්‍රියාව</value>
+    </data>
+    <data name="Ent_ColRrNumber" xml:space="preserve">
+        <value>RR අංකය</value>
+    </data>
+    <data name="Ent_ColSubjectName" xml:space="preserve">
+        <value>ලිපිගොනුවේ නාමය</value>
+    </data>
+    <data name="Ent_ColSector" xml:space="preserve">
+        <value>අංශය</value>
+    </data>
+    <data name="Ent_ColStatus" xml:space="preserve">
+        <value>තත්ත්වය</value>
+    </data>
+    <data name="Ent_ColModifiedField" xml:space="preserve">
+        <value>සංශෝධිත ක්ෂේත්‍රය</value>
+    </data>
+    <data name="Ent_ColPriorValue" xml:space="preserve">
+        <value>පෙර අගය</value>
+    </data>
+    <data name="Ent_ColAmendedValue" xml:space="preserve">
+        <value>සංශෝධිත අගය</value>
+    </data>
+    <data name="Ent_BtnDismissLog" xml:space="preserve">
+        <value>වාර්තාව වසන්න</value>
+    </data>
 </root>

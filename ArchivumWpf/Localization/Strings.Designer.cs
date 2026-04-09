@@ -852,6 +852,348 @@ namespace ArchivumWpf.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Target exact RR Number to amend....
+        /// </summary>
+        public static string Ent_AmendSearchWatermark {
+            get {
+                return ResourceManager.GetString("Ent_AmendSearchWatermark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel Amendment.
+        /// </summary>
+        public static string Ent_BtnCancelAmendment {
+            get {
+                return ResourceManager.GetString("Ent_BtnCancelAmendment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear Form.
+        /// </summary>
+        public static string Ent_BtnClearForm {
+            get {
+                return ResourceManager.GetString("Ent_BtnClearForm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Commit Changes.
+        /// </summary>
+        public static string Ent_BtnCommitChanges {
+            get {
+                return ResourceManager.GetString("Ent_BtnCommitChanges", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dismiss Log.
+        /// </summary>
+        public static string Ent_BtnDismissLog {
+            get {
+                return ResourceManager.GetString("Ent_BtnDismissLog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Locate Record.
+        /// </summary>
+        public static string Ent_BtnLocateRecord {
+            get {
+                return ResourceManager.GetString("Ent_BtnLocateRecord", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save Record.
+        /// </summary>
+        public static string Ent_BtnSaveRecord {
+            get {
+                return ResourceManager.GetString("Ent_BtnSaveRecord", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CHRONOLOGICAL &amp; PHYSICAL DATA.
+        /// </summary>
+        public static string Ent_ChronoPhysicalData {
+            get {
+                return ResourceManager.GetString("Ent_ChronoPhysicalData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ACTION.
+        /// </summary>
+        public static string Ent_ColAction {
+            get {
+                return ResourceManager.GetString("Ent_ColAction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AMENDED VALUE.
+        /// </summary>
+        public static string Ent_ColAmendedValue {
+            get {
+                return ResourceManager.GetString("Ent_ColAmendedValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MODIFIED FIELD.
+        /// </summary>
+        public static string Ent_ColModifiedField {
+            get {
+                return ResourceManager.GetString("Ent_ColModifiedField", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PRIOR VALUE.
+        /// </summary>
+        public static string Ent_ColPriorValue {
+            get {
+                return ResourceManager.GetString("Ent_ColPriorValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to RR NUMBER.
+        /// </summary>
+        public static string Ent_ColRrNumber {
+            get {
+                return ResourceManager.GetString("Ent_ColRrNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SECTOR.
+        /// </summary>
+        public static string Ent_ColSector {
+            get {
+                return ResourceManager.GetString("Ent_ColSector", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to STATUS.
+        /// </summary>
+        public static string Ent_ColStatus {
+            get {
+                return ResourceManager.GetString("Ent_ColStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FILE NAME.
+        /// </summary>
+        public static string Ent_ColSubjectName {
+            get {
+                return ResourceManager.GetString("Ent_ColSubjectName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TIMESTAMP.
+        /// </summary>
+        public static string Ent_ColTimestamp {
+            get {
+                return ResourceManager.GetString("Ent_ColTimestamp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a date....
+        /// </summary>
+        public static string Ent_DatePickerWatermark {
+            get {
+                return ResourceManager.GetString("Ent_DatePickerWatermark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DECK NUMBER.
+        /// </summary>
+        public static string Ent_LblDeckNumber {
+            get {
+                return ResourceManager.GetString("Ent_LblDeckNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to END DATE.
+        /// </summary>
+        public static string Ent_LblEndDate {
+            get {
+                return ResourceManager.GetString("Ent_LblEndDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FILE NUMBER.
+        /// </summary>
+        public static string Ent_LblFileNumber {
+            get {
+                return ResourceManager.GetString("Ent_LblFileNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FILE TYPE.
+        /// </summary>
+        public static string Ent_LblFileType {
+            get {
+                return ResourceManager.GetString("Ent_LblFileType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to RR NUMBER *.
+        /// </summary>
+        public static string Ent_LblRrNumber {
+            get {
+                return ResourceManager.GetString("Ent_LblRrNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to RR NUMBER (TOGGLE LOCK TO EDIT).
+        /// </summary>
+        public static string Ent_LblRrNumberLockEdit {
+            get {
+                return ResourceManager.GetString("Ent_LblRrNumberLockEdit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SUBJECT NUMBER.
+        /// </summary>
+        public static string Ent_LblSecondaryId {
+            get {
+                return ResourceManager.GetString("Ent_LblSecondaryId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SUBJECT NUMBER*.
+        /// </summary>
+        public static string Ent_LblSecondaryIdOptional {
+            get {
+                return ResourceManager.GetString("Ent_LblSecondaryIdOptional", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SECTOR *.
+        /// </summary>
+        public static string Ent_LblSector {
+            get {
+                return ResourceManager.GetString("Ent_LblSector", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SHELF NUMBER.
+        /// </summary>
+        public static string Ent_LblShelfNumber {
+            get {
+                return ResourceManager.GetString("Ent_LblShelfNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to START DATE.
+        /// </summary>
+        public static string Ent_LblStartDate {
+            get {
+                return ResourceManager.GetString("Ent_LblStartDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FILE NAME *.
+        /// </summary>
+        public static string Ent_LblSubjectName {
+            get {
+                return ResourceManager.GetString("Ent_LblSubjectName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TOTAL PAGES.
+        /// </summary>
+        public static string Ent_LblTotalPages {
+            get {
+                return ResourceManager.GetString("Ent_LblTotalPages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create new records, amend existing files, or review the comprehensive audit history..
+        /// </summary>
+        public static string Ent_MainDesc {
+            get {
+                return ResourceManager.GetString("Ent_MainDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File Entry Management.
+        /// </summary>
+        public static string Ent_MainTitle {
+            get {
+                return ResourceManager.GetString("Ent_MainTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PRIMARY CLASSIFICATION.
+        /// </summary>
+        public static string Ent_PrimaryClass {
+            get {
+                return ResourceManager.GetString("Ent_PrimaryClass", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add New Record.
+        /// </summary>
+        public static string Ent_TabAdd {
+            get {
+                return ResourceManager.GetString("Ent_TabAdd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Amend Record.
+        /// </summary>
+        public static string Ent_TabAmend {
+            get {
+                return ResourceManager.GetString("Ent_TabAmend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Audit History Log.
+        /// </summary>
+        public static string Ent_TabAudit {
+            get {
+                return ResourceManager.GetString("Ent_TabAudit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unlock to Edit RR Number.
+        /// </summary>
+        public static string Ent_TooltipUnlockEdit {
+            get {
+                return ResourceManager.GetString("Ent_TooltipUnlockEdit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Close Dossier.
         /// </summary>
         public static string Sea_BtnCloseDossier {

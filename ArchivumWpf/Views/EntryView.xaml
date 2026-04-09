@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
              xmlns:models="clr-namespace:ArchivumWpf.Models"
+             xmlns:loc="clr-namespace:ArchivumWpf.Localization"
              Background="Transparent">
 
     <UserControl.Resources>
@@ -121,7 +122,7 @@
                     <ControlTemplate TargetType="DatePickerTextBox">
                         <Grid>
                             <ScrollViewer x:Name="PART_ContentHost" Margin="0" VerticalAlignment="Center"/>
-                            <TextBlock x:Name="PART_Watermark" Text="Select a date..." Foreground="{DynamicResource TextMuted}" Opacity="0.5" VerticalAlignment="Center" Margin="4,0,0,0" IsHitTestVisible="False">
+                            <TextBlock x:Name="PART_Watermark" Text="{x:Static loc:Strings.Ent_DatePickerWatermark}" Foreground="{DynamicResource TextMuted}" Opacity="0.5" VerticalAlignment="Center" Margin="4,0,0,0" IsHitTestVisible="False">
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="Visibility" Value="Collapsed"/>
@@ -195,8 +196,8 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" Margin="0,0,0,10">
-            <TextBlock Text="File Entry Management" Foreground="{DynamicResource PrimaryAccent}" FontSize="32" FontFamily="Georgia" FontWeight="Black" Margin="0,0,0,5"/>
-            <TextBlock Text="Create new records, amend existing files, or review the comprehensive audit history." Foreground="{DynamicResource TextMuted}" FontSize="14" Margin="0,0,0,10"/>
+            <TextBlock Text="{x:Static loc:Strings.Ent_MainTitle}" Foreground="{DynamicResource PrimaryAccent}" FontSize="32" FontFamily="Georgia" FontWeight="Black" Margin="0,0,0,5"/>
+            <TextBlock Text="{x:Static loc:Strings.Ent_MainDesc}" Foreground="{DynamicResource TextMuted}" FontSize="14" Margin="0,0,0,10"/>
             
             <Grid Margin="0,10,0,15">
                 <Rectangle Height="1" Fill="{DynamicResource BorderColor}" VerticalAlignment="Center"/>
@@ -239,14 +240,14 @@
                 </Style>
             </TabControl.Resources>
 
-            <TabItem Header="Add New Record">
+            <TabItem Header="{x:Static loc:Strings.Ent_TabAdd}">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <StackPanel HorizontalAlignment="Stretch" Margin="0,0,0,20">
                         
                         <Border Background="{DynamicResource CardBackground}" CornerRadius="16" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" Padding="3">
                             <Border BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="13" Padding="25">
                                 <StackPanel>
-                                    <TextBlock Text="PRIMARY CLASSIFICATION" Foreground="{DynamicResource PrimaryAccent}" FontSize="11" FontWeight="Bold" Margin="0,0,0,15"/>
+                                    <TextBlock Text="{x:Static loc:Strings.Ent_PrimaryClass}" Foreground="{DynamicResource PrimaryAccent}" FontSize="11" FontWeight="Bold" Margin="0,0,0,15"/>
                                     
                                     <Grid>
                                         <Grid.ColumnDefinitions>
@@ -257,34 +258,34 @@
                                         </Grid.RowDefinitions>
 
                                         <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,0,15">
-                                            <TextBlock Text="RR NUMBER *" Style="{StaticResource FormLabel}"/>
+                                            <TextBlock Text="{x:Static loc:Strings.Ent_LblRrNumber}" Style="{StaticResource FormLabel}"/>
                                             <TextBox Text="{Binding AddRrNumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CleanTextBox}"/>
                                         </StackPanel>
                                         
                                         <StackPanel Grid.Row="0" Grid.Column="2" Margin="0,0,0,15">
-                                            <TextBlock Text="SECTOR *" Style="{StaticResource FormLabel}"/>
+                                            <TextBlock Text="{x:Static loc:Strings.Ent_LblSector}" Style="{StaticResource FormLabel}"/>
                                             <ComboBox ItemsSource="{Binding AvailableSectors}" SelectedItem="{Binding AddSector, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CleanComboBox}"/>
                                         </StackPanel>
 
                                         <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,0,0,15">
-                                            <TextBlock Text="SUBJECT / FILE NAME *" Style="{StaticResource FormLabel}"/>
+                                            <TextBlock Text="{x:Static loc:Strings.Ent_LblSubjectName}" Style="{StaticResource FormLabel}"/>
                                             <TextBox Text="{Binding AddFileName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CleanTextBox}"/>
                                         </StackPanel>
 
                                         <StackPanel Grid.Row="2" Grid.Column="0" Margin="0,0,0,15">
-                                            <TextBlock Text="SECONDARY IDENTIFIER (OPTIONAL)" Style="{StaticResource FormLabel}"/>
+                                            <TextBlock Text="{x:Static loc:Strings.Ent_LblSecondaryIdOptional}" Style="{StaticResource FormLabel}"/>
                                             <TextBox Text="{Binding AddSubjectNumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CleanTextBox}"/>
                                         </StackPanel>
                                         
                                         <StackPanel Grid.Row="2" Grid.Column="2" Margin="0,0,0,15">
-                                            <TextBlock Text="FILE TYPE / MATERIAL" Style="{StaticResource FormLabel}"/>
+                                            <TextBlock Text="{x:Static loc:Strings.Ent_LblFileType}" Style="{StaticResource FormLabel}"/>
                                             <ComboBox ItemsSource="{Binding AvailableFileTypes}" SelectedItem="{Binding AddFileType, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CleanComboBox}"/>
                                         </StackPanel>
                                     </Grid>
 
                                     <Rectangle Height="1" Fill="{DynamicResource BorderColor}" Margin="0,5,0,20"/>
 
-                                    <TextBlock Text="CHRONOLOGICAL &amp; PHYSICAL DATA" Foreground="{DynamicResource PrimaryAccent}" FontSize="11" FontWeight="Bold" Margin="0,0,0,15"/>
+                                    <TextBlock Text="{x:Static loc:Strings.Ent_ChronoPhysicalData}" Foreground="{DynamicResource PrimaryAccent}" FontSize="11" FontWeight="Bold" Margin="0,0,0,15"/>
 
                                     <Grid>
                                         <Grid.ColumnDefinitions>
@@ -295,32 +296,32 @@
                                         </Grid.RowDefinitions>
 
                                         <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,0,15">
-                                            <TextBlock Text="START DATE" Style="{StaticResource FormLabel}"/>
+                                            <TextBlock Text="{x:Static loc:Strings.Ent_LblStartDate}" Style="{StaticResource FormLabel}"/>
                                             <DatePicker SelectedDate="{Binding AddStartDate}" Style="{StaticResource CleanDatePicker}"/>
                                         </StackPanel>
 
                                         <StackPanel Grid.Row="0" Grid.Column="2" Margin="0,0,0,15">
-                                            <TextBlock Text="END DATE" Style="{StaticResource FormLabel}"/>
+                                            <TextBlock Text="{x:Static loc:Strings.Ent_LblEndDate}" Style="{StaticResource FormLabel}"/>
                                             <DatePicker SelectedDate="{Binding AddEndDate}" Style="{StaticResource CleanDatePicker}"/>
                                         </StackPanel>
 
                                         <StackPanel Grid.Row="0" Grid.Column="4" Margin="0,0,0,15">
-                                            <TextBlock Text="TOTAL PAGES" Style="{StaticResource FormLabel}"/>
+                                            <TextBlock Text="{x:Static loc:Strings.Ent_LblTotalPages}" Style="{StaticResource FormLabel}"/>
                                             <TextBox Text="{Binding AddTotalPages, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CleanTextBox}"/>
                                         </StackPanel>
 
                                         <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,0,5">
-                                            <TextBlock Text="SHELF NUMBER" Style="{StaticResource FormLabel}"/>
+                                            <TextBlock Text="{x:Static loc:Strings.Ent_LblShelfNumber}" Style="{StaticResource FormLabel}"/>
                                             <TextBox Text="{Binding AddShelfNumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CleanTextBox}"/>
                                         </StackPanel>
 
                                         <StackPanel Grid.Row="1" Grid.Column="2" Margin="0,0,0,5">
-                                            <TextBlock Text="DECK NUMBER" Style="{StaticResource FormLabel}"/>
+                                            <TextBlock Text="{x:Static loc:Strings.Ent_LblDeckNumber}" Style="{StaticResource FormLabel}"/>
                                             <TextBox Text="{Binding AddDeckNumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CleanTextBox}"/>
                                         </StackPanel>
 
                                         <StackPanel Grid.Row="1" Grid.Column="4" Margin="0,0,0,5">
-                                            <TextBlock Text="FILE NUMBER" Style="{StaticResource FormLabel}"/>
+                                            <TextBlock Text="{x:Static loc:Strings.Ent_LblFileNumber}" Style="{StaticResource FormLabel}"/>
                                             <TextBox Text="{Binding AddFileNumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CleanTextBox}"/>
                                         </StackPanel>
                                     </Grid>
@@ -329,7 +330,7 @@
                         </Border>
 
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
-                            <Button Command="{Binding ClearAddFormCommand}" Content="Clear Form" Width="130" Height="45" Background="Transparent" Foreground="{DynamicResource TextMuted}" BorderThickness="0" Margin="0,0,15,0" Cursor="Hand"/>
+                            <Button Command="{Binding ClearAddFormCommand}" Content="{x:Static loc:Strings.Ent_BtnClearForm}" Width="130" Height="45" Background="Transparent" Foreground="{DynamicResource TextMuted}" BorderThickness="0" Margin="0,0,15,0" Cursor="Hand"/>
                             
                             <Button Command="{Binding SaveNewFileCommand}" Height="45" Background="{DynamicResource PrimaryAccent}" Foreground="{DynamicResource WindowBackground}" FontWeight="Bold" BorderThickness="0" Cursor="Hand" Padding="25,0">
                                 <Button.Template>
@@ -337,7 +338,7 @@
                                         <Border Background="{TemplateBinding Background}" CornerRadius="22">
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}">
                                                 <fa:ImageAwesome Icon="Save" Width="14" Height="14" Margin="0,0,10,0" Foreground="{DynamicResource WindowBackground}"/>
-                                                <TextBlock Text="Save Record"/>
+                                                <TextBlock Text="{x:Static loc:Strings.Ent_BtnSaveRecord}"/>
                                             </StackPanel>
                                         </Border>
                                     </ControlTemplate>
@@ -348,7 +349,7 @@
                 </ScrollViewer>
             </TabItem>
 
-            <TabItem Header="Amend Record">
+            <TabItem Header="{x:Static loc:Strings.Ent_TabAmend}">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <StackPanel HorizontalAlignment="Stretch" Margin="0,0,0,20">
                         
@@ -371,7 +372,7 @@
                                                         <Setter.Value>
                                                             <VisualBrush Stretch="None" AlignmentX="Left">
                                                                 <VisualBrush.Visual>
-                                                                    <TextBlock Text="Target exact RR Number to amend..." Foreground="{DynamicResource TextMuted}" Opacity="0.5" FontSize="16" FontFamily="Georgia"/>
+                                                                    <TextBlock Text="{x:Static loc:Strings.Ent_AmendSearchWatermark}" Foreground="{DynamicResource TextMuted}" Opacity="0.5" FontSize="16" FontFamily="Georgia"/>
                                                                 </VisualBrush.Visual>
                                                             </VisualBrush>
                                                         </Setter.Value>
@@ -390,7 +391,7 @@
                                             <Border Background="{TemplateBinding Background}" CornerRadius="22">
                                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}">
                                                     <fa:ImageAwesome Icon="Search" Width="14" Height="14" Foreground="{TemplateBinding Foreground}" Margin="0,0,10,0"/>
-                                                    <TextBlock Text="Locate Record" FontSize="13"/>
+                                                    <TextBlock Text="{x:Static loc:Strings.Ent_BtnLocateRecord}" FontSize="13"/>
                                                 </StackPanel>
                                             </Border>
                                         </ControlTemplate>
@@ -402,7 +403,7 @@
                         <Border Background="{DynamicResource CardBackground}" CornerRadius="16" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" Padding="3" IsEnabled="{Binding IsEditFormEnabled}">
                             <Border BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="13" Padding="25">
                                 <StackPanel>
-                                    <TextBlock Text="PRIMARY CLASSIFICATION" Foreground="{DynamicResource PrimaryAccent}" FontSize="11" FontWeight="Bold" Margin="0,0,0,15"/>
+                                    <TextBlock Text="{x:Static loc:Strings.Ent_PrimaryClass}" Foreground="{DynamicResource PrimaryAccent}" FontSize="11" FontWeight="Bold" Margin="0,0,0,15"/>
                                     
                                     <Grid>
                                         <Grid.ColumnDefinitions>
@@ -413,7 +414,7 @@
                                         </Grid.RowDefinitions>
 
                                         <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,0,0,15">
-                                            <TextBlock Text="RR NUMBER (TOGGLE LOCK TO EDIT)" Style="{StaticResource FormLabel}" Foreground="{DynamicResource DangerAccent}"/>
+                                            <TextBlock Text="{x:Static loc:Strings.Ent_LblRrNumberLockEdit}" Style="{StaticResource FormLabel}" Foreground="{DynamicResource DangerAccent}"/>
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*"/>
@@ -424,7 +425,7 @@
                                                          Style="{StaticResource CleanTextBox}" 
                                                          IsReadOnly="{Binding IsChecked, ElementName=RrLockToggle}"/>
                                                 
-                                                <ToggleButton x:Name="RrLockToggle" Grid.Column="1" IsChecked="True" Margin="15,0,0,0" Width="45" Height="45" Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" Cursor="Hand" ToolTip="Unlock to Edit RR Number">
+                                                <ToggleButton x:Name="RrLockToggle" Grid.Column="1" IsChecked="True" Margin="15,0,0,0" Width="45" Height="45" Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" Cursor="Hand" ToolTip="{x:Static loc:Strings.Ent_TooltipUnlockEdit}">
                                                     <ToggleButton.Template>
                                                         <ControlTemplate TargetType="ToggleButton">
                                                             <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="12">
@@ -448,24 +449,24 @@
                                         </StackPanel>
                                         
                                         <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,0,15">
-                                            <TextBlock Text="SECTOR *" Style="{StaticResource FormLabel}"/>
+                                            <TextBlock Text="{x:Static loc:Strings.Ent_LblSector}" Style="{StaticResource FormLabel}"/>
                                             <ComboBox ItemsSource="{Binding AvailableSectors}" SelectedItem="{Binding EditSector, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CleanComboBox}"/>
                                         </StackPanel>
 
                                         <StackPanel Grid.Row="1" Grid.Column="2" Margin="0,0,0,15">
-                                            <TextBlock Text="FILE TYPE / MATERIAL" Style="{StaticResource FormLabel}"/>
+                                            <TextBlock Text="{x:Static loc:Strings.Ent_LblFileType}" Style="{StaticResource FormLabel}"/>
                                             <ComboBox ItemsSource="{Binding AvailableFileTypes}" SelectedItem="{Binding EditFileType, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CleanComboBox}"/>
                                         </StackPanel>
 
                                         <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,0,0,15">
-                                            <TextBlock Text="SUBJECT / FILE NAME *" Style="{StaticResource FormLabel}"/>
+                                            <TextBlock Text="{x:Static loc:Strings.Ent_LblSubjectName}" Style="{StaticResource FormLabel}"/>
                                             <TextBox Text="{Binding EditFileName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CleanTextBox}"/>
                                         </StackPanel>
                                     </Grid>
 
                                     <Rectangle Height="1" Fill="{DynamicResource BorderColor}" Margin="0,5,0,20"/>
 
-                                    <TextBlock Text="CHRONOLOGICAL &amp; PHYSICAL DATA" Foreground="{DynamicResource PrimaryAccent}" FontSize="11" FontWeight="Bold" Margin="0,0,0,15"/>
+                                    <TextBlock Text="{x:Static loc:Strings.Ent_ChronoPhysicalData}" Foreground="{DynamicResource PrimaryAccent}" FontSize="11" FontWeight="Bold" Margin="0,0,0,15"/>
 
                                     <Grid>
                                         <Grid.ColumnDefinitions>
@@ -476,37 +477,37 @@
                                         </Grid.RowDefinitions>
 
                                         <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,0,0,15">
-                                            <TextBlock Text="SECONDARY IDENTIFIER" Style="{StaticResource FormLabel}"/>
+                                            <TextBlock Text="{x:Static loc:Strings.Ent_LblSecondaryId}" Style="{StaticResource FormLabel}"/>
                                             <TextBox Text="{Binding EditSubjectNumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CleanTextBox}"/>
                                         </StackPanel>
 
                                         <StackPanel Grid.Row="0" Grid.Column="4" Margin="0,0,0,15">
-                                            <TextBlock Text="TOTAL PAGES" Style="{StaticResource FormLabel}"/>
+                                            <TextBlock Text="{x:Static loc:Strings.Ent_LblTotalPages}" Style="{StaticResource FormLabel}"/>
                                             <TextBox Text="{Binding EditTotalPages, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CleanTextBox}"/>
                                         </StackPanel>
 
                                         <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,0,15">
-                                            <TextBlock Text="START DATE" Style="{StaticResource FormLabel}"/>
+                                            <TextBlock Text="{x:Static loc:Strings.Ent_LblStartDate}" Style="{StaticResource FormLabel}"/>
                                             <DatePicker SelectedDate="{Binding EditStartDate}" Style="{StaticResource CleanDatePicker}"/>
                                         </StackPanel>
 
                                         <StackPanel Grid.Row="1" Grid.Column="2" Margin="0,0,0,15">
-                                            <TextBlock Text="END DATE" Style="{StaticResource FormLabel}"/>
+                                            <TextBlock Text="{x:Static loc:Strings.Ent_LblEndDate}" Style="{StaticResource FormLabel}"/>
                                             <DatePicker SelectedDate="{Binding EditEndDate}" Style="{StaticResource CleanDatePicker}"/>
                                         </StackPanel>
 
                                         <StackPanel Grid.Row="2" Grid.Column="0" Margin="0,0,0,5">
-                                            <TextBlock Text="SHELF NUMBER" Style="{StaticResource FormLabel}"/>
+                                            <TextBlock Text="{x:Static loc:Strings.Ent_LblShelfNumber}" Style="{StaticResource FormLabel}"/>
                                             <TextBox Text="{Binding EditShelfNumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CleanTextBox}"/>
                                         </StackPanel>
 
                                         <StackPanel Grid.Row="2" Grid.Column="2" Margin="0,0,0,5">
-                                            <TextBlock Text="DECK NUMBER" Style="{StaticResource FormLabel}"/>
+                                            <TextBlock Text="{x:Static loc:Strings.Ent_LblDeckNumber}" Style="{StaticResource FormLabel}"/>
                                             <TextBox Text="{Binding EditDeckNumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CleanTextBox}"/>
                                         </StackPanel>
 
                                         <StackPanel Grid.Row="2" Grid.Column="4" Margin="0,0,0,5">
-                                            <TextBlock Text="FILE NUMBER" Style="{StaticResource FormLabel}"/>
+                                            <TextBlock Text="{x:Static loc:Strings.Ent_LblFileNumber}" Style="{StaticResource FormLabel}"/>
                                             <TextBox Text="{Binding EditFileNumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CleanTextBox}"/>
                                         </StackPanel>
                                     </Grid>
@@ -516,7 +517,7 @@
                         </Border>
 
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
-                            <Button Command="{Binding ClearEditFormCommand}" Content="Cancel Amendment" Width="150" Height="45" Background="Transparent" Foreground="{DynamicResource DangerAccent}" BorderThickness="0" Margin="0,0,15,0" Cursor="Hand"/>
+                            <Button Command="{Binding ClearEditFormCommand}" Content="{x:Static loc:Strings.Ent_BtnCancelAmendment}" Width="150" Height="45" Background="Transparent" Foreground="{DynamicResource DangerAccent}" BorderThickness="0" Margin="0,0,15,0" Cursor="Hand"/>
                             
                             <Button Command="{Binding UpdateFileCommand}" IsEnabled="{Binding IsEditFormEnabled}" Height="45" Background="{DynamicResource PrimaryAccent}" Foreground="{DynamicResource WindowBackground}" FontWeight="Bold" BorderThickness="0" Cursor="Hand" Padding="25,0">
                                 <Button.Template>
@@ -524,7 +525,7 @@
                                         <Border Background="{TemplateBinding Background}" CornerRadius="22">
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}">
                                                 <fa:ImageAwesome Icon="Save" Width="14" Height="14" Margin="0,0,10,0" Foreground="{DynamicResource WindowBackground}"/>
-                                                <TextBlock Text="Commit Changes"/>
+                                                <TextBlock Text="{x:Static loc:Strings.Ent_BtnCommitChanges}"/>
                                             </StackPanel>
                                         </Border>
                                         <ControlTemplate.Triggers>
@@ -541,7 +542,7 @@
                 </ScrollViewer>
             </TabItem>
 
-            <TabItem Header="Audit History Log">
+            <TabItem Header="{x:Static loc:Strings.Ent_TabAudit}">
                 <Border Background="{DynamicResource CardBackground}" CornerRadius="16" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" Padding="3">
                     <Border BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="13">
                         <DataGrid ItemsSource="{Binding HistoryRecords}" 
@@ -580,7 +581,7 @@
                             </DataGrid.Resources>
 
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="TIMESTAMP" Binding="{Binding Timestamp, StringFormat=yyyy-MM-dd HH:mm}">
+                                <DataGridTextColumn Header="{x:Static loc:Strings.Ent_ColTimestamp}" Binding="{Binding Timestamp, StringFormat=yyyy-MM-dd HH:mm}">
                                     <DataGridTextColumn.ElementStyle>
                                         <Style TargetType="TextBlock">
                                             <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
@@ -589,7 +590,7 @@
                                     </DataGridTextColumn.ElementStyle>
                                 </DataGridTextColumn>
                                 
-                                <DataGridTextColumn Header="ACTION" Binding="{Binding ActionType}">
+                                <DataGridTextColumn Header="{x:Static loc:Strings.Ent_ColAction}" Binding="{Binding ActionType}">
                                     <DataGridTextColumn.ElementStyle>
                                         <Style TargetType="TextBlock">
                                             <Setter Property="FontWeight" Value="Bold"/>
@@ -606,7 +607,7 @@
                                     </DataGridTextColumn.ElementStyle>
                                 </DataGridTextColumn>
 
-                                <DataGridTextColumn Header="RR NUMBER" Binding="{Binding RrNumber}">
+                                <DataGridTextColumn Header="{x:Static loc:Strings.Ent_ColRrNumber}" Binding="{Binding RrNumber}">
                                     <DataGridTextColumn.ElementStyle>
                                         <Style TargetType="TextBlock">
                                             <Setter Property="Foreground" Value="{DynamicResource PrimaryAccent}"/>
@@ -616,7 +617,7 @@
                                     </DataGridTextColumn.ElementStyle>
                                 </DataGridTextColumn>
                                 
-                                <DataGridTemplateColumn Header="SUBJECT NAME" Width="*">
+                                <DataGridTemplateColumn Header="{x:Static loc:Strings.Ent_ColSubjectName}" Width="*">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding FileName}" ToolTip="{Binding FileName}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
@@ -624,7 +625,7 @@
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
 
-                                <DataGridTemplateColumn Header="SECTOR" Width="*">
+                                <DataGridTemplateColumn Header="{x:Static loc:Strings.Ent_ColSector}" Width="*">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding Sector}" ToolTip="{Binding Sector}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
@@ -632,7 +633,7 @@
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
 
-                                <DataGridTextColumn Header="STATUS" Binding="{Binding Status}">
+                                <DataGridTextColumn Header="{x:Static loc:Strings.Ent_ColStatus}" Binding="{Binding Status}">
                                     <DataGridTextColumn.ElementStyle>
                                         <Style TargetType="TextBlock">
                                             <Setter Property="VerticalAlignment" Value="Center"/>
@@ -680,7 +681,7 @@
                                 </DataGrid.Resources>
 
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Header="MODIFIED FIELD" Binding="{Binding FieldName}" Width="120">
+                                    <DataGridTextColumn Header="{x:Static loc:Strings.Ent_ColModifiedField}" Binding="{Binding FieldName}" Width="120">
                                         <DataGridTextColumn.ElementStyle>
                                             <Style TargetType="TextBlock">
                                                 <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
@@ -691,7 +692,7 @@
                                         </DataGridTextColumn.ElementStyle>
                                     </DataGridTextColumn>
 
-                                    <DataGridTextColumn Header="PRIOR VALUE" Binding="{Binding OldValue}" Width="*">
+                                    <DataGridTextColumn Header="{x:Static loc:Strings.Ent_ColPriorValue}" Binding="{Binding OldValue}" Width="*">
                                         <DataGridTextColumn.ElementStyle>
                                             <Style TargetType="TextBlock">
                                                 <Setter Property="Foreground" Value="{DynamicResource DangerAccent}"/>
@@ -701,7 +702,7 @@
                                         </DataGridTextColumn.ElementStyle>
                                     </DataGridTextColumn>
                                     
-                                    <DataGridTextColumn Header="AMENDED VALUE" Binding="{Binding NewValue}" Width="*">
+                                    <DataGridTextColumn Header="{x:Static loc:Strings.Ent_ColAmendedValue}" Binding="{Binding NewValue}" Width="*">
                                         <DataGridTextColumn.ElementStyle>
                                             <Style TargetType="TextBlock">
                                                 <Setter Property="Foreground" Value="{DynamicResource PrimaryAccent}"/>
@@ -714,7 +715,7 @@
                             </DataGrid>
                         </Border>
 
-                        <Button Command="{Binding CloseDialogCommand}" Content="Dismiss Log" 
+                        <Button Command="{Binding CloseDialogCommand}" Content="{x:Static loc:Strings.Ent_BtnDismissLog}" 
                                 Height="45" Margin="0,30,0,0" Background="{DynamicResource BorderColor}" 
                                 Foreground="{DynamicResource TextMain}" FontWeight="Bold" BorderThickness="0" Cursor="Hand" Panel.ZIndex="10">
                             <Button.Template>

@@ -534,4 +534,118 @@
     <data name="Sea_BtnCloseDossier" xml:space="preserve">
         <value>Close Dossier</value>
     </data>
+    <data name="Ent_MainTitle" xml:space="preserve">
+        <value>File Entry Management</value>
+    </data>
+    <data name="Ent_MainDesc" xml:space="preserve">
+        <value>Create new records, amend existing files, or review the comprehensive audit history.</value>
+    </data>
+    <data name="Ent_DatePickerWatermark" xml:space="preserve">
+        <value>Select a date...</value>
+    </data>
+    <data name="Ent_TabAdd" xml:space="preserve">
+        <value>Add New Record</value>
+    </data>
+    <data name="Ent_PrimaryClass" xml:space="preserve">
+        <value>PRIMARY CLASSIFICATION</value>
+    </data>
+    <data name="Ent_LblRrNumber" xml:space="preserve">
+        <value>RR NUMBER *</value>
+    </data>
+    <data name="Ent_LblSector" xml:space="preserve">
+        <value>SECTOR *</value>
+    </data>
+    <data name="Ent_LblSubjectName" xml:space="preserve">
+        <value>FILE NAME *</value>
+    </data>
+    <data name="Ent_LblSecondaryIdOptional" xml:space="preserve">
+        <value>SUBJECT NUMBER*</value>
+    </data>
+    <data name="Ent_LblFileType" xml:space="preserve">
+        <value>FILE TYPE</value>
+    </data>
+    <data name="Ent_ChronoPhysicalData" xml:space="preserve">
+        <value>CHRONOLOGICAL &amp; PHYSICAL DATA</value>
+    </data>
+    <data name="Ent_LblStartDate" xml:space="preserve">
+        <value>START DATE</value>
+    </data>
+    <data name="Ent_LblEndDate" xml:space="preserve">
+        <value>END DATE</value>
+    </data>
+    <data name="Ent_LblTotalPages" xml:space="preserve">
+        <value>TOTAL PAGES</value>
+    </data>
+    <data name="Ent_LblShelfNumber" xml:space="preserve">
+        <value>SHELF NUMBER</value>
+    </data>
+    <data name="Ent_LblDeckNumber" xml:space="preserve">
+        <value>DECK NUMBER</value>
+    </data>
+    <data name="Ent_LblFileNumber" xml:space="preserve">
+        <value>FILE NUMBER</value>
+    </data>
+    <data name="Ent_BtnClearForm" xml:space="preserve">
+        <value>Clear Form</value>
+    </data>
+    <data name="Ent_BtnSaveRecord" xml:space="preserve">
+        <value>Save Record</value>
+    </data>
+    <data name="Ent_TabAmend" xml:space="preserve">
+        <value>Amend Record</value>
+    </data>
+    <data name="Ent_AmendSearchWatermark" xml:space="preserve">
+        <value>Target exact RR Number to amend...</value>
+    </data>
+    <data name="Ent_BtnLocateRecord" xml:space="preserve">
+        <value>Locate Record</value>
+    </data>
+    <data name="Ent_LblRrNumberLockEdit" xml:space="preserve">
+        <value>RR NUMBER (TOGGLE LOCK TO EDIT)</value>
+    </data>
+    <data name="Ent_TooltipUnlockEdit" xml:space="preserve">
+        <value>Unlock to Edit RR Number</value>
+    </data>
+    <data name="Ent_LblSecondaryId" xml:space="preserve">
+        <value>SUBJECT NUMBER</value>
+    </data>
+    <data name="Ent_BtnCancelAmendment" xml:space="preserve">
+        <value>Cancel Amendment</value>
+    </data>
+    <data name="Ent_BtnCommitChanges" xml:space="preserve">
+        <value>Commit Changes</value>
+    </data>
+    <data name="Ent_TabAudit" xml:space="preserve">
+        <value>Audit History Log</value>
+    </data>
+    <data name="Ent_ColTimestamp" xml:space="preserve">
+        <value>TIMESTAMP</value>
+    </data>
+    <data name="Ent_ColAction" xml:space="preserve">
+        <value>ACTION</value>
+    </data>
+    <data name="Ent_ColRrNumber" xml:space="preserve">
+        <value>RR NUMBER</value>
+    </data>
+    <data name="Ent_ColSubjectName" xml:space="preserve">
+        <value>FILE NAME</value>
+    </data>
+    <data name="Ent_ColSector" xml:space="preserve">
+        <value>SECTOR</value>
+    </data>
+    <data name="Ent_ColStatus" xml:space="preserve">
+        <value>STATUS</value>
+    </data>
+    <data name="Ent_ColModifiedField" xml:space="preserve">
+        <value>MODIFIED FIELD</value>
+    </data>
+    <data name="Ent_ColPriorValue" xml:space="preserve">
+        <value>PRIOR VALUE</value>
+    </data>
+    <data name="Ent_ColAmendedValue" xml:space="preserve">
+        <value>AMENDED VALUE</value>
+    </data>
+    <data name="Ent_BtnDismissLog" xml:space="preserve">
+        <value>Dismiss Log</value>
+    </data>
 </root>
