@@ -590,4 +590,256 @@
     <data name="Ent_BtnDismissLog" xml:space="preserve">
         <value>වාර්තාව වසන්න</value>
     </data>
+    <data name="Rep_PaginationSeparator" xml:space="preserve">
+        <value> / </value>
+    </data>
+    <data name="Rep_DatePickerWatermark" xml:space="preserve">
+        <value>තෝරන්න...</value>
+    </data>
+    <data name="Rep_MainTitle" xml:space="preserve">
+        <value>වාර්තා සැකසීම සහ නිර්යාත කිරීම</value>
+    </data>
+    <data name="Rep_MainDesc" xml:space="preserve">
+        <value>පරාමිතීන් තේරීම, ප්‍රතිදාන තීරු වින්‍යාස කිරීම සහ පද්ධති ලේඛනය CSV හෝ Excel ලෙස නිර්යාත කිරීම.</value>
+    </data>
+    <data name="Rep_BackupTitle" xml:space="preserve">
+        <value>පද්ධති දත්ත ගබඩාවේ සම්පූර්ණ දත්ත පිටපත (Backup)</value>
+    </data>
+    <data name="Rep_BackupDesc" xml:space="preserve">
+        <value>සියලුම වගුවල සම්පූර්ණ .sql දත්ත පිටපතක් සකසයි. Ignores active filters.</value>
+    </data>
+    <data name="Rep_BtnExportSql" xml:space="preserve">
+        <value>.SQL නිර්යාත කරන්න</value>
+    </data>
+    <data name="Rep_FilterToggle" xml:space="preserve">
+        <value>වාර්තා පෙරහන් සහ ප්‍රතිදාන තීරු වින්‍යාස කරන්න</value>
+    </data>
+    <data name="Rep_SectionDataFilters" xml:space="preserve">
+        <value>1. දත්ත පෙරහන්</value>
+    </data>
+    <data name="Rep_LblSerialNumber" xml:space="preserve">
+        <value>අනුක්‍රමික අංකය</value>
+    </data>
+    <data name="Rep_LblRrNumber" xml:space="preserve">
+        <value>RR අංකය</value>
+    </data>
+    <data name="Rep_LblSector" xml:space="preserve">
+        <value>අංශය</value>
+    </data>
+    <data name="Rep_LblCurrentStatus" xml:space="preserve">
+        <value>වත්මන් තත්ත්වය</value>
+    </data>
+    <data name="Rep_LblFileName" xml:space="preserve">
+        <value>ලිපිගොනුවේ නම</value>
+    </data>
+    <data name="Rep_LblFileType" xml:space="preserve">
+        <value>ලිපිගොනුවේ වර්ගය</value>
+    </data>
+    <data name="Rep_LblContentStartDate" xml:space="preserve">
+        <value>අන්තර්ගත ආරම්භක දිනය</value>
+    </data>
+    <data name="Rep_LblContentEndDate" xml:space="preserve">
+        <value>අන්තර්ගත අවසන් දිනය</value>
+    </data>
+    <data name="Rep_LblTotalPages" xml:space="preserve">
+        <value>මුළු පිටු ගණන</value>
+    </data>
+    <data name="Rep_LblShelfNumber" xml:space="preserve">
+        <value>රාක්ක අංකය</value>
+    </data>
+    <data name="Rep_LblDeckNumber" xml:space="preserve">
+        <value>තට්ටු අංකය</value>
+    </data>
+    <data name="Rep_LblFileNumber" xml:space="preserve">
+        <value>ලිපිගොනු අංකය</value>
+    </data>
+    <data name="Rep_SectionEntryTimestamps" xml:space="preserve">
+        <value>පද්ධතියට ඇතුළත් කළ දිනය සහ වේලාව</value>
+    </data>
+    <data name="Rep_LblAddedAfter" xml:space="preserve">
+        <value>මෙයට පසු ඇතුළත් කළ:</value>
+    </data>
+    <data name="Rep_LblAddedBefore" xml:space="preserve">
+        <value>මෙයට පෙර ඇතුළත් කළ:</value>
+    </data>
+    <data name="Rep_SectionRemovalCriteria" xml:space="preserve">
+        <value>ඉවත් කිරීමේ සහ සංරක්ෂණය කිරීමේ නිර්ණායක</value>
+    </data>
+    <data name="Rep_ChkIsRemoved" xml:space="preserve">
+        <value>ඉවත් කර තිබේද?</value>
+    </data>
+    <data name="Rep_LblScheduledRemoval" xml:space="preserve">
+        <value>ඉවත් කිරීමට කාලසටහන්ගත කළ දිනය:</value>
+    </data>
+    <data name="Rep_LblActualRemovalDate" xml:space="preserve">
+        <value>ඉවත් කළ දිනය:</value>
+    </data>
+    <data name="Rep_BtnResetFilters" xml:space="preserve">
+        <value>සියලුම පෙරහන් යළි සකසන්න</value>
+    </data>
+    <data name="Rep_SectionOutputColumns" xml:space="preserve">
+        <value>2. ප්‍රතිදාන තීරු</value>
+    </data>
+    <data name="Rep_ChkRenderColors" xml:space="preserve">
+        <value>අංශයට අදාළ වර්ණ පෙන්වන්න</value>
+    </data>
+    <data name="Rep_ChkColAddedStamp" xml:space="preserve">
+        <value>ඇතුළත් කළ වේලාව</value>
+    </data>
+    <data name="Rep_ChkColSerialNum" xml:space="preserve">
+        <value>අනුක්‍රමික අංකය</value>
+    </data>
+    <data name="Rep_ChkColRrNum" xml:space="preserve">
+        <value>RR අංකය</value>
+    </data>
+    <data name="Rep_ChkColSector" xml:space="preserve">
+        <value>අංශය</value>
+    </data>
+    <data name="Rep_ChkColSubjectNum" xml:space="preserve">
+        <value>විෂය අංකය</value>
+    </data>
+    <data name="Rep_ChkColFileName" xml:space="preserve">
+        <value>ලිපිගොනුවේ නම</value>
+    </data>
+    <data name="Rep_ChkColFileType" xml:space="preserve">
+        <value>ලිපිගොනු වර්ගය</value>
+    </data>
+    <data name="Rep_ChkColStartDate" xml:space="preserve">
+        <value>ආරම්භක දිනය</value>
+    </data>
+    <data name="Rep_ChkColEndDate" xml:space="preserve">
+        <value>අවසන් දිනය</value>
+    </data>
+    <data name="Rep_ChkColPages" xml:space="preserve">
+        <value>පිටු ගණන</value>
+    </data>
+    <data name="Rep_ChkColShelf" xml:space="preserve">
+        <value>රාක්කය</value>
+    </data>
+    <data name="Rep_ChkColDeck" xml:space="preserve">
+        <value>තට්ටුව</value>
+    </data>
+    <data name="Rep_ChkColFileNum" xml:space="preserve">
+        <value>ලිපිගොනු අංකය</value>
+    </data>
+    <data name="Rep_ChkColStatus" xml:space="preserve">
+        <value>තත්ත්වය</value>
+    </data>
+    <data name="Rep_ChkColScheduledDate" xml:space="preserve">
+        <value>කාලසටහන්ගත කළ දිනය</value>
+    </data>
+    <data name="Rep_ChkColRemovedDate" xml:space="preserve">
+        <value>ඉවත් කළ දිනය</value>
+    </data>
+    <data name="Rep_ChkColIsRemoved" xml:space="preserve">
+        <value>ඉවත් කර ඇත</value>
+    </data>
+    <data name="Rep_PreviewTitle" xml:space="preserve">
+        <value>වාර්තා දත්ත පෙරදසුන</value>
+    </data>
+    <data name="Rep_GridColTimestamp" xml:space="preserve">
+        <value>දිනය සහ වේලාව</value>
+    </data>
+    <data name="Rep_GridColSerial" xml:space="preserve">
+        <value>අනුක්‍රමික අංකය</value>
+    </data>
+    <data name="Rep_GridColRrNum" xml:space="preserve">
+        <value>RR අංකය</value>
+    </data>
+    <data name="Rep_GridColSector" xml:space="preserve">
+        <value>අංශය</value>
+    </data>
+    <data name="Rep_GridColSubjectNum" xml:space="preserve">
+        <value>විෂය අංකය</value>
+    </data>
+    <data name="Rep_GridColFileName" xml:space="preserve">
+        <value>ලිපිගොනුවේ නම</value>
+    </data>
+    <data name="Rep_GridColFileType" xml:space="preserve">
+        <value>ලිපිගොනු වර්ගය</value>
+    </data>
+    <data name="Rep_GridColStartDate" xml:space="preserve">
+        <value>ආරම්භක දිනය</value>
+    </data>
+    <data name="Rep_GridColEndDate" xml:space="preserve">
+        <value>අවසන් දිනය</value>
+    </data>
+    <data name="Rep_GridColPages" xml:space="preserve">
+        <value>පිටු ගණන</value>
+    </data>
+    <data name="Rep_GridColShelf" xml:space="preserve">
+        <value>රාක්කය</value>
+    </data>
+    <data name="Rep_GridColDeck" xml:space="preserve">
+        <value>තට්ටුව</value>
+    </data>
+    <data name="Rep_GridColFileNum" xml:space="preserve">
+        <value>ලිපිගොනු අංකය</value>
+    </data>
+    <data name="Rep_GridColStatus" xml:space="preserve">
+        <value>තත්ත්වය</value>
+    </data>
+    <data name="Rep_GridColScheduledRemoval" xml:space="preserve">
+        <value>ඉවත් කිරීමට නියමිත දිනය</value>
+    </data>
+    <data name="Rep_GridColRemovedDate" xml:space="preserve">
+        <value>ඉවත් කළ දිනය</value>
+    </data>
+    <data name="Rep_GridColIsRemoved" xml:space="preserve">
+        <value>ඉවත් කර ඇත</value>
+    </data>
+    <data name="Rep_TotalQueriesMatched" xml:space="preserve">
+        <value>ගැළපෙන මුළු වාර්තා ගණන:</value>
+    </data>
+    <data name="Rep_BtnExportCsv" xml:space="preserve">
+        <value>CSV ලෙස නිර්යාත කරන්න</value>
+    </data>
+    <data name="Rep_BtnExportExcel" xml:space="preserve">
+        <value>Excel ලෙස නිර්යාත කරන්න</value>
+    </data>
+    <data name="Main_BrandTitle" xml:space="preserve">
+        <value>ලේඛනාගාරය</value>
+    </data>
+    <data name="Main_WindowTitle" xml:space="preserve">
+        <value>වැ.ප්‍රා.ස. - ලේඛනාගාරය</value>
+    </data>
+    <data name="Main_WelcomeUser" xml:space="preserve">
+        <value>ආයුබෝවන්, පරිපාලක!</value>
+    </data>
+    <data name="Main_TooltipTheme" xml:space="preserve">
+        <value>තේමාව වෙනස් කරන්න</value>
+    </data>
+    <data name="Main_BtnReviewDisposal" xml:space="preserve">
+        <value>සමාලෝචනය කරන්න</value>
+    </data>
+    <data name="Main_HeaderSubtitle" xml:space="preserve">
+        <value>ඒකාබද්ධ ලේඛනාගාර කළමනාකරණය</value>
+    </data>
+    <data name="Main_BrandSubtitle" xml:space="preserve">
+        <value>වාර්තා කළමණාකරණ පද්ධතිය</value>
+    </data>
+    <data name="Main_NavSearch" xml:space="preserve">
+        <value>සෙවුම්</value>
+    </data>
+    <data name="Main_NavCirculation" xml:space="preserve">
+        <value>සංසරණ</value>
+    </data>
+    <data name="Main_NavNewEntry" xml:space="preserve">
+        <value>ඇතුලත් කිරීම්</value>
+    </data>
+    <data name="Main_NavReports" xml:space="preserve">
+        <value>වාර්තා</value>
+    </data>
+    <data name="Main_NavSettings" xml:space="preserve">
+        <value>සැකසුම්</value>
+    </data>
+    <data name="Main_NavDisposal" xml:space="preserve">
+        <value>අපහරණය කිරීම්</value>
+    </data>
+    <data name="Main_NavDashboard" xml:space="preserve">
+        <value>පාලක පුවරුව</value>
+    </data>
+    <data name="Main_HeaderTitle" xml:space="preserve">
+        <value>වැලිගෙපොල ප්‍රාදේශීය සභාව</value>
+    </data>
 </root>

@@ -648,4 +648,256 @@
     <data name="Ent_BtnDismissLog" xml:space="preserve">
         <value>Dismiss Log</value>
     </data>
+    <data name="Rep_DatePickerWatermark" xml:space="preserve">
+        <value>Select...</value>
+    </data>
+    <data name="Rep_MainTitle" xml:space="preserve">
+        <value>Report Generation &amp; Export</value>
+    </data>
+    <data name="Rep_MainDesc" xml:space="preserve">
+        <value>Filter parameters, configure output columns, and export system ledger as CSV or Excel.</value>
+    </data>
+    <data name="Rep_BackupTitle" xml:space="preserve">
+        <value>FULL SYSTEM DATABASE BACKUP</value>
+    </data>
+    <data name="Rep_BackupDesc" xml:space="preserve">
+        <value>Generates a complete native .sql dump of the full table. Ignores active filters.</value>
+    </data>
+    <data name="Rep_BtnExportSql" xml:space="preserve">
+        <value>Export .SQL</value>
+    </data>
+    <data name="Rep_FilterToggle" xml:space="preserve">
+        <value>Configure Report Filters &amp; Output Columns</value>
+    </data>
+    <data name="Rep_SectionDataFilters" xml:space="preserve">
+        <value>1. DATA FILTERS</value>
+    </data>
+    <data name="Rep_LblSerialNumber" xml:space="preserve">
+        <value>Serial Number</value>
+    </data>
+    <data name="Rep_LblRrNumber" xml:space="preserve">
+        <value>RR Number</value>
+    </data>
+    <data name="Rep_LblSector" xml:space="preserve">
+        <value>Sector</value>
+    </data>
+    <data name="Rep_LblCurrentStatus" xml:space="preserve">
+        <value>Current Status</value>
+    </data>
+    <data name="Rep_LblFileName" xml:space="preserve">
+        <value>File Name</value>
+    </data>
+    <data name="Rep_LblFileType" xml:space="preserve">
+        <value>File Type</value>
+    </data>
+    <data name="Rep_LblContentStartDate" xml:space="preserve">
+        <value>Content Start Date</value>
+    </data>
+    <data name="Rep_LblContentEndDate" xml:space="preserve">
+        <value>Content End Date</value>
+    </data>
+    <data name="Rep_LblTotalPages" xml:space="preserve">
+        <value>Total Pages</value>
+    </data>
+    <data name="Rep_LblShelfNumber" xml:space="preserve">
+        <value>Shelf Number</value>
+    </data>
+    <data name="Rep_LblDeckNumber" xml:space="preserve">
+        <value>Deck Number</value>
+    </data>
+    <data name="Rep_LblFileNumber" xml:space="preserve">
+        <value>File Number</value>
+    </data>
+    <data name="Rep_SectionEntryTimestamps" xml:space="preserve">
+        <value>SYSTEM ENTRY TIMESTAMPS</value>
+    </data>
+    <data name="Rep_LblAddedAfter" xml:space="preserve">
+        <value>Added After:</value>
+    </data>
+    <data name="Rep_LblAddedBefore" xml:space="preserve">
+        <value>Added Before:</value>
+    </data>
+    <data name="Rep_SectionRemovalCriteria" xml:space="preserve">
+        <value>REMOVAL &amp; ARCHIVAL CRITERIA</value>
+    </data>
+    <data name="Rep_ChkIsRemoved" xml:space="preserve">
+        <value>Is Removed?</value>
+    </data>
+    <data name="Rep_LblScheduledRemoval" xml:space="preserve">
+        <value>Scheduled Removal:</value>
+    </data>
+    <data name="Rep_LblActualRemovalDate" xml:space="preserve">
+        <value>Actual Removal Date:</value>
+    </data>
+    <data name="Rep_BtnResetFilters" xml:space="preserve">
+        <value>Reset All Filters</value>
+    </data>
+    <data name="Rep_SectionOutputColumns" xml:space="preserve">
+        <value>2. OUTPUT COLUMNS</value>
+    </data>
+    <data name="Rep_ChkRenderColors" xml:space="preserve">
+        <value>Render Sector UI Colors</value>
+    </data>
+    <data name="Rep_ChkColAddedStamp" xml:space="preserve">
+        <value>Added Stamp</value>
+    </data>
+    <data name="Rep_ChkColSerialNum" xml:space="preserve">
+        <value>Serial Num</value>
+    </data>
+    <data name="Rep_ChkColRrNum" xml:space="preserve">
+        <value>RR Num</value>
+    </data>
+    <data name="Rep_ChkColSector" xml:space="preserve">
+        <value>Sector</value>
+    </data>
+    <data name="Rep_ChkColSubjectNum" xml:space="preserve">
+        <value>Subject Num</value>
+    </data>
+    <data name="Rep_ChkColFileName" xml:space="preserve">
+        <value>File Name</value>
+    </data>
+    <data name="Rep_ChkColFileType" xml:space="preserve">
+        <value>File Type</value>
+    </data>
+    <data name="Rep_ChkColStartDate" xml:space="preserve">
+        <value>Start Date</value>
+    </data>
+    <data name="Rep_ChkColEndDate" xml:space="preserve">
+        <value>End Date</value>
+    </data>
+    <data name="Rep_ChkColPages" xml:space="preserve">
+        <value>Pages</value>
+    </data>
+    <data name="Rep_ChkColShelf" xml:space="preserve">
+        <value>Shelf</value>
+    </data>
+    <data name="Rep_ChkColDeck" xml:space="preserve">
+        <value>Deck</value>
+    </data>
+    <data name="Rep_ChkColFileNum" xml:space="preserve">
+        <value>File Num</value>
+    </data>
+    <data name="Rep_ChkColStatus" xml:space="preserve">
+        <value>Status</value>
+    </data>
+    <data name="Rep_ChkColScheduledDate" xml:space="preserve">
+        <value>Scheduled Date</value>
+    </data>
+    <data name="Rep_ChkColRemovedDate" xml:space="preserve">
+        <value>Removed Date</value>
+    </data>
+    <data name="Rep_ChkColIsRemoved" xml:space="preserve">
+        <value>Is Removed</value>
+    </data>
+    <data name="Rep_PreviewTitle" xml:space="preserve">
+        <value>REPORT DATA PREVIEW</value>
+    </data>
+    <data name="Rep_GridColTimestamp" xml:space="preserve">
+        <value>Timestamp</value>
+    </data>
+    <data name="Rep_GridColSerial" xml:space="preserve">
+        <value>Serial Num</value>
+    </data>
+    <data name="Rep_GridColRrNum" xml:space="preserve">
+        <value>RR Num</value>
+    </data>
+    <data name="Rep_GridColSector" xml:space="preserve">
+        <value>Sector</value>
+    </data>
+    <data name="Rep_GridColSubjectNum" xml:space="preserve">
+        <value>Subject Num</value>
+    </data>
+    <data name="Rep_GridColFileName" xml:space="preserve">
+        <value>File Name</value>
+    </data>
+    <data name="Rep_GridColFileType" xml:space="preserve">
+        <value>File Type</value>
+    </data>
+    <data name="Rep_GridColStartDate" xml:space="preserve">
+        <value>Start Date</value>
+    </data>
+    <data name="Rep_GridColEndDate" xml:space="preserve">
+        <value>End Date</value>
+    </data>
+    <data name="Rep_GridColPages" xml:space="preserve">
+        <value>Pages</value>
+    </data>
+    <data name="Rep_GridColShelf" xml:space="preserve">
+        <value>Shelf</value>
+    </data>
+    <data name="Rep_GridColDeck" xml:space="preserve">
+        <value>Deck</value>
+    </data>
+    <data name="Rep_GridColFileNum" xml:space="preserve">
+        <value>File Num</value>
+    </data>
+    <data name="Rep_GridColStatus" xml:space="preserve">
+        <value>Status</value>
+    </data>
+    <data name="Rep_GridColScheduledRemoval" xml:space="preserve">
+        <value>Scheduled Removal</value>
+    </data>
+    <data name="Rep_GridColRemovedDate" xml:space="preserve">
+        <value>Removed Date</value>
+    </data>
+    <data name="Rep_GridColIsRemoved" xml:space="preserve">
+        <value>Is Removed</value>
+    </data>
+    <data name="Rep_TotalQueriesMatched" xml:space="preserve">
+        <value>Total Queries Matched:</value>
+    </data>
+    <data name="Rep_PaginationSeparator" xml:space="preserve">
+        <value> / </value>
+    </data>
+    <data name="Rep_BtnExportCsv" xml:space="preserve">
+        <value>Export CSV</value>
+    </data>
+    <data name="Rep_BtnExportExcel" xml:space="preserve">
+        <value>Export Excel</value>
+    </data>
+    <data name="Main_WindowTitle" xml:space="preserve">
+        <value>W.P.S. - Archive</value>
+    </data>
+    <data name="Main_BrandTitle" xml:space="preserve">
+        <value>Archive</value>
+    </data>
+    <data name="Main_BrandSubtitle" xml:space="preserve">
+        <value>Records Management System</value>
+    </data>
+    <data name="Main_NavDashboard" xml:space="preserve">
+        <value>DASHBOARD</value>
+    </data>
+    <data name="Main_NavSearch" xml:space="preserve">
+        <value>SEARCH</value>
+    </data>
+    <data name="Main_NavCirculation" xml:space="preserve">
+        <value>CIRCULATION</value>
+    </data>
+    <data name="Main_NavNewEntry" xml:space="preserve">
+        <value>ENTRY</value>
+    </data>
+    <data name="Main_NavDisposal" xml:space="preserve">
+        <value>DISPOSAL</value>
+    </data>
+    <data name="Main_NavReports" xml:space="preserve">
+        <value>REPORTS</value>
+    </data>
+    <data name="Main_NavSettings" xml:space="preserve">
+        <value>SETTINGS</value>
+    </data>
+    <data name="Main_HeaderTitle" xml:space="preserve">
+        <value>WELIGEPOLA DIVISIONAL COUNCIL</value>
+    </data>
+    <data name="Main_HeaderSubtitle" xml:space="preserve">
+        <value>CONSOLIDATED ARCHIVE MANAGEMENT</value>
+    </data>
+    <data name="Main_WelcomeUser" xml:space="preserve">
+        <value>Welcome, Admin!</value>
+    </data>
+    <data name="Main_TooltipTheme" xml:space="preserve">
+        <value>Toggle Theme</value>
+    </data>
+    <data name="Main_BtnReviewDisposal" xml:space="preserve">
+        <value>Review</value>
+    </data>
 </root>

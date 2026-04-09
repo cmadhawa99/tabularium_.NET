@@ -1194,6 +1194,762 @@ namespace ArchivumWpf.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Records Management System.
+        /// </summary>
+        public static string Main_BrandSubtitle {
+            get {
+                return ResourceManager.GetString("Main_BrandSubtitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Archive.
+        /// </summary>
+        public static string Main_BrandTitle {
+            get {
+                return ResourceManager.GetString("Main_BrandTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Review.
+        /// </summary>
+        public static string Main_BtnReviewDisposal {
+            get {
+                return ResourceManager.GetString("Main_BtnReviewDisposal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CONSOLIDATED ARCHIVE MANAGEMENT.
+        /// </summary>
+        public static string Main_HeaderSubtitle {
+            get {
+                return ResourceManager.GetString("Main_HeaderSubtitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WELIGEPOLA DIVISIONAL COUNCIL.
+        /// </summary>
+        public static string Main_HeaderTitle {
+            get {
+                return ResourceManager.GetString("Main_HeaderTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CIRCULATION.
+        /// </summary>
+        public static string Main_NavCirculation {
+            get {
+                return ResourceManager.GetString("Main_NavCirculation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DASHBOARD.
+        /// </summary>
+        public static string Main_NavDashboard {
+            get {
+                return ResourceManager.GetString("Main_NavDashboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DISPOSAL.
+        /// </summary>
+        public static string Main_NavDisposal {
+            get {
+                return ResourceManager.GetString("Main_NavDisposal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ENTRY.
+        /// </summary>
+        public static string Main_NavNewEntry {
+            get {
+                return ResourceManager.GetString("Main_NavNewEntry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to REPORTS.
+        /// </summary>
+        public static string Main_NavReports {
+            get {
+                return ResourceManager.GetString("Main_NavReports", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SEARCH.
+        /// </summary>
+        public static string Main_NavSearch {
+            get {
+                return ResourceManager.GetString("Main_NavSearch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SETTINGS.
+        /// </summary>
+        public static string Main_NavSettings {
+            get {
+                return ResourceManager.GetString("Main_NavSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Toggle Theme.
+        /// </summary>
+        public static string Main_TooltipTheme {
+            get {
+                return ResourceManager.GetString("Main_TooltipTheme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Welcome, Admin!.
+        /// </summary>
+        public static string Main_WelcomeUser {
+            get {
+                return ResourceManager.GetString("Main_WelcomeUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to W.P.S. - Archive.
+        /// </summary>
+        public static string Main_WindowTitle {
+            get {
+                return ResourceManager.GetString("Main_WindowTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Generates a complete native .sql dump of the full table. Ignores active filters..
+        /// </summary>
+        public static string Rep_BackupDesc {
+            get {
+                return ResourceManager.GetString("Rep_BackupDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FULL SYSTEM DATABASE BACKUP.
+        /// </summary>
+        public static string Rep_BackupTitle {
+            get {
+                return ResourceManager.GetString("Rep_BackupTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export CSV.
+        /// </summary>
+        public static string Rep_BtnExportCsv {
+            get {
+                return ResourceManager.GetString("Rep_BtnExportCsv", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export Excel.
+        /// </summary>
+        public static string Rep_BtnExportExcel {
+            get {
+                return ResourceManager.GetString("Rep_BtnExportExcel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export .SQL.
+        /// </summary>
+        public static string Rep_BtnExportSql {
+            get {
+                return ResourceManager.GetString("Rep_BtnExportSql", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reset All Filters.
+        /// </summary>
+        public static string Rep_BtnResetFilters {
+            get {
+                return ResourceManager.GetString("Rep_BtnResetFilters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Added Stamp.
+        /// </summary>
+        public static string Rep_ChkColAddedStamp {
+            get {
+                return ResourceManager.GetString("Rep_ChkColAddedStamp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deck.
+        /// </summary>
+        public static string Rep_ChkColDeck {
+            get {
+                return ResourceManager.GetString("Rep_ChkColDeck", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to End Date.
+        /// </summary>
+        public static string Rep_ChkColEndDate {
+            get {
+                return ResourceManager.GetString("Rep_ChkColEndDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File Name.
+        /// </summary>
+        public static string Rep_ChkColFileName {
+            get {
+                return ResourceManager.GetString("Rep_ChkColFileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File Num.
+        /// </summary>
+        public static string Rep_ChkColFileNum {
+            get {
+                return ResourceManager.GetString("Rep_ChkColFileNum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File Type.
+        /// </summary>
+        public static string Rep_ChkColFileType {
+            get {
+                return ResourceManager.GetString("Rep_ChkColFileType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Is Removed.
+        /// </summary>
+        public static string Rep_ChkColIsRemoved {
+            get {
+                return ResourceManager.GetString("Rep_ChkColIsRemoved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pages.
+        /// </summary>
+        public static string Rep_ChkColPages {
+            get {
+                return ResourceManager.GetString("Rep_ChkColPages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Removed Date.
+        /// </summary>
+        public static string Rep_ChkColRemovedDate {
+            get {
+                return ResourceManager.GetString("Rep_ChkColRemovedDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to RR Num.
+        /// </summary>
+        public static string Rep_ChkColRrNum {
+            get {
+                return ResourceManager.GetString("Rep_ChkColRrNum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scheduled Date.
+        /// </summary>
+        public static string Rep_ChkColScheduledDate {
+            get {
+                return ResourceManager.GetString("Rep_ChkColScheduledDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sector.
+        /// </summary>
+        public static string Rep_ChkColSector {
+            get {
+                return ResourceManager.GetString("Rep_ChkColSector", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Serial Num.
+        /// </summary>
+        public static string Rep_ChkColSerialNum {
+            get {
+                return ResourceManager.GetString("Rep_ChkColSerialNum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shelf.
+        /// </summary>
+        public static string Rep_ChkColShelf {
+            get {
+                return ResourceManager.GetString("Rep_ChkColShelf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start Date.
+        /// </summary>
+        public static string Rep_ChkColStartDate {
+            get {
+                return ResourceManager.GetString("Rep_ChkColStartDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Status.
+        /// </summary>
+        public static string Rep_ChkColStatus {
+            get {
+                return ResourceManager.GetString("Rep_ChkColStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Subject Num.
+        /// </summary>
+        public static string Rep_ChkColSubjectNum {
+            get {
+                return ResourceManager.GetString("Rep_ChkColSubjectNum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Is Removed?.
+        /// </summary>
+        public static string Rep_ChkIsRemoved {
+            get {
+                return ResourceManager.GetString("Rep_ChkIsRemoved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Render Sector UI Colors.
+        /// </summary>
+        public static string Rep_ChkRenderColors {
+            get {
+                return ResourceManager.GetString("Rep_ChkRenderColors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select....
+        /// </summary>
+        public static string Rep_DatePickerWatermark {
+            get {
+                return ResourceManager.GetString("Rep_DatePickerWatermark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configure Report Filters &amp; Output Columns.
+        /// </summary>
+        public static string Rep_FilterToggle {
+            get {
+                return ResourceManager.GetString("Rep_FilterToggle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deck.
+        /// </summary>
+        public static string Rep_GridColDeck {
+            get {
+                return ResourceManager.GetString("Rep_GridColDeck", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to End Date.
+        /// </summary>
+        public static string Rep_GridColEndDate {
+            get {
+                return ResourceManager.GetString("Rep_GridColEndDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File Name.
+        /// </summary>
+        public static string Rep_GridColFileName {
+            get {
+                return ResourceManager.GetString("Rep_GridColFileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File Num.
+        /// </summary>
+        public static string Rep_GridColFileNum {
+            get {
+                return ResourceManager.GetString("Rep_GridColFileNum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File Type.
+        /// </summary>
+        public static string Rep_GridColFileType {
+            get {
+                return ResourceManager.GetString("Rep_GridColFileType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Is Removed.
+        /// </summary>
+        public static string Rep_GridColIsRemoved {
+            get {
+                return ResourceManager.GetString("Rep_GridColIsRemoved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pages.
+        /// </summary>
+        public static string Rep_GridColPages {
+            get {
+                return ResourceManager.GetString("Rep_GridColPages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Removed Date.
+        /// </summary>
+        public static string Rep_GridColRemovedDate {
+            get {
+                return ResourceManager.GetString("Rep_GridColRemovedDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to RR Num.
+        /// </summary>
+        public static string Rep_GridColRrNum {
+            get {
+                return ResourceManager.GetString("Rep_GridColRrNum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scheduled Removal.
+        /// </summary>
+        public static string Rep_GridColScheduledRemoval {
+            get {
+                return ResourceManager.GetString("Rep_GridColScheduledRemoval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sector.
+        /// </summary>
+        public static string Rep_GridColSector {
+            get {
+                return ResourceManager.GetString("Rep_GridColSector", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Serial Num.
+        /// </summary>
+        public static string Rep_GridColSerial {
+            get {
+                return ResourceManager.GetString("Rep_GridColSerial", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shelf.
+        /// </summary>
+        public static string Rep_GridColShelf {
+            get {
+                return ResourceManager.GetString("Rep_GridColShelf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start Date.
+        /// </summary>
+        public static string Rep_GridColStartDate {
+            get {
+                return ResourceManager.GetString("Rep_GridColStartDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Status.
+        /// </summary>
+        public static string Rep_GridColStatus {
+            get {
+                return ResourceManager.GetString("Rep_GridColStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Subject Num.
+        /// </summary>
+        public static string Rep_GridColSubjectNum {
+            get {
+                return ResourceManager.GetString("Rep_GridColSubjectNum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Timestamp.
+        /// </summary>
+        public static string Rep_GridColTimestamp {
+            get {
+                return ResourceManager.GetString("Rep_GridColTimestamp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Actual Removal Date:.
+        /// </summary>
+        public static string Rep_LblActualRemovalDate {
+            get {
+                return ResourceManager.GetString("Rep_LblActualRemovalDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Added After:.
+        /// </summary>
+        public static string Rep_LblAddedAfter {
+            get {
+                return ResourceManager.GetString("Rep_LblAddedAfter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Added Before:.
+        /// </summary>
+        public static string Rep_LblAddedBefore {
+            get {
+                return ResourceManager.GetString("Rep_LblAddedBefore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Content End Date.
+        /// </summary>
+        public static string Rep_LblContentEndDate {
+            get {
+                return ResourceManager.GetString("Rep_LblContentEndDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Content Start Date.
+        /// </summary>
+        public static string Rep_LblContentStartDate {
+            get {
+                return ResourceManager.GetString("Rep_LblContentStartDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current Status.
+        /// </summary>
+        public static string Rep_LblCurrentStatus {
+            get {
+                return ResourceManager.GetString("Rep_LblCurrentStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deck Number.
+        /// </summary>
+        public static string Rep_LblDeckNumber {
+            get {
+                return ResourceManager.GetString("Rep_LblDeckNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File Name.
+        /// </summary>
+        public static string Rep_LblFileName {
+            get {
+                return ResourceManager.GetString("Rep_LblFileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File Number.
+        /// </summary>
+        public static string Rep_LblFileNumber {
+            get {
+                return ResourceManager.GetString("Rep_LblFileNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File Type.
+        /// </summary>
+        public static string Rep_LblFileType {
+            get {
+                return ResourceManager.GetString("Rep_LblFileType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to RR Number.
+        /// </summary>
+        public static string Rep_LblRrNumber {
+            get {
+                return ResourceManager.GetString("Rep_LblRrNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scheduled Removal:.
+        /// </summary>
+        public static string Rep_LblScheduledRemoval {
+            get {
+                return ResourceManager.GetString("Rep_LblScheduledRemoval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sector.
+        /// </summary>
+        public static string Rep_LblSector {
+            get {
+                return ResourceManager.GetString("Rep_LblSector", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Serial Number.
+        /// </summary>
+        public static string Rep_LblSerialNumber {
+            get {
+                return ResourceManager.GetString("Rep_LblSerialNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shelf Number.
+        /// </summary>
+        public static string Rep_LblShelfNumber {
+            get {
+                return ResourceManager.GetString("Rep_LblShelfNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total Pages.
+        /// </summary>
+        public static string Rep_LblTotalPages {
+            get {
+                return ResourceManager.GetString("Rep_LblTotalPages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filter parameters, configure output columns, and export system ledger as CSV or Excel..
+        /// </summary>
+        public static string Rep_MainDesc {
+            get {
+                return ResourceManager.GetString("Rep_MainDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Report Generation &amp; Export.
+        /// </summary>
+        public static string Rep_MainTitle {
+            get {
+                return ResourceManager.GetString("Rep_MainTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  / .
+        /// </summary>
+        public static string Rep_PaginationSeparator {
+            get {
+                return ResourceManager.GetString("Rep_PaginationSeparator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to REPORT DATA PREVIEW.
+        /// </summary>
+        public static string Rep_PreviewTitle {
+            get {
+                return ResourceManager.GetString("Rep_PreviewTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 1. DATA FILTERS.
+        /// </summary>
+        public static string Rep_SectionDataFilters {
+            get {
+                return ResourceManager.GetString("Rep_SectionDataFilters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SYSTEM ENTRY TIMESTAMPS.
+        /// </summary>
+        public static string Rep_SectionEntryTimestamps {
+            get {
+                return ResourceManager.GetString("Rep_SectionEntryTimestamps", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 2. OUTPUT COLUMNS.
+        /// </summary>
+        public static string Rep_SectionOutputColumns {
+            get {
+                return ResourceManager.GetString("Rep_SectionOutputColumns", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to REMOVAL &amp; ARCHIVAL CRITERIA.
+        /// </summary>
+        public static string Rep_SectionRemovalCriteria {
+            get {
+                return ResourceManager.GetString("Rep_SectionRemovalCriteria", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total Queries Matched:.
+        /// </summary>
+        public static string Rep_TotalQueriesMatched {
+            get {
+                return ResourceManager.GetString("Rep_TotalQueriesMatched", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Close Dossier.
         /// </summary>
         public static string Sea_BtnCloseDossier {
