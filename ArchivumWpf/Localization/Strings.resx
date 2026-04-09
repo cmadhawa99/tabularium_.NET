@@ -420,4 +420,118 @@
     <data name="Dis_BtnConfirmDestruction" xml:space="preserve">
         <value>CONFIRM DESTRUCTION</value>
     </data>
+    <data name="Sea_MainTitle" xml:space="preserve">
+        <value>The Archival Search Sector</value>
+    </data>
+    <data name="Sea_MainDesc_Part1" xml:space="preserve">
+        <value>Locate and retrieve specific dossiers. Showing</value>
+    </data>
+    <data name="Sea_MainDesc_Part2" xml:space="preserve">
+        <value>synchronized records in the Archive.</value>
+    </data>
+    <data name="Sea_TooltipToggleStrict" xml:space="preserve">
+        <value>Toggle Strict RR Number Search</value>
+    </data>
+    <data name="Sea_StrictToggleIndicator" xml:space="preserve">
+        <value>R</value>
+    </data>
+    <data name="Sea_SearchWatermark" xml:space="preserve">
+        <value>Enter record identifier or subject...</value>
+    </data>
+    <data name="Sea_StrictSearchWatermark" xml:space="preserve">
+        <value>STRICT MODE: Enter exact RR Number...</value>
+    </data>
+    <data name="Sea_BtnExecuteSearch" xml:space="preserve">
+        <value>Execute Search</value>
+    </data>
+    <data name="Sea_FilterByDate" xml:space="preserve">
+        <value>FILTER BY DATE:</value>
+    </data>
+    <data name="Sea_LblYear" xml:space="preserve">
+        <value>YEAR:</value>
+    </data>
+    <data name="Sea_LblMonth" xml:space="preserve">
+        <value>MONTH:</value>
+    </data>
+    <data name="Sea_QuickFilters" xml:space="preserve">
+        <value>QUICK FILTERS:</value>
+    </data>
+    <data name="Sea_FilterRecent" xml:space="preserve">
+        <value>Recent (24h)</value>
+    </data>
+    <data name="Sea_FilterAvailable" xml:space="preserve">
+        <value>Currently Available</value>
+    </data>
+    <data name="Sea_FilterRemoved" xml:space="preserve">
+        <value>Removed</value>
+    </data>
+    <data name="Sea_RegistryLedger" xml:space="preserve">
+        <value>REGISTRY LEDGER</value>
+    </data>
+    <data name="Sea_ColIdentifier" xml:space="preserve">
+        <value>IDENTIFIER</value>
+    </data>
+    <data name="Sea_ColSubjectName" xml:space="preserve">
+        <value>FILE NAME</value>
+    </data>
+    <data name="Sea_FallbackSecondaryId" xml:space="preserve">
+        <value>No Secondary ID</value>
+    </data>
+    <data name="Sea_ColSector" xml:space="preserve">
+        <value>SECTOR</value>
+    </data>
+    <data name="Sea_ColOriginDate" xml:space="preserve">
+        <value>ORIGIN DATE</value>
+    </data>
+    <data name="Sea_ColStatus" xml:space="preserve">
+        <value>STATUS</value>
+    </data>
+    <data name="Sea_ColActions" xml:space="preserve">
+        <value>ACTIONS</value>
+    </data>
+    <data name="Sea_ShowingMatchingResults" xml:space="preserve">
+        <value>Showing matching results</value>
+    </data>
+    <data name="Sea_FileRecords" xml:space="preserve">
+        <value>FILE RECORDS</value>
+    </data>
+    <data name="Sea_LblSerialNumber" xml:space="preserve">
+        <value>Serial Number:</value>
+    </data>
+    <data name="Sea_LblRrNumber" xml:space="preserve">
+        <value>RR Number:</value>
+    </data>
+    <data name="Sea_LblSector" xml:space="preserve">
+        <value>Sector:</value>
+    </data>
+    <data name="Sea_LblSubjectFileName" xml:space="preserve">
+        <value>File Name:</value>
+    </data>
+    <data name="Sea_LblSubjectNumber" xml:space="preserve">
+        <value>Subject Number:</value>
+    </data>
+    <data name="Sea_LblFileType" xml:space="preserve">
+        <value>File Type:</value>
+    </data>
+    <data name="Sea_LblChronoSpan" xml:space="preserve">
+        <value>Chronological Span:</value>
+    </data>
+    <data name="Sea_LblTo" xml:space="preserve">
+        <value> to </value>
+    </data>
+    <data name="Sea_LblTotalPages" xml:space="preserve">
+        <value>Total Pages:</value>
+    </data>
+    <data name="Sea_LblPhysicalLocation" xml:space="preserve">
+        <value>Physical Location:</value>
+    </data>
+    <data name="Sea_LblShelf" xml:space="preserve">
+        <value>Shelf</value>
+    </data>
+    <data name="Sea_LblDeck" xml:space="preserve">
+        <value>Deck</value>
+    </data>
+    <data name="Sea_BtnCloseDossier" xml:space="preserve">
+        <value>Close Dossier</value>
+    </data>
 </root>

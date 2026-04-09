@@ -852,6 +852,348 @@ namespace ArchivumWpf.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Close Dossier.
+        /// </summary>
+        public static string Sea_BtnCloseDossier {
+            get {
+                return ResourceManager.GetString("Sea_BtnCloseDossier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Execute Search.
+        /// </summary>
+        public static string Sea_BtnExecuteSearch {
+            get {
+                return ResourceManager.GetString("Sea_BtnExecuteSearch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ACTIONS.
+        /// </summary>
+        public static string Sea_ColActions {
+            get {
+                return ResourceManager.GetString("Sea_ColActions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IDENTIFIER.
+        /// </summary>
+        public static string Sea_ColIdentifier {
+            get {
+                return ResourceManager.GetString("Sea_ColIdentifier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ORIGIN DATE.
+        /// </summary>
+        public static string Sea_ColOriginDate {
+            get {
+                return ResourceManager.GetString("Sea_ColOriginDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SECTOR.
+        /// </summary>
+        public static string Sea_ColSector {
+            get {
+                return ResourceManager.GetString("Sea_ColSector", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to STATUS.
+        /// </summary>
+        public static string Sea_ColStatus {
+            get {
+                return ResourceManager.GetString("Sea_ColStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FILE NAME.
+        /// </summary>
+        public static string Sea_ColSubjectName {
+            get {
+                return ResourceManager.GetString("Sea_ColSubjectName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Secondary ID.
+        /// </summary>
+        public static string Sea_FallbackSecondaryId {
+            get {
+                return ResourceManager.GetString("Sea_FallbackSecondaryId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FILE RECORDS.
+        /// </summary>
+        public static string Sea_FileRecords {
+            get {
+                return ResourceManager.GetString("Sea_FileRecords", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Currently Available.
+        /// </summary>
+        public static string Sea_FilterAvailable {
+            get {
+                return ResourceManager.GetString("Sea_FilterAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FILTER BY DATE:.
+        /// </summary>
+        public static string Sea_FilterByDate {
+            get {
+                return ResourceManager.GetString("Sea_FilterByDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recent (24h).
+        /// </summary>
+        public static string Sea_FilterRecent {
+            get {
+                return ResourceManager.GetString("Sea_FilterRecent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Removed.
+        /// </summary>
+        public static string Sea_FilterRemoved {
+            get {
+                return ResourceManager.GetString("Sea_FilterRemoved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chronological Span:.
+        /// </summary>
+        public static string Sea_LblChronoSpan {
+            get {
+                return ResourceManager.GetString("Sea_LblChronoSpan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deck.
+        /// </summary>
+        public static string Sea_LblDeck {
+            get {
+                return ResourceManager.GetString("Sea_LblDeck", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File Type:.
+        /// </summary>
+        public static string Sea_LblFileType {
+            get {
+                return ResourceManager.GetString("Sea_LblFileType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MONTH:.
+        /// </summary>
+        public static string Sea_LblMonth {
+            get {
+                return ResourceManager.GetString("Sea_LblMonth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Physical Location:.
+        /// </summary>
+        public static string Sea_LblPhysicalLocation {
+            get {
+                return ResourceManager.GetString("Sea_LblPhysicalLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to RR Number:.
+        /// </summary>
+        public static string Sea_LblRrNumber {
+            get {
+                return ResourceManager.GetString("Sea_LblRrNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sector:.
+        /// </summary>
+        public static string Sea_LblSector {
+            get {
+                return ResourceManager.GetString("Sea_LblSector", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Serial Number:.
+        /// </summary>
+        public static string Sea_LblSerialNumber {
+            get {
+                return ResourceManager.GetString("Sea_LblSerialNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shelf.
+        /// </summary>
+        public static string Sea_LblShelf {
+            get {
+                return ResourceManager.GetString("Sea_LblShelf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File Name:.
+        /// </summary>
+        public static string Sea_LblSubjectFileName {
+            get {
+                return ResourceManager.GetString("Sea_LblSubjectFileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Subject Number:.
+        /// </summary>
+        public static string Sea_LblSubjectNumber {
+            get {
+                return ResourceManager.GetString("Sea_LblSubjectNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  to .
+        /// </summary>
+        public static string Sea_LblTo {
+            get {
+                return ResourceManager.GetString("Sea_LblTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total Pages:.
+        /// </summary>
+        public static string Sea_LblTotalPages {
+            get {
+                return ResourceManager.GetString("Sea_LblTotalPages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to YEAR:.
+        /// </summary>
+        public static string Sea_LblYear {
+            get {
+                return ResourceManager.GetString("Sea_LblYear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Locate and retrieve specific dossiers. Showing.
+        /// </summary>
+        public static string Sea_MainDesc_Part1 {
+            get {
+                return ResourceManager.GetString("Sea_MainDesc_Part1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to synchronized records in the Archive..
+        /// </summary>
+        public static string Sea_MainDesc_Part2 {
+            get {
+                return ResourceManager.GetString("Sea_MainDesc_Part2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Archival Search Sector.
+        /// </summary>
+        public static string Sea_MainTitle {
+            get {
+                return ResourceManager.GetString("Sea_MainTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to QUICK FILTERS:.
+        /// </summary>
+        public static string Sea_QuickFilters {
+            get {
+                return ResourceManager.GetString("Sea_QuickFilters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to REGISTRY LEDGER.
+        /// </summary>
+        public static string Sea_RegistryLedger {
+            get {
+                return ResourceManager.GetString("Sea_RegistryLedger", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter record identifier or subject....
+        /// </summary>
+        public static string Sea_SearchWatermark {
+            get {
+                return ResourceManager.GetString("Sea_SearchWatermark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Showing matching results.
+        /// </summary>
+        public static string Sea_ShowingMatchingResults {
+            get {
+                return ResourceManager.GetString("Sea_ShowingMatchingResults", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to STRICT MODE: Enter exact RR Number....
+        /// </summary>
+        public static string Sea_StrictSearchWatermark {
+            get {
+                return ResourceManager.GetString("Sea_StrictSearchWatermark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to R.
+        /// </summary>
+        public static string Sea_StrictToggleIndicator {
+            get {
+                return ResourceManager.GetString("Sea_StrictToggleIndicator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Toggle Strict RR Number Search.
+        /// </summary>
+        public static string Sea_TooltipToggleStrict {
+            get {
+                return ResourceManager.GetString("Sea_TooltipToggleStrict", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add New File Type.
         /// </summary>
         public static string Settings_AddFileType {

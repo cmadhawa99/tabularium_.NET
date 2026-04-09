@@ -362,4 +362,118 @@
     <data name="Dis_BtnConfirmDestruction" xml:space="preserve">
         <value>අපහරණය කිරීම තහවුරු කරන්න</value>
     </data>
+    <data name="Sea_MainTitle" xml:space="preserve">
+        <value>ලේඛනාගාර සෙවුම් අංශය</value>
+    </data>
+    <data name="Sea_MainDesc_Part1" xml:space="preserve">
+        <value>නිශ්චිත ලිපිගොනු සොයා ලබා ගන්න. ලේඛනාගරයේ යාවත්කාලීන වූ වාර්තා</value>
+    </data>
+    <data name="Sea_MainDesc_Part2" xml:space="preserve">
+        <value>ක් මෙහි දැක්වේ.</value>
+    </data>
+    <data name="Sea_TooltipToggleStrict" xml:space="preserve">
+        <value>නිශ්චිත RR අංක සෙවුම සක්‍රිය / අක්‍රිය කරන්න</value>
+    </data>
+    <data name="Sea_StrictToggleIndicator" xml:space="preserve">
+        <value>R</value>
+    </data>
+    <data name="Sea_SearchWatermark" xml:space="preserve">
+        <value>වාර්තා හැඳුනුම් අංකය හෝ විෂය ඇතුළත් කරන්න...</value>
+    </data>
+    <data name="Sea_StrictSearchWatermark" xml:space="preserve">
+        <value>නිශ්චිත සෙවුම්: නිවැරදි RR අංකය ඇතුළත් කරන්න...</value>
+    </data>
+    <data name="Sea_BtnExecuteSearch" xml:space="preserve">
+        <value>සෙවුම ක්‍රියාත්මක කරන්න</value>
+    </data>
+    <data name="Sea_FilterByDate" xml:space="preserve">
+        <value>දිනය අනුව තෝරන්න:</value>
+    </data>
+    <data name="Sea_LblYear" xml:space="preserve">
+        <value>වර්ෂය:</value>
+    </data>
+    <data name="Sea_LblMonth" xml:space="preserve">
+        <value>මාසය:</value>
+    </data>
+    <data name="Sea_QuickFilters" xml:space="preserve">
+        <value>ක්ෂණික තේරීම්:</value>
+    </data>
+    <data name="Sea_FilterRecent" xml:space="preserve">
+        <value>මෑතකාලීන (පැය 24ක් තුළ)</value>
+    </data>
+    <data name="Sea_FilterAvailable" xml:space="preserve">
+        <value>වර්තමානව පවතින</value>
+    </data>
+    <data name="Sea_FilterRemoved" xml:space="preserve">
+        <value>ඉවත් කරන ලද</value>
+    </data>
+    <data name="Sea_RegistryLedger" xml:space="preserve">
+        <value>ප්‍රධාන ලේඛනය</value>
+    </data>
+    <data name="Sea_ColIdentifier" xml:space="preserve">
+        <value>හැඳුනුම් අංකය</value>
+    </data>
+    <data name="Sea_ColSubjectName" xml:space="preserve">
+        <value>ලිපිගොනුවේ නම</value>
+    </data>
+    <data name="Sea_FallbackSecondaryId" xml:space="preserve">
+        <value>ද්විතියික හැඳුනුම් අංකයක් නොමැත</value>
+    </data>
+    <data name="Sea_ColSector" xml:space="preserve">
+        <value>අංශය</value>
+    </data>
+    <data name="Sea_ColOriginDate" xml:space="preserve">
+        <value>ලේඛනගත කළ දිනය</value>
+    </data>
+    <data name="Sea_ColStatus" xml:space="preserve">
+        <value>තත්ත්වය</value>
+    </data>
+    <data name="Sea_ColActions" xml:space="preserve">
+        <value>ක්‍රියාවන්</value>
+    </data>
+    <data name="Sea_ShowingMatchingResults" xml:space="preserve">
+        <value>ගැළපෙන ප්‍රතිඵල පෙන්වයි</value>
+    </data>
+    <data name="Sea_FileRecords" xml:space="preserve">
+        <value>ලිපිගොන වාර්තා</value>
+    </data>
+    <data name="Sea_LblSerialNumber" xml:space="preserve">
+        <value>අනුක්‍රමික අංකය:</value>
+    </data>
+    <data name="Sea_LblRrNumber" xml:space="preserve">
+        <value>RR අංකය:</value>
+    </data>
+    <data name="Sea_LblSector" xml:space="preserve">
+        <value>අංශය:</value>
+    </data>
+    <data name="Sea_LblSubjectFileName" xml:space="preserve">
+        <value>ලිපිගොනුවේ නම:</value>
+    </data>
+    <data name="Sea_LblSubjectNumber" xml:space="preserve">
+        <value>විෂය අංකය:</value>
+    </data>
+    <data name="Sea_LblFileType" xml:space="preserve">
+        <value>ලිපිගොනු වර්ගය:</value>
+    </data>
+    <data name="Sea_LblChronoSpan" xml:space="preserve">
+        <value>අදාළ කාලසීමාව:</value>
+    </data>
+    <data name="Sea_LblTo" xml:space="preserve">
+        <value> සිට </value>
+    </data>
+    <data name="Sea_LblTotalPages" xml:space="preserve">
+        <value>මුළු පිටු ගණන:</value>
+    </data>
+    <data name="Sea_LblPhysicalLocation" xml:space="preserve">
+        <value>භෞතික ස්ථානය:</value>
+    </data>
+    <data name="Sea_LblShelf" xml:space="preserve">
+        <value>රාක්කය:</value>
+    </data>
+    <data name="Sea_LblDeck" xml:space="preserve">
+        <value>තට්ටුව:</value>
+    </data>
+    <data name="Sea_BtnCloseDossier" xml:space="preserve">
+        <value>ලිපිගොනුව වසන්න</value>
+    </data>
 </root>
