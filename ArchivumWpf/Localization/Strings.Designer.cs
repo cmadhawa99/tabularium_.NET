@@ -1977,7 +1977,7 @@ namespace ArchivumWpf.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to IDENTIFIER.
+        ///   Looks up a localized string similar to RR NUMBER.
         /// </summary>
         public static string Sea_ColIdentifier {
             get {

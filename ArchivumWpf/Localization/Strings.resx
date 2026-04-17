@@ -469,7 +469,7 @@
         <value>REGISTRY LEDGER</value>
     </data>
     <data name="Sea_ColIdentifier" xml:space="preserve">
-        <value>IDENTIFIER</value>
+        <value>RR NUMBER</value>
     </data>
     <data name="Sea_ColSubjectName" xml:space="preserve">
         <value>FILE NAME</value>

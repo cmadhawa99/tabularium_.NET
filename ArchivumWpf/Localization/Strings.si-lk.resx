@@ -411,7 +411,7 @@
         <value>ප්‍රධාන ලේඛනය</value>
     </data>
     <data name="Sea_ColIdentifier" xml:space="preserve">
-        <value>හැඳුනුම් අංකය</value>
+        <value>RR අංකය</value>
     </data>
     <data name="Sea_ColSubjectName" xml:space="preserve">
         <value>ලිපිගොනුවේ නම</value>
@@ -435,7 +435,7 @@
         <value>ගැළපෙන ප්‍රතිඵල පෙන්වයි</value>
     </data>
     <data name="Sea_FileRecords" xml:space="preserve">
-        <value>ලිපිගොන වාර්තා</value>
+        <value>ලිපිගොනු වාර්තා</value>
     </data>
     <data name="Sea_LblSerialNumber" xml:space="preserve">
         <value>අනුක්‍රමික අංකය:</value>
