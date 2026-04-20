@@ -4,7 +4,7 @@
              xmlns:fa="http://schemas.fontawesome.io/icons/"
              xmlns:models="clr-namespace:ArchivumWpf.Models"
              xmlns:loc="clr-namespace:ArchivumWpf.Localization"
-             Background="Transparent">
+             Background="{DynamicResource WindowBackground}">
 
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
@@ -14,12 +14,12 @@
             <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
             <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Padding" Value="15,10"/>
+            <Setter Property="Padding" Value="8,6"/>
             <Setter Property="FontSize" Value="13"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="TextBox">
-                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="12">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2">
                             <ScrollViewer x:Name="PART_ContentHost" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
                         </Border>
                     </ControlTemplate>
@@ -39,21 +39,21 @@
         <Style TargetType="ComboBoxItem">
             <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
             <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Padding" Value="12,10"/>
+            <Setter Property="Padding" Value="8,6"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ComboBoxItem">
-                        <Border x:Name="Bd" Background="{TemplateBinding Background}" CornerRadius="6" Margin="4,2">
+                        <Border x:Name="Bd" Background="{TemplateBinding Background}" CornerRadius="2" Margin="2">
                             <ContentPresenter Margin="{TemplateBinding Padding}" VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Bd" Property="Background" Value="#1AFFE088"/>
+                                <Setter TargetName="Bd" Property="Background" Value="#1A107C41"/>
                                 <Setter Property="Foreground" Value="{DynamicResource PrimaryAccent}"/>
                             </Trigger>
                             <Trigger Property="IsSelected" Value="True">
-                                <Setter TargetName="Bd" Property="Background" Value="#33FFE088"/>
+                                <Setter TargetName="Bd" Property="Background" Value="#1A107C41"/>
                                 <Setter Property="Foreground" Value="{DynamicResource PrimaryAccent}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
@@ -61,32 +61,36 @@
                 </Setter.Value>
             </Setter>
         </Style>
-
+        
         <Style x:Key="CleanComboBox" TargetType="ComboBox">
             <Setter Property="Background" Value="{DynamicResource CardBackground}"/>
             <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
             <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="FontSize" Value="13"/>
-            <Setter Property="Padding" Value="15,10"/>
+            <Setter Property="Padding" Value="8,6"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ComboBox">
                         <Grid>
-                            <ToggleButton x:Name="ToggleButton" Grid.Column="2" Focusable="false" IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" ClickMode="Press">
-                                <ToggleButton.Template>
-                                    <ControlTemplate TargetType="ToggleButton">
-                                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="12">
-                                            <fa:ImageAwesome Icon="ChevronDown" Width="10" Height="10" Foreground="{DynamicResource TextMuted}" HorizontalAlignment="Right" Margin="0,0,15,0"/>
-                                        </Border>
-                                    </ControlTemplate>
-                                </ToggleButton.Template>
-                            </ToggleButton>
-                            <ContentPresenter x:Name="ContentSite" IsHitTestVisible="False" Content="{TemplateBinding SelectionBoxItem}" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" Margin="{TemplateBinding Padding}" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                            <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2">
+                                <Grid>
+                                    <ToggleButton x:Name="ToggleButton" Focusable="false" IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" ClickMode="Press">
+                                        <ToggleButton.Template>
+                                            <ControlTemplate TargetType="ToggleButton">
+                                                <Border Background="Transparent">
+                                                    <fa:ImageAwesome Icon="ChevronDown" Width="10" Height="10" Foreground="{DynamicResource TextMuted}" HorizontalAlignment="Right" Margin="0,0,10,0"/>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </ToggleButton.Template>
+                                    </ToggleButton>
+                                    <ContentPresenter x:Name="ContentSite" IsHitTestVisible="False" Content="{TemplateBinding SelectionBoxItem}" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" Margin="{TemplateBinding Padding}" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                                </Grid>
+                            </Border>
                             <Popup x:Name="Popup" Placement="Bottom" IsOpen="{TemplateBinding IsDropDownOpen}" AllowsTransparency="True" Focusable="False" PopupAnimation="Slide">
-                                <Border x:Name="DropDownBorder" Background="{DynamicResource CardBackground}" BorderThickness="1" BorderBrush="{DynamicResource BorderColor}" CornerRadius="12" Margin="0,5,0,0" MinWidth="{TemplateBinding ActualWidth}" MaxHeight="250">
-                                    <ScrollViewer Margin="0,5" SnapsToDevicePixels="True">
+                                <Border x:Name="DropDownBorder" Background="{DynamicResource CardBackground}" BorderThickness="1" BorderBrush="{DynamicResource BorderColor}" CornerRadius="2" Margin="0,2,0,0" MinWidth="{TemplateBinding ActualWidth}" MaxHeight="250">
+                                    <ScrollViewer Margin="0,2" SnapsToDevicePixels="True">
                                         <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
                                     </ScrollViewer>
                                 </Border>
@@ -102,15 +106,7 @@
             <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
             <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Style.Resources>
-                <SolidColorBrush x:Key="{x:Static SystemColors.WindowBrushKey}" Color="#1E1E1E"/>
-                <SolidColorBrush x:Key="{x:Static SystemColors.WindowTextBrushKey}" Color="#e5e2e1"/>
-                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#f2ca50"/>
-                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="#131313"/>
-                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#252525"/>
-                <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}" Color="#e5e2e1"/>
-            </Style.Resources>
-        </Style>
+            </Style>
 
         <Style TargetType="DatePickerTextBox">
             <Setter Property="Background" Value="Transparent"/>
@@ -122,7 +118,7 @@
                     <ControlTemplate TargetType="DatePickerTextBox">
                         <Grid>
                             <ScrollViewer x:Name="PART_ContentHost" Margin="0" VerticalAlignment="Center"/>
-                            <TextBlock x:Name="PART_Watermark" Text="{x:Static loc:Strings.Ent_DatePickerWatermark}" Foreground="{DynamicResource TextMuted}" Opacity="0.5" VerticalAlignment="Center" Margin="4,0,0,0" IsHitTestVisible="False">
+                            <TextBlock x:Name="PART_Watermark" Text="{x:Static loc:Strings.Ent_DatePickerWatermark}" Foreground="{DynamicResource TextMuted}" Opacity="0.7" FontSize="13" VerticalAlignment="Center" Margin="2,0,0,0" IsHitTestVisible="False">
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="Visibility" Value="Collapsed"/>
@@ -146,22 +142,22 @@
             <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
             <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Padding" Value="15,10"/>
+            <Setter Property="Padding" Value="8,6"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="DatePicker">
-                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="12">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
-                                <DatePickerTextBox x:Name="PART_TextBox" Grid.Column="0" Margin="{TemplateBinding Padding}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" FontFamily="Georgia" FontSize="13"/>
-                                <Button x:Name="PART_Button" Grid.Column="1" Width="30" Margin="0,0,10,0" Background="Transparent" BorderThickness="0" Cursor="Hand" Focusable="False">
+                                <DatePickerTextBox x:Name="PART_TextBox" Grid.Column="0" Margin="{TemplateBinding Padding}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" FontSize="13"/>
+                                <Button x:Name="PART_Button" Grid.Column="1" Width="30" Margin="0,0,5,0" Background="Transparent" BorderThickness="0" Cursor="Hand" Focusable="False">
                                     <Button.Template>
                                         <ControlTemplate TargetType="Button">
                                             <Border Background="Transparent">
-                                                <fa:ImageAwesome Icon="Calendar" Width="14" Height="14" Foreground="{DynamicResource PrimaryAccent}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                <fa:ImageAwesome Icon="Calendar" Width="12" Height="12" Foreground="{DynamicResource TextMuted}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                             </Border>
                                         </ControlTemplate>
                                     </Button.Template>
@@ -176,9 +172,9 @@
 
         <Style x:Key="FormLabel" TargetType="TextBlock">
             <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
-            <Setter Property="FontSize" Value="10"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Margin" Value="5,0,0,6"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin" Value="2,0,0,4"/>
         </Style>
 
         <Style TargetType="DataGridCell">
@@ -189,49 +185,43 @@
 
     </UserControl.Resources>
 
-    <Grid Margin="0,10,20,20" MaxWidth="1600">
+    <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" Margin="0,0,0,10">
-            <TextBlock Text="{x:Static loc:Strings.Ent_MainTitle}" Foreground="{DynamicResource PrimaryAccent}" FontSize="32" FontFamily="Georgia" FontWeight="Black" Margin="0,0,0,5"/>
-            <TextBlock Text="{x:Static loc:Strings.Ent_MainDesc}" Foreground="{DynamicResource TextMuted}" FontSize="14" Margin="0,0,0,10"/>
-            
-            <Grid Margin="0,10,0,15">
-                <Rectangle Height="1" Fill="{DynamicResource BorderColor}" VerticalAlignment="Center"/>
-                <Rectangle Width="8" Height="8" Fill="{DynamicResource BorderColor}" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Center">
-                    <Rectangle.RenderTransform>
-                        <RotateTransform Angle="45"/>
-                    </Rectangle.RenderTransform>
-                </Rectangle>
+        <Border Grid.Row="0" Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,0,0,1" Padding="15,10">
+            <Grid>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="{x:Static loc:Strings.Ent_MainTitle}" Foreground="{DynamicResource PrimaryAccent}" FontSize="18" FontWeight="SemiBold" Margin="0,0,15,0"/>
+                    <Rectangle Width="1" Height="14" Fill="{DynamicResource BorderColor}" Margin="0,0,15,0"/>
+                    <TextBlock Text="{Binding StatusMessage}" Foreground="{Binding StatusColor}" FontSize="12" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                </StackPanel>
             </Grid>
-            
-            <TextBlock Text="{Binding StatusMessage}" Foreground="{Binding StatusColor}" FontSize="12" FontWeight="Bold" Margin="0,0,0,10"/>
-        </StackPanel>
+        </Border>
 
-        <TabControl Grid.Row="1" Background="Transparent" BorderThickness="0">
+        <TabControl Grid.Row="1" Grid.RowSpan="2" Background="Transparent" BorderThickness="0" Margin="0,15,0,0">
             <TabControl.Resources>
                 <Style TargetType="TabItem">
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="TabItem">
-                                <Border x:Name="Border" Padding="25,12" Margin="0,0,15,15" CornerRadius="20" BorderThickness="1" BorderBrush="{DynamicResource BorderColor}" Background="{DynamicResource CardBackground}" Cursor="Hand">
+                                <Border x:Name="Border" Padding="15,8" Margin="15,0,5,0" BorderThickness="0,0,0,2" BorderBrush="Transparent" Background="Transparent" Cursor="Hand">
                                     <ContentPresenter x:Name="ContentSite" VerticalAlignment="Center" HorizontalAlignment="Center" ContentSource="Header"/>
                                 </Border>
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="IsSelected" Value="True">
-                                        <Setter TargetName="Border" Property="Background" Value="#0A000000"/>
                                         <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource PrimaryAccent}"/>
                                         <Setter Property="Foreground" Value="{DynamicResource PrimaryAccent}"/>
-                                        <Setter Property="FontWeight" Value="Bold"/>
+                                        <Setter Property="FontWeight" Value="SemiBold"/>
                                     </Trigger>
                                     <Trigger Property="IsSelected" Value="False">
                                         <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
                                     </Trigger>
                                     <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource PrimaryAccent}"/>
+                                        <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
                                     </Trigger>
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>
@@ -241,104 +231,110 @@
             </TabControl.Resources>
 
             <TabItem Header="{x:Static loc:Strings.Ent_TabAdd}">
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <StackPanel HorizontalAlignment="Stretch" Margin="0,0,0,20">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="15,20,15,15">
+                    <StackPanel HorizontalAlignment="Stretch" MaxWidth="1000">
                         
-                        <Border Background="{DynamicResource CardBackground}" CornerRadius="16" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" Padding="3">
-                            <Border BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="13" Padding="25">
-                                <StackPanel>
-                                    <TextBlock Text="{x:Static loc:Strings.Ent_PrimaryClass}" Foreground="{DynamicResource PrimaryAccent}" FontSize="11" FontWeight="Bold" Margin="0,0,0,15"/>
+                        <Border Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="2" Padding="25">
+                            <StackPanel>
+                                <TextBlock Text="{x:Static loc:Strings.Ent_PrimaryClass}" Foreground="{DynamicResource TextMain}" FontSize="14" FontWeight="SemiBold" Margin="0,0,0,20"/>
+                                
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/> <ColumnDefinition Width="20"/> <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/> <RowDefinition Height="Auto"/> <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,0,20">
+                                        <TextBlock Text="{x:Static loc:Strings.Ent_LblRrNumber}" Style="{StaticResource FormLabel}"/>
+                                        <TextBox Text="{Binding AddRrNumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CleanTextBox}"/>
+                                    </StackPanel>
                                     
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/> <ColumnDefinition Width="30"/> <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto"/> <RowDefinition Height="Auto"/> <RowDefinition Height="Auto"/>
-                                        </Grid.RowDefinitions>
+                                    <StackPanel Grid.Row="0" Grid.Column="2" Margin="0,0,0,20">
+                                        <TextBlock Text="{x:Static loc:Strings.Ent_LblSector}" Style="{StaticResource FormLabel}"/>
+                                        <ComboBox ItemsSource="{Binding AvailableSectors}" SelectedItem="{Binding AddSector, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CleanComboBox}"/>
+                                    </StackPanel>
 
-                                        <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,0,15">
-                                            <TextBlock Text="{x:Static loc:Strings.Ent_LblRrNumber}" Style="{StaticResource FormLabel}"/>
-                                            <TextBox Text="{Binding AddRrNumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CleanTextBox}"/>
-                                        </StackPanel>
-                                        
-                                        <StackPanel Grid.Row="0" Grid.Column="2" Margin="0,0,0,15">
-                                            <TextBlock Text="{x:Static loc:Strings.Ent_LblSector}" Style="{StaticResource FormLabel}"/>
-                                            <ComboBox ItemsSource="{Binding AvailableSectors}" SelectedItem="{Binding AddSector, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CleanComboBox}"/>
-                                        </StackPanel>
+                                    <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,0,0,20">
+                                        <TextBlock Text="{x:Static loc:Strings.Ent_LblSubjectName}" Style="{StaticResource FormLabel}"/>
+                                        <TextBox Text="{Binding AddFileName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CleanTextBox}"/>
+                                    </StackPanel>
 
-                                        <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,0,0,15">
-                                            <TextBlock Text="{x:Static loc:Strings.Ent_LblSubjectName}" Style="{StaticResource FormLabel}"/>
-                                            <TextBox Text="{Binding AddFileName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CleanTextBox}"/>
-                                        </StackPanel>
+                                    <StackPanel Grid.Row="2" Grid.Column="0" Margin="0,0,0,20">
+                                        <TextBlock Text="{x:Static loc:Strings.Ent_LblSecondaryIdOptional}" Style="{StaticResource FormLabel}"/>
+                                        <TextBox Text="{Binding AddSubjectNumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CleanTextBox}"/>
+                                    </StackPanel>
+                                    
+                                    <StackPanel Grid.Row="2" Grid.Column="2" Margin="0,0,0,20">
+                                        <TextBlock Text="{x:Static loc:Strings.Ent_LblFileType}" Style="{StaticResource FormLabel}"/>
+                                        <ComboBox ItemsSource="{Binding AvailableFileTypes}" SelectedItem="{Binding AddFileType, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CleanComboBox}"/>
+                                    </StackPanel>
+                                </Grid>
 
-                                        <StackPanel Grid.Row="2" Grid.Column="0" Margin="0,0,0,15">
-                                            <TextBlock Text="{x:Static loc:Strings.Ent_LblSecondaryIdOptional}" Style="{StaticResource FormLabel}"/>
-                                            <TextBox Text="{Binding AddSubjectNumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CleanTextBox}"/>
-                                        </StackPanel>
-                                        
-                                        <StackPanel Grid.Row="2" Grid.Column="2" Margin="0,0,0,15">
-                                            <TextBlock Text="{x:Static loc:Strings.Ent_LblFileType}" Style="{StaticResource FormLabel}"/>
-                                            <ComboBox ItemsSource="{Binding AvailableFileTypes}" SelectedItem="{Binding AddFileType, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CleanComboBox}"/>
-                                        </StackPanel>
-                                    </Grid>
+                                <Rectangle Height="1" Fill="{DynamicResource BorderColor}" Margin="0,10,0,25"/>
 
-                                    <Rectangle Height="1" Fill="{DynamicResource BorderColor}" Margin="0,5,0,20"/>
+                                <TextBlock Text="{x:Static loc:Strings.Ent_ChronoPhysicalData}" Foreground="{DynamicResource TextMain}" FontSize="14" FontWeight="SemiBold" Margin="0,0,0,20"/>
 
-                                    <TextBlock Text="{x:Static loc:Strings.Ent_ChronoPhysicalData}" Foreground="{DynamicResource PrimaryAccent}" FontSize="11" FontWeight="Bold" Margin="0,0,0,15"/>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/> <ColumnDefinition Width="20"/> <ColumnDefinition Width="*"/> <ColumnDefinition Width="20"/> <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/> <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
 
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/> <ColumnDefinition Width="15"/> <ColumnDefinition Width="*"/> <ColumnDefinition Width="15"/> <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto"/> <RowDefinition Height="Auto"/>
-                                        </Grid.RowDefinitions>
+                                    <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,0,20">
+                                        <TextBlock Text="{x:Static loc:Strings.Ent_LblStartDate}" Style="{StaticResource FormLabel}"/>
+                                        <DatePicker SelectedDate="{Binding AddStartDate}" Style="{StaticResource CleanDatePicker}"/>
+                                    </StackPanel>
 
-                                        <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,0,15">
-                                            <TextBlock Text="{x:Static loc:Strings.Ent_LblStartDate}" Style="{StaticResource FormLabel}"/>
-                                            <DatePicker SelectedDate="{Binding AddStartDate}" Style="{StaticResource CleanDatePicker}"/>
-                                        </StackPanel>
+                                    <StackPanel Grid.Row="0" Grid.Column="2" Margin="0,0,0,20">
+                                        <TextBlock Text="{x:Static loc:Strings.Ent_LblEndDate}" Style="{StaticResource FormLabel}"/>
+                                        <DatePicker SelectedDate="{Binding AddEndDate}" Style="{StaticResource CleanDatePicker}"/>
+                                    </StackPanel>
 
-                                        <StackPanel Grid.Row="0" Grid.Column="2" Margin="0,0,0,15">
-                                            <TextBlock Text="{x:Static loc:Strings.Ent_LblEndDate}" Style="{StaticResource FormLabel}"/>
-                                            <DatePicker SelectedDate="{Binding AddEndDate}" Style="{StaticResource CleanDatePicker}"/>
-                                        </StackPanel>
+                                    <StackPanel Grid.Row="0" Grid.Column="4" Margin="0,0,0,20">
+                                        <TextBlock Text="{x:Static loc:Strings.Ent_LblTotalPages}" Style="{StaticResource FormLabel}"/>
+                                        <TextBox Text="{Binding AddTotalPages, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CleanTextBox}"/>
+                                    </StackPanel>
 
-                                        <StackPanel Grid.Row="0" Grid.Column="4" Margin="0,0,0,15">
-                                            <TextBlock Text="{x:Static loc:Strings.Ent_LblTotalPages}" Style="{StaticResource FormLabel}"/>
-                                            <TextBox Text="{Binding AddTotalPages, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CleanTextBox}"/>
-                                        </StackPanel>
+                                    <StackPanel Grid.Row="1" Grid.Column="0">
+                                        <TextBlock Text="{x:Static loc:Strings.Ent_LblShelfNumber}" Style="{StaticResource FormLabel}"/>
+                                        <TextBox Text="{Binding AddShelfNumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CleanTextBox}"/>
+                                    </StackPanel>
 
-                                        <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,0,5">
-                                            <TextBlock Text="{x:Static loc:Strings.Ent_LblShelfNumber}" Style="{StaticResource FormLabel}"/>
-                                            <TextBox Text="{Binding AddShelfNumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CleanTextBox}"/>
-                                        </StackPanel>
+                                    <StackPanel Grid.Row="1" Grid.Column="2">
+                                        <TextBlock Text="{x:Static loc:Strings.Ent_LblDeckNumber}" Style="{StaticResource FormLabel}"/>
+                                        <TextBox Text="{Binding AddDeckNumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CleanTextBox}"/>
+                                    </StackPanel>
 
-                                        <StackPanel Grid.Row="1" Grid.Column="2" Margin="0,0,0,5">
-                                            <TextBlock Text="{x:Static loc:Strings.Ent_LblDeckNumber}" Style="{StaticResource FormLabel}"/>
-                                            <TextBox Text="{Binding AddDeckNumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CleanTextBox}"/>
-                                        </StackPanel>
-
-                                        <StackPanel Grid.Row="1" Grid.Column="4" Margin="0,0,0,5">
-                                            <TextBlock Text="{x:Static loc:Strings.Ent_LblFileNumber}" Style="{StaticResource FormLabel}"/>
-                                            <TextBox Text="{Binding AddFileNumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CleanTextBox}"/>
-                                        </StackPanel>
-                                    </Grid>
-                                </StackPanel>
-                            </Border>
+                                    <StackPanel Grid.Row="1" Grid.Column="4">
+                                        <TextBlock Text="{x:Static loc:Strings.Ent_LblFileNumber}" Style="{StaticResource FormLabel}"/>
+                                        <TextBox Text="{Binding AddFileNumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CleanTextBox}"/>
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
                         </Border>
 
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
-                            <Button Command="{Binding ClearAddFormCommand}" Content="{x:Static loc:Strings.Ent_BtnClearForm}" Width="130" Height="45" Background="Transparent" Foreground="{DynamicResource TextMuted}" BorderThickness="0" Margin="0,0,15,0" Cursor="Hand"/>
-                            
-                            <Button Command="{Binding SaveNewFileCommand}" Height="45" Background="{DynamicResource PrimaryAccent}" Foreground="{DynamicResource WindowBackground}" FontWeight="Bold" BorderThickness="0" Cursor="Hand" Padding="25,0">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+                            <Button Command="{Binding ClearAddFormCommand}" Content="{x:Static loc:Strings.Ent_BtnClearForm}" Background="Transparent" Foreground="{DynamicResource TextMuted}" BorderThickness="0" Margin="0,0,15,0" Cursor="Hand" Padding="15,8">
                                 <Button.Template>
                                     <ControlTemplate TargetType="Button">
-                                        <Border Background="{TemplateBinding Background}" CornerRadius="22">
+                                        <Border Background="{TemplateBinding Background}" CornerRadius="2">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                            
+                            <Button Command="{Binding SaveNewFileCommand}" Background="{DynamicResource PrimaryAccent}" Foreground="{DynamicResource CardBackground}" BorderThickness="0" Cursor="Hand" Padding="25,8">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}" CornerRadius="2">
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}">
-                                                <fa:ImageAwesome Icon="Save" Width="14" Height="14" Margin="0,0,10,0" Foreground="{DynamicResource WindowBackground}"/>
-                                                <TextBlock Text="{x:Static loc:Strings.Ent_BtnSaveRecord}"/>
+                                                <fa:ImageAwesome Icon="Save" Width="12" Height="12" Margin="0,0,8,0" Foreground="{DynamicResource CardBackground}"/>
+                                                <TextBlock Text="{x:Static loc:Strings.Ent_BtnSaveRecord}" FontWeight="SemiBold" FontSize="12"/>
                                             </StackPanel>
                                         </Border>
                                     </ControlTemplate>
@@ -350,20 +346,22 @@
             </TabItem>
 
             <TabItem Header="{x:Static loc:Strings.Ent_TabAmend}">
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <StackPanel HorizontalAlignment="Stretch" Margin="0,0,0,20">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="15,20,15,15">
+                    <StackPanel HorizontalAlignment="Stretch" MaxWidth="1000">
                         
-                        <Border Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="28" Padding="6" Margin="0,0,0,30">
+                        <Border Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="2" Padding="15,10" Margin="0,0,0,20">
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/> <ColumnDefinition Width="*"/> <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
                                 
-                                <fa:ImageAwesome Grid.Column="0" Icon="Edit" Width="18" Height="18" Foreground="{DynamicResource PrimaryAccent}" Margin="20,0,15,0"/>
+                                <fa:ImageAwesome Grid.Column="0" Icon="Edit" Width="14" Height="14" Foreground="{DynamicResource TextMuted}" Margin="0,0,15,0" VerticalAlignment="Center"/>
                                
                                 <TextBox Grid.Column="1" Text="{Binding SearchRrNumber, UpdateSourceTrigger=PropertyChanged}" 
                                          Background="Transparent" Foreground="{DynamicResource TextMain}" BorderThickness="0" 
-                                         FontSize="16" FontFamily="Georgia" VerticalContentAlignment="Center" Margin="0,0,20,0">
+                                         FontSize="14" VerticalContentAlignment="Center" Margin="0,0,15,0">
                                     <TextBox.Style>
                                         <Style TargetType="TextBox">
                                             <Style.Triggers>
@@ -372,7 +370,7 @@
                                                         <Setter.Value>
                                                             <VisualBrush Stretch="None" AlignmentX="Left">
                                                                 <VisualBrush.Visual>
-                                                                    <TextBlock Text="{x:Static loc:Strings.Ent_AmendSearchWatermark}" Foreground="{DynamicResource TextMuted}" Opacity="0.5" FontSize="16" FontFamily="Georgia"/>
+                                                                    <TextBlock Text="{x:Static loc:Strings.Ent_AmendSearchWatermark}" Foreground="{DynamicResource TextMuted}" Opacity="0.7" FontSize="14"/>
                                                                 </VisualBrush.Visual>
                                                             </VisualBrush>
                                                         </Setter.Value>
@@ -384,14 +382,13 @@
                                 </TextBox>
                                 
                                 <Button Grid.Column="2" Command="{Binding SearchFileToEditCommand}" 
-                                        Background="{DynamicResource BorderColor}" Foreground="{DynamicResource TextMain}" 
-                                        FontWeight="Bold" BorderThickness="0" Padding="35,14" Cursor="Hand">
+                                        Background="{DynamicResource PrimaryAccent}" Foreground="{DynamicResource CardBackground}" BorderThickness="0" Padding="20,6" Cursor="Hand">
                                     <Button.Template>
                                         <ControlTemplate TargetType="Button">
-                                            <Border Background="{TemplateBinding Background}" CornerRadius="22">
+                                            <Border Background="{TemplateBinding Background}" CornerRadius="2">
                                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}">
-                                                    <fa:ImageAwesome Icon="Search" Width="14" Height="14" Foreground="{TemplateBinding Foreground}" Margin="0,0,10,0"/>
-                                                    <TextBlock Text="{x:Static loc:Strings.Ent_BtnLocateRecord}" FontSize="13"/>
+                                                    <fa:ImageAwesome Icon="Search" Width="12" Height="12" Foreground="{TemplateBinding Foreground}" Margin="0,0,8,0"/>
+                                                    <TextBlock Text="{x:Static loc:Strings.Ent_BtnLocateRecord}" FontSize="12" FontWeight="SemiBold"/>
                                                 </StackPanel>
                                             </Border>
                                         </ControlTemplate>
@@ -400,132 +397,136 @@
                             </Grid>
                         </Border>
 
-                        <Border Background="{DynamicResource CardBackground}" CornerRadius="16" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" Padding="3" IsEnabled="{Binding IsEditFormEnabled}">
-                            <Border BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="13" Padding="25">
-                                <StackPanel>
-                                    <TextBlock Text="{x:Static loc:Strings.Ent_PrimaryClass}" Foreground="{DynamicResource PrimaryAccent}" FontSize="11" FontWeight="Bold" Margin="0,0,0,15"/>
+                        <Border Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="2" Padding="25" IsEnabled="{Binding IsEditFormEnabled}">
+                            <StackPanel>
+                                <TextBlock Text="{x:Static loc:Strings.Ent_PrimaryClass}" Foreground="{DynamicResource TextMain}" FontSize="14" FontWeight="SemiBold" Margin="0,0,0,20"/>
+                                
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/> <ColumnDefinition Width="20"/> <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/> <RowDefinition Height="Auto"/> <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,0,0,20">
+                                        <TextBlock Text="{x:Static loc:Strings.Ent_LblRrNumberLockEdit}" Style="{StaticResource FormLabel}" Foreground="{DynamicResource DangerAccent}"/>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            
+                                            <TextBox Grid.Column="0" Text="{Binding EditRrNumber, UpdateSourceTrigger=PropertyChanged}" 
+                                                     Style="{StaticResource CleanTextBox}" 
+                                                     IsReadOnly="{Binding IsChecked, ElementName=RrLockToggle}"/>
+                                            
+                                            <ToggleButton x:Name="RrLockToggle" Grid.Column="1" IsChecked="True" Margin="10,0,0,0" Width="32" Height="32" Background="{DynamicResource WindowBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" Cursor="Hand" ToolTip="{x:Static loc:Strings.Ent_TooltipUnlockEdit}">
+                                                <ToggleButton.Template>
+                                                    <ControlTemplate TargetType="ToggleButton">
+                                                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2">
+                                                            <fa:ImageAwesome x:Name="LockIcon" Icon="Lock" Width="12" Height="12" Foreground="{DynamicResource DangerAccent}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        </Border>
+                                                        <ControlTemplate.Triggers>
+                                                            <Trigger Property="IsChecked" Value="False">
+                                                                <Setter TargetName="LockIcon" Property="Icon" Value="Unlock"/>
+                                                                <Setter TargetName="LockIcon" Property="Foreground" Value="{DynamicResource PrimaryAccent}"/>
+                                                            </Trigger>
+                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                                <Setter Property="BorderBrush" Value="{DynamicResource PrimaryAccent}"/>
+                                                            </Trigger>
+                                                        </ControlTemplate.Triggers>
+                                                    </ControlTemplate>
+                                                </ToggleButton.Template>
+                                            </ToggleButton>
+                                        </Grid>
+                                    </StackPanel>
                                     
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/> <ColumnDefinition Width="30"/> <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto"/> <RowDefinition Height="Auto"/> <RowDefinition Height="Auto"/>
-                                        </Grid.RowDefinitions>
+                                    <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,0,20">
+                                        <TextBlock Text="{x:Static loc:Strings.Ent_LblSector}" Style="{StaticResource FormLabel}"/>
+                                        <ComboBox ItemsSource="{Binding AvailableSectors}" SelectedItem="{Binding EditSector, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CleanComboBox}"/>
+                                    </StackPanel>
 
-                                        <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,0,0,15">
-                                            <TextBlock Text="{x:Static loc:Strings.Ent_LblRrNumberLockEdit}" Style="{StaticResource FormLabel}" Foreground="{DynamicResource DangerAccent}"/>
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="Auto"/>
-                                                </Grid.ColumnDefinitions>
-                                                
-                                                <TextBox Grid.Column="0" Text="{Binding EditRrNumber, UpdateSourceTrigger=PropertyChanged}" 
-                                                         Style="{StaticResource CleanTextBox}" 
-                                                         IsReadOnly="{Binding IsChecked, ElementName=RrLockToggle}"/>
-                                                
-                                                <ToggleButton x:Name="RrLockToggle" Grid.Column="1" IsChecked="True" Margin="15,0,0,0" Width="45" Height="45" Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" Cursor="Hand" ToolTip="{x:Static loc:Strings.Ent_TooltipUnlockEdit}">
-                                                    <ToggleButton.Template>
-                                                        <ControlTemplate TargetType="ToggleButton">
-                                                            <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="12">
-                                                                <fa:ImageAwesome x:Name="LockIcon" Icon="Lock" Width="14" Height="14" Foreground="{DynamicResource DangerAccent}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                                            </Border>
-                                                            <ControlTemplate.Triggers>
-                                                                <Trigger Property="IsChecked" Value="False">
-                                                                    <Setter TargetName="LockIcon" Property="Icon" Value="Unlock"/>
-                                                                    <Setter TargetName="LockIcon" Property="Foreground" Value="{DynamicResource PrimaryAccent}"/>
-                                                                    <Setter TargetName="LockIcon" Property="Width" Value="16"/>
-                                                                    <Setter TargetName="LockIcon" Property="Height" Value="16"/>
-                                                                </Trigger>
-                                                                <Trigger Property="IsMouseOver" Value="True">
-                                                                    <Setter Property="BorderBrush" Value="{DynamicResource PrimaryAccent}"/>
-                                                                </Trigger>
-                                                            </ControlTemplate.Triggers>
-                                                        </ControlTemplate>
-                                                    </ToggleButton.Template>
-                                                </ToggleButton>
-                                            </Grid>
-                                        </StackPanel>
-                                        
-                                        <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,0,15">
-                                            <TextBlock Text="{x:Static loc:Strings.Ent_LblSector}" Style="{StaticResource FormLabel}"/>
-                                            <ComboBox ItemsSource="{Binding AvailableSectors}" SelectedItem="{Binding EditSector, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CleanComboBox}"/>
-                                        </StackPanel>
+                                    <StackPanel Grid.Row="1" Grid.Column="2" Margin="0,0,0,20">
+                                        <TextBlock Text="{x:Static loc:Strings.Ent_LblFileType}" Style="{StaticResource FormLabel}"/>
+                                        <ComboBox ItemsSource="{Binding AvailableFileTypes}" SelectedItem="{Binding EditFileType, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CleanComboBox}"/>
+                                    </StackPanel>
 
-                                        <StackPanel Grid.Row="1" Grid.Column="2" Margin="0,0,0,15">
-                                            <TextBlock Text="{x:Static loc:Strings.Ent_LblFileType}" Style="{StaticResource FormLabel}"/>
-                                            <ComboBox ItemsSource="{Binding AvailableFileTypes}" SelectedItem="{Binding EditFileType, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CleanComboBox}"/>
-                                        </StackPanel>
+                                    <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,0,0,20">
+                                        <TextBlock Text="{x:Static loc:Strings.Ent_LblSubjectName}" Style="{StaticResource FormLabel}"/>
+                                        <TextBox Text="{Binding EditFileName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CleanTextBox}"/>
+                                    </StackPanel>
+                                </Grid>
 
-                                        <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,0,0,15">
-                                            <TextBlock Text="{x:Static loc:Strings.Ent_LblSubjectName}" Style="{StaticResource FormLabel}"/>
-                                            <TextBox Text="{Binding EditFileName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CleanTextBox}"/>
-                                        </StackPanel>
-                                    </Grid>
+                                <Rectangle Height="1" Fill="{DynamicResource BorderColor}" Margin="0,10,0,25"/>
 
-                                    <Rectangle Height="1" Fill="{DynamicResource BorderColor}" Margin="0,5,0,20"/>
+                                <TextBlock Text="{x:Static loc:Strings.Ent_ChronoPhysicalData}" Foreground="{DynamicResource TextMain}" FontSize="14" FontWeight="SemiBold" Margin="0,0,0,20"/>
 
-                                    <TextBlock Text="{x:Static loc:Strings.Ent_ChronoPhysicalData}" Foreground="{DynamicResource PrimaryAccent}" FontSize="11" FontWeight="Bold" Margin="0,0,0,15"/>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/> <ColumnDefinition Width="20"/> <ColumnDefinition Width="*"/> <ColumnDefinition Width="20"/> <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/> <RowDefinition Height="Auto"/> <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
 
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/> <ColumnDefinition Width="20"/> <ColumnDefinition Width="*"/> <ColumnDefinition Width="20"/> <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto"/> <RowDefinition Height="Auto"/> <RowDefinition Height="Auto"/>
-                                        </Grid.RowDefinitions>
+                                    <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,0,0,20">
+                                        <TextBlock Text="{x:Static loc:Strings.Ent_LblSecondaryId}" Style="{StaticResource FormLabel}"/>
+                                        <TextBox Text="{Binding EditSubjectNumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CleanTextBox}"/>
+                                    </StackPanel>
 
-                                        <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,0,0,15">
-                                            <TextBlock Text="{x:Static loc:Strings.Ent_LblSecondaryId}" Style="{StaticResource FormLabel}"/>
-                                            <TextBox Text="{Binding EditSubjectNumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CleanTextBox}"/>
-                                        </StackPanel>
+                                    <StackPanel Grid.Row="0" Grid.Column="4" Margin="0,0,0,20">
+                                        <TextBlock Text="{x:Static loc:Strings.Ent_LblTotalPages}" Style="{StaticResource FormLabel}"/>
+                                        <TextBox Text="{Binding EditTotalPages, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CleanTextBox}"/>
+                                    </StackPanel>
 
-                                        <StackPanel Grid.Row="0" Grid.Column="4" Margin="0,0,0,15">
-                                            <TextBlock Text="{x:Static loc:Strings.Ent_LblTotalPages}" Style="{StaticResource FormLabel}"/>
-                                            <TextBox Text="{Binding EditTotalPages, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CleanTextBox}"/>
-                                        </StackPanel>
+                                    <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,0,20">
+                                        <TextBlock Text="{x:Static loc:Strings.Ent_LblStartDate}" Style="{StaticResource FormLabel}"/>
+                                        <DatePicker SelectedDate="{Binding EditStartDate}" Style="{StaticResource CleanDatePicker}"/>
+                                    </StackPanel>
 
-                                        <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,0,15">
-                                            <TextBlock Text="{x:Static loc:Strings.Ent_LblStartDate}" Style="{StaticResource FormLabel}"/>
-                                            <DatePicker SelectedDate="{Binding EditStartDate}" Style="{StaticResource CleanDatePicker}"/>
-                                        </StackPanel>
+                                    <StackPanel Grid.Row="1" Grid.Column="2" Margin="0,0,0,20">
+                                        <TextBlock Text="{x:Static loc:Strings.Ent_LblEndDate}" Style="{StaticResource FormLabel}"/>
+                                        <DatePicker SelectedDate="{Binding EditEndDate}" Style="{StaticResource CleanDatePicker}"/>
+                                    </StackPanel>
 
-                                        <StackPanel Grid.Row="1" Grid.Column="2" Margin="0,0,0,15">
-                                            <TextBlock Text="{x:Static loc:Strings.Ent_LblEndDate}" Style="{StaticResource FormLabel}"/>
-                                            <DatePicker SelectedDate="{Binding EditEndDate}" Style="{StaticResource CleanDatePicker}"/>
-                                        </StackPanel>
+                                    <StackPanel Grid.Row="2" Grid.Column="0">
+                                        <TextBlock Text="{x:Static loc:Strings.Ent_LblShelfNumber}" Style="{StaticResource FormLabel}"/>
+                                        <TextBox Text="{Binding EditShelfNumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CleanTextBox}"/>
+                                    </StackPanel>
 
-                                        <StackPanel Grid.Row="2" Grid.Column="0" Margin="0,0,0,5">
-                                            <TextBlock Text="{x:Static loc:Strings.Ent_LblShelfNumber}" Style="{StaticResource FormLabel}"/>
-                                            <TextBox Text="{Binding EditShelfNumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CleanTextBox}"/>
-                                        </StackPanel>
+                                    <StackPanel Grid.Row="2" Grid.Column="2">
+                                        <TextBlock Text="{x:Static loc:Strings.Ent_LblDeckNumber}" Style="{StaticResource FormLabel}"/>
+                                        <TextBox Text="{Binding EditDeckNumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CleanTextBox}"/>
+                                    </StackPanel>
 
-                                        <StackPanel Grid.Row="2" Grid.Column="2" Margin="0,0,0,5">
-                                            <TextBlock Text="{x:Static loc:Strings.Ent_LblDeckNumber}" Style="{StaticResource FormLabel}"/>
-                                            <TextBox Text="{Binding EditDeckNumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CleanTextBox}"/>
-                                        </StackPanel>
+                                    <StackPanel Grid.Row="2" Grid.Column="4">
+                                        <TextBlock Text="{x:Static loc:Strings.Ent_LblFileNumber}" Style="{StaticResource FormLabel}"/>
+                                        <TextBox Text="{Binding EditFileNumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CleanTextBox}"/>
+                                    </StackPanel>
+                                </Grid>
 
-                                        <StackPanel Grid.Row="2" Grid.Column="4" Margin="0,0,0,5">
-                                            <TextBlock Text="{x:Static loc:Strings.Ent_LblFileNumber}" Style="{StaticResource FormLabel}"/>
-                                            <TextBox Text="{Binding EditFileNumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CleanTextBox}"/>
-                                        </StackPanel>
-                                    </Grid>
-
-                                </StackPanel>
-                            </Border>
+                            </StackPanel>
                         </Border>
 
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
-                            <Button Command="{Binding ClearEditFormCommand}" Content="{x:Static loc:Strings.Ent_BtnCancelAmendment}" Width="150" Height="45" Background="Transparent" Foreground="{DynamicResource DangerAccent}" BorderThickness="0" Margin="0,0,15,0" Cursor="Hand"/>
-                            
-                            <Button Command="{Binding UpdateFileCommand}" IsEnabled="{Binding IsEditFormEnabled}" Height="45" Background="{DynamicResource PrimaryAccent}" Foreground="{DynamicResource WindowBackground}" FontWeight="Bold" BorderThickness="0" Cursor="Hand" Padding="25,0">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+                            <Button Command="{Binding ClearEditFormCommand}" Content="{x:Static loc:Strings.Ent_BtnCancelAmendment}" Background="Transparent" Foreground="{DynamicResource DangerAccent}" BorderThickness="0" Margin="0,0,15,0" Cursor="Hand" Padding="15,8">
                                 <Button.Template>
                                     <ControlTemplate TargetType="Button">
-                                        <Border Background="{TemplateBinding Background}" CornerRadius="22">
+                                        <Border Background="{TemplateBinding Background}" CornerRadius="2">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                            
+                            <Button Command="{Binding UpdateFileCommand}" IsEnabled="{Binding IsEditFormEnabled}" Background="{DynamicResource PrimaryAccent}" Foreground="{DynamicResource CardBackground}" BorderThickness="0" Cursor="Hand" Padding="25,8">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}" CornerRadius="2">
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}">
-                                                <fa:ImageAwesome Icon="Save" Width="14" Height="14" Margin="0,0,10,0" Foreground="{DynamicResource WindowBackground}"/>
-                                                <TextBlock Text="{x:Static loc:Strings.Ent_BtnCommitChanges}"/>
+                                                <fa:ImageAwesome Icon="Save" Width="12" Height="12" Margin="0,0,8,0" Foreground="{DynamicResource CardBackground}"/>
+                                                <TextBlock Text="{x:Static loc:Strings.Ent_BtnCommitChanges}" FontWeight="SemiBold" FontSize="12"/>
                                             </StackPanel>
                                         </Border>
                                         <ControlTemplate.Triggers>
@@ -543,189 +544,181 @@
             </TabItem>
 
             <TabItem Header="{x:Static loc:Strings.Ent_TabAudit}">
-                <Border Background="{DynamicResource CardBackground}" CornerRadius="16" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" Padding="3">
-                    <Border BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="13">
-                        <DataGrid ItemsSource="{Binding HistoryRecords}" 
-                                  SelectedItem="{Binding SelectedHistoryRecord, Mode=TwoWay}"
-                                  AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True"
-                                  Background="Transparent" Foreground="{DynamicResource TextMain}" 
-                                  RowBackground="Transparent" AlternatingRowBackground="Transparent" 
-                                  HeadersVisibility="Column" GridLinesVisibility="None" Margin="10,0"
-                                  HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                            
-                            <DataGrid.InputBindings>
-                                <MouseBinding Gesture="LeftDoubleClick" Command="{Binding ShowHistoryDetailsCommand}" />
-                            </DataGrid.InputBindings>
+                <DataGrid ItemsSource="{Binding HistoryRecords}" 
+                          SelectedItem="{Binding SelectedHistoryRecord, Mode=TwoWay}"
+                          AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True"
+                          Background="{DynamicResource CardBackground}" Foreground="{DynamicResource TextMain}" 
+                          RowBackground="{DynamicResource CardBackground}" AlternatingRowBackground="{DynamicResource WindowBackground}" 
+                          HeadersVisibility="Column" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="{DynamicResource BorderColor}" 
+                          BorderThickness="1" BorderBrush="{DynamicResource BorderColor}" Margin="15,10,15,15" MinHeight="400">
+                    
+                    <DataGrid.InputBindings>
+                        <MouseBinding Gesture="LeftDoubleClick" Command="{Binding ShowHistoryDetailsCommand}" />
+                    </DataGrid.InputBindings>
+                    
+                    <DataGrid.Resources>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="Background" Value="{DynamicResource CardBackground}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
+                            <Setter Property="FontWeight" Value="SemiBold"/>
+                            <Setter Property="FontSize" Value="12"/>
+                            <Setter Property="Padding" Value="10,8"/>
+                            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                            <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
+                        </Style>
+                        <Style TargetType="DataGridRow">
+                            <Setter Property="Padding" Value="0,4"/>
+                            <Setter Property="Cursor" Value="Hand"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#0A000000"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.Resources>
+
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="{x:Static loc:Strings.Ent_ColTimestamp}" Binding="{Binding Timestamp, StringFormat=yyyy-MM-dd HH:mm}" Width="140">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Setter Property="Padding" Value="10,0,0,0"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        
+                        <DataGridTextColumn Header="{x:Static loc:Strings.Ent_ColAction}" Binding="{Binding ActionType}" Width="100">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ActionType}" Value="Created">
+                                            <Setter Property="Foreground" Value="{DynamicResource AvailableColor}"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ActionType}" Value="Edited">
+                                            <Setter Property="Foreground" Value="{DynamicResource BorrowedColor}"/> 
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+
+                        <DataGridTextColumn Header="{x:Static loc:Strings.Ent_ColRrNumber}" Binding="{Binding RrNumber}" Width="120">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        
+                        <DataGridTemplateColumn Header="{x:Static loc:Strings.Ent_ColSubjectName}" Width="*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding FileName}" ToolTip="{Binding FileName}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <DataGridTemplateColumn Header="{x:Static loc:Strings.Ent_ColSector}" Width="150">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Sector}" ToolTip="{Binding Sector}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <DataGridTextColumn Header="{x:Static loc:Strings.Ent_ColStatus}" Binding="{Binding Status}" Width="100">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+        </TabControl>
+
+        <Grid Grid.Row="0" Grid.RowSpan="3" Visibility="{Binding IsDialogOpen, Converter={StaticResource BoolToVisConverter}}" Panel.ZIndex="100">
+            <Border Background="#66000000"/>
+            
+            <Border Background="{DynamicResource CardBackground}" CornerRadius="2" Padding="25" HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="750" MinWidth="500" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1">
+                <Grid>
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
+                            <fa:ImageAwesome Icon="History" Width="16" Height="16" Foreground="{DynamicResource PrimaryAccent}" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding DialogTitle}" Foreground="{DynamicResource TextMain}" FontSize="16" FontWeight="SemiBold"/>
+                        </StackPanel>
+
+                        <DataGrid ItemsSource="{Binding RecordChanges}" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True"
+                                  Background="{DynamicResource CardBackground}" RowBackground="{DynamicResource CardBackground}" AlternatingRowBackground="{DynamicResource WindowBackground}" 
+                                  HeadersVisibility="Column" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="{DynamicResource BorderColor}" BorderThickness="1" BorderBrush="{DynamicResource BorderColor}" MaxHeight="300">
                             
                             <DataGrid.Resources>
                                 <Style TargetType="DataGridColumnHeader">
-                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="Background" Value="{DynamicResource CardBackground}"/>
                                     <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
-                                    <Setter Property="FontWeight" Value="Bold"/>
-                                    <Setter Property="FontSize" Value="10"/>
-                                    <Setter Property="Padding" Value="20,15"/>
+                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                    <Setter Property="FontSize" Value="12"/>
+                                    <Setter Property="Padding" Value="10,8"/>
                                     <Setter Property="BorderThickness" Value="0,0,0,1"/>
                                     <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
                                 </Style>
                                 <Style TargetType="DataGridRow">
-                                    <Setter Property="Padding" Value="0,15"/>
-                                    <Setter Property="BorderThickness" Value="0,0,0,1"/>
-                                    <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
-                                    <Setter Property="Cursor" Value="Hand"/>
-                                    <Style.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="#05000000"/>
-                                        </Trigger>
-                                    </Style.Triggers>
+                                    <Setter Property="Padding" Value="0,6"/>
                                 </Style>
                             </DataGrid.Resources>
 
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="{x:Static loc:Strings.Ent_ColTimestamp}" Binding="{Binding Timestamp, StringFormat=yyyy-MM-dd HH:mm}">
+                                <DataGridTextColumn Header="{x:Static loc:Strings.Ent_ColModifiedField}" Binding="{Binding FieldName}" Width="140">
                                     <DataGridTextColumn.ElementStyle>
                                         <Style TargetType="TextBlock">
                                             <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
+                                            <Setter Property="FontWeight" Value="SemiBold"/>
                                             <Setter Property="VerticalAlignment" Value="Center"/>
-                                        </Style>
-                                    </DataGridTextColumn.ElementStyle>
-                                </DataGridTextColumn>
-                                
-                                <DataGridTextColumn Header="{x:Static loc:Strings.Ent_ColAction}" Binding="{Binding ActionType}">
-                                    <DataGridTextColumn.ElementStyle>
-                                        <Style TargetType="TextBlock">
-                                            <Setter Property="FontWeight" Value="Bold"/>
-                                            <Setter Property="VerticalAlignment" Value="Center"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding ActionType}" Value="Created">
-                                                    <Setter Property="Foreground" Value="{DynamicResource PrimaryAccent}"/>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding ActionType}" Value="Edited">
-                                                    <Setter Property="Foreground" Value="#E5C365"/> 
-                                                </DataTrigger>
-                                            </Style.Triggers>
+                                            <Setter Property="Padding" Value="10,0,0,0"/>
                                         </Style>
                                     </DataGridTextColumn.ElementStyle>
                                 </DataGridTextColumn>
 
-                                <DataGridTextColumn Header="{x:Static loc:Strings.Ent_ColRrNumber}" Binding="{Binding RrNumber}">
+                                <DataGridTextColumn Header="{x:Static loc:Strings.Ent_ColPriorValue}" Binding="{Binding OldValue}" Width="*">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Foreground" Value="{DynamicResource DangerAccent}"/>
+                                            <Setter Property="VerticalAlignment" Value="Center"/>
+                                            <Setter Property="TextWrapping" Value="Wrap"/>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+                                
+                                <DataGridTextColumn Header="{x:Static loc:Strings.Ent_ColAmendedValue}" Binding="{Binding NewValue}" Width="*">
                                     <DataGridTextColumn.ElementStyle>
                                         <Style TargetType="TextBlock">
                                             <Setter Property="Foreground" Value="{DynamicResource PrimaryAccent}"/>
-                                            <Setter Property="FontFamily" Value="Consolas"/>
                                             <Setter Property="VerticalAlignment" Value="Center"/>
-                                        </Style>
-                                    </DataGridTextColumn.ElementStyle>
-                                </DataGridTextColumn>
-                                
-                                <DataGridTemplateColumn Header="{x:Static loc:Strings.Ent_ColSubjectName}" Width="*">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding FileName}" ToolTip="{Binding FileName}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-
-                                <DataGridTemplateColumn Header="{x:Static loc:Strings.Ent_ColSector}" Width="*">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding Sector}" ToolTip="{Binding Sector}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-
-                                <DataGridTextColumn Header="{x:Static loc:Strings.Ent_ColStatus}" Binding="{Binding Status}">
-                                    <DataGridTextColumn.ElementStyle>
-                                        <Style TargetType="TextBlock">
-                                            <Setter Property="VerticalAlignment" Value="Center"/>
+                                            <Setter Property="TextWrapping" Value="Wrap"/>
                                         </Style>
                                     </DataGridTextColumn.ElementStyle>
                                 </DataGridTextColumn>
                             </DataGrid.Columns>
                         </DataGrid>
-                    </Border>
-                </Border>
-            </TabItem>
-        </TabControl>
 
-        <Grid Grid.Row="0" Grid.RowSpan="3" Visibility="{Binding IsDialogOpen, Converter={StaticResource BoolToVisConverter}}" Panel.ZIndex="100">
-            <Border Background="#CC000000" CornerRadius="16"/>
-            
-            <Border Background="{DynamicResource CardBackground}" CornerRadius="16" Padding="35" HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="750" MinWidth="500" BorderBrush="{DynamicResource PrimaryAccent}" BorderThickness="2" ClipToBounds="True">
-                <Grid>
-                    <fa:ImageAwesome Icon="Bank" Width="180" Height="180" Foreground="{DynamicResource PrimaryAccent}" Opacity="0.05" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-30,-30,0" IsHitTestVisible="False"/>
-
-                    <StackPanel>
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,25">
-                            <fa:ImageAwesome Icon="History" Width="24" Height="24" Foreground="{DynamicResource PrimaryAccent}" Margin="0,0,15,0"/>
-                            <TextBlock Text="{Binding DialogTitle}" Foreground="{DynamicResource PrimaryAccent}" FontSize="20" FontFamily="Georgia" FontWeight="Bold"/>
-                        </StackPanel>
-
-                        <Border BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="12" Padding="2" Background="{DynamicResource WindowBackground}">
-                            <DataGrid ItemsSource="{Binding RecordChanges}" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True"
-                                      Background="Transparent" RowBackground="Transparent" AlternatingRowBackground="Transparent" 
-                                      HeadersVisibility="Column" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="{DynamicResource BorderColor}" BorderThickness="0" MaxHeight="300">
-                                
-                                <DataGrid.Resources>
-                                    <Style TargetType="DataGridColumnHeader">
-                                        <Setter Property="Background" Value="Transparent"/>
-                                        <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
-                                        <Setter Property="FontWeight" Value="Bold"/>
-                                        <Setter Property="FontSize" Value="10"/>
-                                        <Setter Property="Padding" Value="15,10"/>
-                                    </Style>
-                                    <Style TargetType="DataGridRow">
-                                        <Setter Property="Padding" Value="0,10"/>
-                                        <Setter Property="Background" Value="Transparent"/>
-                                        <Setter Property="BorderThickness" Value="0"/>
-                                    </Style>
-                                </DataGrid.Resources>
-
-                                <DataGrid.Columns>
-                                    <DataGridTextColumn Header="{x:Static loc:Strings.Ent_ColModifiedField}" Binding="{Binding FieldName}" Width="120">
-                                        <DataGridTextColumn.ElementStyle>
-                                            <Style TargetType="TextBlock">
-                                                <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
-                                                <Setter Property="FontWeight" Value="Bold"/>
-                                                <Setter Property="VerticalAlignment" Value="Center"/>
-                                                <Setter Property="Margin" Value="10,0,0,0"/>
-                                            </Style>
-                                        </DataGridTextColumn.ElementStyle>
-                                    </DataGridTextColumn>
-
-                                    <DataGridTextColumn Header="{x:Static loc:Strings.Ent_ColPriorValue}" Binding="{Binding OldValue}" Width="*">
-                                        <DataGridTextColumn.ElementStyle>
-                                            <Style TargetType="TextBlock">
-                                                <Setter Property="Foreground" Value="{DynamicResource DangerAccent}"/>
-                                                <Setter Property="VerticalAlignment" Value="Center"/>
-                                                <Setter Property="TextWrapping" Value="Wrap"/>
-                                            </Style>
-                                        </DataGridTextColumn.ElementStyle>
-                                    </DataGridTextColumn>
-                                    
-                                    <DataGridTextColumn Header="{x:Static loc:Strings.Ent_ColAmendedValue}" Binding="{Binding NewValue}" Width="*">
-                                        <DataGridTextColumn.ElementStyle>
-                                            <Style TargetType="TextBlock">
-                                                <Setter Property="Foreground" Value="{DynamicResource PrimaryAccent}"/>
-                                                <Setter Property="VerticalAlignment" Value="Center"/>
-                                                <Setter Property="TextWrapping" Value="Wrap"/>
-                                            </Style>
-                                        </DataGridTextColumn.ElementStyle>
-                                    </DataGridTextColumn>
-                                </DataGrid.Columns>
-                            </DataGrid>
+                        <Border BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,1,0,0" Margin="0,20,0,0" Padding="0,20,0,0">
+                            <Button Command="{Binding CloseDialogCommand}" Content="{x:Static loc:Strings.Ent_BtnDismissLog}" 
+                                    Height="32" Width="150" HorizontalAlignment="Right" Background="{DynamicResource BorderColor}" 
+                                    Foreground="{DynamicResource TextMain}" FontWeight="SemiBold" BorderThickness="0" Cursor="Hand" Panel.ZIndex="10">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}" CornerRadius="2">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
                         </Border>
-
-                        <Button Command="{Binding CloseDialogCommand}" Content="{x:Static loc:Strings.Ent_BtnDismissLog}" 
-                                Height="45" Margin="0,30,0,0" Background="{DynamicResource BorderColor}" 
-                                Foreground="{DynamicResource TextMain}" FontWeight="Bold" BorderThickness="0" Cursor="Hand" Panel.ZIndex="10">
-                            <Button.Template>
-                                <ControlTemplate TargetType="Button">
-                                    <Border Background="{TemplateBinding Background}" CornerRadius="8">
-                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Button.Template>
-                        </Button>
                     </StackPanel>
                 </Grid>
             </Border>
