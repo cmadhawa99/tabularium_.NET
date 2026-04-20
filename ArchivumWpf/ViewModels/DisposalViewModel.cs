@@ -44,6 +44,9 @@ public partial class DisposalViewModel : ObservableObject
     [ObservableProperty] private bool _isDisposalPromptOpen = false;
     [ObservableProperty] private string _pendingDisposalRrNumber = string.Empty;
 
+    [ObservableProperty] private FileRecord _loadedFile;
+    [ObservableProperty] private string _loadedFileColor = "#8f9bb3";
+
     public DisposalViewModel (IArchiveService archiveService, IPreferencesService preferencesService)
     {
         _archiveService = archiveService;
@@ -78,6 +81,9 @@ public partial class DisposalViewModel : ObservableObject
             ClearLoadedFile();
             return;
         }
+
+        LoadedFile = file;
+        LoadedFileColor = GetSectorColor(file.Sector);
         
         LoadedRrNumber = file.RrNumber;
         LoadedFileName = file.FileName;
@@ -219,6 +225,13 @@ public partial class DisposalViewModel : ObservableObject
         PopupBorderColor = sector?.ColorHex ?? "#333333";
     }
 
+    private string GetSectorColor(string sectorName)
+    {
+        var prefs = _preferencesService.GetPreferences();
+        var sector = prefs.Sectors.FirstOrDefault(s => s.Name == sectorName);
+        return sector?.ColorHex ?? "#8f9bb3";
+    }
+
     [RelayCommand]
     private void CloseDialog()
     {
@@ -231,6 +244,8 @@ public partial class DisposalViewModel : ObservableObject
     {
         IsFileLoaded = false;
         CanDispose = false;
+        LoadedFile = null;
+        LoadedFileColor = "#8f9bb3";
         LoadedRrNumber = string.Empty;
         LoadedFileName = string.Empty;
         LoadedSector = string.Empty;

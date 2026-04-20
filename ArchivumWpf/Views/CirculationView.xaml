@@ -570,7 +570,7 @@
 
                         <Border BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,1,0,0" Margin="0,20,0,0" Padding="0,20,0,0">
                             <Button Command="{Binding CloseDialogCommand}" Content="{x:Static loc:Strings.Circ_BtnCloseRecord}" 
-                                    Height="32" Width="100" HorizontalAlignment="Right" Background="{DynamicResource BorderColor}" 
+                                    Height="32" Width="150" HorizontalAlignment="Right" Background="{DynamicResource BorderColor}" 
                                     Foreground="{DynamicResource TextMain}" FontWeight="SemiBold" BorderThickness="0" Cursor="Hand" Panel.ZIndex="10">
                                 <Button.Template>
                                     <ControlTemplate TargetType="Button">

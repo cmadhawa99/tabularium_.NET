@@ -132,7 +132,7 @@
         <value>RR අංකය:</value>
     </data>
     <data name="Circ_LblSubjectName" xml:space="preserve">
-        <value>විෂය නාමය:</value>
+        <value>ලිපිගොනුවේ නම:</value>
     </data>
     <data name="Circ_LblSector" xml:space="preserve">
         <value>අංශය:</value>
@@ -570,7 +570,7 @@
         <value>RR අංකය</value>
     </data>
     <data name="Ent_ColSubjectName" xml:space="preserve">
-        <value>ලිපිගොනුවේ නාමය</value>
+        <value>ලිපිගොනුවේ නම</value>
     </data>
     <data name="Ent_ColSector" xml:space="preserve">
         <value>අංශය</value>
@@ -841,5 +841,20 @@
     </data>
     <data name="Main_HeaderTitle" xml:space="preserve">
         <value>වැලිගෙපොල ප්‍රාදේශීය සභාව</value>
+    </data>
+    <data name="Dis_InforLblSector" xml:space="preserve">
+        <value>අංශය:</value>
+    </data>
+    <data name="Dis_InfoDossierIntel" xml:space="preserve">
+        <value>ලිපිගොනු තොරතුරු</value>
+    </data>
+    <data name="Dis_InfoLblRrNumber" xml:space="preserve">
+        <value>RR අංකය:</value>
+    </data>
+    <data name="Dis_InforLblSubjectName" xml:space="preserve">
+        <value>ලිපිගොනුවේ නම:</value>
+    </data>
+    <data name="DIs_InfoLblCurrentStatus" xml:space="preserve">
+        <value>වත්මන් තත්ත්වය:</value>
     </data>
 </root>

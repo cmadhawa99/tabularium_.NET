@@ -330,7 +330,7 @@ namespace ArchivumWpf.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Subject Name:.
+        ///   Looks up a localized string similar to FIle Name:.
         /// </summary>
         public static string Circ_LblSubjectName {
             get {
@@ -668,6 +668,51 @@ namespace ArchivumWpf.Localization {
         public static string Dis_ColSector {
             get {
                 return ResourceManager.GetString("Dis_ColSector", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DOSSIER INTELLIGENCE.
+        /// </summary>
+        public static string Dis_InfoDossierIntel {
+            get {
+                return ResourceManager.GetString("Dis_InfoDossierIntel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current Status:.
+        /// </summary>
+        public static string DIs_InfoLblCurrentStatus {
+            get {
+                return ResourceManager.GetString("DIs_InfoLblCurrentStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to RR Number:.
+        /// </summary>
+        public static string Dis_InfoLblRrNumber {
+            get {
+                return ResourceManager.GetString("Dis_InfoLblRrNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sector:.
+        /// </summary>
+        public static string Dis_InforLblSector {
+            get {
+                return ResourceManager.GetString("Dis_InforLblSector", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File Name:.
+        /// </summary>
+        public static string Dis_InforLblSubjectName {
+            get {
+                return ResourceManager.GetString("Dis_InforLblSubjectName", resourceCulture);
             }
         }
         
