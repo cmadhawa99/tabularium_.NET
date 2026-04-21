@@ -89,7 +89,7 @@
                                     <Trigger Property="IsSelected" Value="True">
                                         <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource PrimaryAccent}"/>
                                         <Setter Property="Foreground" Value="{DynamicResource PrimaryAccent}"/>
-                                        <Setter Property="FontWeight" Value="SemiBold"/>
+                                        <Setter Property="FontWeight" Value="Normal"/>
                                     </Trigger>
                                     <Trigger Property="IsSelected" Value="False">
                                         <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
@@ -111,7 +111,8 @@
                         <Border Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="2" Padding="15,10" Margin="0,0,0,20">
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/> <ColumnDefinition Width="*"/>    <ColumnDefinition Width="Auto"/> </Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/> <ColumnDefinition Width="*"/> <ColumnDefinition Width="Auto"/> 
+                                </Grid.ColumnDefinitions>
 
                                 <fa:ImageAwesome Grid.Column="0" Icon="Crosshairs" Width="14" Height="14" Foreground="{DynamicResource TextMuted}" Margin="0,0,15,0" VerticalAlignment="Center"/>
                                 
@@ -266,33 +267,40 @@
                           Background="{DynamicResource CardBackground}" Foreground="{DynamicResource TextMain}" 
                           RowBackground="{DynamicResource CardBackground}" AlternatingRowBackground="{DynamicResource WindowBackground}" 
                           HeadersVisibility="Column" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="{DynamicResource BorderColor}" 
-                          BorderThickness="1" BorderBrush="{DynamicResource BorderColor}" MinHeight="400" Margin="15,10,15,15">
+                          BorderThickness="0" MinHeight="400" Margin="15,10,15,15">
                     
                     <DataGrid.Resources>
                         <Style TargetType="DataGridColumnHeader">
-                            <Setter Property="Background" Value="{DynamicResource CardBackground}"/>
+                            <Setter Property="Background" Value="{DynamicResource WindowBackground}"/>
                             <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
                             <Setter Property="FontWeight" Value="SemiBold"/>
                             <Setter Property="FontSize" Value="12"/>
                             <Setter Property="Padding" Value="10,8"/>
-                            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                            <Setter Property="BorderThickness" Value="0,1,0,1"/>
                             <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
                         </Style>
                         <Style TargetType="DataGridRow">
                             <Setter Property="Padding" Value="0,4"/>
+                            <Setter Property="Cursor" Value="Hand"/>
                             <Style.Triggers>
                                 <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="#0A000000"/>
+                                    <Setter Property="Background" Value="#0A107C41"/>
+                                </Trigger>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Background" Value="#1A107C41"/>
+                                    <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
                     </DataGrid.Resources>
 
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="{x:Static loc:Strings.Circ_ColRrNumber}" Binding="{Binding SnapshotRrNumber}" Foreground="{DynamicResource PrimaryAccent}" Width="140">
+                        <DataGridTextColumn Header="{x:Static loc:Strings.Circ_ColRrNumber}" Binding="{Binding SnapshotRrNumber}" Width="140">
                              <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground" Value="{DynamicResource PrimaryAccent}"/>
                                     <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Setter Property="FontWeight" Value="SemiBold"/>
                                     <Setter Property="Padding" Value="10,0,0,0"/>
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
@@ -301,7 +309,10 @@
                         <DataGridTemplateColumn Header="{x:Static loc:Strings.Circ_ColFileName}" Width="*">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding SnapshotFileName}" ToolTip="{Binding SnapshotFileName}" Foreground="{DynamicResource TextMain}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                                    <StackPanel VerticalAlignment="Center" Margin="10,0,0,0">
+                                        <TextBlock Text="{Binding SnapshotFileName}" ToolTip="{Binding SnapshotFileName}" Foreground="{DynamicResource TextMain}" FontSize="13" TextTrimming="CharacterEllipsis"/>
+                                        <TextBlock Text="{Binding SnapshotSubjectNumber, TargetNullValue={x:Static loc:Strings.Circ_None}}" Foreground="{DynamicResource TextMuted}" FontSize="10" TextTrimming="CharacterEllipsis"/>
+                                    </StackPanel>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
@@ -309,7 +320,7 @@
                         <DataGridTemplateColumn Header="{x:Static loc:Strings.Circ_ColSector}" Width="150">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="10,0,0,0">
                                         <Ellipse Width="8" Height="8" Fill="{Binding SnapshotSectorColor, TargetNullValue='#8f9bb3'}" Stroke="{DynamicResource TextMain}" StrokeThickness="1" Margin="0,0,6,0"/>
                                         <TextBlock Text="{Binding SnapshotSector}" ToolTip="{Binding SnapshotSector}" Foreground="{DynamicResource TextMain}" TextTrimming="CharacterEllipsis"/>
                                     </StackPanel>
@@ -317,18 +328,20 @@
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
 
-                        <DataGridTemplateColumn Header="{x:Static loc:Strings.Circ_ColBorrower}" Width="250">
+                        <DataGridTemplateColumn Header="{x:Static loc:Strings.Circ_ColBorrower}" Width="230">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding BorrowerName}" ToolTip="{Binding BorrowerName}" Foreground="{DynamicResource TextMain}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                                    <TextBlock Text="{Binding BorrowerName}" ToolTip="{Binding BorrowerName}" Foreground="{DynamicResource TextMain}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Margin="10,0,0,0"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
                         
-                        <DataGridTextColumn Header="{x:Static loc:Strings.Circ_ColIssueDate}" Binding="{Binding BorrowedDate, StringFormat=dd MMM yyyy}" Foreground="{DynamicResource TextMuted}" Width="150">
+                        <DataGridTextColumn Header="{x:Static loc:Strings.Circ_ColIssueDate}" Binding="{Binding BorrowedDate, StringFormat=dd MMM yyyy}" Width="150">
                              <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
                                     <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Setter Property="Padding" Value="10,0,0,0"/>
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
@@ -380,7 +393,7 @@
                               Background="{DynamicResource CardBackground}" Foreground="{DynamicResource TextMain}" 
                               RowBackground="{DynamicResource CardBackground}" AlternatingRowBackground="{DynamicResource WindowBackground}" 
                               HeadersVisibility="Column" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="{DynamicResource BorderColor}" 
-                              BorderThickness="1" BorderBrush="{DynamicResource BorderColor}" MinHeight="400">
+                              BorderThickness="0" MinHeight="400">
                         
                         <DataGrid.InputBindings>
                             <MouseBinding Gesture="LeftDoubleClick" Command="{Binding ShowHistoryDetailsCommand}" />
@@ -388,12 +401,12 @@
 
                         <DataGrid.Resources>
                             <Style TargetType="DataGridColumnHeader">
-                                <Setter Property="Background" Value="{DynamicResource CardBackground}"/>
+                                <Setter Property="Background" Value="{DynamicResource WindowBackground}"/>
                                 <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
                                 <Setter Property="FontWeight" Value="SemiBold"/>
                                 <Setter Property="FontSize" Value="12"/>
                                 <Setter Property="Padding" Value="10,8"/>
-                                <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                                <Setter Property="BorderThickness" Value="0,1,0,1"/>
                                 <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
                             </Style>
                             <Style TargetType="DataGridRow">
@@ -401,16 +414,22 @@
                                 <Setter Property="Cursor" Value="Hand"/>
                                 <Style.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="#0A000000"/>
+                                        <Setter Property="Background" Value="#0A107C41"/>
+                                    </Trigger>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Background" Value="#1A107C41"/>
+                                        <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
                                     </Trigger>
                                 </Style.Triggers>
                             </Style>
                         </DataGrid.Resources>
 
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="{x:Static loc:Strings.Circ_ColRrNumber}" Binding="{Binding SnapshotRrNumber}" Foreground="{DynamicResource PrimaryAccent}" Width="140">
+                            <DataGridTextColumn Header="{x:Static loc:Strings.Circ_ColRrNumber}" Binding="{Binding SnapshotRrNumber}" Width="140">
                                  <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock">
+                                        <Setter Property="Foreground" Value="{DynamicResource PrimaryAccent}"/>
+                                        <Setter Property="FontWeight" Value="SemiBold"/>
                                         <Setter Property="VerticalAlignment" Value="Center"/>
                                         <Setter Property="Padding" Value="10,0,0,0"/>
                                     </Style>
@@ -420,7 +439,10 @@
                             <DataGridTemplateColumn Header="{x:Static loc:Strings.Circ_ColFileName}" Width="*">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock Text="{Binding SnapshotFileName}" ToolTip="{Binding SnapshotFileName}" Foreground="{DynamicResource TextMain}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                                        <StackPanel VerticalAlignment="Center" Margin="10,0,0,0">
+                                            <TextBlock Text="{Binding SnapshotFileName}" ToolTip="{Binding SnapshotFileName}" Foreground="{DynamicResource TextMain}" FontSize="13" TextTrimming="CharacterEllipsis"/>
+                                            <TextBlock Text="{Binding SnapshotSubjectNumber, TargetNullValue={x:Static loc:Strings.Circ_None}}" Foreground="{DynamicResource TextMuted}" FontSize="10" TextTrimming="CharacterEllipsis"/>
+                                        </StackPanel>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
@@ -428,7 +450,7 @@
                             <DataGridTemplateColumn Header="{x:Static loc:Strings.Circ_ColSector}" Width="120">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="10,0,0,0">
                                             <Ellipse Width="8" Height="8" Fill="{Binding SnapshotSectorColor, TargetNullValue='#8f9bb3'}" Stroke="{DynamicResource TextMain}" StrokeThickness="1" Margin="0,0,6,0"/>
                                             <TextBlock Text="{Binding SnapshotSector}" ToolTip="{Binding SnapshotSector}" Foreground="{DynamicResource TextMain}" TextTrimming="CharacterEllipsis"/>
                                         </StackPanel>
@@ -436,20 +458,28 @@
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
 
-                            <DataGridTemplateColumn Header="{x:Static loc:Strings.Circ_ColBorrower}" Width="150">
+                            <DataGridTemplateColumn Header="{x:Static loc:Strings.Circ_ColBorrower}" Width="180">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock Text="{Binding BorrowerName}" ToolTip="{Binding BorrowerName}" Foreground="{DynamicResource TextMain}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                                        <TextBlock Text="{Binding BorrowerName}" ToolTip="{Binding BorrowerName}" Foreground="{DynamicResource TextMain}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Margin="10,0,0,0"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
                             
-                            <DataGridTextColumn Header="{x:Static loc:Strings.Circ_ColIssueDate}" Binding="{Binding BorrowedDate, StringFormat=dd MMM yyyy}" Foreground="{DynamicResource TextMuted}" Width="110"/>
+                            <DataGridTextColumn Header="{x:Static loc:Strings.Circ_ColIssueDate}" Binding="{Binding BorrowedDate, StringFormat=dd MMM yyyy}" Width="150">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                        <Setter Property="Padding" Value="10,0,0,0"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
 
                             <DataGridTemplateColumn Header="{x:Static loc:Strings.Circ_ColStatus}" Width="120">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock FontWeight="SemiBold" VerticalAlignment="Center">
+                                        <TextBlock FontWeight="SemiBold" VerticalAlignment="Center" Margin="10,0,0,0">
                                             <TextBlock.Style>
                                                 <Style TargetType="TextBlock">
                                                     <Setter Property="Text" Value="{x:Static loc:Strings.Circ_StatusReturned}"/>
@@ -467,7 +497,15 @@
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
                             
-                            <DataGridTextColumn Header="{x:Static loc:Strings.Circ_ColReturnDate}" Binding="{Binding ReturnedDate, StringFormat=dd MMM yyyy, TargetNullValue={x:Static loc:Strings.Circ_PendingReturn}}" Foreground="{DynamicResource TextMuted}" Width="130"/>
+                            <DataGridTextColumn Header="{x:Static loc:Strings.Circ_ColReturnDate}" Binding="{Binding ReturnedDate, StringFormat=dd MMM yyyy, TargetNullValue={x:Static loc:Strings.Circ_PendingReturn}}" Width="160">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                        <Setter Property="Padding" Value="10,0,0,0"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
                         </DataGrid.Columns>
                     </DataGrid>
                     
@@ -499,9 +537,8 @@
         <Grid Grid.Row="0" Grid.RowSpan="3" Visibility="{Binding IsDialogOpen, Converter={StaticResource BoolToVisConverter}}" Panel.ZIndex="100">
             <Border Background="#66000000"/>
             
-            <Border Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="2" Padding="25" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="500">
+            <Border Background="{DynamicResource CardBackground}" CornerRadius="2" Padding="25" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="500" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1">
                 <Grid>
-                    
                     <Ellipse Width="16" Height="16" Fill="{Binding SelectedHistoryRecord.SnapshotSectorColor, TargetNullValue='#8f9bb3'}" Stroke="{DynamicResource TextMain}" StrokeThickness="1" HorizontalAlignment="Right" VerticalAlignment="Top" ToolTip="{Binding SelectedHistoryRecord.SnapshotSector}"/>
 
                     <StackPanel>
