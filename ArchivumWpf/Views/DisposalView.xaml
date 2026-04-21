@@ -239,7 +239,7 @@
                                 <StackPanel>
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
                                         <Rectangle Width="4" Height="14" Fill="{Binding LoadedFileColor}" Stroke="{DynamicResource TextMain}" StrokeThickness="1" Margin="0,0,10,0" VerticalAlignment="Center"/>
-                                        <TextBlock Text="{x:Static loc:Strings.Dis_InfoDossierIntel}" Foreground="{DynamicResource TextMain}" FontSize="14" FontWeight="SemiBold"/>
+                                        <TextBlock Text="{x:Static loc:Strings.Circ_DossierIntel}" Foreground="{DynamicResource TextMain}" FontSize="14" FontWeight="SemiBold"/>
                                     </StackPanel>
 
                                     <Grid>
@@ -254,19 +254,19 @@
                                             <RowDefinition Height="30"/>
                                         </Grid.RowDefinitions>
 
-                                        <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Static loc:Strings.Dis_InfoLblRrNumber}" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center" FontSize="12"/>
+                                        <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Static loc:Strings.Circ_LblRrNumber}" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center" FontSize="12"/>
                                         <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding LoadedFile.RrNumber}" Foreground="{DynamicResource PrimaryAccent}" FontWeight="SemiBold" VerticalAlignment="Center" FontSize="13"/>
 
-                                        <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static loc:Strings.Dis_InforLblSubjectName}" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Top" Margin="0,8,0,0" FontSize="12"/>
+                                        <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static loc:Strings.Circ_LblSubjectName}" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Top" Margin="0,8,0,0" FontSize="12"/>
                                         <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding LoadedFile.FileName}" Foreground="{DynamicResource TextMain}" FontWeight="SemiBold" TextWrapping="Wrap" Margin="0,8,0,10" FontSize="13"/>
 
-                                        <TextBlock Grid.Row="2" Grid.Column="0" Text="{x:Static loc:Strings.Dis_InforLblSector}" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center" FontSize="12"/>
+                                        <TextBlock Grid.Row="2" Grid.Column="0" Text="{x:Static loc:Strings.Circ_LblSector}" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center" FontSize="12"/>
                                         <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
                                             <Ellipse Width="8" Height="8" Fill="{Binding LoadedFileColor}" Stroke="{DynamicResource TextMain}" StrokeThickness="1" Margin="0,0,8,0"/>
                                             <TextBlock Text="{Binding LoadedFile.Sector}" Foreground="{DynamicResource TextMain}" FontWeight="SemiBold" FontSize="13"/>
                                         </StackPanel>
 
-                                        <TextBlock Grid.Row="3" Grid.Column="0" Text="{x:Static loc:Strings.DIs_InfoLblCurrentStatus}" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center" FontSize="12"/>
+                                        <TextBlock Grid.Row="3" Grid.Column="0" Text="{x:Static loc:Strings.Circ_LblCurrentStatus}" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center" FontSize="12"/>
                                         <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding LoadedFile.CurrentStatus}" Foreground="{DynamicResource TextMain}" FontWeight="SemiBold" VerticalAlignment="Center" FontSize="13"/>
                                     </Grid>
                                 </StackPanel>
@@ -519,54 +519,59 @@
                     <StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
                             <fa:ImageAwesome Icon="FileText" Width="16" Height="16" Foreground="{DynamicResource TextMain}" Margin="0,0,10,0" VerticalAlignment="Center"/>
-                            <TextBlock Text="{Binding PopupFileData.RrNumber}" Foreground="{DynamicResource TextMain}" FontSize="16" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding DialogTitle}" Foreground="{DynamicResource TextMain}" FontSize="16" FontWeight="SemiBold"/>
                         </StackPanel>
-
-                        <TextBlock Text="{Binding PopupFileData.FileName}" Foreground="{DynamicResource TextMain}" FontSize="14" TextWrapping="Wrap" Margin="0,0,0,25"/>
                         
-                        <Grid Margin="0,0,0,20">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="150"/> <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="28"/> <RowDefinition Height="28"/> <RowDefinition Height="28"/>
-                            </Grid.RowDefinitions>
-                            
-                            <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Static loc:Strings.Dis_LblSector}" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center" FontSize="12"/>
-                            
-                            <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                                <Ellipse Width="8" Height="8" Fill="{Binding PopupFileData.SectorColorHex, TargetNullValue='#8f9bb3'}" Stroke="{DynamicResource TextMain}" StrokeThickness="1" Margin="0,0,6,0"/>
-                                <TextBlock Text="{Binding PopupFileData.Sector}" Foreground="{DynamicResource TextMain}" FontWeight="SemiBold" FontSize="12"/>
-                            </StackPanel>
-                            
-                            <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static loc:Strings.Dis_LblStatus}" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center" FontSize="12"/>
-                            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding PopupFileData.CurrentStatus}" Foreground="{DynamicResource TextMain}" FontWeight="SemiBold" VerticalAlignment="Center" FontSize="12"/>
-                            
-                            <TextBlock Grid.Row="2" Grid.Column="0" Text="{x:Static loc:Strings.Dis_LblDisposalScheduled}" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center" FontSize="12"/>
-                            <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding PopupFileData.ToBeRemovedDate, StringFormat=yyyy-MM-dd}" Foreground="{DynamicResource DangerAccent}" FontWeight="SemiBold" VerticalAlignment="Center" FontSize="12"/>
-                        </Grid>
+                            <Grid Margin="0,0,0,20">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="150"/> 
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/> <RowDefinition Height="Auto"/> <RowDefinition Height="Auto"/> <RowDefinition Height="Auto"/> <RowDefinition Height="Auto"/> <RowDefinition Height="Auto"/> <RowDefinition Height="Auto"/> <RowDefinition Height="Auto"/> <RowDefinition Height="Auto"/> <RowDefinition Height="Auto"/> <RowDefinition Height="Auto"/> </Grid.RowDefinitions>
 
-                        <Border Background="{DynamicResource WindowBackground}" BorderBrush="{DynamicResource DangerAccent}" BorderThickness="1" Padding="15" CornerRadius="2" Visibility="{Binding PopupDisposalData, Converter={StaticResource BoolToVisConverter}}">
-                            <StackPanel>
-                                <TextBlock Text="{x:Static loc:Strings.Dis_PermDisposedTitle}" Foreground="{DynamicResource DangerAccent}" FontWeight="SemiBold" Margin="0,0,0,10" FontSize="12"/>
-                                
-                                <TextBlock TextWrapping="Wrap" Margin="0,0,0,5" FontSize="12">
-                                    <Run Text="{x:Static loc:Strings.Dis_LblReasonFormat}" Foreground="{DynamicResource TextMuted}"/>
-                                    <Run Text=" "/>
-                                    <Run Text="{Binding PopupDisposalData.Reason}" Foreground="{DynamicResource TextMain}"/>
-                                </TextBlock>
-                                
-                                <TextBlock FontSize="12">
-                                    <Run Text="{x:Static loc:Strings.Dis_LblAuthFormat}" Foreground="{DynamicResource TextMuted}"/>
-                                    <Run Text=" "/>
-                                    <Run Text="{Binding PopupDisposalData.AuthorizedBy}" Foreground="{DynamicResource TextMuted}"/>
-                                </TextBlock>
-                            </StackPanel>
-                        </Border>
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Static loc:Strings.Circ_LblSubjectName}" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Top" FontSize="12" Margin="0,0,0,10"/>
+                                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding PopupFileData.FileName}" Foreground="{DynamicResource TextMain}" FontWeight="SemiBold" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="12" Margin="0,0,0,10"/>
 
-                        <Border BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,1,0,0" Margin="0,20,0,0" Padding="0,20,0,0">
+                                <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static loc:Strings.Circ_LblRrNumber}" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center" FontSize="12" Margin="0,0,0,10" Visibility="{Binding IsDisposedPopup, Converter={StaticResource BoolToVisConverter}}"/>
+                                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding PopupFileData.RrNumber}" Foreground="{DynamicResource PrimaryAccent}" FontWeight="SemiBold" VerticalAlignment="Center" FontSize="12" Margin="0,0,0,10" Visibility="{Binding IsDisposedPopup, Converter={StaticResource BoolToVisConverter}}"/>
+                                
+                                <TextBlock Grid.Row="2" Grid.Column="0" Text="{x:Static loc:Strings.Dis_LblSector}" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center" FontSize="12" Margin="0,0,0,10"/>
+                                <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,10">
+                                    <TextBlock Text="{Binding PopupFileData.Sector}" Foreground="{DynamicResource TextMain}" FontWeight="SemiBold" FontSize="12"/>
+                                </StackPanel>
+                                
+                                <TextBlock Grid.Row="3" Grid.Column="0" Text="{x:Static loc:Strings.Sea_LblSubjectNumber}" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center" FontSize="12" Margin="0,0,0,10"/>
+                                <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding PopupFileData.SubjectNumber, TargetNullValue='N/A'}" Foreground="{DynamicResource TextMain}" FontWeight="SemiBold" VerticalAlignment="Center" FontSize="12" Margin="0,0,0,10"/>
+                                
+                                <TextBlock Grid.Row="4" Grid.Column="0" Text="{x:Static loc:Strings.Sea_LblChronoSpan}" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center" FontSize="12" Margin="0,0,0,10"/>
+                                <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,10">
+                                    <TextBlock Text="{Binding PopupFileData.StartDate, StringFormat=dd MMM yyyy, TargetNullValue='N/A'}" Foreground="{DynamicResource TextMain}" FontWeight="SemiBold" FontSize="12"/>
+                                    <TextBlock Text=" - " Foreground="{DynamicResource TextMuted}" FontSize="12"/>
+                                    <TextBlock Text="{Binding PopupFileData.EndDate, StringFormat=dd MMM yyyy, TargetNullValue='N/A'}" Foreground="{DynamicResource TextMain}" FontWeight="SemiBold" FontSize="12"/>
+                                </StackPanel>
+
+                                <Rectangle Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Height="1" Fill="{DynamicResource BorderColor}" VerticalAlignment="Center" Margin="0,10,0,20"/>
+
+                                <TextBlock Grid.Row="6" Grid.Column="0" Text="{x:Static loc:Strings.Dis_LblStatus}" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center" FontSize="12" Margin="0,0,0,10"/>
+                                <TextBlock Grid.Row="6" Grid.Column="1" Text="{Binding PopupFileData.CurrentStatus}" Foreground="{DynamicResource TextMain}" FontWeight="SemiBold" VerticalAlignment="Center" FontSize="12" Margin="0,0,0,10"/>
+                                
+                                <TextBlock Grid.Row="7" Grid.Column="0" Text="{x:Static loc:Strings.Dis_LblDisposalScheduled}" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center" FontSize="12" Margin="0,0,0,10" Visibility="{Binding IsPendingPopup, Converter={StaticResource BoolToVisConverter}}"/>
+                                <TextBlock Grid.Row="7" Grid.Column="1" Text="{Binding PopupFileData.ToBeRemovedDate, StringFormat=yyyy-MM-dd}" Foreground="{DynamicResource DangerAccent}" FontWeight="SemiBold" VerticalAlignment="Center" FontSize="12" Margin="0,0,0,10" Visibility="{Binding IsPendingPopup, Converter={StaticResource BoolToVisConverter}}"/>
+                                
+                                <TextBlock Grid.Row="8" Grid.Column="0" Text="{x:Static loc:Strings.Dis_ColDateDisposed}" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center" FontSize="12" Margin="0,0,0,10" Visibility="{Binding IsDisposedPopup, Converter={StaticResource BoolToVisConverter}}"/>
+                                <TextBlock Grid.Row="8" Grid.Column="1" Text="{Binding PopupDisposalData.RemovedDate, StringFormat=yyyy-MM-dd}" Foreground="{DynamicResource DangerAccent}" FontWeight="SemiBold" VerticalAlignment="Center" FontSize="12" Margin="0,0,0,10" Visibility="{Binding IsDisposedPopup, Converter={StaticResource BoolToVisConverter}}"/>
+                                
+                                <TextBlock Grid.Row="9" Grid.Column="0" Text="{x:Static loc:Strings.Dis_LblReasonFormat}" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Top" FontSize="12" Margin="0,0,0,10" Visibility="{Binding IsDisposedPopup, Converter={StaticResource BoolToVisConverter}}"/>
+                                <TextBlock Grid.Row="9" Grid.Column="1" Text="{Binding PopupDisposalData.Reason}" Foreground="{DynamicResource TextMain}" FontWeight="SemiBold" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="12" Margin="0,0,0,10" Visibility="{Binding IsDisposedPopup, Converter={StaticResource BoolToVisConverter}}"/>
+                                
+                                <TextBlock Grid.Row="10" Grid.Column="0" Text="{x:Static loc:Strings.Dis_LblAuthFormat}" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center" FontSize="12" Margin="0,0,0,10" Visibility="{Binding IsDisposedPopup, Converter={StaticResource BoolToVisConverter}}"/>
+                                <TextBlock Grid.Row="10" Grid.Column="1" Text="{Binding PopupDisposalData.AuthorizedBy}" Foreground="{DynamicResource TextMain}" FontWeight="SemiBold" VerticalAlignment="Center" FontSize="12" Margin="0,0,0,10" Visibility="{Binding IsDisposedPopup, Converter={StaticResource BoolToVisConverter}}"/>
+                            </Grid>
+
+                        <Border BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,1,0,0" Margin="0,10,0,0" Padding="0,20,0,0">
                             <Button Command="{Binding CloseDialogCommand}" Content="{x:Static loc:Strings.Dis_BtnCloseDossier}" 
-                                    Height="32" Width="100" HorizontalAlignment="Right" Background="{DynamicResource BorderColor}" 
+                                    Height="32" Width="150" HorizontalAlignment="Right" Background="{DynamicResource BorderColor}" 
                                     Foreground="{DynamicResource TextMain}" FontWeight="SemiBold" BorderThickness="0" Cursor="Hand" Panel.ZIndex="10">
                                 <Button.Template>
                                     <ControlTemplate TargetType="Button">

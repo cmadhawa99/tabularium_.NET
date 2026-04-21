@@ -373,7 +373,7 @@
         <value>Dispose</value>
     </data>
     <data name="Dis_ColDateDisposed" xml:space="preserve">
-        <value>DATE DISPOSED</value>
+        <value>DATE OF DISPOSAL</value>
     </data>
     <data name="Dis_ColAuthorizedBy" xml:space="preserve">
         <value>AUTHORIZED BY</value>
@@ -914,5 +914,8 @@
     </data>
     <data name="DIs_InfoLblCurrentStatus" xml:space="preserve">
         <value>Current Status:</value>
+    </data>
+    <data name="Dis_LblDateDisposed" xml:space="preserve">
+        <value>Date of Disposal:</value>
     </data>
 </root>

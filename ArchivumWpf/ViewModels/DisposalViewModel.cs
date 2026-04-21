@@ -47,6 +47,17 @@ public partial class DisposalViewModel : ObservableObject
     [ObservableProperty] private FileRecord _loadedFile;
     [ObservableProperty] private string _loadedFileColor = "#8f9bb3";
 
+    [ObservableProperty] private string _dialogTitle = string.Empty;
+    [ObservableProperty] private bool _isPendingPopup = false;
+    [ObservableProperty] private bool _isDisposedPopup = false;
+
+    private const int PageSize = 50;
+    [ObservableProperty] private int _historyCurrentPage = 1;
+    [ObservableProperty] private int _historyTotalPages = 1;
+    [ObservableProperty] private int _historyTotalCount = 0;
+    
+    
+
     public DisposalViewModel (IArchiveService archiveService, IPreferencesService preferencesService)
     {
         _archiveService = archiveService;
@@ -205,6 +216,11 @@ public partial class DisposalViewModel : ObservableObject
         PopupFileData = file;
         PopupDisposalData = null;
         SetPopupColor(file.Sector);
+        
+        DialogTitle = $"To Be Removed Record - {file.RrNumber}";
+        IsPendingPopup =  true;
+        IsDisposedPopup = false;
+        
         IsDialogOpen = true;
     }
 
@@ -215,6 +231,11 @@ public partial class DisposalViewModel : ObservableObject
         PopupDisposalData = record;
         PopupFileData = record.File;
         SetPopupColor(record.File.Sector);
+        
+        DialogTitle = $"Disposed Record #{record.Id}";
+        IsPendingPopup = false;
+        IsDisposedPopup = true;
+        
         IsDialogOpen = true;
     }
 
@@ -237,6 +258,8 @@ public partial class DisposalViewModel : ObservableObject
     {
         IsDialogOpen = false;
     }
+    
+    
 
 
     [RelayCommand]

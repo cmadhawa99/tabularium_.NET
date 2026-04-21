@@ -618,7 +618,7 @@ namespace ArchivumWpf.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DATE DISPOSED.
+        ///   Looks up a localized string similar to DATE OF DISPOSAL.
         /// </summary>
         public static string Dis_ColDateDisposed {
             get {
@@ -731,6 +731,15 @@ namespace ArchivumWpf.Localization {
         public static string Dis_LblAuthorizedBy {
             get {
                 return ResourceManager.GetString("Dis_LblAuthorizedBy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Date of Disposal:.
+        /// </summary>
+        public static string Dis_LblDateDisposed {
+            get {
+                return ResourceManager.GetString("Dis_LblDateDisposed", resourceCulture);
             }
         }
         

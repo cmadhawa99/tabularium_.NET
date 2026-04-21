@@ -857,4 +857,7 @@
     <data name="DIs_InfoLblCurrentStatus" xml:space="preserve">
         <value>වත්මන් තත්ත්වය:</value>
     </data>
+    <data name="Dis_LblDateDisposed" xml:space="preserve">
+        <value>ඉවත් කළ දිනය:</value>
+    </data>
 </root>
