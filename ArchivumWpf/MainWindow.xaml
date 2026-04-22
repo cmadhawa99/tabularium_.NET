@@ -32,7 +32,7 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
-                            <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center" Margin="25,0,0,0"/>
+                            <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center" Margin="21,0,0,0"/>
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
@@ -48,14 +48,15 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="260"/> <ColumnDefinition Width="*"/>   
+            <ColumnDefinition Width="260"/> 
+            <ColumnDefinition Width="*"/>   
         </Grid.ColumnDefinitions>
 
-        <Border Grid.Column="0" Background="{DynamicResource SidebarBackground}" CornerRadius="0,48,0,0" BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,0,1,0" Panel.ZIndex="10">
+        <Border Grid.Column="0" Background="{DynamicResource SidebarBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,0,1,0" Panel.ZIndex="10">
             <StackPanel Margin="0,40,0,0">
                 
-                <TextBlock Text="{x:Static loc:Strings.Main_BrandTitle}" Foreground="{DynamicResource PrimaryAccent}" FontSize="28" FontWeight="Bold" FontFamily="Georgia" HorizontalAlignment="Center" Margin="0,0,0,2"/>
-                <TextBlock Text="{x:Static loc:Strings.Main_BrandSubtitle}" Foreground="{DynamicResource TextMuted}" FontSize="10" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,40"/>
+                <TextBlock Text="{x:Static loc:Strings.Main_BrandTitle}" Foreground="{DynamicResource PrimaryAccent}" FontSize="24" FontWeight="Bold" FontFamily="Segoe UI" HorizontalAlignment="Left" Margin="25,0,25,2" TextWrapping="Wrap"/>
+                <TextBlock Text="{x:Static loc:Strings.Main_BrandSubtitle}" Foreground="{DynamicResource TextMuted}" FontSize="11" FontWeight="SemiBold" HorizontalAlignment="Left" Margin="25,0,25,40" TextWrapping="Wrap"/>
 
                 <Button Command="{Binding NavigateToDashboardCommand}">
                     <Button.Style>
@@ -150,7 +151,7 @@
                 <Button Command="{Binding NavigateToReportsCommand}">
                     <Button.Style>
                         <Style TargetType="Button" BasedOn="{StaticResource SidebarNavButton}">
-                            <Style.Triggers>
+                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding ActivePage}" Value="Reports">
                                     <Setter Property="Foreground" Value="{DynamicResource PrimaryAccent}"/>
                                     <Setter Property="BorderBrush" Value="{DynamicResource PrimaryAccent}"/>
@@ -160,11 +161,11 @@
                         </Style>
                     </Button.Style>
                     <StackPanel Orientation="Horizontal">
-                        <fa:ImageAwesome Icon="Print" Width="16" Height="16" Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" Margin="0,0,15,0"/>
+                         <fa:ImageAwesome Icon="Print" Width="16" Height="16" Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" Margin="0,0,15,0"/>
                         <TextBlock Text="{x:Static loc:Strings.Main_NavReports}" FontWeight="SemiBold" FontSize="13" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
-                
+                 
                 <Button Command="{Binding NavigateToSettingsCommand}" Margin="0,20,0,0">
                     <Button.Style>
                         <Style TargetType="Button" BasedOn="{StaticResource SidebarNavButton}">
@@ -188,25 +189,26 @@
 
         <Grid Grid.Column="1" Background="Transparent">
             <Grid.RowDefinitions>
-                <RowDefinition Height="80"/> <RowDefinition Height="*"/>  
+                <RowDefinition Height="70"/> 
+                <RowDefinition Height="*"/>  
             </Grid.RowDefinitions>
 
-            <Border Grid.Row="0" BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,0,0,1" Background="Transparent" Padding="40,0">
+            <Border Grid.Row="0" BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,0,0,1" Background="{DynamicResource CardBackground}" Padding="40,0">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/> <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     
                     <StackPanel Grid.Column="0" VerticalAlignment="Center">
-                        <TextBlock Text="{x:Static loc:Strings.Main_HeaderTitle}" Foreground="{DynamicResource PrimaryAccent}" FontSize="18" FontWeight="Black" FontFamily="Georgia"/>
-                        <TextBlock Text="{x:Static loc:Strings.Main_HeaderSubtitle}" Foreground="{DynamicResource TextMuted}" FontSize="10" Margin="0,2,0,0"/>
+                        <TextBlock Text="{x:Static loc:Strings.Main_HeaderTitle}" Foreground="{DynamicResource PrimaryAccent}" FontSize="16" FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                        <TextBlock Text="{x:Static loc:Strings.Main_HeaderSubtitle}" Foreground="{DynamicResource TextMuted}" FontSize="11" Margin="0,2,0,0"/>
                     </StackPanel>
 
                     <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                        <Border Background="{DynamicResource CardBackground}" CornerRadius="15" Padding="15,6" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" Margin="0,0,20,0">
+                        <Border Background="{DynamicResource WindowBackground}" CornerRadius="2" Padding="12,6" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" Margin="0,0,20,0">
                             <StackPanel Orientation="Horizontal">
                                 <fa:ImageAwesome Icon="UserCircle" Width="14" Height="14" Foreground="{DynamicResource PrimaryAccent}" Margin="0,0,8,0"/>
-                                <TextBlock Text="{x:Static loc:Strings.Main_WelcomeUser}" Foreground="{DynamicResource TextMain}" FontWeight="Bold" FontSize="12" VerticalAlignment="Center"/>
+                                <TextBlock Text="{x:Static loc:Strings.Main_WelcomeUser}" Foreground="{DynamicResource TextMain}" FontWeight="SemiBold" FontSize="12" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Border>
 
@@ -214,7 +216,7 @@
                             <fa:ImageAwesome Icon="MoonOutline" Width="18" Height="18" Foreground="{DynamicResource PrimaryAccent}"/>
                         </Button>
                         
-                        <Button Background="Transparent" BorderThickness="0" Margin="10,0" Cursor="Hand">
+                        <Button Background="Transparent" BorderThickness="0" Margin="10,0,0,0" Cursor="Hand">
                             <fa:ImageAwesome Icon="BellOutline" Width="18" Height="18" Foreground="{DynamicResource PrimaryAccent}"/>
                         </Button>
                     </StackPanel>
@@ -223,12 +225,20 @@
 
             <ContentControl Grid.Row="1" Content="{Binding CurrentPageViewModel}" Margin="40"/>
             
-            <Border Grid.Row="1" Background="{DynamicResource DangerAccent}" CornerRadius="8" Padding="15,10" 
+            <Border Grid.Row="1" Background="{DynamicResource DangerAccent}" CornerRadius="2" Padding="15,10" 
                     HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,20,40,0"
                     Visibility="{Binding HasDisposalAlert, Converter={StaticResource BoolToVisConverter}}">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{Binding DisposalAlertText}" Foreground="White" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,15,0"/>
-                    <Button Command="{Binding GoToDisposalQueueCommand}" Content="{x:Static loc:Strings.Main_BtnReviewDisposal}" Background="#B71C1C" Foreground="White" BorderThickness="0" Padding="15,5" Cursor="Hand"/>
+                    <TextBlock Text="{Binding DisposalAlertText}" Foreground="White" FontWeight="SemiBold" FontSize="13" VerticalAlignment="Center" Margin="0,0,15,0"/>
+                    <Button Command="{Binding GoToDisposalQueueCommand}" Content="{x:Static loc:Strings.Main_BtnReviewDisposal}" Background="#B71C1C" Foreground="White" FontWeight="SemiBold" BorderThickness="0" Padding="15,6" Cursor="Hand">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="{TemplateBinding Background}" CornerRadius="2">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
                 </StackPanel>
             </Border>
 
