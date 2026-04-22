@@ -918,4 +918,7 @@
     <data name="Dis_LblDateDisposed" xml:space="preserve">
         <value>Date of Disposal:</value>
     </data>
+    <data name="Dis_PermDisposedDesc" xml:space="preserve">
+        <value>This file has already been permanently removed.</value>
+    </data>
 </root>

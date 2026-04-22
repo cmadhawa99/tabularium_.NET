@@ -843,6 +843,15 @@ namespace ArchivumWpf.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This file has already been permanently removed..
+        /// </summary>
+        public static string Dis_PermDisposedDesc {
+            get {
+                return ResourceManager.GetString("Dis_PermDisposedDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to PERMANENTLY DISPOSED.
         /// </summary>
         public static string Dis_PermDisposedTitle {

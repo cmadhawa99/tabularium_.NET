@@ -67,13 +67,27 @@ public partial class DisposalViewModel : ObservableObject
 
     private async Task LoadTablesAsync()
     {
+        var prefs = _preferencesService.GetPreferences();
+        var colorMap = prefs.Sectors.ToDictionary(s => s.Name, s => s.ColorHex);
+            
         var pending = await _archiveService.GetPendingDisposalsAsync();
         PendingRecords.Clear();
-        foreach (var p in pending) PendingRecords.Add(p);
+        foreach (var p in pending)
+        {
+            p.SectorColorHex = colorMap.ContainsKey(p.Sector) ? colorMap[p.Sector] : "#8f9bb3";
+            PendingRecords.Add(p);
+        }
 
         var history = await _archiveService.GetDisposedHistoryAsync();
         DisposedHistory.Clear();
-        foreach (var h in history) DisposedHistory.Add(h);
+        foreach (var h in history)
+        {
+            if (h.File != null)
+            {
+                h.File.SectorColorHex = colorMap.ContainsKey(h.File.Sector) ? colorMap[h.File.Sector] : "#8f9bb3";
+            }
+            DisposedHistory.Add(h);
+        }
     }
     
 

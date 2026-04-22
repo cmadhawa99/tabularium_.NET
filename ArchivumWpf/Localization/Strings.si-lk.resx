@@ -860,4 +860,7 @@
     <data name="Dis_LblDateDisposed" xml:space="preserve">
         <value>ඉවත් කළ දිනය:</value>
     </data>
+    <data name="Dis_PermDisposedDesc" xml:space="preserve">
+        <value>මෙම ගොනුව දැනටමත් ස්ථිරවම ඉවත් කර ඇත.</value>
+    </data>
 </root>
