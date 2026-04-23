@@ -615,7 +615,7 @@
         <value>වාර්තා පෙරහන් සහ ප්‍රතිදාන තීරු වින්‍යාස කරන්න</value>
     </data>
     <data name="Rep_SectionDataFilters" xml:space="preserve">
-        <value>1. දත්ත පෙරහන්</value>
+        <value>දත්ත පෙරහන්</value>
     </data>
     <data name="Rep_LblSerialNumber" xml:space="preserve">
         <value>අනුක්‍රමික අංකය</value>
@@ -678,7 +678,7 @@
         <value>සියලුම පෙරහන් යළි සකසන්න</value>
     </data>
     <data name="Rep_SectionOutputColumns" xml:space="preserve">
-        <value>2. ප්‍රතිදාන තීරු</value>
+        <value>ප්‍රතිදාන තීරු</value>
     </data>
     <data name="Rep_ChkRenderColors" xml:space="preserve">
         <value>අංශයට අදාළ වර්ණ පෙන්වන්න</value>
@@ -862,5 +862,32 @@
     </data>
     <data name="Dis_PermDisposedDesc" xml:space="preserve">
         <value>මෙම ගොනුව දැනටමත් ස්ථිරවම ඉවත් කර ඇත.</value>
+    </data>
+    <data name="Rep_SectionActions" xml:space="preserve">
+        <value>ක්‍රියාකාරකම්</value>
+    </data>
+    <data name="Rep_SectionIdentifiers" xml:space="preserve">
+        <value>යොමු අංක</value>
+    </data>
+    <data name="Rep_SectionClassification" xml:space="preserve">
+        <value>වර්ගීකරණය</value>
+    </data>
+    <data name="Rep_SectionContentDates" xml:space="preserve">
+        <value>අන්තර්ගත දිනයන්</value>
+    </data>
+    <data name="Rep_SectionPhysicalStorage" xml:space="preserve">
+        <value>භෞතික ගබඩා ස්ථානය</value>
+    </data>
+    <data name="Rep_SectionEntryAndDisposal" xml:space="preserve">
+        <value>ඇතුළත් කිරීම් සහ ඉවත් කිරීම්</value>
+    </data>
+    <data name="Rep_SectionVisibleColumns" xml:space="preserve">
+        <value>දර්ශනය වන තීරු</value>
+    </data>
+    <data name="Rep_SectionExportTools" xml:space="preserve">
+        <value>නිර්යාත මෙවලම්</value>
+    </data>
+    <data name="Rep_SectionDataExport" xml:space="preserve">
+        <value>දත්ත නිර්යාත කිරීම</value>
     </data>
 </root>

@@ -670,7 +670,7 @@
         <value>Configure Report Filters &amp; Output Columns</value>
     </data>
     <data name="Rep_SectionDataFilters" xml:space="preserve">
-        <value>1. DATA FILTERS</value>
+        <value>Data Filters</value>
     </data>
     <data name="Rep_LblSerialNumber" xml:space="preserve">
         <value>Serial Number</value>
@@ -733,7 +733,7 @@
         <value>Reset All Filters</value>
     </data>
     <data name="Rep_SectionOutputColumns" xml:space="preserve">
-        <value>2. OUTPUT COLUMNS</value>
+        <value>Output Columns</value>
     </data>
     <data name="Rep_ChkRenderColors" xml:space="preserve">
         <value>Render Sector UI Colors</value>
@@ -920,5 +920,32 @@
     </data>
     <data name="Dis_PermDisposedDesc" xml:space="preserve">
         <value>This file has already been permanently removed.</value>
+    </data>
+    <data name="Rep_SectionIdentifiers" xml:space="preserve">
+        <value>Identifiers</value>
+    </data>
+    <data name="Rep_SectionClassification" xml:space="preserve">
+        <value>Classification</value>
+    </data>
+    <data name="Rep_SectionContentDates" xml:space="preserve">
+        <value>Content Dates</value>
+    </data>
+    <data name="Rep_SectionPhysicalStorage" xml:space="preserve">
+        <value>Physical Storage</value>
+    </data>
+    <data name="Rep_SectionActions" xml:space="preserve">
+        <value>Actions</value>
+    </data>
+    <data name="Rep_SectionEntryAndDisposal" xml:space="preserve">
+        <value>Entry &amp; Disposal</value>
+    </data>
+    <data name="Rep_SectionVisibleColumns" xml:space="preserve">
+        <value>Visible columns</value>
+    </data>
+    <data name="Rep_SectionExportTools" xml:space="preserve">
+        <value>Export tools</value>
+    </data>
+    <data name="Rep_SectionDataExport" xml:space="preserve">
+        <value>Data Export</value>
     </data>
 </root>

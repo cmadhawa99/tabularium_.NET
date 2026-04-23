@@ -1968,11 +1968,56 @@ namespace ArchivumWpf.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 1. DATA FILTERS.
+        ///   Looks up a localized string similar to Actions.
+        /// </summary>
+        public static string Rep_SectionActions {
+            get {
+                return ResourceManager.GetString("Rep_SectionActions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Classification.
+        /// </summary>
+        public static string Rep_SectionClassification {
+            get {
+                return ResourceManager.GetString("Rep_SectionClassification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Content Dates.
+        /// </summary>
+        public static string Rep_SectionContentDates {
+            get {
+                return ResourceManager.GetString("Rep_SectionContentDates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data Export.
+        /// </summary>
+        public static string Rep_SectionDataExport {
+            get {
+                return ResourceManager.GetString("Rep_SectionDataExport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data Filters.
         /// </summary>
         public static string Rep_SectionDataFilters {
             get {
                 return ResourceManager.GetString("Rep_SectionDataFilters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Entry &amp; Disposal.
+        /// </summary>
+        public static string Rep_SectionEntryAndDisposal {
+            get {
+                return ResourceManager.GetString("Rep_SectionEntryAndDisposal", resourceCulture);
             }
         }
         
@@ -1986,11 +2031,38 @@ namespace ArchivumWpf.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 2. OUTPUT COLUMNS.
+        ///   Looks up a localized string similar to Export tools.
+        /// </summary>
+        public static string Rep_SectionExportTools {
+            get {
+                return ResourceManager.GetString("Rep_SectionExportTools", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identifiers.
+        /// </summary>
+        public static string Rep_SectionIdentifiers {
+            get {
+                return ResourceManager.GetString("Rep_SectionIdentifiers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Output Columns.
         /// </summary>
         public static string Rep_SectionOutputColumns {
             get {
                 return ResourceManager.GetString("Rep_SectionOutputColumns", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Physical Storage.
+        /// </summary>
+        public static string Rep_SectionPhysicalStorage {
+            get {
+                return ResourceManager.GetString("Rep_SectionPhysicalStorage", resourceCulture);
             }
         }
         
@@ -2000,6 +2072,15 @@ namespace ArchivumWpf.Localization {
         public static string Rep_SectionRemovalCriteria {
             get {
                 return ResourceManager.GetString("Rep_SectionRemovalCriteria", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Visible columns.
+        /// </summary>
+        public static string Rep_SectionVisibleColumns {
+            get {
+                return ResourceManager.GetString("Rep_SectionVisibleColumns", resourceCulture);
             }
         }
         

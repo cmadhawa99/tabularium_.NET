@@ -5,6 +5,7 @@
              xmlns:converters="clr-namespace:ArchivumWpf.Converters"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:loc="clr-namespace:ArchivumWpf.Localization"
+             xmlns:controls="clr-namespace:ArchivumWpf.Controls"
              Background="{DynamicResource WindowBackground}">
 
     <UserControl.Resources>
@@ -259,7 +260,7 @@
                                             <TextBox Text="{Binding FileName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource RibbonTextBox}" Width="110"/>
                                         </StackPanel>
                                     </StackPanel>
-                                    <TextBlock Grid.Row="1" Text="Identifiers" Foreground="{DynamicResource TextMuted}" FontSize="10" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                                    <TextBlock Grid.Row="1" Text="{x:Static loc:Strings.Rep_SectionIdentifiers}" Foreground="{DynamicResource TextMuted}" FontSize="10" HorizontalAlignment="Center" Margin="0,5,0,0"/>
                                 </Grid>
                             </Border>
 
@@ -282,7 +283,7 @@
                                             <TextBox Text="{Binding CurrentStatus, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource RibbonTextBox}" Width="120"/>
                                         </StackPanel>
                                     </StackPanel>
-                                    <TextBlock Grid.Row="1" Text="Classification" Foreground="{DynamicResource TextMuted}" FontSize="10" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                                    <TextBlock Grid.Row="1" Text="{x:Static loc:Strings.Rep_SectionClassification}" Foreground="{DynamicResource TextMuted}" FontSize="10" HorizontalAlignment="Center" Margin="0,5,0,0"/>
                                 </Grid>
                             </Border>
 
@@ -301,7 +302,7 @@
                                             <DatePicker SelectedDate="{Binding EndDate}" Style="{StaticResource RibbonDatePicker}" Width="110"/>
                                         </StackPanel>
                                     </StackPanel>
-                                    <TextBlock Grid.Row="1" Text="Content Dates" Foreground="{DynamicResource TextMuted}" FontSize="10" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                                    <TextBlock Grid.Row="1" Text="{x:Static loc:Strings.Rep_SectionContentDates}" Foreground="{DynamicResource TextMuted}" FontSize="10" HorizontalAlignment="Center" Margin="0,5,0,0"/>
                                 </Grid>
                             </Border>
 
@@ -324,7 +325,7 @@
                                             <TextBox Text="{Binding TotalPages, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource RibbonTextBox}" Width="70"/>
                                         </StackPanel>
                                     </StackPanel>
-                                    <TextBlock Grid.Row="1" Text="Physical Storage" Foreground="{DynamicResource TextMuted}" FontSize="10" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                                    <TextBlock Grid.Row="1" Text="{x:Static loc:Strings.Rep_SectionPhysicalStorage}" Foreground="{DynamicResource TextMuted}" FontSize="10" HorizontalAlignment="Center" Margin="0,5,0,0"/>
                                 </Grid>
                             </Border>
 
@@ -341,7 +342,7 @@
                                             </StackPanel>
                                         </Button>
                                     </StackPanel>
-                                    <TextBlock Grid.Row="1" Text="Actions" Foreground="{DynamicResource TextMuted}" FontSize="10" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                                    <TextBlock Grid.Row="1" Text="{x:Static loc:Strings.Rep_SectionActions}" Foreground="{DynamicResource TextMuted}" FontSize="10" HorizontalAlignment="Center" Margin="0,5,0,0"/>
                                 </Grid>
                             </Border>
 
@@ -350,7 +351,7 @@
                 </Border>
             </TabItem>
 
-            <TabItem Header="Audit &amp; Lifecycle">
+            <TabItem Header="{x:Static loc:Strings.Rep_SectionEntryAndDisposal}">
                  <Border Height="125" Background="{DynamicResource CardBackground}">
                     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
                         <StackPanel Orientation="Horizontal">
@@ -364,12 +365,15 @@
                                         <StackPanel Orientation="Horizontal" Margin="0,2">
                                             <TextBlock Text="{x:Static loc:Strings.Rep_LblAddedAfter}" Style="{StaticResource RibbonLabel}" Width="160"/>
                                             <DatePicker SelectedDate="{Binding AddedDateFrom}" Style="{StaticResource RibbonDatePicker}" Width="110" Margin="0,0,5,0"/>
-                                            <materialDesign:TimePicker SelectedTime="{Binding AddedTimeFrom}" Foreground="{DynamicResource TextMain}" BorderBrush="{DynamicResource BorderColor}" Width="70" Height="26" FontSize="12"/>
+    
+                                            <controls:TimeSpinnerControl SelectedTime="{Binding AddedTimeFrom, Mode=TwoWay}" />
                                         </StackPanel>
+
                                         <StackPanel Orientation="Horizontal" Margin="0,2">
                                             <TextBlock Text="{x:Static loc:Strings.Rep_LblAddedBefore}" Style="{StaticResource RibbonLabel}" Width="160"/>
                                             <DatePicker SelectedDate="{Binding AddedDateTo}" Style="{StaticResource RibbonDatePicker}" Width="110" Margin="0,0,5,0"/>
-                                            <materialDesign:TimePicker SelectedTime="{Binding AddedTimeTo}" Foreground="{DynamicResource TextMain}" BorderBrush="{DynamicResource BorderColor}" Width="70" Height="26" FontSize="12"/>
+    
+                                            <controls:TimeSpinnerControl SelectedTime="{Binding AddedTimeTo, Mode=TwoWay}" />
                                         </StackPanel>
                                     </StackPanel>
                                     <TextBlock Grid.Row="1" Text="{x:Static loc:Strings.Rep_SectionEntryTimestamps}" Foreground="{DynamicResource TextMuted}" FontSize="10" HorizontalAlignment="Center" Margin="0,5,0,0"/>
@@ -437,7 +441,7 @@
                                         <CheckBox IsChecked="{Binding IncRemovedDate}" Content="{x:Static loc:Strings.Rep_ChkColRemovedDate}" Foreground="{DynamicResource DangerAccent}"/>
                                         <CheckBox IsChecked="{Binding IncIsRemoved}" Content="{x:Static loc:Strings.Rep_ChkColIsRemoved}" Foreground="{DynamicResource DangerAccent}"/>
                                     </WrapPanel>
-                                    <TextBlock Grid.Row="1" Text="Visible Columns" Foreground="{DynamicResource TextMuted}" FontSize="10" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                                    <TextBlock Grid.Row="1" Text="{x:Static loc:Strings.Rep_SectionVisibleColumns}" Foreground="{DynamicResource TextMuted}" FontSize="10" HorizontalAlignment="Center" Margin="0,5,0,0"/>
                                 </Grid>
                             </Border>
                         </StackPanel>
@@ -445,7 +449,7 @@
                  </Border>
             </TabItem>
 
-            <TabItem Header="Tools &amp; Admin">
+            <TabItem Header="{x:Static loc:Strings.Rep_SectionExportTools}">
                  <Border Height="125" Background="{DynamicResource CardBackground}">
                      <StackPanel Orientation="Horizontal">
                         
@@ -469,7 +473,7 @@
                                         </StackPanel>
                                     </Button>
                                 </StackPanel>
-                                <TextBlock Grid.Row="1" Text="Data Export" Foreground="{DynamicResource TextMuted}" FontSize="10" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                                <TextBlock Grid.Row="1" Text="{x:Static loc:Strings.Rep_SectionDataExport}" Foreground="{DynamicResource TextMuted}" FontSize="10" HorizontalAlignment="Center" Margin="0,5,0,0"/>
                             </Grid>
                         </Border>
 
@@ -525,7 +529,7 @@
                     <Setter Property="FontWeight" Value="SemiBold"/>
                     <Setter Property="FontSize" Value="11"/>
                     <Setter Property="Padding" Value="10,6"/>
-                    <Setter Property="BorderThickness" Value="0,0,1,1"/>
+                    <Setter Property="BorderThickness" Value="0,2,1,2"/>
                     <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
                 </Style>
                 <Style TargetType="DataGridCell">

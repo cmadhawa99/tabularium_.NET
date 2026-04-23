@@ -438,3 +438,16 @@ public partial class ReportsViewModel : ObservableObject
         StatusColor = color;
     }
 }
+
+// A support class
+
+public partial class TimeSelector : ObservableObject
+{
+    [ObservableProperty] private string _hour = "__";
+    [ObservableProperty] private string _minute = "__";
+    [ObservableProperty] private string _amPm = "__";
+    
+    public ObservableCollection<string> Hours { get; } = new() { "--", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12" };
+    
+    
+}

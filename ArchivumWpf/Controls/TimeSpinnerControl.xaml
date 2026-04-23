@@ -1,0 +1,41 @@
+﻿<UserControl x:Class="ArchivumWpf.Controls.TimeSpinnerControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:fa="http://schemas.fontawesome.io/icons/">
+    
+    <Border Background="{DynamicResource WindowBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="2" Height="26" Width="80">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="20"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBox x:Name="HoursText" Grid.Column="0" Text="00" MaxLength="2" TextAlignment="Center" VerticalAlignment="Center" BorderThickness="0" Background="Transparent" Foreground="{DynamicResource TextMain}" PreviewTextInput="NumberValidation" TextChanged="TimeChanged" LostFocus="TextBox_LostFocus" GotFocus="HoursText_GotFocus"/>
+            
+            <TextBlock Grid.Column="1" Text=":" VerticalAlignment="Center" Foreground="{DynamicResource TextMain}" Margin="0,0,0,2" FontWeight="Bold"/>
+            
+            <TextBox x:Name="MinutesText" Grid.Column="2" Text="00" MaxLength="2" TextAlignment="Center" VerticalAlignment="Center" BorderThickness="0" Background="Transparent" Foreground="{DynamicResource TextMain}" PreviewTextInput="NumberValidation" TextChanged="TimeChanged" LostFocus="TextBox_LostFocus" GotFocus="MinutesText_GotFocus"/>
+
+            <Grid Grid.Column="3" Background="{DynamicResource CardBackground}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                
+                <Border BorderBrush="{DynamicResource BorderColor}" BorderThickness="1,0,0,1">
+                    <RepeatButton Grid.Row="0" Click="Up_Click" Focusable="False" Delay="400" Interval="80" BorderThickness="0" Background="Transparent" Padding="0" Cursor="Hand">
+                        <fa:ImageAwesome Icon="CaretUp" Width="8" Height="8" Foreground="{DynamicResource TextMuted}"/>
+                    </RepeatButton>
+                </Border>
+                
+                <Border Grid.Row="1" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1,0,0,0">
+                    <RepeatButton Click="Down_Click" Focusable="False" Delay="400" Interval="80" BorderThickness="0" Background="Transparent" Padding="0" Cursor="Hand">
+                        <fa:ImageAwesome Icon="CaretDown" Width="8" Height="8" Foreground="{DynamicResource TextMuted}"/>
+                    </RepeatButton>
+                </Border>
+            </Grid>
+        </Grid>
+    </Border>
+</UserControl>
