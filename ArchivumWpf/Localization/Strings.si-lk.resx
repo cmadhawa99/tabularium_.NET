@@ -657,10 +657,10 @@
         <value>පද්ධතියට ඇතුළත් කළ දිනය සහ වේලාව</value>
     </data>
     <data name="Rep_LblAddedAfter" xml:space="preserve">
-        <value>මෙයට පසු ඇතුළත් කළ:</value>
+        <value>මෙයට පසු ඇතුළත් කළ</value>
     </data>
     <data name="Rep_LblAddedBefore" xml:space="preserve">
-        <value>මෙයට පෙර ඇතුළත් කළ:</value>
+        <value>මෙයට පෙර ඇතුළත් කළ</value>
     </data>
     <data name="Rep_SectionRemovalCriteria" xml:space="preserve">
         <value>ඉවත් කිරීමේ සහ සංරක්ෂණය කිරීමේ නිර්ණායක</value>
@@ -669,10 +669,10 @@
         <value>ඉවත් කර තිබේද?</value>
     </data>
     <data name="Rep_LblScheduledRemoval" xml:space="preserve">
-        <value>ඉවත් කිරීමට කාලසටහන්ගත කළ දිනය:</value>
+        <value>ඉවත් කිරීමට කාලසටහන්ගත කළ දිනය</value>
     </data>
     <data name="Rep_LblActualRemovalDate" xml:space="preserve">
-        <value>ඉවත් කළ දිනය:</value>
+        <value>ඉවත් කළ දිනය</value>
     </data>
     <data name="Rep_BtnResetFilters" xml:space="preserve">
         <value>සියලුම පෙරහන් යළි සකසන්න</value>

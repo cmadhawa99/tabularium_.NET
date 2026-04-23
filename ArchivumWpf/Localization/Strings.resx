@@ -712,10 +712,10 @@
         <value>SYSTEM ENTRY TIMESTAMPS</value>
     </data>
     <data name="Rep_LblAddedAfter" xml:space="preserve">
-        <value>Added After:</value>
+        <value>Added After</value>
     </data>
     <data name="Rep_LblAddedBefore" xml:space="preserve">
-        <value>Added Before:</value>
+        <value>Added Before</value>
     </data>
     <data name="Rep_SectionRemovalCriteria" xml:space="preserve">
         <value>REMOVAL &amp; ARCHIVAL CRITERIA</value>
@@ -724,10 +724,10 @@
         <value>Is Removed?</value>
     </data>
     <data name="Rep_LblScheduledRemoval" xml:space="preserve">
-        <value>Scheduled Removal:</value>
+        <value>Scheduled Removal</value>
     </data>
     <data name="Rep_LblActualRemovalDate" xml:space="preserve">
-        <value>Actual Removal Date:</value>
+        <value>Actual Removal Date</value>
     </data>
     <data name="Rep_BtnResetFilters" xml:space="preserve">
         <value>Reset All Filters</value>

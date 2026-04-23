@@ -152,7 +152,7 @@ public partial class ReportsViewModel : ObservableObject
     {
 
         var combinedFrom = CombineDateTime(AddedDateFrom, AddedTimeFrom);
-        var combineTo = CombineDateTime(AddedDateTo, AddedDateTo);
+        var combineTo = CombineDateTime(AddedDateTo, AddedTimeTo);
         
         var result = await _archiveService.GetFilteredPreviewPaginatedAsync(
             SerialNumber, RrNumber, Sector, SubjectNumber, FileName, FileType, StartDate, EndDate, 
@@ -164,8 +164,15 @@ public partial class ReportsViewModel : ObservableObject
         TotalPageCount = (int)Math.Ceiling((double)TotalResultCount / PageSize);
         if (TotalPageCount == 0) TotalPageCount = 1;
         
+        var prefs = _preferencesService.GetPreferences();
+        var colorMap = prefs.Sectors.ToDictionary(s => s.Name, s => s.ColorHex);
+        
         PreviewRecords.Clear();
-        foreach (var file in result.Items) PreviewRecords.Add(file);
+        foreach (var file in result.Items)
+        {
+            file.SectorColorHex = colorMap.ContainsKey(file.Sector) ? colorMap[file.Sector] : "#8f9bb3";
+            PreviewRecords.Add(file);
+        }
         
         ShowStatus($"Previewing page {CurrentPage} of {TotalPageCount}. Total matches: {TotalResultCount}", "Gray");
     }

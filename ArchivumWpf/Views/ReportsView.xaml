@@ -11,7 +11,6 @@
         <converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
         <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
         <converters:BindingProxy x:Key="Proxy" Data="{Binding}" />
-        <converters:SectorToColorMultiConverter x:Key="SectorToColorConverter" />
 
         <Style x:Key="RibbonTextBox" TargetType="TextBox">
             <Setter Property="Background" Value="{DynamicResource WindowBackground}"/>
@@ -20,7 +19,7 @@
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Padding" Value="4,2"/>
             <Setter Property="FontSize" Value="12"/>
-            <Setter Property="Height" Value="24"/>
+            <Setter Property="Height" Value="26"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -44,7 +43,7 @@
             <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="FontSize" Value="12"/>
-            <Setter Property="Height" Value="24"/>
+            <Setter Property="Height" Value="26"/>
             <Setter Property="Padding" Value="4,0"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
@@ -155,7 +154,7 @@
             <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
             <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Height" Value="24"/>
+            <Setter Property="Height" Value="26"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="DatePicker">
@@ -188,8 +187,8 @@
             <Setter Property="FontSize" Value="11"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Margin" Value="0,0,5,0"/>
-            <Setter Property="Width" Value="60"/>
-            <Setter Property="TextAlignment" Value="Right"/>
+            <Setter Property="Width" Value="90"/> <Setter Property="TextAlignment" Value="Right"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
         </Style>
 
         <Style x:Key="RibbonTabControl" TargetType="TabControl">
@@ -230,14 +229,14 @@
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                 <TextBlock Text="{x:Static loc:Strings.Rep_MainTitle}" Foreground="{DynamicResource PrimaryAccent}" FontSize="18" FontWeight="SemiBold" Margin="0,0,15,0"/>
                 <Rectangle Width="1" Height="14" Fill="{DynamicResource BorderColor}" Margin="0,0,15,0"/>
-                <TextBlock Text="{x:Static loc:Strings.Rep_MainDesc}" Foreground="{DynamicResource TextMuted}" FontSize="12" FontWeight="Normal" VerticalAlignment="Center"/>
+                <TextBlock Text="{Binding StatusMessage}" Foreground="{Binding StatusColor}" FontSize="12" FontWeight="SemiBold" VerticalAlignment="Center"/>
             </StackPanel>
         </Border>
 
         <TabControl Grid.Row="1" Style="{StaticResource RibbonTabControl}">
             
             <TabItem Header="{x:Static loc:Strings.Rep_SectionDataFilters}">
-                <Border Height="110" Background="{DynamicResource CardBackground}">
+                <Border Height="125" Background="{DynamicResource CardBackground}">
                     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
                         <StackPanel Orientation="Horizontal">
                             
@@ -249,15 +248,15 @@
                                     <StackPanel Grid.Row="0" VerticalAlignment="Center">
                                         <StackPanel Orientation="Horizontal" Margin="0,2">
                                             <TextBlock Text="{x:Static loc:Strings.Rep_LblSerialNumber}" Style="{StaticResource RibbonLabel}"/>
-                                            <TextBox Text="{Binding SerialNumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource RibbonTextBox}" Width="100"/>
+                                            <TextBox Text="{Binding SerialNumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource RibbonTextBox}" Width="110"/>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal" Margin="0,2">
                                             <TextBlock Text="{x:Static loc:Strings.Rep_LblRrNumber}" Style="{StaticResource RibbonLabel}"/>
-                                            <TextBox Text="{Binding RrNumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource RibbonTextBox}" Width="100"/>
+                                            <TextBox Text="{Binding RrNumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource RibbonTextBox}" Width="110"/>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal" Margin="0,2">
                                             <TextBlock Text="{x:Static loc:Strings.Rep_LblFileName}" Style="{StaticResource RibbonLabel}"/>
-                                            <TextBox Text="{Binding FileName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource RibbonTextBox}" Width="100"/>
+                                            <TextBox Text="{Binding FileName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource RibbonTextBox}" Width="110"/>
                                         </StackPanel>
                                     </StackPanel>
                                     <TextBlock Grid.Row="1" Text="Identifiers" Foreground="{DynamicResource TextMuted}" FontSize="10" HorizontalAlignment="Center" Margin="0,5,0,0"/>
@@ -271,16 +270,16 @@
                                     </Grid.RowDefinitions>
                                     <StackPanel Grid.Row="0" VerticalAlignment="Center">
                                         <StackPanel Orientation="Horizontal" Margin="0,2">
-                                            <TextBlock Text="{x:Static loc:Strings.Rep_LblSector}" Style="{StaticResource RibbonLabel}"/>
-                                            <ComboBox ItemsSource="{Binding AvailableSectors}" SelectedItem="{Binding Sector, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource RibbonComboBox}" Width="110"/>
+                                            <TextBlock Text="{x:Static loc:Strings.Rep_LblSector}" Style="{StaticResource RibbonLabel}" Width="120"/>
+                                            <ComboBox ItemsSource="{Binding AvailableSectors}" SelectedItem="{Binding Sector, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource RibbonComboBox}" Width="120"/>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal" Margin="0,2">
-                                            <TextBlock Text="{x:Static loc:Strings.Rep_LblFileType}" Style="{StaticResource RibbonLabel}"/>
-                                            <ComboBox ItemsSource="{Binding AvailableFileTypes}" SelectedItem="{Binding FileType, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource RibbonComboBox}" Width="110"/>
+                                            <TextBlock Text="{x:Static loc:Strings.Rep_LblFileType}" Style="{StaticResource RibbonLabel}" Width="120"/>
+                                            <ComboBox ItemsSource="{Binding AvailableFileTypes}" SelectedItem="{Binding FileType, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource RibbonComboBox}" Width="120"/>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal" Margin="0,2">
-                                            <TextBlock Text="{x:Static loc:Strings.Rep_LblCurrentStatus}" Style="{StaticResource RibbonLabel}"/>
-                                            <TextBox Text="{Binding CurrentStatus, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource RibbonTextBox}" Width="110"/>
+                                            <TextBlock Text="{x:Static loc:Strings.Rep_LblCurrentStatus}" Style="{StaticResource RibbonLabel}" Width="120"/>
+                                            <TextBox Text="{Binding CurrentStatus, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource RibbonTextBox}" Width="120"/>
                                         </StackPanel>
                                     </StackPanel>
                                     <TextBlock Grid.Row="1" Text="Classification" Foreground="{DynamicResource TextMuted}" FontSize="10" HorizontalAlignment="Center" Margin="0,5,0,0"/>
@@ -294,12 +293,12 @@
                                     </Grid.RowDefinitions>
                                     <StackPanel Grid.Row="0" VerticalAlignment="Center">
                                         <StackPanel Orientation="Horizontal" Margin="0,2">
-                                            <TextBlock Text="{x:Static loc:Strings.Rep_LblContentStartDate}" Style="{StaticResource RibbonLabel}"/>
-                                            <DatePicker SelectedDate="{Binding StartDate}" Style="{StaticResource RibbonDatePicker}" Width="100"/>
+                                            <TextBlock Text="{x:Static loc:Strings.Rep_LblContentStartDate}" Style="{StaticResource RibbonLabel}" Width="160"/>
+                                            <DatePicker SelectedDate="{Binding StartDate}" Style="{StaticResource RibbonDatePicker}" Width="110"/>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal" Margin="0,2">
-                                            <TextBlock Text="{x:Static loc:Strings.Rep_LblContentEndDate}" Style="{StaticResource RibbonLabel}"/>
-                                            <DatePicker SelectedDate="{Binding EndDate}" Style="{StaticResource RibbonDatePicker}" Width="100"/>
+                                            <TextBlock Text="{x:Static loc:Strings.Rep_LblContentEndDate}" Style="{StaticResource RibbonLabel}" Width="160"/>
+                                            <DatePicker SelectedDate="{Binding EndDate}" Style="{StaticResource RibbonDatePicker}" Width="110"/>
                                         </StackPanel>
                                     </StackPanel>
                                     <TextBlock Grid.Row="1" Text="Content Dates" Foreground="{DynamicResource TextMuted}" FontSize="10" HorizontalAlignment="Center" Margin="0,5,0,0"/>
@@ -313,16 +312,16 @@
                                     </Grid.RowDefinitions>
                                     <StackPanel Grid.Row="0" VerticalAlignment="Center">
                                         <StackPanel Orientation="Horizontal" Margin="0,2">
-                                            <TextBlock Text="{x:Static loc:Strings.Rep_LblShelfNumber}" Style="{StaticResource RibbonLabel}" Width="40"/>
-                                            <TextBox Text="{Binding ShelfNumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource RibbonTextBox}" Width="60" Margin="0,0,10,0"/>
-                                            <TextBlock Text="{x:Static loc:Strings.Rep_LblDeckNumber}" Style="{StaticResource RibbonLabel}" Width="40"/>
-                                            <TextBox Text="{Binding DeckNumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource RibbonTextBox}" Width="60"/>
+                                            <TextBlock Text="{x:Static loc:Strings.Rep_LblShelfNumber}" Style="{StaticResource RibbonLabel}" Width="89"/>
+                                            <TextBox Text="{Binding ShelfNumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource RibbonTextBox}" Width="70" Margin="0,0,10,0"/>
+                                            <TextBlock Text="{x:Static loc:Strings.Rep_LblDeckNumber}" Style="{StaticResource RibbonLabel}" Width="89"/>
+                                            <TextBox Text="{Binding DeckNumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource RibbonTextBox}" Width="70"/>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal" Margin="0,2">
-                                            <TextBlock Text="{x:Static loc:Strings.Rep_LblFileNumber}" Style="{StaticResource RibbonLabel}" Width="40"/>
-                                            <TextBox Text="{Binding FileNumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource RibbonTextBox}" Width="60" Margin="0,0,10,0"/>
-                                            <TextBlock Text="{x:Static loc:Strings.Rep_LblTotalPages}" Style="{StaticResource RibbonLabel}" Width="40"/>
-                                            <TextBox Text="{Binding TotalPages, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource RibbonTextBox}" Width="60"/>
+                                            <TextBlock Text="{x:Static loc:Strings.Rep_LblFileNumber}" Style="{StaticResource RibbonLabel}" Width="89"/>
+                                            <TextBox Text="{Binding FileNumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource RibbonTextBox}" Width="70" Margin="0,0,10,0"/>
+                                            <TextBlock Text="{x:Static loc:Strings.Rep_LblTotalPages}" Style="{StaticResource RibbonLabel}" Width="89"/>
+                                            <TextBox Text="{Binding TotalPages, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource RibbonTextBox}" Width="70"/>
                                         </StackPanel>
                                     </StackPanel>
                                     <TextBlock Grid.Row="1" Text="Physical Storage" Foreground="{DynamicResource TextMuted}" FontSize="10" HorizontalAlignment="Center" Margin="0,5,0,0"/>
@@ -352,7 +351,7 @@
             </TabItem>
 
             <TabItem Header="Audit &amp; Lifecycle">
-                 <Border Height="110" Background="{DynamicResource CardBackground}">
+                 <Border Height="125" Background="{DynamicResource CardBackground}">
                     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
                         <StackPanel Orientation="Horizontal">
                             
@@ -363,14 +362,14 @@
                                     </Grid.RowDefinitions>
                                     <StackPanel Grid.Row="0" VerticalAlignment="Center">
                                         <StackPanel Orientation="Horizontal" Margin="0,2">
-                                            <TextBlock Text="{x:Static loc:Strings.Rep_LblAddedAfter}" Style="{StaticResource RibbonLabel}"/>
-                                            <DatePicker SelectedDate="{Binding AddedDateFrom}" Style="{StaticResource RibbonDatePicker}" Width="100" Margin="0,0,5,0"/>
-                                            <materialDesign:TimePicker SelectedTime="{Binding AddedTimeFrom}" Foreground="{DynamicResource TextMain}" BorderBrush="{DynamicResource BorderColor}" Width="70" Height="24" FontSize="12"/>
+                                            <TextBlock Text="{x:Static loc:Strings.Rep_LblAddedAfter}" Style="{StaticResource RibbonLabel}" Width="160"/>
+                                            <DatePicker SelectedDate="{Binding AddedDateFrom}" Style="{StaticResource RibbonDatePicker}" Width="110" Margin="0,0,5,0"/>
+                                            <materialDesign:TimePicker SelectedTime="{Binding AddedTimeFrom}" Foreground="{DynamicResource TextMain}" BorderBrush="{DynamicResource BorderColor}" Width="70" Height="26" FontSize="12"/>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal" Margin="0,2">
-                                            <TextBlock Text="{x:Static loc:Strings.Rep_LblAddedBefore}" Style="{StaticResource RibbonLabel}"/>
-                                            <DatePicker SelectedDate="{Binding AddedDateTo}" Style="{StaticResource RibbonDatePicker}" Width="100" Margin="0,0,5,0"/>
-                                            <materialDesign:TimePicker SelectedTime="{Binding AddedTimeTo}" Foreground="{DynamicResource TextMain}" BorderBrush="{DynamicResource BorderColor}" Width="70" Height="24" FontSize="12"/>
+                                            <TextBlock Text="{x:Static loc:Strings.Rep_LblAddedBefore}" Style="{StaticResource RibbonLabel}" Width="160"/>
+                                            <DatePicker SelectedDate="{Binding AddedDateTo}" Style="{StaticResource RibbonDatePicker}" Width="110" Margin="0,0,5,0"/>
+                                            <materialDesign:TimePicker SelectedTime="{Binding AddedTimeTo}" Foreground="{DynamicResource TextMain}" BorderBrush="{DynamicResource BorderColor}" Width="70" Height="26" FontSize="12"/>
                                         </StackPanel>
                                     </StackPanel>
                                     <TextBlock Grid.Row="1" Text="{x:Static loc:Strings.Rep_SectionEntryTimestamps}" Foreground="{DynamicResource TextMuted}" FontSize="10" HorizontalAlignment="Center" Margin="0,5,0,0"/>
@@ -385,12 +384,12 @@
                                     <StackPanel Grid.Row="0" VerticalAlignment="Center">
                                         <CheckBox Content="{x:Static loc:Strings.Rep_ChkIsRemoved}" IsThreeState="True" IsChecked="{Binding IsRemovedFilter}" Foreground="{DynamicResource DangerAccent}" FontSize="12" Margin="5,0,0,6"/>
                                         <StackPanel Orientation="Horizontal" Margin="0,2">
-                                            <TextBlock Text="{x:Static loc:Strings.Rep_LblScheduledRemoval}" Style="{StaticResource RibbonLabel}" Width="110"/>
-                                            <DatePicker SelectedDate="{Binding ToBeRemovedDate}" Style="{StaticResource RibbonDatePicker}" Width="100"/>
+                                            <TextBlock Text="{x:Static loc:Strings.Rep_LblScheduledRemoval}" Style="{StaticResource RibbonLabel}" Width="160"/>
+                                            <DatePicker SelectedDate="{Binding ToBeRemovedDate}" Style="{StaticResource RibbonDatePicker}" Width="110"/>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal" Margin="0,2">
-                                            <TextBlock Text="{x:Static loc:Strings.Rep_LblActualRemovalDate}" Style="{StaticResource RibbonLabel}" Width="110"/>
-                                            <DatePicker SelectedDate="{Binding RemovedDate}" Style="{StaticResource RibbonDatePicker}" Width="100"/>
+                                            <TextBlock Text="{x:Static loc:Strings.Rep_LblActualRemovalDate}" Style="{StaticResource RibbonLabel}" Width="160"/>
+                                            <DatePicker SelectedDate="{Binding RemovedDate}" Style="{StaticResource RibbonDatePicker}" Width="110"/>
                                         </StackPanel>
                                     </StackPanel>
                                     <TextBlock Grid.Row="1" Text="{x:Static loc:Strings.Rep_SectionRemovalCriteria}" Foreground="{DynamicResource TextMuted}" FontSize="10" HorizontalAlignment="Center" Margin="0,5,0,0"/>
@@ -403,16 +402,15 @@
             </TabItem>
 
             <TabItem Header="{x:Static loc:Strings.Rep_SectionOutputColumns}">
-                 <Border Height="110" Background="{DynamicResource CardBackground}">
+                 <Border Height="125" Background="{DynamicResource CardBackground}">
                     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
                         <StackPanel Orientation="Horizontal">
-                            
                             <Border BorderThickness="0,0,1,0" BorderBrush="{DynamicResource BorderColor}" Padding="15,5">
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="*"/> <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
-                                    <WrapPanel Grid.Row="0" Orientation="Vertical" Height="70">
+                                    <WrapPanel Grid.Row="0" Orientation="Vertical" Height="80">
                                         <WrapPanel.Resources>
                                             <Style TargetType="CheckBox">
                                                 <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
@@ -442,28 +440,40 @@
                                     <TextBlock Grid.Row="1" Text="Visible Columns" Foreground="{DynamicResource TextMuted}" FontSize="10" HorizontalAlignment="Center" Margin="0,5,0,0"/>
                                 </Grid>
                             </Border>
-
-                            <Border Padding="15,5">
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="*"/> <RowDefinition Height="Auto"/>
-                                    </Grid.RowDefinitions>
-                                    <StackPanel Grid.Row="0" VerticalAlignment="Center">
-                                        <CheckBox IsChecked="{Binding EnableRowColors}" Content="{x:Static loc:Strings.Rep_ChkRenderColors}" Foreground="{DynamicResource TextMain}" FontSize="12" Margin="0,5"/>
-                                    </StackPanel>
-                                    <TextBlock Grid.Row="1" Text="Formatting" Foreground="{DynamicResource TextMuted}" FontSize="10" HorizontalAlignment="Center" Margin="0,5,0,0"/>
-                                </Grid>
-                            </Border>
-
                         </StackPanel>
                     </ScrollViewer>
                  </Border>
             </TabItem>
 
             <TabItem Header="Tools &amp; Admin">
-                 <Border Height="110" Background="{DynamicResource CardBackground}">
+                 <Border Height="125" Background="{DynamicResource CardBackground}">
                      <StackPanel Orientation="Horizontal">
-                        <Border Padding="15,5">
+                        
+                        <Border Padding="25,5" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource BorderColor}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/> <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center">
+                                    <Button Command="{Binding ExportCsvCommand}" Background="Transparent" BorderThickness="0" Cursor="Hand" Margin="0,0,25,0">
+                                        <StackPanel>
+                                            <fa:ImageAwesome Icon="FileTextOutline" Width="28" Height="28" Foreground="{DynamicResource PrimaryAccent}" HorizontalAlignment="Center" Margin="0,0,0,5"/>
+                                            <TextBlock Text="{x:Static loc:Strings.Rep_BtnExportCsv}" Foreground="{DynamicResource TextMain}" FontSize="12" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Button>
+                                    
+                                    <Button Command="{Binding ExportExcelCommand}" Background="Transparent" BorderThickness="0" Cursor="Hand">
+                                        <StackPanel>
+                                            <fa:ImageAwesome Icon="FileExcelOutline" Width="28" Height="28" Foreground="#2E7D32" HorizontalAlignment="Center" Margin="0,0,0,5"/>
+                                            <TextBlock Text="{x:Static loc:Strings.Rep_BtnExportExcel}" Foreground="{DynamicResource TextMain}" FontSize="12" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
+                                <TextBlock Grid.Row="1" Text="Data Export" Foreground="{DynamicResource TextMuted}" FontSize="10" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                            </Grid>
+                        </Border>
+
+                        <Border Padding="25,5">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*"/> <RowDefinition Height="Auto"/>
@@ -471,14 +481,15 @@
                                 <StackPanel Grid.Row="0" VerticalAlignment="Center">
                                     <Button Command="{Binding BackupSqlCommand}" Background="Transparent" BorderThickness="0" Cursor="Hand">
                                         <StackPanel>
-                                            <fa:ImageAwesome Icon="Database" Width="24" Height="24" Foreground="{DynamicResource PrimaryAccent}" HorizontalAlignment="Center" Margin="0,0,0,5"/>
-                                            <TextBlock Text="{x:Static loc:Strings.Rep_BtnExportSql}" Foreground="{DynamicResource TextMain}" FontSize="11"/>
+                                            <fa:ImageAwesome Icon="Database" Width="28" Height="28" Foreground="{DynamicResource TextMuted}" HorizontalAlignment="Center" Margin="0,0,0,5"/>
+                                            <TextBlock Text="{x:Static loc:Strings.Rep_BtnExportSql}" Foreground="{DynamicResource TextMain}" FontSize="12" FontWeight="SemiBold" HorizontalAlignment="Center"/>
                                         </StackPanel>
                                     </Button>
                                 </StackPanel>
                                 <TextBlock Grid.Row="1" Text="{x:Static loc:Strings.Rep_BackupTitle}" Foreground="{DynamicResource TextMuted}" FontSize="10" HorizontalAlignment="Center" Margin="0,5,0,0"/>
                             </Grid>
                         </Border>
+                        
                      </StackPanel>
                  </Border>
             </TabItem>
@@ -486,25 +497,22 @@
         </TabControl>
 
         <DataGrid Grid.Row="2" ItemsSource="{Binding PreviewRecords}" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True"
+                  CanUserResizeColumns="True" CanUserResizeRows="True"
                   Background="{DynamicResource WindowBackground}" Foreground="{DynamicResource TextMain}" RowBackground="{DynamicResource WindowBackground}" AlternatingRowBackground="{DynamicResource CardBackground}" 
                   HeadersVisibility="Column" GridLinesVisibility="All" HorizontalGridLinesBrush="{DynamicResource BorderColor}" VerticalGridLinesBrush="{DynamicResource BorderColor}" 
                   BorderThickness="0" Margin="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
             
             <DataGrid.RowStyle>
                 <Style TargetType="DataGridRow">
-                    <Setter Property="BorderThickness" Value="6,0,0,0"/>
-                    <Setter Property="BorderBrush">
-                        <Setter.Value>
-                            <MultiBinding Converter="{StaticResource SectorToColorConverter}" ConverterParameter="Border">
-                                <Binding Path="Sector" />
-                                <Binding Path="DataContext.EnableRowColors" RelativeSource="{RelativeSource AncestorType=UserControl}" />
-                                <Binding Path="DataContext.RawSectors" RelativeSource="{RelativeSource AncestorType=UserControl}" />
-                            </MultiBinding>
-                        </Setter.Value>
-                    </Setter>
+                    <Setter Property="Padding" Value="0,4"/>
+                    <Setter Property="Cursor" Value="Hand"/>
                     <Style.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter Property="Background" Value="#0A107C41"/>
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="#1A107C41"/>
+                            <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
                         </Trigger>
                     </Style.Triggers>
                 </Style>
@@ -535,31 +543,24 @@
             </DataGrid.Resources>
 
             <DataGrid.Columns>
-                <DataGridTextColumn Header="{x:Static loc:Strings.Rep_GridColTimestamp}" Binding="{Binding AddedDateTime, StringFormat=yyyy-MM-dd HH:mm}" Visibility="{Binding Data.IncAddedDate, Source={StaticResource Proxy}, Converter={StaticResource BoolToVisConverter}}"/>
-                <DataGridTextColumn Header="{x:Static loc:Strings.Rep_GridColSerial}" Binding="{Binding SerialNumber}" Visibility="{Binding Data.IncSerial, Source={StaticResource Proxy}, Converter={StaticResource BoolToVisConverter}}"/>
-                <DataGridTextColumn Header="{x:Static loc:Strings.Rep_GridColRrNum}" Binding="{Binding RrNumber}" Visibility="{Binding Data.IncRrNumber, Source={StaticResource Proxy}, Converter={StaticResource BoolToVisConverter}}" FontFamily="Consolas"/>
+                <DataGridTextColumn Header="{x:Static loc:Strings.Rep_GridColTimestamp}" Binding="{Binding AddedDateTime, StringFormat=yyyy-MM-dd HH:mm}" Visibility="{Binding Data.IncAddedDate, Source={StaticResource Proxy}, Converter={StaticResource BoolToVisConverter}}" Width="140"/>
+                <DataGridTextColumn Header="{x:Static loc:Strings.Rep_GridColSerial}" Binding="{Binding SerialNumber}" Visibility="{Binding Data.IncSerial, Source={StaticResource Proxy}, Converter={StaticResource BoolToVisConverter}}" Width="100"/>
+                <DataGridTextColumn Header="{x:Static loc:Strings.Rep_GridColRrNum}" Binding="{Binding RrNumber}" Visibility="{Binding Data.IncRrNumber, Source={StaticResource Proxy}, Converter={StaticResource BoolToVisConverter}}" FontFamily="Consolas" Width="140"/>
                 
-                <DataGridTextColumn Header="{x:Static loc:Strings.Rep_GridColSector}" Binding="{Binding Sector}" Visibility="{Binding Data.IncSector, Source={StaticResource Proxy}, Converter={StaticResource BoolToVisConverter}}">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="VerticalAlignment" Value="Center"/>
-                            <Setter Property="FontWeight" Value="SemiBold"/>
-                            <Setter Property="Foreground">
-                                <Setter.Value>
-                                    <MultiBinding Converter="{StaticResource SectorToColorConverter}" ConverterParameter="Text">
-                                        <Binding Path="Sector" />
-                                        <Binding Path="DataContext.EnableRowColors" RelativeSource="{RelativeSource AncestorType=UserControl}" />
-                                        <Binding Path="DataContext.RawSectors" RelativeSource="{RelativeSource AncestorType=UserControl}" />
-                                    </MultiBinding>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
+                <DataGridTemplateColumn Header="{x:Static loc:Strings.Rep_GridColSector}" Visibility="{Binding Data.IncSector, Source={StaticResource Proxy}, Converter={StaticResource BoolToVisConverter}}" Width="150">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="10,0,0,0">
+                                <Ellipse Width="8" Height="8" Fill="{Binding SectorColorHex, TargetNullValue='#8f9bb3'}" Stroke="{DynamicResource TextMain}" StrokeThickness="1" Margin="0,0,6,0"/>
+                                <TextBlock Text="{Binding Sector}" Foreground="{DynamicResource TextMain}" FontWeight="SemiBold"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
                 
-                <DataGridTextColumn Header="{x:Static loc:Strings.Rep_GridColSubjectNum}" Binding="{Binding SubjectNumber}" Visibility="{Binding Data.IncSubject, Source={StaticResource Proxy}, Converter={StaticResource BoolToVisConverter}}"/>
+                <DataGridTextColumn Header="{x:Static loc:Strings.Rep_GridColSubjectNum}" Binding="{Binding SubjectNumber}" Visibility="{Binding Data.IncSubject, Source={StaticResource Proxy}, Converter={StaticResource BoolToVisConverter}}" Width="120"/>
                 
-                <DataGridTemplateColumn Header="{x:Static loc:Strings.Rep_GridColFileName}" Visibility="{Binding Data.IncFileName, Source={StaticResource Proxy}, Converter={StaticResource BoolToVisConverter}}" Width="*">
+                <DataGridTemplateColumn Header="{x:Static loc:Strings.Rep_GridColFileName}" Visibility="{Binding Data.IncFileName, Source={StaticResource Proxy}, Converter={StaticResource BoolToVisConverter}}" Width="250">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding FileName}" ToolTip="{Binding FileName}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
@@ -567,33 +568,31 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTextColumn Header="{x:Static loc:Strings.Rep_GridColFileType}" Binding="{Binding FileType}" Visibility="{Binding Data.IncFileType, Source={StaticResource Proxy}, Converter={StaticResource BoolToVisConverter}}"/>
-                <DataGridTextColumn Header="{x:Static loc:Strings.Rep_GridColStartDate}" Binding="{Binding StartDate, StringFormat=yyyy-MM-dd}" Visibility="{Binding Data.IncStartDate, Source={StaticResource Proxy}, Converter={StaticResource BoolToVisConverter}}"/>
-                <DataGridTextColumn Header="{x:Static loc:Strings.Rep_GridColEndDate}" Binding="{Binding EndDate, StringFormat=yyyy-MM-dd}" Visibility="{Binding Data.IncEndDate, Source={StaticResource Proxy}, Converter={StaticResource BoolToVisConverter}}"/>
-                <DataGridTextColumn Header="{x:Static loc:Strings.Rep_GridColPages}" Binding="{Binding TotalPages}" Visibility="{Binding Data.IncPages, Source={StaticResource Proxy}, Converter={StaticResource BoolToVisConverter}}"/>
-                <DataGridTextColumn Header="{x:Static loc:Strings.Rep_GridColShelf}" Binding="{Binding ShelfNumber}" Visibility="{Binding Data.IncShelf, Source={StaticResource Proxy}, Converter={StaticResource BoolToVisConverter}}"/>
-                <DataGridTextColumn Header="{x:Static loc:Strings.Rep_GridColDeck}" Binding="{Binding DeckNumber}" Visibility="{Binding Data.IncDeck, Source={StaticResource Proxy}, Converter={StaticResource BoolToVisConverter}}"/>
-                <DataGridTextColumn Header="{x:Static loc:Strings.Rep_GridColFileNum}" Binding="{Binding FileNumber}" Visibility="{Binding Data.IncFileNum, Source={StaticResource Proxy}, Converter={StaticResource BoolToVisConverter}}"/>
-                <DataGridTextColumn Header="{x:Static loc:Strings.Rep_GridColStatus}" Binding="{Binding CurrentStatus}" Visibility="{Binding Data.IncStatus, Source={StaticResource Proxy}, Converter={StaticResource BoolToVisConverter}}"/>
+                <DataGridTextColumn Header="{x:Static loc:Strings.Rep_GridColFileType}" Binding="{Binding FileType}" Visibility="{Binding Data.IncFileType, Source={StaticResource Proxy}, Converter={StaticResource BoolToVisConverter}}" Width="120"/>
+                <DataGridTextColumn Header="{x:Static loc:Strings.Rep_GridColStartDate}" Binding="{Binding StartDate, StringFormat=yyyy-MM-dd}" Visibility="{Binding Data.IncStartDate, Source={StaticResource Proxy}, Converter={StaticResource BoolToVisConverter}}" Width="120"/>
+                <DataGridTextColumn Header="{x:Static loc:Strings.Rep_GridColEndDate}" Binding="{Binding EndDate, StringFormat=yyyy-MM-dd}" Visibility="{Binding Data.IncEndDate, Source={StaticResource Proxy}, Converter={StaticResource BoolToVisConverter}}" Width="120"/>
+                <DataGridTextColumn Header="{x:Static loc:Strings.Rep_GridColPages}" Binding="{Binding TotalPages}" Visibility="{Binding Data.IncPages, Source={StaticResource Proxy}, Converter={StaticResource BoolToVisConverter}}" Width="80"/>
+                <DataGridTextColumn Header="{x:Static loc:Strings.Rep_GridColShelf}" Binding="{Binding ShelfNumber}" Visibility="{Binding Data.IncShelf, Source={StaticResource Proxy}, Converter={StaticResource BoolToVisConverter}}" Width="80"/>
+                <DataGridTextColumn Header="{x:Static loc:Strings.Rep_GridColDeck}" Binding="{Binding DeckNumber}" Visibility="{Binding Data.IncDeck, Source={StaticResource Proxy}, Converter={StaticResource BoolToVisConverter}}" Width="80"/>
+                <DataGridTextColumn Header="{x:Static loc:Strings.Rep_GridColFileNum}" Binding="{Binding FileNumber}" Visibility="{Binding Data.IncFileNum, Source={StaticResource Proxy}, Converter={StaticResource BoolToVisConverter}}" Width="80"/>
+                <DataGridTextColumn Header="{x:Static loc:Strings.Rep_GridColStatus}" Binding="{Binding CurrentStatus}" Visibility="{Binding Data.IncStatus, Source={StaticResource Proxy}, Converter={StaticResource BoolToVisConverter}}" Width="120"/>
                 
-                <DataGridTextColumn Header="{x:Static loc:Strings.Rep_GridColScheduledRemoval}" Binding="{Binding ToBeRemovedDate, StringFormat=yyyy-MM-dd}" Visibility="{Binding Data.IncToBeRemovedDate, Source={StaticResource Proxy}, Converter={StaticResource BoolToVisConverter}}" Foreground="{DynamicResource DangerAccent}"/>
-                <DataGridTextColumn Header="{x:Static loc:Strings.Rep_GridColRemovedDate}" Binding="{Binding RemovedDate, StringFormat=yyyy-MM-dd}" Visibility="{Binding Data.IncRemovedDate, Source={StaticResource Proxy}, Converter={StaticResource BoolToVisConverter}}" Foreground="{DynamicResource DangerAccent}"/>
-                <DataGridTextColumn Header="{x:Static loc:Strings.Rep_GridColIsRemoved}" Binding="{Binding IsRemoved}" Visibility="{Binding Data.IncIsRemoved, Source={StaticResource Proxy}, Converter={StaticResource BoolToVisConverter}}" Foreground="{DynamicResource DangerAccent}"/>
+                <DataGridTextColumn Header="{x:Static loc:Strings.Rep_GridColScheduledRemoval}" Binding="{Binding ToBeRemovedDate, StringFormat=yyyy-MM-dd}" Visibility="{Binding Data.IncToBeRemovedDate, Source={StaticResource Proxy}, Converter={StaticResource BoolToVisConverter}}" Foreground="{DynamicResource DangerAccent}" Width="140"/>
+                <DataGridTextColumn Header="{x:Static loc:Strings.Rep_GridColRemovedDate}" Binding="{Binding RemovedDate, StringFormat=yyyy-MM-dd}" Visibility="{Binding Data.IncRemovedDate, Source={StaticResource Proxy}, Converter={StaticResource BoolToVisConverter}}" Foreground="{DynamicResource DangerAccent}" Width="140"/>
+                <DataGridTextColumn Header="{x:Static loc:Strings.Rep_GridColIsRemoved}" Binding="{Binding IsRemoved}" Visibility="{Binding Data.IncIsRemoved, Source={StaticResource Proxy}, Converter={StaticResource BoolToVisConverter}}" Foreground="{DynamicResource DangerAccent}" Width="100"/>
             </DataGrid.Columns>
         </DataGrid>
 
         <Border Grid.Row="3" Background="{DynamicResource PrimaryAccent}" Padding="15,6">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/> <ColumnDefinition Width="*"/> <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/> <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 
                 <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
-                    <TextBlock Foreground="{DynamicResource WindowBackground}" FontSize="12" FontWeight="SemiBold" Margin="0,0,20,0">
-                        <Run Text="{Binding StatusMessage}" Foreground="{Binding StatusColor}"/>
-                    </TextBlock>
                     <TextBlock Foreground="{DynamicResource WindowBackground}" FontSize="12" Opacity="0.9">
                         <Run Text="{x:Static loc:Strings.Rep_TotalQueriesMatched}"/>
+                        <Run Text=" "/>
                         <Run Text="{Binding TotalResultCount}" FontWeight="Bold"/>
                     </TextBlock>
                 </StackPanel>
@@ -609,22 +608,6 @@
                     </TextBlock>
                     <Button Command="{Binding NextPageCommand}" Background="Transparent" BorderThickness="0" Cursor="Hand" Padding="8,4" Margin="5,0,0,0">
                         <fa:ImageAwesome Icon="ChevronRight" Width="10" Height="10" Foreground="{DynamicResource WindowBackground}"/>
-                    </Button>
-                </StackPanel>
-
-                <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button Command="{Binding ExportCsvCommand}" Background="Transparent" BorderThickness="0" Cursor="Hand" Margin="0,0,15,0">
-                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                            <fa:ImageAwesome Icon="FileTextOutline" Width="12" Height="12" Margin="0,0,6,0" Foreground="{DynamicResource WindowBackground}"/>
-                            <TextBlock Text="{x:Static loc:Strings.Rep_BtnExportCsv}" Foreground="{DynamicResource WindowBackground}" FontSize="12" FontWeight="SemiBold"/>
-                        </StackPanel>
-                    </Button>
-                    
-                    <Button Command="{Binding ExportExcelCommand}" Background="Transparent" BorderThickness="0" Cursor="Hand">
-                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                            <fa:ImageAwesome Icon="FileExcelOutline" Width="12" Height="12" Margin="0,0,6,0" Foreground="{DynamicResource WindowBackground}"/>
-                            <TextBlock Text="{x:Static loc:Strings.Rep_BtnExportExcel}" Foreground="{DynamicResource WindowBackground}" FontSize="12" FontWeight="SemiBold"/>
-                        </StackPanel>
                     </Button>
                 </StackPanel>
             </Grid>

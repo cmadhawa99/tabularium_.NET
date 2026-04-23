@@ -1788,7 +1788,7 @@ namespace ArchivumWpf.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Actual Removal Date:.
+        ///   Looks up a localized string similar to Actual Removal Date.
         /// </summary>
         public static string Rep_LblActualRemovalDate {
             get {
@@ -1797,7 +1797,7 @@ namespace ArchivumWpf.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Added After:.
+        ///   Looks up a localized string similar to Added After.
         /// </summary>
         public static string Rep_LblAddedAfter {
             get {
@@ -1806,7 +1806,7 @@ namespace ArchivumWpf.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Added Before:.
+        ///   Looks up a localized string similar to Added Before.
         /// </summary>
         public static string Rep_LblAddedBefore {
             get {
@@ -1887,7 +1887,7 @@ namespace ArchivumWpf.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Scheduled Removal:.
+        ///   Looks up a localized string similar to Scheduled Removal.
         /// </summary>
         public static string Rep_LblScheduledRemoval {
             get {
