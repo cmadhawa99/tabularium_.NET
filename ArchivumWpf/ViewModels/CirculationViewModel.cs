@@ -6,6 +6,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using ArchivumWpf.Models;
 using ArchivumWpf.Services;
+using DocumentFormat.OpenXml.Wordprocessing;
 
 namespace ArchivumWpf.ViewModels;
 
@@ -26,6 +27,10 @@ public partial class CirculationViewModel : ObservableObject
     
     public ObservableCollection<BorrowRecord> ActiveLoans { get; } = new();
 
+    [ObservableProperty] private int _activeLoansCurrentPage = 1;
+    [ObservableProperty] private int _activeLoansTotalPages = 1;
+    [ObservableProperty] private int _activeLoansTotalCount = 0;
+    
     public ObservableCollection<BorrowRecord> BorrowHistoryRecords { get; } = new();
     [ObservableProperty] private string _historySearchQuery = string.Empty;
     [ObservableProperty] private int _historyCurrentPage = 1;
@@ -52,9 +57,36 @@ public partial class CirculationViewModel : ObservableObject
 
     private async Task LoadActiveLoansAsync()
     {
-        var loans = await _archiveService.GetActiveLoansAsync();
+        var allLoans = await _archiveService.GetActiveLoansAsync();
+        
+        ActiveLoansTotalCount = allLoans.Count();
+        ActiveLoansTotalPages = (int)Math.Ceiling((double)ActiveLoansTotalCount / PageSize);
+        if (ActiveLoansTotalPages == 0) ActiveLoansTotalPages = 1;
+
+        var paginatedLoans = allLoans.Skip((ActiveLoansCurrentPage - 1) * PageSize).Take(PageSize);
+
         ActiveLoans.Clear();
-        foreach (var loan in loans) ActiveLoans.Add(loan);
+        foreach (var loan in paginatedLoans) ActiveLoans.Add(loan);
+    }
+
+    [RelayCommand]
+    private async Task NextActiveLoansPageAsync()
+    {
+        if (ActiveLoansCurrentPage < ActiveLoansTotalPages)
+        {
+            ActiveLoansCurrentPage++;
+            await LoadActiveLoansAsync();
+        }
+    }
+
+    [RelayCommand]
+    private async Task PreviousActiveLoansPageAsync()
+    {
+        if (ActiveLoansCurrentPage > 1)
+        {
+            ActiveLoansCurrentPage--;
+            await LoadActiveLoansAsync();
+        }
     }
 
     [RelayCommand]

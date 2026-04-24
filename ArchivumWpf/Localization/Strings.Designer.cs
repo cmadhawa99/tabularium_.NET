@@ -492,6 +492,15 @@ namespace ArchivumWpf.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Total Active Loans:.
+        /// </summary>
+        public static string Circ_TotalActiveLoans {
+            get {
+                return ResourceManager.GetString("Circ_TotalActiveLoans", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Total History Records:.
         /// </summary>
         public static string Circ_TotalHistoryRecords {

@@ -948,4 +948,7 @@
     <data name="Rep_SectionDataExport" xml:space="preserve">
         <value>Data Export</value>
     </data>
+    <data name="Circ_TotalActiveLoans" xml:space="preserve">
+        <value>Total Active Loans:</value>
+    </data>
 </root>
