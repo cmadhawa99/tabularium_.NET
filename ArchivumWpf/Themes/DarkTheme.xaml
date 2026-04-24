@@ -10,8 +10,8 @@
     
     <SolidColorBrush x:Key="TextMain" Color="#EAEAEA"/>
     <SolidColorBrush x:Key="TextMuted" Color="#8C8C8C"/>
-    
     <SolidColorBrush x:Key="BorderColor" Color="#3D3D3D"/>
+    <SolidColorBrush x:Key="TabDivideColor" Color="#E4D0A4"/>
     
     <SolidColorBrush x:Key="AvailableColor" Color="#54B069"/>
     <SolidColorBrush x:Key="BorrowedColor" Color="#C5A059"/>
