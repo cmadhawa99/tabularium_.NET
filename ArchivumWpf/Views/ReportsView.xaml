@@ -45,24 +45,48 @@
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="FontSize" Value="12"/>
             <Setter Property="Height" Value="26"/>
-            <Setter Property="Padding" Value="4,0"/>
+            <Setter Property="Padding" Value="8,0"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ComboBox">
                         <Grid>
-                            <ToggleButton x:Name="ToggleButton" Grid.Column="2" Focusable="false" IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" ClickMode="Press">
-                                <ToggleButton.Template>
-                                    <ControlTemplate TargetType="ToggleButton">
-                                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2">
-                                            <fa:ImageAwesome Icon="ChevronDown" Width="8" Height="8" Foreground="{DynamicResource TextMuted}" HorizontalAlignment="Right" Margin="0,0,6,0"/>
-                                        </Border>
-                                    </ControlTemplate>
-                                </ToggleButton.Template>
-                            </ToggleButton>
-                            <ContentPresenter x:Name="ContentSite" IsHitTestVisible="False" Content="{TemplateBinding SelectionBoxItem}" Margin="{TemplateBinding Padding}" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                            <Border Background="{TemplateBinding Background}" 
+                                    BorderBrush="{TemplateBinding BorderBrush}" 
+                                    BorderThickness="{TemplateBinding BorderThickness}" 
+                                    CornerRadius="2">
+                                <Grid>
+                                    <ToggleButton x:Name="ToggleButton" 
+                                                  Focusable="false" 
+                                                  IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" 
+                                                  ClickMode="Press">
+                                        <ToggleButton.Template>
+                                            <ControlTemplate TargetType="ToggleButton">
+                                                <Border Background="Transparent">
+                                                    <fa:ImageAwesome Icon="ChevronDown" Width="8" Height="8" Foreground="{DynamicResource TextMuted}" HorizontalAlignment="Right" Margin="0,0,8,0"/>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </ToggleButton.Template>
+                                    </ToggleButton>
+                                    
+                                    <ContentPresenter x:Name="ContentSite" 
+                                                      IsHitTestVisible="False" 
+                                                      Content="{TemplateBinding SelectionBoxItem}" 
+                                                      Margin="{TemplateBinding Padding}" 
+                                                      VerticalAlignment="Center" 
+                                                      HorizontalAlignment="Left" />
+                                </Grid>
+                            </Border>
+                            
                             <Popup x:Name="Popup" Placement="Bottom" IsOpen="{TemplateBinding IsDropDownOpen}" AllowsTransparency="True" Focusable="False">
-                                <Border x:Name="DropDownBorder" Background="{DynamicResource CardBackground}" BorderThickness="1" BorderBrush="{DynamicResource BorderColor}" CornerRadius="2" Margin="0,2,0,0" MinWidth="{TemplateBinding ActualWidth}" MaxHeight="200">
+                                <Border x:Name="DropDownBorder" 
+                                        Background="{DynamicResource CardBackground}" 
+                                        BorderThickness="1" 
+                                        BorderBrush="{DynamicResource BorderColor}" 
+                                        Margin="0,2,0,0" 
+                                        CornerRadius="2"
+                                        MinWidth="{TemplateBinding ActualWidth}" 
+                                        MaxHeight="200">
                                     <ScrollViewer Margin="0,2" SnapsToDevicePixels="True">
                                         <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
                                     </ScrollViewer>
@@ -386,7 +410,17 @@
                                         <RowDefinition Height="*"/> <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
                                     <StackPanel Grid.Row="0" VerticalAlignment="Center">
-                                        <CheckBox Content="{x:Static loc:Strings.Rep_ChkIsRemoved}" IsThreeState="True" IsChecked="{Binding IsRemovedFilter}" Foreground="{DynamicResource DangerAccent}" FontSize="12" Margin="5,0,0,6"/>
+                                        <StackPanel Orientation="Horizontal" Margin="5,0,0,6">
+                                            <TextBlock Text="{x:Static loc:Strings.Rep_ChkIsRemoved}" 
+                                                       Style="{StaticResource RibbonLabel}" 
+                                                       Width="155" 
+                                                       Foreground="{DynamicResource DangerAccent}"/>
+               
+                                            <CheckBox IsThreeState="True" 
+                                                      Width="155" 
+                                                      IsChecked="{Binding IsRemovedFilter}" 
+                                                      VerticalAlignment="Center"/>
+                                        </StackPanel>
                                         <StackPanel Orientation="Horizontal" Margin="0,2">
                                             <TextBlock Text="{x:Static loc:Strings.Rep_LblScheduledRemoval}" Style="{StaticResource RibbonLabel}" Width="160"/>
                                             <DatePicker SelectedDate="{Binding ToBeRemovedDate}" Style="{StaticResource RibbonDatePicker}" Width="110"/>
