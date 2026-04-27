@@ -914,4 +914,7 @@
     <data name="Dash_Timestap" xml:space="preserve">
         <value>දිනය සහ වේලාව</value>
     </data>
+    <data name="Dash_RRNumber" xml:space="preserve">
+        <value>RR අංකය</value>
+    </data>
 </root>

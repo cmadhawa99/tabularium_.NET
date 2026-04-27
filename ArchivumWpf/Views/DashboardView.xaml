@@ -133,7 +133,7 @@
                                 </DataGridTextColumn.ElementStyle>
                             </DataGridTextColumn>
                             
-                            <DataGridTextColumn Header="{x:Static loc:Strings.Dash_SubjectMatter}" Binding="{Binding FileName}" Width="*">
+                            <DataGridTextColumn Header="{x:Static loc:Strings.Dash_RRNumber}" Binding="{Binding FileName}" Width="*">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="VerticalAlignment" Value="Center"/>

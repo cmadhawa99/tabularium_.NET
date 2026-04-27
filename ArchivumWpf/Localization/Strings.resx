@@ -963,9 +963,6 @@
     <data name="Dash_RefID" xml:space="preserve">
         <value>Reference ID</value>
     </data>
-    <data name="Dash_SubjectMatter" xml:space="preserve">
-        <value>Subject Matter </value>
-    </data>
     <data name="Dash_ActionType" xml:space="preserve">
         <value>Action Type</value>
     </data>
@@ -974,5 +971,11 @@
     </data>
     <data name="Dash_PurgedRecords" xml:space="preserve">
         <value>Purged Records</value>
+    </data>
+    <data name="Dash_SubjectMatter" xml:space="preserve">
+        <value />
+    </data>
+    <data name="Dash_RRNumber" xml:space="preserve">
+        <value>RR Number</value>
     </data>
 </root>

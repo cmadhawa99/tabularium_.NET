@@ -555,7 +555,16 @@ namespace ArchivumWpf.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Subject Matter .
+        ///   Looks up a localized string similar to RR Number.
+        /// </summary>
+        public static string Dash_RRNumber {
+            get {
+                return ResourceManager.GetString("Dash_RRNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
         /// </summary>
         public static string Dash_SubjectMatter {
             get {
