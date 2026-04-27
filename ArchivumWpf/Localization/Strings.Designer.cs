@@ -510,6 +510,78 @@ namespace ArchivumWpf.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Action Type.
+        /// </summary>
+        public static string Dash_ActionType {
+            get {
+                return ResourceManager.GetString("Dash_ActionType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lent Records.
+        /// </summary>
+        public static string Dash_LentRecords {
+            get {
+                return ResourceManager.GetString("Dash_LentRecords", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Purged Records.
+        /// </summary>
+        public static string Dash_PurgedRecords {
+            get {
+                return ResourceManager.GetString("Dash_PurgedRecords", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recent Activities.
+        /// </summary>
+        public static string Dash_RecentActivities {
+            get {
+                return ResourceManager.GetString("Dash_RecentActivities", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reference ID.
+        /// </summary>
+        public static string Dash_RefID {
+            get {
+                return ResourceManager.GetString("Dash_RefID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Subject Matter .
+        /// </summary>
+        public static string Dash_SubjectMatter {
+            get {
+                return ResourceManager.GetString("Dash_SubjectMatter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Timestap .
+        /// </summary>
+        public static string Dash_Timestap {
+            get {
+                return ResourceManager.GetString("Dash_Timestap", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total Records.
+        /// </summary>
+        public static string Dash_TotalRecords {
+            get {
+                return ResourceManager.GetString("Dash_TotalRecords", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to AUTHORIZE DISPOSAL.
         /// </summary>
         public static string Dis_AuthorizeDisposalTitle {

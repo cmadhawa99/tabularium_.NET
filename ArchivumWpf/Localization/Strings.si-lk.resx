@@ -228,7 +228,7 @@
         <value>රාක්කය:</value>
     </data>
     <data name="Circ_LblDeck" xml:space="preserve">
-        <value>තට්ටුව:</value>
+        <value>s</value>
     </data>
     <data name="Circ_BtnCloseRecord" xml:space="preserve">
         <value>වාර්තාව වසන්න</value>
@@ -889,5 +889,29 @@
     </data>
     <data name="Rep_SectionDataExport" xml:space="preserve">
         <value>දත්ත නිර්යාත කිරීම</value>
+    </data>
+    <data name="Dash_TotalRecords" xml:space="preserve">
+        <value>සමස්ත ලිපි ගොනු</value>
+    </data>
+    <data name="Dash_LentRecords" xml:space="preserve">
+        <value>නිකුත් කර ඇති ලිපි ගොනු</value>
+    </data>
+    <data name="Dash_PurgedRecords" xml:space="preserve">
+        <value>ඉවත් කරන ලද ලිපි ගොනු</value>
+    </data>
+    <data name="Dash_RecentActivities" xml:space="preserve">
+        <value>මෑතකාලීන ක්‍රියාකාරකම්</value>
+    </data>
+    <data name="Dash_RefID" xml:space="preserve">
+        <value>යොමු අංකය</value>
+    </data>
+    <data name="Dash_SubjectMatter" xml:space="preserve">
+        <value>විෂය කරුණු</value>
+    </data>
+    <data name="Dash_ActionType" xml:space="preserve">
+        <value>ක්‍රියා වර්ගය</value>
+    </data>
+    <data name="Dash_Timestap" xml:space="preserve">
+        <value>දිනය සහ වේලාව</value>
     </data>
 </root>

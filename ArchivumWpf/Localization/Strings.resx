@@ -951,4 +951,28 @@
     <data name="Circ_TotalActiveLoans" xml:space="preserve">
         <value>Total Active Loans:</value>
     </data>
+    <data name="Dash_TotalRecords" xml:space="preserve">
+        <value>Total Records</value>
+    </data>
+    <data name="Dash_LentRecords" xml:space="preserve">
+        <value>Lent Records</value>
+    </data>
+    <data name="Dash_RecentActivities" xml:space="preserve">
+        <value>Recent Activities</value>
+    </data>
+    <data name="Dash_RefID" xml:space="preserve">
+        <value>Reference ID</value>
+    </data>
+    <data name="Dash_SubjectMatter" xml:space="preserve">
+        <value>Subject Matter </value>
+    </data>
+    <data name="Dash_ActionType" xml:space="preserve">
+        <value>Action Type</value>
+    </data>
+    <data name="Dash_Timestap" xml:space="preserve">
+        <value>Timestap </value>
+    </data>
+    <data name="Dash_PurgedRecords" xml:space="preserve">
+        <value>Purged Records</value>
+    </data>
 </root>

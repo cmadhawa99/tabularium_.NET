@@ -2,7 +2,26 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
+             xmlns:loc="clr-namespace:ArchivumWpf.Localization"
              Background="Transparent">
+
+    <UserControl.Resources>
+        <Style TargetType="DataGridCell">
+            <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="12,8"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="DataGridCell">
+                        <Border Padding="{TemplateBinding Padding}" Background="Transparent">
+                            <ContentPresenter VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        </Style>
+    </UserControl.Resources>
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <Grid Margin="0,0,0,20">
@@ -11,163 +30,139 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <UniformGrid Grid.Row="0" Columns="3" Margin="0,0,0,30">
+            <UniformGrid Grid.Row="0" Columns="3" Margin="0,0,0,20">
                 
-                <Border Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource PrimaryAccent}" BorderThickness="4,1,1,1" CornerRadius="8" Margin="0,0,20,0" Padding="25">
-                    <Border.Effect>
-                        <DropShadowEffect BlurRadius="20" ShadowDepth="4" Opacity="0.1" Color="Black"/>
-                    </Border.Effect>
-                    <Grid>
-                        <fa:ImageAwesome Icon="Bank" Width="80" Height="80" Foreground="{DynamicResource PrimaryAccent}" Opacity="0.1" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-10,-10,0"/>
-                        <StackPanel>
-                            <TextBlock Text="TOTAL HOLDINGS" Foreground="{DynamicResource TextMuted}" FontSize="11" FontWeight="Bold" Margin="0,0,0,15"/>
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom">
-                                <TextBlock Text="{Binding TotalHoldings}" Foreground="{DynamicResource PrimaryAccent}" FontSize="48" FontWeight="Light" FontFamily="Georgia"/>
-                                <TextBlock Text="+12 this week (THIS IS A HARDCODED VALUE)" Foreground="{DynamicResource TextMuted}" FontSize="12" Margin="15,0,0,10" VerticalAlignment="Bottom"/>
-                            </StackPanel>
-                        </StackPanel>
-                    </Grid>
-                </Border>
-
-                <Border Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="4,1,1,1" CornerRadius="8" Margin="10,0,10,0" Padding="25">
-                    <Border.Effect>
-                        <DropShadowEffect BlurRadius="20" ShadowDepth="4" Opacity="0.1" Color="Black"/>
-                    </Border.Effect>
-                    <Grid>
-                        <fa:ImageAwesome Icon="Book" Width="80" Height="80" Foreground="{DynamicResource TextMuted}" Opacity="0.1" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-10,-10,0"/>
-                        <StackPanel>
-                            <TextBlock Text="ACTIVE LOANS" Foreground="{DynamicResource TextMuted}" FontSize="11" FontWeight="Bold" Margin="0,0,0,15"/>
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom">
-                                <TextBlock Text="{Binding ActiveLoans}" Foreground="{DynamicResource TextMain}" FontSize="48" FontWeight="Light" FontFamily="Georgia"/>
-                                <TextBlock Text="pending return" Foreground="{DynamicResource TextMuted}" FontSize="12" Margin="15,0,0,10" VerticalAlignment="Bottom"/>
-                            </StackPanel>
-                        </StackPanel>
-                    </Grid>
-                </Border>
-
-                <Border Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource DangerAccent}" BorderThickness="4,1,1,1" CornerRadius="8" Margin="20,0,0,0" Padding="25">
-                    <Border.Effect>
-                        <DropShadowEffect BlurRadius="20" ShadowDepth="4" Opacity="0.1" Color="Black"/>
-                    </Border.Effect>
-                    <Grid>
-                        <fa:ImageAwesome Icon="Trash" Width="80" Height="80" Foreground="{DynamicResource DangerAccent}" Opacity="0.05" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-10,-10,0"/>
-                        <StackPanel>
-                            <TextBlock Text="ARCHIVED / PURGED" Foreground="{DynamicResource TextMuted}" FontSize="11" FontWeight="Bold" Margin="0,0,0,15"/>
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom">
-                                <TextBlock Text="{Binding ArchivedPurged}" Foreground="{DynamicResource TextMain}" Opacity="0.5" FontSize="48" FontWeight="Light" FontFamily="Georgia"/>
-                                <TextBlock Text="All records intact" Foreground="{DynamicResource TextMuted}" FontSize="12" Margin="15,0,0,10" VerticalAlignment="Bottom"/>
-                            </StackPanel>
-                        </StackPanel>
-                    </Grid>
-                </Border>
-            </UniformGrid>
-
-            <Grid Grid.Row="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2*"/>
-                    <ColumnDefinition Width="1*"/>
-                </Grid.ColumnDefinitions>
-
-                <Border Grid.Column="0" Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="8" Margin="0,0,15,0">
+                <Border Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="4" Margin="0,0,15,0" Padding="20">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-                        
-                        <Border Grid.Row="0" BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,0,0,1" Padding="25,20">
-                            <Grid>
-                                <StackPanel Orientation="Horizontal">
-                                    <fa:ImageAwesome Icon="History" Width="18" Height="18" Foreground="{DynamicResource PrimaryAccent}" Margin="0,0,15,0"/>
-                                    <TextBlock Text="VAULT ACTIVITY CHRONICLE" Foreground="{DynamicResource PrimaryAccent}" FontSize="16" FontWeight="Bold" FontFamily="Georgia"/>
-                                </StackPanel>
-                                <Button Content="VIEW FULL LOG →" HorizontalAlignment="Right" Background="Transparent" Foreground="{DynamicResource TextMuted}" BorderThickness="0" FontSize="11" FontWeight="Bold" Cursor="Hand"/>
-                            </Grid>
-                        </Border>
-
-                        <DataGrid Grid.Row="1" ItemsSource="{Binding RecentActivities}" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True"
-                                  Background="Transparent" Foreground="{DynamicResource TextMain}" RowBackground="Transparent" AlternatingRowBackground="Transparent" 
-                                  HeadersVisibility="Column" GridLinesVisibility="None" BorderThickness="0" Margin="10">
-                            <DataGrid.Resources>
-                                <Style TargetType="DataGridColumnHeader">
-                                    <Setter Property="Background" Value="Transparent"/>
-                                    <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
-                                    <Setter Property="FontWeight" Value="Bold"/>
-                                    <Setter Property="FontSize" Value="11"/>
-                                    <Setter Property="Padding" Value="15,10"/>
-                                    <Setter Property="BorderThickness" Value="0,0,0,1"/>
-                                    <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
-                                </Style>
-                                <Style TargetType="DataGridRow">
-                                    <Setter Property="Padding" Value="0,8"/>
-                                    <Setter Property="BorderThickness" Value="0,0,0,1"/>
-                                    <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
-                                </Style>
-                            </DataGrid.Resources>
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="REFERENCE ID" Binding="{Binding RrNumber}" Foreground="{DynamicResource PrimaryAccent}" FontFamily="Consolas"/>
-                                <DataGridTextColumn Header="SUBJECT MATTER" Binding="{Binding FileName}" Width="*"/>
-                                <DataGridTextColumn Header="ACTION TYPE" Binding="{Binding ActionType}"/>
-                                <DataGridTextColumn Header="TIMESTAMP" Binding="{Binding Timestamp, StringFormat='MMM dd, HH:mm'}" Foreground="{DynamicResource TextMuted}"/>
-                            </DataGrid.Columns>
-                        </DataGrid>
+                        <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,15">
+                            <Border Background="#1A0078D4" CornerRadius="4" Padding="6" Margin="0,0,10,0">
+                                <fa:ImageAwesome Icon="Database" Width="14" Height="14" Foreground="#0078D4"/>
+                            </Border>
+                            <TextBlock Text="{x:Static loc:Strings.Dash_TotalRecords}" Foreground="{DynamicResource TextMuted}" FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <TextBlock Grid.Row="1" Text="{Binding TotalHoldings}" Foreground="{DynamicResource TextMain}" FontSize="36" FontWeight="Light" VerticalAlignment="Bottom"/>
                     </Grid>
                 </Border>
 
-                <StackPanel Grid.Column="1" Margin="15,0,0,0">
-                    
-                    <Border Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="8" Padding="30" Margin="0,0,0,30">
-                        <StackPanel HorizontalAlignment="Center">
-                            <Border Width="90" Height="90" CornerRadius="45" BorderBrush="{DynamicResource PrimaryAccent}" BorderThickness="2" Margin="0,0,0,20">
-                                <fa:ImageAwesome Icon="Gavel" Width="40" Height="40" Foreground="{DynamicResource PrimaryAccent}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <Border Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="4" Margin="7.5,0,7.5,0" Padding="20">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,15">
+                            <Border Background="#1A107C41" CornerRadius="4" Padding="6" Margin="0,0,10,0">
+                                <fa:ImageAwesome Icon="Exchange" Width="14" Height="14" Foreground="#107C41"/>
                             </Border>
-                            <TextBlock Text="Authority Confirmed" Foreground="{DynamicResource PrimaryAccent}" FontSize="20" FontWeight="Bold" FontFamily="Georgia" HorizontalAlignment="Center" Margin="0,0,0,10"/>
-                            <TextBlock Text="Access to the Weligepola Imperial Vault is restricted to authorized Curators only." Foreground="{DynamicResource TextMuted}" FontSize="12" TextWrapping="Wrap" TextAlignment="Center" MaxWidth="250" Margin="0,0,0,20"/>
-                            
-                            <Grid Margin="0,10,0,0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/> <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <StackPanel Grid.Column="0" HorizontalAlignment="Center">
-                                    <TextBlock Text="STATUS" Foreground="{DynamicResource TextMuted}" FontSize="10" FontWeight="Bold" HorizontalAlignment="Center"/>
-                                    <TextBlock Text="Secured" Foreground="{DynamicResource TextMain}" FontSize="14" FontWeight="Bold" HorizontalAlignment="Center"/>
-                                </StackPanel>
-                                <StackPanel Grid.Column="1" HorizontalAlignment="Center">
-                                    <TextBlock Text="LOAD" Foreground="{DynamicResource TextMuted}" FontSize="10" FontWeight="Bold" HorizontalAlignment="Center"/>
-                                    <TextBlock Text="Nominal" Foreground="{DynamicResource TextMain}" FontSize="14" FontWeight="Bold" HorizontalAlignment="Center"/>
-                                </StackPanel>
-                            </Grid>
+                            <TextBlock Text="{x:Static loc:Strings.Dash_LentRecords}" Foreground="{DynamicResource TextMuted}" FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <TextBlock Grid.Row="1" Text="{Binding ActiveLoans}" Foreground="{DynamicResource TextMain}" FontSize="36" FontWeight="Light" VerticalAlignment="Bottom"/>
+                    </Grid>
+                </Border>
+
+                <Border Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="4" Margin="15,0,0,0" Padding="20">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,15">
+                            <Border Background="#1AD83B01" CornerRadius="4" Padding="6" Margin="0,0,10,0">
+                                <fa:ImageAwesome Icon="Archive" Width="14" Height="14" Foreground="#D83B01"/>
+                            </Border>
+                            <TextBlock Text="{x:Static loc:Strings.Dash_PurgedRecords}" Foreground="{DynamicResource TextMuted}" FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <TextBlock Grid.Row="1" Text="{Binding ArchivedPurged}" Foreground="{DynamicResource TextMain}" FontSize="36" FontWeight="Light" VerticalAlignment="Bottom"/>
+                    </Grid>
+                </Border>
+            </UniformGrid>
+
+            <Border Grid.Row="1" Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="4">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    
+                    <Border Grid.Row="0" BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,0,0,1" Padding="20,15" Background="{DynamicResource WindowBackground}">
+                        <StackPanel Orientation="Horizontal">
+                            <fa:ImageAwesome Icon="ListUl" Width="14" Height="14" Foreground="{DynamicResource TextMuted}" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                            <TextBlock Text="{x:Static loc:Strings.Dash_RecentActivities}" Foreground="{DynamicResource TextMain}" FontSize="14" FontWeight="SemiBold" VerticalAlignment="Center"/>
                         </StackPanel>
                     </Border>
 
-                    <Border Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="8" Padding="25">
-                        <StackPanel>
-                            <TextBlock Text="IMPERIAL MANDATES" Foreground="{DynamicResource TextMuted}" FontSize="11" FontWeight="Bold" Margin="0,0,0,20"/>
+                    <DataGrid Grid.Row="1" ItemsSource="{Binding RecentActivities}" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True"
+                              Background="Transparent" Foreground="{DynamicResource TextMain}" RowBackground="Transparent" AlternatingRowBackground="{DynamicResource WindowBackground}" 
+                              HeadersVisibility="Column" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="{DynamicResource BorderColor}" BorderThickness="0" Margin="0,0,0,10">
+                        
+                        <DataGrid.Resources>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
+                                <Setter Property="FontWeight" Value="SemiBold"/>
+                                <Setter Property="FontSize" Value="12"/>
+                                <Setter Property="Padding" Value="20,12"/>
+                                <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                                <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
+                            </Style>
+                            <Style TargetType="DataGridRow">
+                                <Setter Property="Padding" Value="0,4"/>
+                                <Setter Property="BorderThickness" Value="0"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#0A0078D4"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.Resources>
+                        
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="{x:Static loc:Strings.Dash_RefID}" Binding="{Binding RrNumber}" Width="150">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="FontFamily" Value="Consolas"/>
+                                        <Setter Property="Foreground" Value="#0078D4"/>
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                        <Setter Property="Margin" Value="8,0,0,0"/>
+                                        <Setter Property="FontWeight" Value="SemiBold"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
                             
-                            <Button Background="Transparent" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" Padding="15" Margin="0,0,0,10" Cursor="Hand" HorizontalContentAlignment="Stretch">
-                                <Grid>
-                                    <StackPanel Orientation="Horizontal">
-                                        <fa:ImageAwesome Icon="Book" Width="14" Height="14" Foreground="{DynamicResource PrimaryAccent}" Margin="0,0,15,0"/>
-                                        <TextBlock Text="REQUEST RECORDS" Foreground="{DynamicResource PrimaryAccent}" FontSize="12" FontWeight="Bold"/>
-                                    </StackPanel>
-                                    <fa:ImageAwesome Icon="ChevronRight" Width="10" Height="10" Foreground="{DynamicResource TextMuted}" HorizontalAlignment="Right"/>
-                                </Grid>
-                            </Button>
+                            <DataGridTextColumn Header="{x:Static loc:Strings.Dash_SubjectMatter}" Binding="{Binding FileName}" Width="*">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
 
-                            <Button Background="Transparent" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" Padding="15" Cursor="Hand" HorizontalContentAlignment="Stretch">
-                                <Grid>
-                                    <StackPanel Orientation="Horizontal">
-                                        <fa:ImageAwesome Icon="FileText" Width="14" Height="14" Foreground="{DynamicResource TextMain}" Margin="0,0,15,0"/>
-                                        <TextBlock Text="CERTIFY LEDGER" Foreground="{DynamicResource TextMain}" FontSize="12" FontWeight="Bold"/>
-                                    </StackPanel>
-                                    <fa:ImageAwesome Icon="ChevronRight" Width="10" Height="10" Foreground="{DynamicResource TextMuted}" HorizontalAlignment="Right"/>
-                                </Grid>
-                            </Button>
-                        </StackPanel>
-                    </Border>
+                            <DataGridTextColumn Header="{x:Static loc:Strings.Dash_ActionType}" Binding="{Binding ActionType}" Width="200">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                        <Setter Property="FontWeight" Value="SemiBold"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
 
-                </StackPanel>
-            </Grid>
+                            <DataGridTextColumn Header="{x:Static loc:Strings.Dash_Timestap}" Binding="{Binding Timestamp, StringFormat='MMM dd, HH:mm'}" Width="180">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </Border>
+
         </Grid>
     </ScrollViewer>
 </UserControl>

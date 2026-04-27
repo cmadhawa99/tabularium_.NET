@@ -11,7 +11,6 @@
     <SolidColorBrush x:Key="TextMain" Color="#201F1E"/>
     <SolidColorBrush x:Key="TextMuted" Color="#605E5C"/>
     <SolidColorBrush x:Key="BorderColor" Color="#E1DFDD"/>
-    <SolidColorBrush x:Key="TabDivideColor" Color="#4EBA7C"/>
     
     <SolidColorBrush x:Key="AvailableColor" Color="#107C41"/>
     <SolidColorBrush x:Key="BorrowedColor" Color="#C99700"/>
