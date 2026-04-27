@@ -78,18 +78,48 @@
 
         <TabControl Grid.Row="1" Grid.RowSpan="2" Background="Transparent" BorderThickness="0" Margin="0,15,0,0">
             <TabControl.Resources>
+                
+                <Style TargetType="TabControl">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="TabControl">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    
+                                    <TabPanel x:Name="HeaderPanel" Grid.Row="0" IsItemsHost="true" Margin="15,0,15,0" Panel.ZIndex="1"/>
+                                    
+                                    <Border Grid.Row="1" Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,1,0,0">
+                                        <ContentPresenter x:Name="PART_SelectedContentHost" ContentSource="SelectedContent"/>
+                                    </Border>
+                                </Grid>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+
                 <Style TargetType="TabItem">
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="TabItem">
-                                <Border x:Name="Border" Padding="15,8" Margin="15,0,5,0" BorderThickness="0,0,0,2" BorderBrush="Transparent" Background="Transparent" Cursor="Hand">
+                                <Border x:Name="Border" 
+                                        Padding="15,8" 
+                                        Margin="2,0,2,-1" 
+                                        BorderThickness="1,1,1,0" 
+                                        BorderBrush="Transparent" 
+                                        Background="Transparent" 
+                                        CornerRadius="4,4,0,0" 
+                                        Cursor="Hand">
                                     <ContentPresenter x:Name="ContentSite" VerticalAlignment="Center" HorizontalAlignment="Center" ContentSource="Header"/>
                                 </Border>
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="IsSelected" Value="True">
-                                        <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource PrimaryAccent}"/>
+                                        <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
+                                        <Setter TargetName="Border" Property="Background" Value="{DynamicResource CardBackground}"/>
                                         <Setter Property="Foreground" Value="{DynamicResource PrimaryAccent}"/>
-                                        <Setter Property="FontWeight" Value="Normal"/>
+                                        <Setter Property="FontWeight" Value="SemiBold"/>
                                     </Trigger>
                                     <Trigger Property="IsSelected" Value="False">
                                         <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
@@ -105,10 +135,10 @@
             </TabControl.Resources>
 
             <TabItem Header="{x:Static loc:Strings.Circ_TabDesk}">
-                <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="15,20,15,15">
-                    <StackPanel HorizontalAlignment="Stretch">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Background="{DynamicResource CardBackground}">
+                    <StackPanel HorizontalAlignment="Stretch" Margin="15,20,15,40">
                         
-                        <Border Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="2" Padding="15,10" Margin="0,0,0,20">
+                        <Border Background="{DynamicResource WindowBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="2" Padding="15,10" Margin="0,0,0,20">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/> <ColumnDefinition Width="*"/> <ColumnDefinition Width="Auto"/> 
@@ -262,10 +292,10 @@
             </TabItem>
 
             <TabItem Header="{x:Static loc:Strings.Circ_TabActiveLoans}">
-                <Grid Margin="15,10,15,15">
+                <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="28"/>
                     </Grid.RowDefinitions>
 
                     <DataGrid Grid.Row="0" ItemsSource="{Binding ActiveLoans}" 
@@ -273,7 +303,7 @@
                               Background="{DynamicResource CardBackground}" Foreground="{DynamicResource TextMain}" 
                               RowBackground="{DynamicResource CardBackground}" AlternatingRowBackground="{DynamicResource WindowBackground}" 
                               HeadersVisibility="Column" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="{DynamicResource BorderColor}" 
-                              BorderThickness="0" MinHeight="400" Margin="0,0,0,15">
+                              BorderThickness="0">
                         
                         <DataGrid.Resources>
                             <Style TargetType="DataGridColumnHeader">
@@ -282,7 +312,7 @@
                                 <Setter Property="FontWeight" Value="SemiBold"/>
                                 <Setter Property="FontSize" Value="12"/>
                                 <Setter Property="Padding" Value="10,8"/>
-                                <Setter Property="BorderThickness" Value="0,1,0,1"/>
+                                <Setter Property="BorderThickness" Value="0,0,0,1"/>
                                 <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
                             </Style>
                             <Style TargetType="DataGridRow">
@@ -302,7 +332,7 @@
 
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="{x:Static loc:Strings.Circ_ColRrNumber}" Binding="{Binding SnapshotRrNumber}" Width="140">
-                                 <DataGridTextColumn.ElementStyle>
+                                    <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
                                         <Setter Property="VerticalAlignment" Value="Center"/>
@@ -354,7 +384,7 @@
                         </DataGrid.Columns>
                     </DataGrid>
 
-                    <Border Grid.Row="1" Background="{DynamicResource PrimaryAccent}" Padding="15,5" Margin="0,0,0,0">
+                    <Border Grid.Row="1" Background="{DynamicResource PrimaryAccent}" Padding="15,0">
                         <Grid>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
                                 <TextBlock Foreground="{DynamicResource CardBackground}" FontSize="11">
@@ -380,22 +410,22 @@
             </TabItem>
 
             <TabItem Header="{x:Static loc:Strings.Circ_TabLedger}">
-                <Grid Margin="15,10,15,15">
+                <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="28"/>
                     </Grid.RowDefinitions>
                     
-                    <Border Grid.Row="0" Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="2" Padding="8,6" Width="350" HorizontalAlignment="Left" Margin="0,0,0,15">
+                    <Border Grid.Row="0" Background="{DynamicResource WindowBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="2" Padding="8,6" Width="350" HorizontalAlignment="Left" Margin="15,15,15,15">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/> <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <fa:ImageAwesome Grid.Column="0" Icon="Search" Width="12" Height="12" Foreground="{DynamicResource TextMuted}" Margin="5,0,10,0"/>
                             <TextBox Grid.Column="1" Text="{Binding HistorySearchQuery, UpdateSourceTrigger=PropertyChanged}" 
-                                     Background="Transparent" Foreground="{DynamicResource TextMain}" BorderThickness="0" 
-                                     FontSize="13" VerticalContentAlignment="Center">
+                                        Background="Transparent" Foreground="{DynamicResource TextMain}" BorderThickness="0" 
+                                        FontSize="13" VerticalContentAlignment="Center">
                                 <TextBox.Style>
                                     <Style TargetType="TextBox">
                                         <Style.Triggers>
@@ -418,12 +448,12 @@
                     </Border>
 
                     <DataGrid Grid.Row="1" ItemsSource="{Binding BorrowHistoryRecords}" 
-                              SelectedItem="{Binding SelectedHistoryRecord, Mode=TwoWay}"
-                              AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True"
-                              Background="{DynamicResource CardBackground}" Foreground="{DynamicResource TextMain}" 
-                              RowBackground="{DynamicResource CardBackground}" AlternatingRowBackground="{DynamicResource WindowBackground}" 
-                              HeadersVisibility="Column" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="{DynamicResource BorderColor}" 
-                              BorderThickness="0" MinHeight="400">
+                                SelectedItem="{Binding SelectedHistoryRecord, Mode=TwoWay}"
+                                AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True"
+                                Background="{DynamicResource CardBackground}" Foreground="{DynamicResource TextMain}" 
+                                RowBackground="{DynamicResource CardBackground}" AlternatingRowBackground="{DynamicResource WindowBackground}" 
+                                HeadersVisibility="Column" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="{DynamicResource BorderColor}" 
+                                BorderThickness="0">
                         
                         <DataGrid.InputBindings>
                             <MouseBinding Gesture="LeftDoubleClick" Command="{Binding ShowHistoryDetailsCommand}" />
@@ -456,7 +486,7 @@
 
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="{x:Static loc:Strings.Circ_ColRrNumber}" Binding="{Binding SnapshotRrNumber}" Width="140">
-                                 <DataGridTextColumn.ElementStyle>
+                                    <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
                                         <Setter Property="FontWeight" Value="SemiBold"/>
@@ -539,7 +569,7 @@
                         </DataGrid.Columns>
                     </DataGrid>
                     
-                    <Border Grid.Row="2" Background="{DynamicResource PrimaryAccent}" Padding="15,5" Margin="0,0,0,0">
+                    <Border Grid.Row="2" Background="{DynamicResource PrimaryAccent}" Padding="15,0">
                         <Grid>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
                                 <TextBlock Foreground="{DynamicResource CardBackground}" FontSize="11">

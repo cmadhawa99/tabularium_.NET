@@ -113,39 +113,67 @@
         </Style>
         
         <Style x:Key="RibbonTabControl" TargetType="TabControl">
-            <Setter Property="Background" Value="{DynamicResource CardBackground}"/>
-            <Setter Property="BorderThickness" Value="0,0,0,1"/>
-            <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
-            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabControl">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            
+                            <TabPanel x:Name="HeaderPanel" Grid.Row="0" IsItemsHost="true" Margin="15,0,15,0" Panel.ZIndex="1"/>
+                            
+                            <Border Grid.Row="1" Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,1,0,0">
+                                <ContentPresenter x:Name="PART_SelectedContentHost" ContentSource="SelectedContent"/>
+                            </Border>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
 
         <Style TargetType="TabItem">
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="TabItem">
-                        <Border x:Name="Border" Padding="15,8" Margin="15,0,5,0" BorderThickness="0,0,0,2" BorderBrush="Transparent" Background="Transparent" Cursor="Hand">
+                        <Border x:Name="Border" 
+                                Padding="15,8" 
+                                Margin="2,0,2,-1" 
+                                BorderThickness="1,1,1,0" 
+                                BorderBrush="Transparent" 
+                                Background="Transparent" 
+                                CornerRadius="4,4,0,0" 
+                                Cursor="Hand">
                             <ContentPresenter x:Name="ContentSite" VerticalAlignment="Center" HorizontalAlignment="Center" ContentSource="Header"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsSelected" Value="True">
-                                <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource PrimaryAccent}"/>
+                                <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
+                                <Setter TargetName="Border" Property="Background" Value="{DynamicResource CardBackground}"/>
                                 <Setter Property="Foreground" Value="{DynamicResource PrimaryAccent}"/>
+                                <Setter Property="FontWeight" Value="SemiBold"/>
                             </Trigger>
                             <Trigger Property="IsSelected" Value="False">
                                 <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
+        
     </UserControl.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/> </Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/> 
+        </Grid.RowDefinitions>
 
         <Border Grid.Row="0" Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,0,0,1" Padding="15,10">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
@@ -165,105 +193,103 @@
                     </StackPanel>
                 </TabItem.Header>
                 
-                <Border Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource TabDivideColor}" BorderThickness="0,2,0,0">
-                    <ScrollViewer VerticalScrollBarVisibility="Auto">
-                        <StackPanel HorizontalAlignment="Stretch" MaxWidth="900" Margin="25,25,25,40">
-                            
-                            <Border BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,0,0,1" Padding="0,0,0,25" Margin="0,0,0,25">
-                                <StackPanel>
-                                    <StackPanel Orientation="Horizontal" Margin="0,30,0,20">
-                                        <fa:ImageAwesome Icon="BuildingOutline" Width="16" Height="16" Foreground="{DynamicResource PrimaryAccent}" Margin="0,0,10,0" VerticalAlignment="Center"/>
-                                        <TextBlock Text="{x:Static loc:Strings.Settings_OrgDetails}" Foreground="{DynamicResource PrimaryAccent}" FontSize="14" FontWeight="SemiBold"/>
-                                    </StackPanel>
-                                   
-                                    <Grid Margin="0,0,0,15">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/> <ColumnDefinition Width="20"/> <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        
-                                        <StackPanel Grid.Column="0">
-                                            <TextBlock Text="{x:Static loc:Strings.Settings_AppTitle}" Style="{StaticResource FormLabel}"/>
-                                            <TextBox Text="{Binding AppTitle}" Style="{StaticResource CleanTextBox}"/>
-                                        </StackPanel>
-                                        
-                                        <StackPanel Grid.Column="2">
-                                            <TextBlock Text="{x:Static loc:Strings.Settings_OrgName}" Style="{StaticResource FormLabel}"/>
-                                            <TextBox Text="{Binding OrganizationName}" Style="{StaticResource CleanTextBox}"/>
-                                        </StackPanel>
-                                    </Grid>
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel HorizontalAlignment="Stretch" MaxWidth="900" Margin="25,25,25,40">
+                        
+                        <Border BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,0,0,1" Padding="0,0,0,25" Margin="0,0,0,25">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,30,0,20">
+                                    <fa:ImageAwesome Icon="BuildingOutline" Width="16" Height="16" Foreground="{DynamicResource PrimaryAccent}" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{x:Static loc:Strings.Settings_OrgDetails}" Foreground="{DynamicResource PrimaryAccent}" FontSize="14" FontWeight="SemiBold"/>
                                 </StackPanel>
-                            </Border>
-
-                            <Border BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,0,0,1" Padding="0,0,0,25" Margin="0,0,0,25">
-                                <StackPanel>
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
-                                        <fa:ImageAwesome Icon="UserOutline" Width="16" Height="16" Foreground="{DynamicResource PrimaryAccent}" Margin="0,0,10,0" VerticalAlignment="Center"/>
-                                        <TextBlock Text="{x:Static loc:Strings.Settings_LocUser}" Foreground="{DynamicResource PrimaryAccent}" FontSize="14" FontWeight="SemiBold"/>
+                                
+                                <Grid Margin="0,0,0,15">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/> <ColumnDefinition Width="20"/> <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="{x:Static loc:Strings.Settings_AppTitle}" Style="{StaticResource FormLabel}"/>
+                                        <TextBox Text="{Binding AppTitle}" Style="{StaticResource CleanTextBox}"/>
                                     </StackPanel>
                                     
-                                    <Grid Margin="0,0,0,15">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/> <ColumnDefinition Width="20"/> <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        
-                                        <StackPanel Grid.Column="0">
-                                            <TextBlock Text="{x:Static loc:Strings.Settings_CurrentUser}" Style="{StaticResource FormLabel}"/>
-                                            <TextBox Text="{Binding CurrentUser}" Style="{StaticResource CleanTextBox}"/>
-                                        </StackPanel>
-                                        
-                                        <StackPanel Grid.Column="2">
-                                            <TextBlock Text="{x:Static loc:Strings.Settings_SysLanguage}" Style="{StaticResource FormLabel}"/>
-                                            <ComboBox ItemsSource="{Binding AvailableLanguages}" SelectedItem="{Binding SelectedLanguage}" Style="{StaticResource CleanComboBox}"/>
-                                        </StackPanel>
-                                    </Grid>
-                                </StackPanel>
-                            </Border>
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Text="{x:Static loc:Strings.Settings_OrgName}" Style="{StaticResource FormLabel}"/>
+                                        <TextBox Text="{Binding OrganizationName}" Style="{StaticResource CleanTextBox}"/>
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
 
-                            <Border BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,0,0,1" Padding="0,0,0,25" Margin="0,0,0,30">
-                                <StackPanel>
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
-                                        <fa:ImageAwesome Icon="Cog" Width="16" Height="16" Foreground="{DynamicResource PrimaryAccent}" Margin="0,0,10,0" VerticalAlignment="Center"/>
-                                        <TextBlock Text="{x:Static loc:Strings.Settings_SysDefaults}" Foreground="{DynamicResource PrimaryAccent}" FontSize="14" FontWeight="SemiBold"/>
+                        <Border BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,0,0,1" Padding="0,0,0,25" Margin="0,0,0,25">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
+                                    <fa:ImageAwesome Icon="UserOutline" Width="16" Height="16" Foreground="{DynamicResource PrimaryAccent}" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{x:Static loc:Strings.Settings_LocUser}" Foreground="{DynamicResource PrimaryAccent}" FontSize="14" FontWeight="SemiBold"/>
+                                </StackPanel>
+                                
+                                <Grid Margin="0,0,0,15">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/> <ColumnDefinition Width="20"/> <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="{x:Static loc:Strings.Settings_CurrentUser}" Style="{StaticResource FormLabel}"/>
+                                        <TextBox Text="{Binding CurrentUser}" Style="{StaticResource CleanTextBox}"/>
                                     </StackPanel>
                                     
-                                    <Grid Margin="0,0,0,20">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/> <ColumnDefinition Width="20"/> <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        
-                                        <StackPanel Grid.Column="0">
-                                            <TextBlock Text="{x:Static loc:Strings.Settings_DefPageSize}" Style="{StaticResource FormLabel}"/>
-                                            <ComboBox ItemsSource="{Binding PaginationOptions}" SelectedItem="{Binding DefaultPaginationSize}" Style="{StaticResource CleanComboBox}"/>
-                                        </StackPanel>
-                                        
-                                        <StackPanel Grid.Column="2">
-                                            <TextBlock Text="{x:Static loc:Strings.Settings_UITheme}" Style="{StaticResource FormLabel}"/>
-                                            <ComboBox ItemsSource="{Binding AvailableThemes}" SelectedItem="{Binding SelectedTheme}" Style="{StaticResource CleanComboBox}"/>
-                                        </StackPanel>
-                                    </Grid>
-
-                                    <StackPanel>
-                                        <TextBlock Text="{x:Static loc:Strings.Settings_DefExportDir}" Style="{StaticResource FormLabel}"/>
-                                        <TextBox Text="{Binding DefaultExportDirectory}" Style="{StaticResource CleanTextBox}"/>
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Text="{x:Static loc:Strings.Settings_SysLanguage}" Style="{StaticResource FormLabel}"/>
+                                        <ComboBox ItemsSource="{Binding AvailableLanguages}" SelectedItem="{Binding SelectedLanguage}" Style="{StaticResource CleanComboBox}"/>
                                     </StackPanel>
-                                </StackPanel>
-                            </Border>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
 
-                            <Button Command="{Binding SaveSettingsCommand}" Height="36" Background="{DynamicResource PrimaryAccent}" Foreground="{DynamicResource WindowBackground}" BorderThickness="0" Cursor="Hand" HorizontalAlignment="Right" Padding="25,0">
-                                <Button.Template>
-                                    <ControlTemplate TargetType="Button">
-                                        <Border Background="{TemplateBinding Background}" CornerRadius="2">
-                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}">
-                                                <fa:ImageAwesome Icon="Save" Width="12" Height="12" Margin="0,0,8,0" Foreground="{DynamicResource WindowBackground}"/>
-                                                <TextBlock Text="{x:Static loc:Strings.Settings_SaveGeneral}" FontWeight="SemiBold"/>
-                                            </StackPanel>
-                                        </Border>
-                                    </ControlTemplate>
-                                </Button.Template>
-                            </Button>
-                        </StackPanel>
-                    </ScrollViewer>
-                </Border>
+                        <Border BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,0,0,1" Padding="0,0,0,25" Margin="0,0,0,30">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
+                                    <fa:ImageAwesome Icon="Cog" Width="16" Height="16" Foreground="{DynamicResource PrimaryAccent}" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{x:Static loc:Strings.Settings_SysDefaults}" Foreground="{DynamicResource PrimaryAccent}" FontSize="14" FontWeight="SemiBold"/>
+                                </StackPanel>
+                                
+                                <Grid Margin="0,0,0,20">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/> <ColumnDefinition Width="20"/> <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="{x:Static loc:Strings.Settings_DefPageSize}" Style="{StaticResource FormLabel}"/>
+                                        <ComboBox ItemsSource="{Binding PaginationOptions}" SelectedItem="{Binding DefaultPaginationSize}" Style="{StaticResource CleanComboBox}"/>
+                                    </StackPanel>
+                                    
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Text="{x:Static loc:Strings.Settings_UITheme}" Style="{StaticResource FormLabel}"/>
+                                        <ComboBox ItemsSource="{Binding AvailableThemes}" SelectedItem="{Binding SelectedTheme}" Style="{StaticResource CleanComboBox}"/>
+                                    </StackPanel>
+                                </Grid>
+
+                                <StackPanel>
+                                    <TextBlock Text="{x:Static loc:Strings.Settings_DefExportDir}" Style="{StaticResource FormLabel}"/>
+                                    <TextBox Text="{Binding DefaultExportDirectory}" Style="{StaticResource CleanTextBox}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <Button Command="{Binding SaveSettingsCommand}" Height="36" Background="{DynamicResource PrimaryAccent}" Foreground="{DynamicResource WindowBackground}" BorderThickness="0" Cursor="Hand" HorizontalAlignment="Right" Padding="25,0">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}" CornerRadius="2">
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}">
+                                            <fa:ImageAwesome Icon="Save" Width="12" Height="12" Margin="0,0,8,0" Foreground="{DynamicResource WindowBackground}"/>
+                                            <TextBlock Text="{x:Static loc:Strings.Settings_SaveGeneral}" FontWeight="SemiBold"/>
+                                        </StackPanel>
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                    </StackPanel>
+                </ScrollViewer>
             </TabItem>
 
             <TabItem>
@@ -274,110 +300,108 @@
                     </StackPanel>
                 </TabItem.Header>
                 
-                <Border Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource TabDivideColor}" BorderThickness="0,2,0,0">
-                    <ScrollViewer VerticalScrollBarVisibility="Auto">
-                        <StackPanel HorizontalAlignment="Stretch" MaxWidth="900" Margin="25,25,25,40">
-                            
-                            <Border BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,0,0,1" Padding="0,0,0,25" Margin="0,0,0,25">
-                                <StackPanel>
-                                    <StackPanel Orientation="Horizontal" Margin="0,30,0,20">
-                                        <fa:ImageAwesome Icon="Plug" Width="16" Height="16" Foreground="{DynamicResource PrimaryAccent}" Margin="0,0,10,0" VerticalAlignment="Center"/>
-                                        <TextBlock Text="{x:Static loc:Strings.Settings_DbConnection}" Foreground="{DynamicResource PrimaryAccent}" FontSize="14" FontWeight="SemiBold"/>
-                                    </StackPanel>
-                                   
-                                    <Grid Margin="0,0,0,20">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/> <ColumnDefinition Width="20"/> <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        
-                                        <StackPanel Grid.Column="0">
-                                            <TextBlock Text="{x:Static loc:Strings.Settings_DbHost}" Style="{StaticResource FormLabel}"/>
-                                            <TextBox Text="{Binding DbHost}" Style="{StaticResource CleanTextBox}"/>
-                                        </StackPanel>
-                                        
-                                        <StackPanel Grid.Column="2">
-                                            <TextBlock Text="{x:Static loc:Strings.Settings_DbName}" Style="{StaticResource FormLabel}"/>
-                                            <TextBox Text="{Binding DbName}" Style="{StaticResource CleanTextBox}"/>
-                                        </StackPanel>
-                                    </Grid>
-
-                                    <Grid Margin="0,0,0,25">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/> <ColumnDefinition Width="20"/> <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        
-                                        <StackPanel Grid.Column="0">
-                                            <TextBlock Text="{x:Static loc:Strings.Settings_DbUser}" Style="{StaticResource FormLabel}"/>
-                                            <TextBox Text="{Binding DbUser}" Style="{StaticResource CleanTextBox}"/>
-                                        </StackPanel>
-                                        
-                                        <StackPanel Grid.Column="2">
-                                            <TextBlock Text="{x:Static loc:Strings.Settings_DbPassword}" Style="{StaticResource FormLabel}"/>
-                                            <TextBox Text="{Binding DbPassword}" Style="{StaticResource CleanTextBox}"/>
-                                        </StackPanel>
-                                    </Grid>
-                                    
-                                    <Button Command="{Binding TestDatabaseConnectionCommand}" Height="36" Background="Transparent" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" Foreground="{DynamicResource PrimaryAccent}" Cursor="Hand" HorizontalAlignment="Left" Padding="20,0" IsEnabled="{Binding IsProcessing, Converter={StaticResource InverseBooleanConverter}}">
-                                        <Button.Template>
-                                            <ControlTemplate TargetType="Button">
-                                                <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2">
-                                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}">
-                                                        <fa:ImageAwesome Icon="Wifi" Width="12" Height="12" Margin="0,0,8,0" Foreground="{DynamicResource PrimaryAccent}"/>
-                                                        <TextBlock Text="{x:Static loc:Strings.Settings_TestConnection}" FontWeight="SemiBold"/>
-                                                    </StackPanel>
-                                                </Border>
-                                                <ControlTemplate.Triggers>
-                                                    <Trigger Property="IsMouseOver" Value="True">
-                                                        <Setter Property="Background" Value="#0A107C41"/>
-                                                        <Setter Property="BorderBrush" Value="{DynamicResource PrimaryAccent}"/>
-                                                    </Trigger>
-                                                    <Trigger Property="IsEnabled" Value="False">
-                                                        <Setter Property="Opacity" Value="0.5"/>
-                                                    </Trigger>
-                                                </ControlTemplate.Triggers>
-                                            </ControlTemplate>
-                                        </Button.Template>
-                                    </Button>
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel HorizontalAlignment="Stretch" MaxWidth="900" Margin="25,25,25,40">
+                        
+                        <Border BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,0,0,1" Padding="0,0,0,25" Margin="0,0,0,25">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,30,0,20">
+                                    <fa:ImageAwesome Icon="Plug" Width="16" Height="16" Foreground="{DynamicResource PrimaryAccent}" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{x:Static loc:Strings.Settings_DbConnection}" Foreground="{DynamicResource PrimaryAccent}" FontSize="14" FontWeight="SemiBold"/>
                                 </StackPanel>
-                            </Border>
+                                
+                                <Grid Margin="0,0,0,20">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/> <ColumnDefinition Width="20"/> <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="{x:Static loc:Strings.Settings_DbHost}" Style="{StaticResource FormLabel}"/>
+                                        <TextBox Text="{Binding DbHost}" Style="{StaticResource CleanTextBox}"/>
+                                    </StackPanel>
+                                    
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Text="{x:Static loc:Strings.Settings_DbName}" Style="{StaticResource FormLabel}"/>
+                                        <TextBox Text="{Binding DbName}" Style="{StaticResource CleanTextBox}"/>
+                                    </StackPanel>
+                                </Grid>
 
-                            <Border BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,0,0,1" Padding="0,0,0,25" Margin="0,0,0,30">
-                                <StackPanel>
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
-                                        <fa:ImageAwesome Icon="CloudUpload" Width="16" Height="16" Foreground="{DynamicResource PrimaryAccent}" Margin="0,0,10,0" VerticalAlignment="Center"/>
-                                        <TextBlock Text="{x:Static loc:Strings.Settings_AutoBackups}" Foreground="{DynamicResource PrimaryAccent}" FontSize="14" FontWeight="SemiBold"/>
+                                <Grid Margin="0,0,0,25">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/> <ColumnDefinition Width="20"/> <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="{x:Static loc:Strings.Settings_DbUser}" Style="{StaticResource FormLabel}"/>
+                                        <TextBox Text="{Binding DbUser}" Style="{StaticResource CleanTextBox}"/>
                                     </StackPanel>
                                     
-                                    <CheckBox IsChecked="{Binding AutoBackupEnabled}" Content="{x:Static loc:Strings.Settings_EnableAutoBackup}" Foreground="{DynamicResource TextMain}" FontWeight="SemiBold" Margin="0,0,0,20"/>
-                                    
-                                    <StackPanel>
-                                        <TextBlock Text="{x:Static loc:Strings.Settings_BackupDest}" Style="{StaticResource FormLabel}"/>
-                                        <TextBox Text="{Binding AutoBackupDirectory}" IsEnabled="{Binding AutoBackupEnabled}" Style="{StaticResource CleanTextBox}"/>
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Text="{x:Static loc:Strings.Settings_DbPassword}" Style="{StaticResource FormLabel}"/>
+                                        <TextBox Text="{Binding DbPassword}" Style="{StaticResource CleanTextBox}"/>
                                     </StackPanel>
+                                </Grid>
+                                
+                                <Button Command="{Binding TestDatabaseConnectionCommand}" Height="36" Background="Transparent" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" Foreground="{DynamicResource PrimaryAccent}" Cursor="Hand" HorizontalAlignment="Left" Padding="20,0" IsEnabled="{Binding IsProcessing, Converter={StaticResource InverseBooleanConverter}}">
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2">
+                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}">
+                                                    <fa:ImageAwesome Icon="Wifi" Width="12" Height="12" Margin="0,0,8,0" Foreground="{DynamicResource PrimaryAccent}"/>
+                                                    <TextBlock Text="{x:Static loc:Strings.Settings_TestConnection}" FontWeight="SemiBold"/>
+                                                </StackPanel>
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="#0A107C41"/>
+                                                    <Setter Property="BorderBrush" Value="{DynamicResource PrimaryAccent}"/>
+                                                </Trigger>
+                                                <Trigger Property="IsEnabled" Value="False">
+                                                    <Setter Property="Opacity" Value="0.5"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+                            </StackPanel>
+                        </Border>
+
+                        <Border BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,0,0,1" Padding="0,0,0,25" Margin="0,0,0,30">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
+                                    <fa:ImageAwesome Icon="CloudUpload" Width="16" Height="16" Foreground="{DynamicResource PrimaryAccent}" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{x:Static loc:Strings.Settings_AutoBackups}" Foreground="{DynamicResource PrimaryAccent}" FontSize="14" FontWeight="SemiBold"/>
                                 </StackPanel>
-                            </Border>
+                                
+                                <CheckBox IsChecked="{Binding AutoBackupEnabled}" Content="{x:Static loc:Strings.Settings_EnableAutoBackup}" Foreground="{DynamicResource TextMain}" FontWeight="SemiBold" Margin="0,0,0,20"/>
+                                
+                                <StackPanel>
+                                    <TextBlock Text="{x:Static loc:Strings.Settings_BackupDest}" Style="{StaticResource FormLabel}"/>
+                                    <TextBox Text="{Binding AutoBackupDirectory}" IsEnabled="{Binding AutoBackupEnabled}" Style="{StaticResource CleanTextBox}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
 
-                            <Button Command="{Binding SaveSettingsCommand}" Height="36" Background="{DynamicResource PrimaryAccent}" Foreground="{DynamicResource WindowBackground}" BorderThickness="0" Cursor="Hand" HorizontalAlignment="Right" Padding="25,0" IsEnabled="{Binding IsProcessing, Converter={StaticResource InverseBooleanConverter}}">
-                                <Button.Template>
-                                    <ControlTemplate TargetType="Button">
-                                        <Border Background="{TemplateBinding Background}" CornerRadius="2">
-                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}">
-                                                <fa:ImageAwesome Icon="Save" Width="12" Height="12" Margin="0,0,8,0" Foreground="{DynamicResource WindowBackground}"/>
-                                                <TextBlock Text="{x:Static loc:Strings.Settings_SaveDatabase}" FontWeight="SemiBold"/>
-                                            </StackPanel>
-                                        </Border>
-                                        <ControlTemplate.Triggers>
-                                            <Trigger Property="IsEnabled" Value="False">
-                                                <Setter Property="Opacity" Value="0.5"/>
-                                            </Trigger>
-                                        </ControlTemplate.Triggers>
-                                    </ControlTemplate>
-                                </Button.Template>
-                            </Button>
-                            
-                        </StackPanel>
-                    </ScrollViewer>
-                </Border>
+                        <Button Command="{Binding SaveSettingsCommand}" Height="36" Background="{DynamicResource PrimaryAccent}" Foreground="{DynamicResource WindowBackground}" BorderThickness="0" Cursor="Hand" HorizontalAlignment="Right" Padding="25,0" IsEnabled="{Binding IsProcessing, Converter={StaticResource InverseBooleanConverter}}">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}" CornerRadius="2">
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}">
+                                            <fa:ImageAwesome Icon="Save" Width="12" Height="12" Margin="0,0,8,0" Foreground="{DynamicResource WindowBackground}"/>
+                                            <TextBlock Text="{x:Static loc:Strings.Settings_SaveDatabase}" FontWeight="SemiBold"/>
+                                        </StackPanel>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsEnabled" Value="False">
+                                            <Setter Property="Opacity" Value="0.5"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                        
+                    </StackPanel>
+                </ScrollViewer>
             </TabItem>
 
             <TabItem>
@@ -388,202 +412,200 @@
                     </StackPanel>
                 </TabItem.Header>
                 
-                <Border Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource TabDivideColor}" BorderThickness="0,2,0,0">
-                    <ScrollViewer VerticalScrollBarVisibility="Auto">
-                        <StackPanel HorizontalAlignment="Stretch" Margin="25,25,25,40">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="40"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel HorizontalAlignment="Stretch" Margin="25,25,25,40">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="40"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
 
-                                <Border Grid.Column="0">
-                                    <Grid>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="*"/>
-                                        </Grid.RowDefinitions>
+                            <Border Grid.Column="0">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
 
-                                        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,20">
-                                            <fa:ImageAwesome Icon="Sitemap" Width="16" Height="16" Foreground="{DynamicResource PrimaryAccent}" Margin="0,0,10,0" VerticalAlignment="Center"/>
-                                            <TextBlock Text="{x:Static loc:Strings.Settings_ManageSectors}" Foreground="{DynamicResource PrimaryAccent}" FontSize="14" FontWeight="SemiBold"/>
-                                        </StackPanel>
+                                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,20">
+                                        <fa:ImageAwesome Icon="Sitemap" Width="16" Height="16" Foreground="{DynamicResource PrimaryAccent}" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                        <TextBlock Text="{x:Static loc:Strings.Settings_ManageSectors}" Foreground="{DynamicResource PrimaryAccent}" FontSize="14" FontWeight="SemiBold"/>
+                                    </StackPanel>
 
-                                        <Border Grid.Row="1" Background="{DynamicResource WindowBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="2" Padding="20" Margin="0,0,0,20">
-                                            <StackPanel>
-                                                <TextBlock Text="{x:Static loc:Strings.Settings_AddSector}" Style="{StaticResource FormLabel}"/>
-                                                <TextBox Text="{Binding NewSectorName, UpdateSourceTrigger=PropertyChanged}" materialDesign:HintAssist.Hint="{x:Static loc:Strings.Settings_SectorNameHint}" Style="{StaticResource CleanTextBox}" Margin="0,0,0,15"/>
+                                    <Border Grid.Row="1" Background="{DynamicResource WindowBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="2" Padding="20" Margin="0,0,0,20">
+                                        <StackPanel>
+                                            <TextBlock Text="{x:Static loc:Strings.Settings_AddSector}" Style="{StaticResource FormLabel}"/>
+                                            <TextBox Text="{Binding NewSectorName, UpdateSourceTrigger=PropertyChanged}" materialDesign:HintAssist.Hint="{x:Static loc:Strings.Settings_SectorNameHint}" Style="{StaticResource CleanTextBox}" Margin="0,0,0,15"/>
+                                            
+                                            <TextBlock Text="{x:Static loc:Strings.Settings_ColorTag}" Style="{StaticResource FormLabel}"/>
+                                            
+                                            <Grid Margin="0,0,0,20">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
                                                 
-                                                <TextBlock Text="{x:Static loc:Strings.Settings_ColorTag}" Style="{StaticResource FormLabel}"/>
+                                                <Border Grid.Column="0" Width="30" Height="30" CornerRadius="2" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" Margin="0,0,10,0">
+                                                    <Border.Background>
+                                                        <SolidColorBrush Color="{Binding SectorColorPicker.HexColor, Converter={StaticResource HexToColorConverter}}"/>
+                                                    </Border.Background>
+                                                </Border>
                                                 
-                                                <Grid Margin="0,0,0,20">
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="Auto"/>
-                                                        <ColumnDefinition Width="*"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    
-                                                    <Border Grid.Column="0" Width="30" Height="30" CornerRadius="2" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" Margin="0,0,10,0">
-                                                        <Border.Background>
-                                                            <SolidColorBrush Color="{Binding SectorColorPicker.HexColor, Converter={StaticResource HexToColorConverter}}"/>
-                                                        </Border.Background>
-                                                    </Border>
-                                                    
-                                                    <TextBox Grid.Column="1" Text="{Binding SectorColorPicker.HexColor, UpdateSourceTrigger=PropertyChanged}" materialDesign:HintAssist.Hint="{x:Static loc:Strings.Settings_HexHint}" Style="{StaticResource CleanTextBox}"/>
-                                                </Grid>
+                                                <TextBox Grid.Column="1" Text="{Binding SectorColorPicker.HexColor, UpdateSourceTrigger=PropertyChanged}" materialDesign:HintAssist.Hint="{x:Static loc:Strings.Settings_HexHint}" Style="{StaticResource CleanTextBox}"/>
+                                            </Grid>
+                                            
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/> <ColumnDefinition Width="10"/> <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
                                                 
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="*"/> <ColumnDefinition Width="10"/> <ColumnDefinition Width="*"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    
-                                                    <Button Grid.Column="0" Command="{Binding OpenColorPickerCommand}" Height="32" Background="Transparent" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" Foreground="{DynamicResource TextMain}" Cursor="Hand">
-                                                        <Button.Template>
-                                                            <ControlTemplate TargetType="Button">
-                                                                <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2">
-                                                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                                                        <fa:ImageAwesome Icon="PaintBrush" Width="10" Height="10" Margin="0,0,8,0" Foreground="{DynamicResource TextMuted}"/>
-                                                                        <TextBlock Text="{x:Static loc:Strings.Settings_ColorPalette}" FontWeight="SemiBold" FontSize="12"/>
-                                                                    </StackPanel>
-                                                                </Border>
-                                                            </ControlTemplate>
-                                                        </Button.Template>
-                                                    </Button>
-
-                                                    <Button Grid.Column="2" Command="{Binding AddSectorCommand}" Height="32" Background="{DynamicResource PrimaryAccent}" Foreground="{DynamicResource WindowBackground}" BorderThickness="0" Cursor="Hand">
-                                                        <Button.Template>
-                                                            <ControlTemplate TargetType="Button">
-                                                                <Border Background="{TemplateBinding Background}" CornerRadius="2">
-                                                                    <TextBlock Text="{x:Static loc:Strings.Settings_BtnAddSector}" FontWeight="SemiBold" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                                                </Border>
-                                                            </ControlTemplate>
-                                                        </Button.Template>
-                                                    </Button>
-                                                </Grid>
-                                            </StackPanel>
-                                        </Border>
-
-                                        <ListBox Grid.Row="2" ItemsSource="{Binding Sectors}" Background="Transparent" BorderThickness="1" BorderBrush="{DynamicResource BorderColor}" ScrollViewer.VerticalScrollBarVisibility="Auto" MaxHeight="350">
-                                            <ListBox.ItemContainerStyle>
-                                                <Style TargetType="ListBoxItem">
-                                                    <Setter Property="Template">
-                                                        <Setter.Value>
-                                                            <ControlTemplate TargetType="ListBoxItem">
-                                                                <ContentPresenter/>
-                                                            </ControlTemplate>
-                                                        </Setter.Value>
-                                                    </Setter>
-                                                </Style>
-                                            </ListBox.ItemContainerStyle>
-                                            <ListBox.ItemTemplate>
-                                                <DataTemplate>
-                                                    <Border BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,0,0,1" Padding="15,12" Background="{DynamicResource WindowBackground}">
-                                                        <Grid>
-                                                            <Grid.ColumnDefinitions>
-                                                                <ColumnDefinition Width="Auto"/>
-                                                                <ColumnDefinition Width="*"/>
-                                                                <ColumnDefinition Width="Auto"/>
-                                                            </Grid.ColumnDefinitions>
-                                                            
-                                                            <Ellipse Grid.Column="0" Width="10" Height="10" Margin="0,0,15,0" Stroke="{DynamicResource TextMain}" StrokeThickness="1">
-                                                                <Ellipse.Fill>
-                                                                    <SolidColorBrush Color="{Binding ColorHex, Converter={StaticResource HexToColorConverter}}"/>
-                                                                </Ellipse.Fill>
-                                                            </Ellipse>
-
-                                                            <TextBlock Grid.Column="1" Text="{Binding Name}" Foreground="{DynamicResource TextMain}" VerticalAlignment="Center" FontSize="13" FontWeight="SemiBold"/>
-                                                            
-                                                            <Button Grid.Column="2" Command="{Binding DataContext.RemoveSectorCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" Background="Transparent" BorderThickness="0" Cursor="Hand" Padding="10,5">
-                                                                <Button.Template>
-                                                                    <ControlTemplate TargetType="Button">
-                                                                        <Border Background="Transparent">
-                                                                            <fa:ImageAwesome Icon="Trash" Width="12" Height="12" Foreground="{DynamicResource DangerAccent}"/>
-                                                                        </Border>
-                                                                    </ControlTemplate>
-                                                                </Button.Template>
-                                                            </Button>
-                                                        </Grid>
-                                                    </Border>
-                                                </DataTemplate>
-                                            </ListBox.ItemTemplate>
-                                        </ListBox>
-                                    </Grid>
-                                </Border>
-
-                                <Border Grid.Column="2">
-                                    <Grid>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="*"/>
-                                        </Grid.RowDefinitions>
-
-                                        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,20">
-                                            <fa:ImageAwesome Icon="FileTextOutline" Width="16" Height="16" Foreground="{DynamicResource PrimaryAccent}" Margin="0,0,10,0" VerticalAlignment="Center"/>
-                                            <TextBlock Text="{x:Static loc:Strings.Settings_ManageFileTypes}" Foreground="{DynamicResource PrimaryAccent}" FontSize="14" FontWeight="SemiBold"/>
-                                        </StackPanel>
-
-                                        <Border Grid.Row="1" Background="{DynamicResource WindowBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="2" Padding="20" Margin="0,0,0,20">
-                                            <StackPanel>
-                                                <TextBlock Text="{x:Static loc:Strings.Settings_AddFileType}" Style="{StaticResource FormLabel}"/>
-                                                <TextBox Text="{Binding NewFileTypeName, UpdateSourceTrigger=PropertyChanged}" materialDesign:HintAssist.Hint="{x:Static loc:Strings.Settings_FileTypeHint}" Style="{StaticResource CleanTextBox}" Margin="0,0,0,15"/>
-                                                
-                                                <Button Command="{Binding AddFileTypeCommand}" Height="32" Background="{DynamicResource PrimaryAccent}" Foreground="{DynamicResource WindowBackground}" BorderThickness="0" Cursor="Hand">
+                                                <Button Grid.Column="0" Command="{Binding OpenColorPickerCommand}" Height="32" Background="Transparent" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" Foreground="{DynamicResource TextMain}" Cursor="Hand">
                                                     <Button.Template>
                                                         <ControlTemplate TargetType="Button">
-                                                            <Border Background="{TemplateBinding Background}" CornerRadius="2">
-                                                                <TextBlock Text="{x:Static loc:Strings.Settings_BtnAddFileType}" FontWeight="SemiBold" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                            <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2">
+                                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                                    <fa:ImageAwesome Icon="PaintBrush" Width="10" Height="10" Margin="0,0,8,0" Foreground="{DynamicResource TextMuted}"/>
+                                                                    <TextBlock Text="{x:Static loc:Strings.Settings_ColorPalette}" FontWeight="SemiBold" FontSize="12"/>
+                                                                </StackPanel>
                                                             </Border>
                                                         </ControlTemplate>
                                                     </Button.Template>
                                                 </Button>
-                                            </StackPanel>
-                                        </Border>
 
-                                        <ListBox Grid.Row="2" ItemsSource="{Binding FileTypes}" Background="Transparent" BorderThickness="1" BorderBrush="{DynamicResource BorderColor}" ScrollViewer.VerticalScrollBarVisibility="Auto" MaxHeight="350">
-                                            <ListBox.ItemContainerStyle>
-                                                <Style TargetType="ListBoxItem">
-                                                    <Setter Property="Template">
-                                                        <Setter.Value>
-                                                            <ControlTemplate TargetType="ListBoxItem">
-                                                                <ContentPresenter/>
-                                                            </ControlTemplate>
-                                                        </Setter.Value>
-                                                    </Setter>
-                                                </Style>
-                                            </ListBox.ItemContainerStyle>
-                                            <ListBox.ItemTemplate>
-                                                <DataTemplate>
-                                                    <Border BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,0,0,1" Padding="15,12" Background="{DynamicResource WindowBackground}">
-                                                        <Grid>
-                                                            <Grid.ColumnDefinitions>
-                                                                <ColumnDefinition Width="*"/>
-                                                                <ColumnDefinition Width="Auto"/>
-                                                            </Grid.ColumnDefinitions>
-                                                            
-                                                            <TextBlock Grid.Column="0" Text="{Binding}" Foreground="{DynamicResource TextMain}" VerticalAlignment="Center" FontSize="13" FontWeight="SemiBold"/>
-                                                            
-                                                            <Button Grid.Column="1" Command="{Binding DataContext.RemoveFileTypeCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" Background="Transparent" BorderThickness="0" Cursor="Hand" Padding="10,5">
-                                                                <Button.Template>
-                                                                    <ControlTemplate TargetType="Button">
-                                                                        <Border Background="Transparent">
-                                                                            <fa:ImageAwesome Icon="Trash" Width="12" Height="12" Foreground="{DynamicResource DangerAccent}"/>
-                                                                        </Border>
-                                                                    </ControlTemplate>
-                                                                </Button.Template>
-                                                            </Button>
-                                                        </Grid>
-                                                    </Border>
-                                                </DataTemplate>
-                                            </ListBox.ItemTemplate>
-                                        </ListBox>
-                                    </Grid>
-                                </Border>
-                            </Grid>
-                        </StackPanel>
-                    </ScrollViewer>
-                </Border>
+                                                <Button Grid.Column="2" Command="{Binding AddSectorCommand}" Height="32" Background="{DynamicResource PrimaryAccent}" Foreground="{DynamicResource WindowBackground}" BorderThickness="0" Cursor="Hand">
+                                                    <Button.Template>
+                                                        <ControlTemplate TargetType="Button">
+                                                            <Border Background="{TemplateBinding Background}" CornerRadius="2">
+                                                                <TextBlock Text="{x:Static loc:Strings.Settings_BtnAddSector}" FontWeight="SemiBold" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                            </Border>
+                                                        </ControlTemplate>
+                                                    </Button.Template>
+                                                </Button>
+                                            </Grid>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <ListBox Grid.Row="2" ItemsSource="{Binding Sectors}" Background="Transparent" BorderThickness="1" BorderBrush="{DynamicResource BorderColor}" ScrollViewer.VerticalScrollBarVisibility="Auto" MaxHeight="350">
+                                        <ListBox.ItemContainerStyle>
+                                            <Style TargetType="ListBoxItem">
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="ListBoxItem">
+                                                            <ContentPresenter/>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Style>
+                                        </ListBox.ItemContainerStyle>
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,0,0,1" Padding="15,12" Background="{DynamicResource WindowBackground}">
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        
+                                                        <Ellipse Grid.Column="0" Width="10" Height="10" Margin="0,0,15,0" Stroke="{DynamicResource TextMain}" StrokeThickness="1">
+                                                            <Ellipse.Fill>
+                                                                <SolidColorBrush Color="{Binding ColorHex, Converter={StaticResource HexToColorConverter}}"/>
+                                                            </Ellipse.Fill>
+                                                        </Ellipse>
+
+                                                        <TextBlock Grid.Column="1" Text="{Binding Name}" Foreground="{DynamicResource TextMain}" VerticalAlignment="Center" FontSize="13" FontWeight="SemiBold"/>
+                                                        
+                                                        <Button Grid.Column="2" Command="{Binding DataContext.RemoveSectorCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" Background="Transparent" BorderThickness="0" Cursor="Hand" Padding="10,5">
+                                                            <Button.Template>
+                                                                <ControlTemplate TargetType="Button">
+                                                                    <Border Background="Transparent">
+                                                                        <fa:ImageAwesome Icon="Trash" Width="12" Height="12" Foreground="{DynamicResource DangerAccent}"/>
+                                                                    </Border>
+                                                                </ControlTemplate>
+                                                            </Button.Template>
+                                                        </Button>
+                                                    </Grid>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                </Grid>
+                            </Border>
+
+                            <Border Grid.Column="2">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+
+                                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,20">
+                                        <fa:ImageAwesome Icon="FileTextOutline" Width="16" Height="16" Foreground="{DynamicResource PrimaryAccent}" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                        <TextBlock Text="{x:Static loc:Strings.Settings_ManageFileTypes}" Foreground="{DynamicResource PrimaryAccent}" FontSize="14" FontWeight="SemiBold"/>
+                                    </StackPanel>
+
+                                    <Border Grid.Row="1" Background="{DynamicResource WindowBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="2" Padding="20" Margin="0,0,0,20">
+                                        <StackPanel>
+                                            <TextBlock Text="{x:Static loc:Strings.Settings_AddFileType}" Style="{StaticResource FormLabel}"/>
+                                            <TextBox Text="{Binding NewFileTypeName, UpdateSourceTrigger=PropertyChanged}" materialDesign:HintAssist.Hint="{x:Static loc:Strings.Settings_FileTypeHint}" Style="{StaticResource CleanTextBox}" Margin="0,0,0,15"/>
+                                            
+                                            <Button Command="{Binding AddFileTypeCommand}" Height="32" Background="{DynamicResource PrimaryAccent}" Foreground="{DynamicResource WindowBackground}" BorderThickness="0" Cursor="Hand">
+                                                <Button.Template>
+                                                    <ControlTemplate TargetType="Button">
+                                                        <Border Background="{TemplateBinding Background}" CornerRadius="2">
+                                                            <TextBlock Text="{x:Static loc:Strings.Settings_BtnAddFileType}" FontWeight="SemiBold" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        </Border>
+                                                    </ControlTemplate>
+                                                </Button.Template>
+                                            </Button>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <ListBox Grid.Row="2" ItemsSource="{Binding FileTypes}" Background="Transparent" BorderThickness="1" BorderBrush="{DynamicResource BorderColor}" ScrollViewer.VerticalScrollBarVisibility="Auto" MaxHeight="350">
+                                        <ListBox.ItemContainerStyle>
+                                            <Style TargetType="ListBoxItem">
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="ListBoxItem">
+                                                            <ContentPresenter/>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Style>
+                                        </ListBox.ItemContainerStyle>
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,0,0,1" Padding="15,12" Background="{DynamicResource WindowBackground}">
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        
+                                                        <TextBlock Grid.Column="0" Text="{Binding}" Foreground="{DynamicResource TextMain}" VerticalAlignment="Center" FontSize="13" FontWeight="SemiBold"/>
+                                                        
+                                                        <Button Grid.Column="1" Command="{Binding DataContext.RemoveFileTypeCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" Background="Transparent" BorderThickness="0" Cursor="Hand" Padding="10,5">
+                                                            <Button.Template>
+                                                                <ControlTemplate TargetType="Button">
+                                                                    <Border Background="Transparent">
+                                                                        <fa:ImageAwesome Icon="Trash" Width="12" Height="12" Foreground="{DynamicResource DangerAccent}"/>
+                                                                    </Border>
+                                                                </ControlTemplate>
+                                                            </Button.Template>
+                                                        </Button>
+                                                    </Grid>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                </Grid>
+                            </Border>
+                        </Grid>
+                    </StackPanel>
+                </ScrollViewer>
             </TabItem>
 
         </TabControl>

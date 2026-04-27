@@ -176,18 +176,48 @@
 
         <TabControl Grid.Row="1" Grid.RowSpan="2" Background="Transparent" BorderThickness="0" Margin="0,15,0,0" SelectedIndex="{Binding SelectedTabIndex}">
             <TabControl.Resources>
+                
+                <Style TargetType="TabControl">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="TabControl">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    
+                                    <TabPanel x:Name="HeaderPanel" Grid.Row="0" IsItemsHost="true" Margin="15,0,15,0" Panel.ZIndex="1"/>
+                                    
+                                    <Border Grid.Row="1" Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,1,0,0">
+                                        <ContentPresenter x:Name="PART_SelectedContentHost" ContentSource="SelectedContent"/>
+                                    </Border>
+                                </Grid>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+
                 <Style TargetType="TabItem">
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="TabItem">
-                                <Border x:Name="Border" Padding="15,8" Margin="15,0,5,0" BorderThickness="0,0,0,2" BorderBrush="Transparent" Background="Transparent" Cursor="Hand">
+                                <Border x:Name="Border" 
+                                        Padding="15,8" 
+                                        Margin="2,0,2,-1" 
+                                        BorderThickness="1,1,1,0" 
+                                        BorderBrush="Transparent" 
+                                        Background="Transparent" 
+                                        CornerRadius="4,4,0,0" 
+                                        Cursor="Hand">
                                     <ContentPresenter x:Name="ContentSite" VerticalAlignment="Center" HorizontalAlignment="Center" ContentSource="Header"/>
                                 </Border>
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="IsSelected" Value="True">
-                                        <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource PrimaryAccent}"/>
+                                        <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
+                                        <Setter TargetName="Border" Property="Background" Value="{DynamicResource CardBackground}"/>
                                         <Setter Property="Foreground" Value="{DynamicResource PrimaryAccent}"/>
-                                        <Setter Property="FontWeight" Value="Normal"/>
+                                        <Setter Property="FontWeight" Value="SemiBold"/>
                                     </Trigger>
                                     <Trigger Property="IsSelected" Value="False">
                                         <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
@@ -204,9 +234,9 @@
 
             <TabItem Header="{x:Static loc:Strings.Dis_TabSearch}">
                 <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="15,20,15,15">
-                    <StackPanel HorizontalAlignment="Stretch" MaxWidth="1000">
+                    <StackPanel HorizontalAlignment="Stretch">
                         
-                        <Border Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="2" Padding="15,10" Margin="0,0,0,20">
+                        <Border Background="{DynamicResource WindowBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="2" Padding="15,10" Margin="0,0,0,20">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
@@ -316,7 +346,6 @@
                             </Border>
 
                             <Grid Grid.Column="2">
-                                
                                 <Grid>
                                     <Grid.Style>
                                         <Style TargetType="Grid">
@@ -403,213 +432,217 @@
             </TabItem>
 
             <TabItem Header="{x:Static loc:Strings.Dis_TabQueue}">
-                <DataGrid ItemsSource="{Binding PendingRecords}" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True"
-                          Background="{DynamicResource CardBackground}" Foreground="{DynamicResource TextMain}" 
-                          RowBackground="{DynamicResource CardBackground}" AlternatingRowBackground="{DynamicResource WindowBackground}" 
-                          HeadersVisibility="Column" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="{DynamicResource BorderColor}" 
-                          BorderThickness="0" Margin="15,10,15,15" MinHeight="400">
-                    
-                    <DataGrid.InputBindings>
-                        <MouseBinding Gesture="LeftDoubleClick" Command="{Binding OpenPendingDetailsCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=DataGrid}, Path=SelectedItem}" />
-                    </DataGrid.InputBindings>
-                    
-                    <DataGrid.Resources>
-                        <Style TargetType="DataGridColumnHeader">
-                            <Setter Property="Background" Value="{DynamicResource WindowBackground}"/>
-                            <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
-                            <Setter Property="FontWeight" Value="SemiBold"/>
-                            <Setter Property="FontSize" Value="12"/>
-                            <Setter Property="Padding" Value="10,8"/>
-                            <Setter Property="BorderThickness" Value="0,1,0,1"/>
-                            <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
-                        </Style>
-                        <Style TargetType="DataGridRow">
-                            <Setter Property="Padding" Value="0,4"/>
-                            <Setter Property="Cursor" Value="Hand"/>
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="#0A107C41"/>
-                                </Trigger>
-                                <Trigger Property="IsSelected" Value="True">
-                                    <Setter Property="Background" Value="#1A107C41"/>
-                                    <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </DataGrid.Resources>
-
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="{x:Static loc:Strings.Dis_ColScheduledFor}" Binding="{Binding ToBeRemovedDate, StringFormat=yyyy-MM-dd}" Width="130">
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Foreground" Value="{DynamicResource DangerAccent}"/>
-                                    <Setter Property="FontWeight" Value="SemiBold"/>
-                                    <Setter Property="VerticalAlignment" Value="Center"/>
-                                    <Setter Property="Padding" Value="10,0,0,0"/>
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                        </DataGridTextColumn>
-
-                        <DataGridTextColumn Header="{x:Static loc:Strings.Dis_ColRrNumber}" Binding="{Binding RrNumber}" Width="130">
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Foreground" Value="{DynamicResource PrimaryAccent}"/>
-                                    <Setter Property="FontWeight" Value="SemiBold"/>
-                                    <Setter Property="VerticalAlignment" Value="Center"/>
-                                    <Setter Property="Padding" Value="10,0,0,0"/>
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                        </DataGridTextColumn>
+                <Grid>
+                    <DataGrid ItemsSource="{Binding PendingRecords}" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True"
+                              Background="{DynamicResource CardBackground}" Foreground="{DynamicResource TextMain}" 
+                              RowBackground="{DynamicResource CardBackground}" AlternatingRowBackground="{DynamicResource WindowBackground}" 
+                              HeadersVisibility="Column" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="{DynamicResource BorderColor}" 
+                              BorderThickness="0" Margin="0">
                         
-                        <DataGridTemplateColumn Header="{x:Static loc:Strings.Dis_ColFileName}" Width="*">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <StackPanel VerticalAlignment="Center" Margin="10,0,0,0">
-                                        <TextBlock Text="{Binding FileName}" ToolTip="{Binding FileName}" Foreground="{DynamicResource TextMain}" FontSize="13" TextTrimming="CharacterEllipsis"/>
-                                        <TextBlock Text="{Binding SubjectNumber, TargetNullValue='N/A'}" Foreground="{DynamicResource TextMuted}" FontSize="10" TextTrimming="CharacterEllipsis"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-
-                        <DataGridTemplateColumn Header="{x:Static loc:Strings.Dis_ColSector}" Width="150">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="10,0,0,0">
-                                        <Ellipse Width="8" Height="8" Fill="{Binding SectorColorHex, TargetNullValue='#8f9bb3'}" Stroke="{DynamicResource TextMain}" StrokeThickness="1" Margin="0,0,6,0"/>
-                                        <TextBlock Text="{Binding Sector}" ToolTip="{Binding Sector}" Foreground="{DynamicResource TextMain}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
+                        <DataGrid.InputBindings>
+                            <MouseBinding Gesture="LeftDoubleClick" Command="{Binding OpenPendingDetailsCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=DataGrid}, Path=SelectedItem}" />
+                        </DataGrid.InputBindings>
                         
-                        <DataGridTemplateColumn Header="{x:Static loc:Strings.Dis_ColActions}" Width="330">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,0">
-                                        <Button Command="{Binding DataContext.RecoverFileCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" 
-                                                CommandParameter="{Binding RrNumber}" 
-                                                Content="{x:Static loc:Strings.Dis_BtnRecover }" 
-                                                Background="Transparent" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" FontWeight="SemiBold"
-                                                Foreground="{DynamicResource TextMain}" 
-                                                Height="28" Width="165" Margin="0,0,8,0" Cursor="Hand">
-                                            <Button.Template>
-                                                <ControlTemplate TargetType="Button">
-                                                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2">
-                                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                                    </Border>
-                                                </ControlTemplate>
-                                            </Button.Template>
-                                        </Button>
-                                        
-                                        <Button Command="{Binding DataContext.PromptDisposalCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" 
-                                                CommandParameter="{Binding RrNumber}" 
-                                                Content="{x:Static loc:Strings.Dis_BtnDispose}" 
-                                                Background="{DynamicResource DangerAccent}"
-                                                Foreground="{DynamicResource WindowBackground}" FontWeight="SemiBold" BorderThickness="0" 
-                                                Height="28" Width="155" Cursor="Hand">
-                                            <Button.Template>
-                                                <ControlTemplate TargetType="Button">
-                                                    <Border Background="{TemplateBinding Background}" CornerRadius="2">
-                                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                                    </Border>
-                                                </ControlTemplate>
-                                            </Button.Template>
-                                        </Button>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                    </DataGrid.Columns>
-                </DataGrid>
+                        <DataGrid.Resources>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="Background" Value="{DynamicResource WindowBackground}"/>
+                                <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
+                                <Setter Property="FontWeight" Value="SemiBold"/>
+                                <Setter Property="FontSize" Value="12"/>
+                                <Setter Property="Padding" Value="10,8"/>
+                                <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                                <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
+                            </Style>
+                            <Style TargetType="DataGridRow">
+                                <Setter Property="Padding" Value="0,4"/>
+                                <Setter Property="Cursor" Value="Hand"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#0A107C41"/>
+                                    </Trigger>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Background" Value="#1A107C41"/>
+                                        <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.Resources>
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="{x:Static loc:Strings.Dis_ColScheduledFor}" Binding="{Binding ToBeRemovedDate, StringFormat=yyyy-MM-dd}" Width="130">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Foreground" Value="{DynamicResource DangerAccent}"/>
+                                        <Setter Property="FontWeight" Value="SemiBold"/>
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                        <Setter Property="Padding" Value="10,0,0,0"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+
+                            <DataGridTextColumn Header="{x:Static loc:Strings.Dis_ColRrNumber}" Binding="{Binding RrNumber}" Width="130">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Foreground" Value="{DynamicResource PrimaryAccent}"/>
+                                        <Setter Property="FontWeight" Value="SemiBold"/>
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                        <Setter Property="Padding" Value="10,0,0,0"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            
+                            <DataGridTemplateColumn Header="{x:Static loc:Strings.Dis_ColFileName}" Width="*">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel VerticalAlignment="Center" Margin="10,0,0,0">
+                                            <TextBlock Text="{Binding FileName}" ToolTip="{Binding FileName}" Foreground="{DynamicResource TextMain}" FontSize="13" TextTrimming="CharacterEllipsis"/>
+                                            <TextBlock Text="{Binding SubjectNumber, TargetNullValue='N/A'}" Foreground="{DynamicResource TextMuted}" FontSize="10" TextTrimming="CharacterEllipsis"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <DataGridTemplateColumn Header="{x:Static loc:Strings.Dis_ColSector}" Width="150">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="10,0,0,0">
+                                            <Ellipse Width="8" Height="8" Fill="{Binding SectorColorHex, TargetNullValue='#8f9bb3'}" Stroke="{DynamicResource TextMain}" StrokeThickness="1" Margin="0,0,6,0"/>
+                                            <TextBlock Text="{Binding Sector}" ToolTip="{Binding Sector}" Foreground="{DynamicResource TextMain}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            
+                            <DataGridTemplateColumn Header="{x:Static loc:Strings.Dis_ColActions}" Width="330">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,0">
+                                            <Button Command="{Binding DataContext.RecoverFileCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" 
+                                                    CommandParameter="{Binding RrNumber}" 
+                                                    Content="{x:Static loc:Strings.Dis_BtnRecover }" 
+                                                    Background="Transparent" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" FontWeight="SemiBold"
+                                                    Foreground="{DynamicResource TextMain}" 
+                                                    Height="28" Width="165" Margin="0,0,8,0" Cursor="Hand">
+                                                <Button.Template>
+                                                    <ControlTemplate TargetType="Button">
+                                                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2">
+                                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        </Border>
+                                                    </ControlTemplate>
+                                                </Button.Template>
+                                            </Button>
+                                            
+                                            <Button Command="{Binding DataContext.PromptDisposalCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" 
+                                                    CommandParameter="{Binding RrNumber}" 
+                                                    Content="{x:Static loc:Strings.Dis_BtnDispose}" 
+                                                    Background="{DynamicResource DangerAccent}"
+                                                    Foreground="{DynamicResource WindowBackground}" FontWeight="SemiBold" BorderThickness="0" 
+                                                    Height="28" Width="155" Cursor="Hand">
+                                                <Button.Template>
+                                                    <ControlTemplate TargetType="Button">
+                                                        <Border Background="{TemplateBinding Background}" CornerRadius="2">
+                                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        </Border>
+                                                    </ControlTemplate>
+                                                </Button.Template>
+                                            </Button>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
             </TabItem>
 
             <TabItem Header="{x:Static loc:Strings.Dis_TabAudit}">
-                <DataGrid ItemsSource="{Binding DisposedHistory}" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True"
-                          Background="{DynamicResource CardBackground}" Foreground="{DynamicResource TextMain}" 
-                          RowBackground="{DynamicResource CardBackground}" AlternatingRowBackground="{DynamicResource WindowBackground}" 
-                          HeadersVisibility="Column" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="{DynamicResource BorderColor}" 
-                          BorderThickness="0" Margin="15,10,15,15" MinHeight="400">
-                            
-                    <DataGrid.InputBindings>
-                        <MouseBinding Gesture="LeftDoubleClick" Command="{Binding OpenDisposedDetailsCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=DataGrid}, Path=SelectedItem}" />
-                    </DataGrid.InputBindings>
+                <Grid>
+                    <DataGrid ItemsSource="{Binding DisposedHistory}" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True"
+                              Background="{DynamicResource CardBackground}" Foreground="{DynamicResource TextMain}" 
+                              RowBackground="{DynamicResource CardBackground}" AlternatingRowBackground="{DynamicResource WindowBackground}" 
+                              HeadersVisibility="Column" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="{DynamicResource BorderColor}" 
+                              BorderThickness="0" Margin="0">
                         
-                    <DataGrid.Resources>
-                        <Style TargetType="DataGridColumnHeader">
-                            <Setter Property="Background" Value="{DynamicResource WindowBackground}"/>
-                            <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
-                            <Setter Property="FontWeight" Value="SemiBold"/>
-                            <Setter Property="FontSize" Value="12"/>
-                            <Setter Property="Padding" Value="10,8"/>
-                            <Setter Property="BorderThickness" Value="0,1,0,1"/>
-                            <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
-                        </Style>
-                        <Style TargetType="DataGridRow">
-                            <Setter Property="Padding" Value="0,4"/>
-                            <Setter Property="Cursor" Value="Hand"/>
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="#0A107C41"/>
-                                </Trigger>
-                                <Trigger Property="IsSelected" Value="True">
-                                    <Setter Property="Background" Value="#1A107C41"/>
-                                    <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </DataGrid.Resources>
-
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="{x:Static loc:Strings.Dis_ColDateDisposed}" Binding="{Binding RemovedDate, StringFormat=yyyy-MM-dd}" Width="130">
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
-                                    <Setter Property="VerticalAlignment" Value="Center"/>
-                                    <Setter Property="Padding" Value="10,0,0,0"/>
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                        </DataGridTextColumn>
-
-                        <DataGridTextColumn Header="{x:Static loc:Strings.Dis_ColRrNumber}" Binding="{Binding File.RrNumber}" Width="130">
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Foreground" Value="{DynamicResource DangerAccent}"/>
-                                    <Setter Property="FontWeight" Value="SemiBold"/>
-                                    <Setter Property="VerticalAlignment" Value="Center"/>
-                                    <Setter Property="Padding" Value="10,0,0,0"/>
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                        </DataGridTextColumn>
+                        <DataGrid.InputBindings>
+                            <MouseBinding Gesture="LeftDoubleClick" Command="{Binding OpenDisposedDetailsCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=DataGrid}, Path=SelectedItem}" />
+                        </DataGrid.InputBindings>
                         
-                        <DataGridTemplateColumn Header="{x:Static loc:Strings.Dis_ColFileName}" Width="*">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <StackPanel VerticalAlignment="Center" Margin="10,0,0,0">
-                                        <TextBlock Text="{Binding File.FileName}" ToolTip="{Binding File.FileName}" Foreground="{DynamicResource TextMain}" FontSize="13" TextTrimming="CharacterEllipsis"/>
-                                        <TextBlock Text="{Binding File.SubjectNumber, TargetNullValue='N/A'}" Foreground="{DynamicResource TextMuted}" FontSize="10" TextTrimming="CharacterEllipsis"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
+                        <DataGrid.Resources>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="Background" Value="{DynamicResource WindowBackground}"/>
+                                <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
+                                <Setter Property="FontWeight" Value="SemiBold"/>
+                                <Setter Property="FontSize" Value="12"/>
+                                <Setter Property="Padding" Value="10,8"/>
+                                <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                                <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
+                            </Style>
+                            <Style TargetType="DataGridRow">
+                                <Setter Property="Padding" Value="0,4"/>
+                                <Setter Property="Cursor" Value="Hand"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#0A107C41"/>
+                                    </Trigger>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Background" Value="#1A107C41"/>
+                                        <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.Resources>
 
-                        <DataGridTemplateColumn Header="{x:Static loc:Strings.Dis_ColAuthorizedBy}" Width="150">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding AuthorizedBy}" ToolTip="{Binding AuthorizedBy}" Foreground="{DynamicResource TextMain}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" Margin="10,0,0,0"/>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="{x:Static loc:Strings.Dis_ColDateDisposed}" Binding="{Binding RemovedDate, StringFormat=yyyy-MM-dd}" Width="130">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                        <Setter Property="Padding" Value="10,0,0,0"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
 
-                        <DataGridTemplateColumn Header="{x:Static loc:Strings.Dis_ColReason}" Width="250">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding Reason}" ToolTip="{Binding Reason}" Foreground="{DynamicResource TextMain}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" Margin="10,0,0,0"/>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                    </DataGrid.Columns>
-                </DataGrid>
+                            <DataGridTextColumn Header="{x:Static loc:Strings.Dis_ColRrNumber}" Binding="{Binding File.RrNumber}" Width="130">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Foreground" Value="{DynamicResource DangerAccent}"/>
+                                        <Setter Property="FontWeight" Value="SemiBold"/>
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                        <Setter Property="Padding" Value="10,0,0,0"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                                
+                            <DataGridTemplateColumn Header="{x:Static loc:Strings.Dis_ColFileName}" Width="*">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel VerticalAlignment="Center" Margin="10,0,0,0">
+                                            <TextBlock Text="{Binding File.FileName}" ToolTip="{Binding File.FileName}" Foreground="{DynamicResource TextMain}" FontSize="13" TextTrimming="CharacterEllipsis"/>
+                                            <TextBlock Text="{Binding File.SubjectNumber, TargetNullValue='N/A'}" Foreground="{DynamicResource TextMuted}" FontSize="10" TextTrimming="CharacterEllipsis"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <DataGridTemplateColumn Header="{x:Static loc:Strings.Dis_ColAuthorizedBy}" Width="150">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding AuthorizedBy}" ToolTip="{Binding AuthorizedBy}" Foreground="{DynamicResource TextMain}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <DataGridTemplateColumn Header="{x:Static loc:Strings.Dis_ColReason}" Width="250">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Reason}" ToolTip="{Binding Reason}" Foreground="{DynamicResource TextMain}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
             </TabItem>
         </TabControl>
 
@@ -644,10 +677,10 @@
                             <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" MinHeight="28">
                                 <TextBlock Text="{Binding PopupFileData.Sector}" Foreground="{DynamicResource TextMain}" FontWeight="SemiBold" FontSize="12"/>
                             </StackPanel>
-                            
+                             
                             <TextBlock Grid.Row="3" Grid.Column="0" Text="{x:Static loc:Strings.Sea_LblSubjectNumber}" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center" FontSize="12" MinHeight="28"/>
                             <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding PopupFileData.SubjectNumber, TargetNullValue='N/A'}" Foreground="{DynamicResource TextMain}" FontWeight="SemiBold" VerticalAlignment="Center" FontSize="12" MinHeight="28"/>
-                            
+                             
                             <TextBlock Grid.Row="4" Grid.Column="0" Text="{x:Static loc:Strings.Sea_LblChronoSpan}" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center" FontSize="12" MinHeight="28"/>
                             <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" MinHeight="28">
                                 <TextBlock Text="{Binding PopupFileData.StartDate, StringFormat=dd MMM yyyy, TargetNullValue='N/A'}" Foreground="{DynamicResource TextMain}" FontWeight="SemiBold" FontSize="12"/>
@@ -657,13 +690,13 @@
 
                             <TextBlock Grid.Row="5" Grid.Column="0" Text="{x:Static loc:Strings.Dis_LblStatus}" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center" FontSize="12" MinHeight="28"/>
                             <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding PopupFileData.CurrentStatus}" Foreground="{DynamicResource TextMain}" FontWeight="SemiBold" VerticalAlignment="Center" FontSize="12" MinHeight="28"/>
-                            
+                             
                             <TextBlock Grid.Row="6" Grid.Column="0" Text="{x:Static loc:Strings.Dis_LblDisposalScheduled}" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center" FontSize="12" MinHeight="28" Visibility="{Binding IsPendingPopup, Converter={StaticResource BoolToVisConverter}}"/>
                             <TextBlock Grid.Row="6" Grid.Column="1" Text="{Binding PopupFileData.ToBeRemovedDate, StringFormat=yyyy-MM-dd}" Foreground="{DynamicResource DangerAccent}" FontWeight="SemiBold" VerticalAlignment="Center" FontSize="12" MinHeight="28" Visibility="{Binding IsPendingPopup, Converter={StaticResource BoolToVisConverter}}"/>
 
                             <TextBlock Grid.Row="7" Grid.Column="0" Text="{x:Static loc:Strings.Dis_ColDateDisposed}" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center" FontSize="12" MinHeight="28" Visibility="{Binding IsDisposedPopup, Converter={StaticResource BoolToVisConverter}}"/>
                             <TextBlock Grid.Row="7" Grid.Column="1" Text="{Binding PopupDisposalData.RemovedDate, StringFormat=yyyy-MM-dd}" Foreground="{DynamicResource DangerAccent}" FontWeight="SemiBold" VerticalAlignment="Center" FontSize="12" MinHeight="28" Visibility="{Binding IsDisposedPopup, Converter={StaticResource BoolToVisConverter}}"/>
-                            
+                             
                             <TextBlock Grid.Row="8" Grid.Column="0" Text="{x:Static loc:Strings.Dis_LblReasonFormat}" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Top" Margin="0,6,0,0" FontSize="12" Visibility="{Binding IsDisposedPopup, Converter={StaticResource BoolToVisConverter}}"/>
                             <TextBlock Grid.Row="8" Grid.Column="1" Text="{Binding PopupDisposalData.Reason}" Foreground="{DynamicResource TextMain}" FontWeight="SemiBold" TextWrapping="Wrap" Margin="0,6,0,10" FontSize="12" Visibility="{Binding IsDisposedPopup, Converter={StaticResource BoolToVisConverter}}"/>
                             
@@ -691,7 +724,7 @@
 
         <Grid Grid.Row="0" Grid.RowSpan="3" Visibility="{Binding IsDisposalPromptOpen, Converter={StaticResource BoolToVisConverter}}" Panel.ZIndex="110">
             <Border Background="#66000000"/>
-            
+             
             <Border Background="{DynamicResource CardBackground}" CornerRadius="2" Padding="25" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="500" BorderBrush="{DynamicResource DangerAccent}" BorderThickness="2">
                 <Grid>
                     <StackPanel>
