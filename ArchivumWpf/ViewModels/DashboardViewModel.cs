@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
+using System.Threading.Tasks;
+using ArchivumWpf.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using ArchivumWpf.Services;
 
@@ -11,11 +13,12 @@ public partial class DashboardViewModel : ObservableObject
     [ObservableProperty] private int _totalHoldings;
     [ObservableProperty] private int _activeLoans;
     [ObservableProperty] private int _archivedPurged;
+
+    public ObservableCollection<ActivityLog> RecentActivities { get; } = new();
     
     public DashboardViewModel(IArchiveService archiveService)
     {
         _archiveService = archiveService;
-        
         _ = LoadStatsAsync();
     }
 
@@ -26,5 +29,12 @@ public partial class DashboardViewModel : ObservableObject
         TotalHoldings = stats.TotalHoldings;
         ActiveLoans = stats.ActiveLoans;
         ArchivedPurged = stats.ArchivedPurged;
+        
+        var activitites = await _archiveService.GetRecentActivitiesAsync(15);
+        RecentActivities.Clear();
+        foreach (var activity in activitites)
+        {
+            RecentActivities.Add(activity);
+        }
     }
 }

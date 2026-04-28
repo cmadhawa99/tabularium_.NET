@@ -22,6 +22,34 @@ namespace ArchivumWpf.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("ArchivumWpf.Models.ActivityLog", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ActionType")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("RrNumber")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("SerialNumber")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("activity_log");
+                });
+
             modelBuilder.Entity("ArchivumWpf.Models.BorrowRecord", b =>
                 {
                     b.Property<int>("Id")
@@ -82,6 +110,10 @@ namespace ArchivumWpf.Migrations
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("snapshot_sector");
+
+                    b.Property<string>("SnapshotSectorColor")
+                        .HasColumnType("text")
+                        .HasColumnName("snapshot_sector_color");
 
                     b.Property<int?>("SnapshotShelfNumber")
                         .HasColumnType("integer")

@@ -55,6 +55,9 @@ public interface IArchiveService
     Task<int> GetTodayDisposalCountAsync();
     Task<(List<BorrowRecord> Items, int TotalCount)> GetBorrowHistoryPaginatedAsync (string searchTerm, int pageNumber, int pageSize);
 
+    Task<IEnumerable<ActivityLog>> GetRecentActivitiesAsync(int limit = 15);
+    Task LogActivityAsync(string serialNumber, string rrNumber, string actionType);
+    
 }
 
 public class ArchiveService : IArchiveService
@@ -83,6 +86,38 @@ public class ArchiveService : IArchiveService
         };
     }
     
+    
+    //Dashboard
+
+    public async Task<IEnumerable<ActivityLog>> GetRecentActivitiesAsync(int limit = 15)
+    {
+        
+        using var context = await _contextFactory.CreateDbContextAsync();
+        
+        return await context.ActivityLogs
+            .OrderByDescending(a => a.Timestamp)
+            .Take(limit)
+            .ToListAsync();
+    }
+
+    public async Task LogActivityAsync(string serialNumber, string rrNumber, string actionType)
+    {
+        using var context = await _contextFactory.CreateDbContextAsync();
+
+        var log = new ActivityLog
+        {
+            SerialNumber = serialNumber ?? "SYS=GEN",
+            RrNumber = rrNumber ?? "N/A",
+            ActionType = actionType,
+            Timestamp = DateTime.Now
+        };
+        
+        context.ActivityLogs.Add(log);
+        await context.SaveChangesAsync();
+
+    }
+
+
     //Search
 
     public async Task<(List<FileRecord> Items, int TotalCount)> SearchFilesPaginatedAsync(string searchTerm, string sectorFilter, int? yearFilter,
@@ -209,6 +244,7 @@ public class ArchiveService : IArchiveService
 
         context.BorrowRecords.Add(record);
         await context.SaveChangesAsync();
+        await LogActivityAsync(file.SerialNumber.ToString(), file.RrNumber, "Lend");
 
         return (true, $"Success: File {rrNumber} has been issued to {borrowerName}.");
     }
@@ -233,6 +269,7 @@ public class ArchiveService : IArchiveService
         }
 
         await context.SaveChangesAsync();
+        await LogActivityAsync(file.SerialNumber.ToString(), file.RrNumber, "Receive");
 
         return (true, $"Success: File {rrNumber} has been returned to the vault.");
     }
@@ -309,6 +346,10 @@ public class ArchiveService : IArchiveService
             context.EntryHistoryRecords.Add(history);
             
             await context.SaveChangesAsync();
+            
+            // Dashboard export
+            
+            await LogActivityAsync(newFile.SerialNumber.ToString(), newFile.RrNumber, "Entry");
 
             return (true, $"Success: File '{newFile.RrNumber}' has been added to the vault.");
         }
@@ -317,6 +358,7 @@ public class ArchiveService : IArchiveService
             string exactError = ex.InnerException != null ? ex.InnerException.Message : ex.Message;
             return (false, $"Database Error : {exactError}");
         }
+        
     }
 
     public async Task<FileRecord> GetFileByRrNumberAsync(string rrNumber)
@@ -339,6 +381,9 @@ public class ArchiveService : IArchiveService
             }
             
             using var context = await _contextFactory.CreateDbContextAsync();
+
+            var oldRecord = await context.FileRecords.AsNoTracking().FirstOrDefaultAsync(f => f.SerialNumber == updatedFile.SerialNumber);
+            string oldRr = oldRecord?.RrNumber ?? updatedFile.RrNumber;
             
             context.FileRecords.Update(updatedFile);
 
@@ -366,6 +411,13 @@ public class ArchiveService : IArchiveService
             context.EntryHistoryRecords.Add(history);
 
             await context.SaveChangesAsync();
+            
+            string formattedRr = oldRr == updatedFile.RrNumber
+                ? updatedFile.RrNumber
+                : $"{oldRr} → {updatedFile.RrNumber}";
+
+            await LogActivityAsync(updatedFile.SerialNumber.ToString(), formattedRr, "Edit/Amend");
+            
             return (true, $"Success: File '{updatedFile.RrNumber}' has been updated.");
         }
         catch (System.Exception ex)
@@ -552,6 +604,11 @@ public class ArchiveService : IArchiveService
 
         file.ToBeRemovedDate = toBeRemovedDate;
         await context.SaveChangesAsync();
+
+        if (toBeRemovedDate.HasValue)
+        {
+            await LogActivityAsync(file.SerialNumber.ToString(), file.RrNumber, "Added To be removed queue");
+        }
         
         string msg = toBeRemovedDate.HasValue
             ? $"File scheduled for disposal on {toBeRemovedDate.Value:yyyy-MM-dd}." 
@@ -603,6 +660,9 @@ public class ArchiveService : IArchiveService
             Timestamp = DateTime.Now
         };
         await context.SaveChangesAsync();
+        
+        await LogActivityAsync(file.SerialNumber.ToString(), file.RrNumber, "Dispose");
+        
         return (true, $"File {rrNumber} has been permanently locked and disposed.");
     }
 
@@ -634,6 +694,9 @@ public class ArchiveService : IArchiveService
 
         file.ToBeRemovedDate = null;
         await context.SaveChangesAsync();
+        
+        await LogActivityAsync(file.SerialNumber.ToString(), file.RrNumber, "taken back from the removed queue");
+        
         return (true, $"File {rrNumber} recovered back to active vault.");
     }
 

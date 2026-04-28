@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ArchivumWpf.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260327054049_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20260428055517_CreateActivityLogData")]
+    partial class CreateActivityLogData
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,34 @@ namespace ArchivumWpf.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("ArchivumWpf.Models.ActivityLog", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ActionType")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("RrNumber")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("SerialNumber")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("activity_log");
+                });
 
             modelBuilder.Entity("ArchivumWpf.Models.BorrowRecord", b =>
                 {
@@ -43,11 +71,6 @@ namespace ArchivumWpf.Migrations
                         .HasColumnType("text")
                         .HasColumnName("borrower_name");
 
-                    b.Property<string>("FileRrNumber")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("file_rr_number");
-
                     b.Property<int>("FileSerialNumber")
                         .HasColumnType("integer")
                         .HasColumnName("file_serial_number");
@@ -59,6 +82,57 @@ namespace ArchivumWpf.Migrations
                     b.Property<DateTime?>("ReturnedDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("returned_date");
+
+                    b.Property<int?>("SnapshotDeckNumber")
+                        .HasColumnType("integer")
+                        .HasColumnName("snapshot_deck_number");
+
+                    b.Property<DateTime?>("SnapshotEndDate")
+                        .HasColumnType("date")
+                        .HasColumnName("snapshot_end_date");
+
+                    b.Property<string>("SnapshotFileName")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("snapshot_file_name");
+
+                    b.Property<int?>("SnapshotFileNumber")
+                        .HasColumnType("integer")
+                        .HasColumnName("snapshot_file_number");
+
+                    b.Property<string>("SnapshotFileType")
+                        .HasColumnType("text")
+                        .HasColumnName("snapshot_file_type");
+
+                    b.Property<string>("SnapshotRrNumber")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("snapshot_rr_number");
+
+                    b.Property<string>("SnapshotSector")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("snapshot_sector");
+
+                    b.Property<string>("SnapshotSectorColor")
+                        .HasColumnType("text")
+                        .HasColumnName("snapshot_sector_color");
+
+                    b.Property<int?>("SnapshotShelfNumber")
+                        .HasColumnType("integer")
+                        .HasColumnName("snapshot_shelf_number");
+
+                    b.Property<DateTime?>("SnapshotStartDate")
+                        .HasColumnType("date")
+                        .HasColumnName("snapshot_start_date");
+
+                    b.Property<string>("SnapshotSubjectNumber")
+                        .HasColumnType("text")
+                        .HasColumnName("snapshot_subject_number");
+
+                    b.Property<int?>("SnapshotTotalPages")
+                        .HasColumnType("integer")
+                        .HasColumnName("snapshot_total_pages");
 
                     b.HasKey("Id");
 

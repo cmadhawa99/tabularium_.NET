@@ -7,11 +7,27 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ArchivumWpf.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class CreateActivityLogData : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "activity_log",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    SerialNumber = table.Column<string>(type: "text", nullable: false),
+                    RrNumber = table.Column<string>(type: "text", nullable: false),
+                    ActionType = table.Column<string>(type: "text", nullable: false),
+                    Timestamp = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_activity_log", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "entry_history_record",
                 columns: table => new
@@ -90,11 +106,22 @@ namespace ArchivumWpf.Migrations
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     file_serial_number = table.Column<int>(type: "integer", nullable: false),
-                    file_rr_number = table.Column<string>(type: "text", nullable: false),
                     borrower_name = table.Column<string>(type: "text", nullable: false),
                     borrowed_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     returned_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    is_returned = table.Column<bool>(type: "boolean", nullable: false)
+                    is_returned = table.Column<bool>(type: "boolean", nullable: false),
+                    snapshot_rr_number = table.Column<string>(type: "text", nullable: false),
+                    snapshot_file_name = table.Column<string>(type: "text", nullable: false),
+                    snapshot_sector = table.Column<string>(type: "text", nullable: false),
+                    snapshot_sector_color = table.Column<string>(type: "text", nullable: true),
+                    snapshot_subject_number = table.Column<string>(type: "text", nullable: true),
+                    snapshot_file_type = table.Column<string>(type: "text", nullable: true),
+                    snapshot_start_date = table.Column<DateTime>(type: "date", nullable: true),
+                    snapshot_end_date = table.Column<DateTime>(type: "date", nullable: true),
+                    snapshot_total_pages = table.Column<int>(type: "integer", nullable: true),
+                    snapshot_shelf_number = table.Column<int>(type: "integer", nullable: true),
+                    snapshot_deck_number = table.Column<int>(type: "integer", nullable: true),
+                    snapshot_file_number = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -150,6 +177,9 @@ namespace ArchivumWpf.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "activity_log");
+
             migrationBuilder.DropTable(
                 name: "borrow_records");
 

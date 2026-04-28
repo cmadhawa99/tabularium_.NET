@@ -121,7 +121,7 @@
                         </DataGrid.Resources>
                         
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="{x:Static loc:Strings.Dash_RefID}" Binding="{Binding RrNumber}" Width="150">
+                            <DataGridTextColumn Header="{x:Static loc:Strings.Dash_RefID}" Binding="{Binding SerialNumber}" Width="150">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="FontFamily" Value="Consolas"/>
@@ -133,7 +133,7 @@
                                 </DataGridTextColumn.ElementStyle>
                             </DataGridTextColumn>
                             
-                            <DataGridTextColumn Header="{x:Static loc:Strings.Dash_RRNumber}" Binding="{Binding FileName}" Width="*">
+                            <DataGridTextColumn Header="{x:Static loc:Strings.Dash_RRNumber}" Binding="{Binding RrNumber}" Width="*">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="VerticalAlignment" Value="Center"/>
