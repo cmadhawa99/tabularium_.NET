@@ -21,6 +21,12 @@ public partial class EntryViewModel : ObservableObject
 
     public ObservableCollection<EntryHistoryRecord> HistoryRecords { get; } = new();
     
+    [ObservableProperty] private string _historySearchQuery = string.Empty;
+    [ObservableProperty] private int _historyCurrentPage = 1;
+    [ObservableProperty] private int _historyTotalPages = 1;
+    [ObservableProperty] private int _historyTotalCount = 0;
+    private const int PageSize = 50;
+    
     //Add entry properties
     [ObservableProperty] private string _addRrNumber = string.Empty;
     [ObservableProperty] private string _addSector = string.Empty;
@@ -74,6 +80,12 @@ public partial class EntryViewModel : ObservableObject
         
     }
 
+    partial void OnHistorySearchQueryChanged(string value)
+    {
+        HistoryCurrentPage = 1;
+        _ = LoadHistoryAsync();
+    }
+
     private void LoadDropdowns()
     {
         var prefs = _preferencesService.GetPreferences();
@@ -82,14 +94,43 @@ public partial class EntryViewModel : ObservableObject
         AvailableFileTypes.Clear();
         foreach (var t in prefs.FileTypes) AvailableFileTypes.Add(t);
     }
+    
+    
 
     private async Task LoadHistoryAsync()
     {
-        var records = await _archiveService.GetEntryHistoryAsync();
+        var result = await _archiveService.GetEntryHistoryPaginatedAsync(HistorySearchQuery, HistoryCurrentPage, PageSize);
+
+        HistoryTotalCount = result.TotalCount;
+        HistoryTotalPages = (int)Math.Ceiling((double)HistoryTotalCount / PageSize);
+        if (HistoryTotalPages == 0) HistoryTotalPages = 1;
+
         HistoryRecords.Clear();
-        foreach (var r in records) HistoryRecords.Add(r);
+        foreach (var record in result.Items)
+        {
+            HistoryRecords.Add(record);
+        }
     }
-    
+
+    [RelayCommand]
+    private async Task NextHistoryPageAsync()
+    {
+        if (HistoryCurrentPage < HistoryTotalPages)
+        {
+            HistoryCurrentPage++;
+            await LoadHistoryAsync();
+        }
+    }
+
+    [RelayCommand]
+    private async Task PreviousHistoryPageAsync()
+    {
+        if (HistoryCurrentPage > 1)
+        {
+            HistoryCurrentPage--;
+            await LoadHistoryAsync();
+        }
+    }
     
     //Add tab
     

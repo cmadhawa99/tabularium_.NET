@@ -269,6 +269,9 @@ public partial class ReportsViewModel : ObservableObject
         }
 
         await File.WriteAllTextAsync(dialog.FileName, csv.ToString());
+        
+        
+        
         ShowStatus($"Successfully exported {fullData.Count} records to CSV.", "#4CAF50");
         IsProcessing = false;
     }

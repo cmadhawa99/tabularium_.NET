@@ -978,4 +978,10 @@
     <data name="Dash_RRNumber" xml:space="preserve">
         <value>RR Number</value>
     </data>
+    <data name="Ent_TotalAuditRecords" xml:space="preserve">
+        <value>Total Audit Records:</value>
+    </data>
+    <data name="Ent_AuditSearchWatermark" xml:space="preserve">
+        <value>Search audit log by exact RR Number...</value>
+    </data>
 </root>

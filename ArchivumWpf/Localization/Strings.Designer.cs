@@ -1014,6 +1014,15 @@ namespace ArchivumWpf.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Search audit log by exact RR Number....
+        /// </summary>
+        public static string Ent_AuditSearchWatermark {
+            get {
+                return ResourceManager.GetString("Ent_AuditSearchWatermark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel Amendment.
         /// </summary>
         public static string Ent_BtnCancelAmendment {
@@ -1343,6 +1352,15 @@ namespace ArchivumWpf.Localization {
         public static string Ent_TooltipUnlockEdit {
             get {
                 return ResourceManager.GetString("Ent_TooltipUnlockEdit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total Audit Records:.
+        /// </summary>
+        public static string Ent_TotalAuditRecords {
+            get {
+                return ResourceManager.GetString("Ent_TotalAuditRecords", resourceCulture);
             }
         }
         
