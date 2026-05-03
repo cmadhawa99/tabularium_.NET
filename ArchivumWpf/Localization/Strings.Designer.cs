@@ -1356,11 +1356,11 @@ namespace ArchivumWpf.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Total Audit Records:.
+        ///   Looks up a localized string similar to Total Records:.
         /// </summary>
-        public static string Ent_TotalAuditRecords {
+        public static string Ent_TotalRecords {
             get {
-                return ResourceManager.GetString("Ent_TotalAuditRecords", resourceCulture);
+                return ResourceManager.GetString("Ent_TotalRecords", resourceCulture);
             }
         }
         

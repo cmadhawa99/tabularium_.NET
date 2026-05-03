@@ -54,7 +54,7 @@ public interface IArchiveService
     Task<List<DisposedRecord>> GetDisposedHistoryAsync();
     Task<int> GetTodayDisposalCountAsync();
     Task<(List<BorrowRecord> Items, int TotalCount)> GetBorrowHistoryPaginatedAsync (string searchTerm, int pageNumber, int pageSize);
-    Task<(List<EntryHistoryRecord> Items, int TotalCount)> GetEntryHistoryPaginatedAsync (string searchTerm, int pageNumber, int pageSize);
+    Task<(List<EntryHistoryRecord> Items, int TotalCount)> GetEntryHistoryPaginatedAsync (string searchTerm, bool isStrictRrSearch, int pageNumber, int pageSize);
 
     Task<IEnumerable<ActivityLog>> GetRecentActivitiesAsync(int limit = 15);
     Task LogActivityAsync(string serialNumber, string rrNumber, string actionType);
@@ -446,7 +446,7 @@ public class ArchiveService : IArchiveService
             .FirstOrDefaultAsync();
     }
 
-    public async Task<(List<EntryHistoryRecord> Items, int TotalCount)> GetEntryHistoryPaginatedAsync(string searchTerm, int pageNumber, int pageSize)
+    public async Task<(List<EntryHistoryRecord> Items, int TotalCount)> GetEntryHistoryPaginatedAsync(string searchTerm, bool isStrictRrSearch, int pageNumber, int pageSize)
     {
         using var context = await _contextFactory.CreateDbContextAsync();
         var query = context.EntryHistoryRecords.AsQueryable();
@@ -454,7 +454,23 @@ public class ArchiveService : IArchiveService
         if (!string.IsNullOrWhiteSpace(searchTerm))
         {
             searchTerm = searchTerm.ToLower();
-            query = query.Where(h => h.RrNumber.ToLower().Contains(searchTerm));
+
+            if (isStrictRrSearch)
+            {
+                query = query.Where(h => h.RrNumber.ToLower() == searchTerm);
+            }
+            else
+            {
+                query = query.Where(h => 
+                    h.RrNumber.ToLower().Contains(searchTerm) ||
+                    h.ActionType.ToLower().Contains(searchTerm) ||
+                    h.FileName.ToLower().Contains(searchTerm) ||
+                    (h.SubjectNumber != null && h.SubjectNumber.ToLower().Contains(searchTerm)) ||
+                    h.Sector.ToLower().Contains(searchTerm) ||
+                    h.Timestamp.ToString().Contains(searchTerm)
+                );
+            }
+            
         }
         
         query = query.OrderByDescending(h => h.Timestamp);

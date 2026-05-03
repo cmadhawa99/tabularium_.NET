@@ -917,4 +917,7 @@
     <data name="Dash_RRNumber" xml:space="preserve">
         <value>RR අංකය</value>
     </data>
+    <data name="Ent_TotalRecords" xml:space="preserve">
+        <value>මුළු වාර්තා ගණන:</value>
+    </data>
 </root>

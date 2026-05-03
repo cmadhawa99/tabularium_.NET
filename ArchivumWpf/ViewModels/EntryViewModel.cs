@@ -62,6 +62,9 @@ public partial class EntryViewModel : ObservableObject
     [ObservableProperty] private bool _isDialogOpen = false;
     [ObservableProperty] private string _dialogTitle = string.Empty;
     [ObservableProperty] private EntryHistoryRecord _selectedHistoryRecord;
+
+    [ObservableProperty] private bool _isStrictHistorySearch = false;
+    
     public ObservableCollection<ChangeItem> RecordChanges { get; } = new();
     
     [ObservableProperty] private string _statusMessage = string.Empty;
@@ -86,6 +89,19 @@ public partial class EntryViewModel : ObservableObject
         _ = LoadHistoryAsync();
     }
 
+    partial void OnIsStrictHistorySearchChanged(bool value)
+    {
+        HistoryCurrentPage = 1;
+        _ = LoadHistoryAsync();
+    }
+
+    [RelayCommand]
+    private void PerformHistorySearch()
+    {
+        HistoryCurrentPage = 1;
+        _ = LoadHistoryAsync();
+    }
+
     private void LoadDropdowns()
     {
         var prefs = _preferencesService.GetPreferences();
@@ -99,7 +115,7 @@ public partial class EntryViewModel : ObservableObject
 
     private async Task LoadHistoryAsync()
     {
-        var result = await _archiveService.GetEntryHistoryPaginatedAsync(HistorySearchQuery, HistoryCurrentPage, PageSize);
+        var result = await _archiveService.GetEntryHistoryPaginatedAsync(HistorySearchQuery, IsStrictHistorySearch, HistoryCurrentPage, PageSize);
 
         HistoryTotalCount = result.TotalCount;
         HistoryTotalPages = (int)Math.Ceiling((double)HistoryTotalCount / PageSize);

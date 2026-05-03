@@ -598,11 +598,94 @@
 <TabItem Header="{x:Static loc:Strings.Ent_TabAudit}">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="28"/>
         </Grid.RowDefinitions>
 
-        <DataGrid Grid.Row="0" Margin="15,10,15,0" ItemsSource="{Binding HistoryRecords}" 
+        <!-- Search Bar -->
+        <Border Grid.Row="0" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="2" Width="350" HorizontalAlignment="Left" Margin="15,15,15,5" Background="{DynamicResource WindowBackground}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <!-- Removed the third column for the button -->
+                </Grid.ColumnDefinitions>
+                
+                <ToggleButton Grid.Column="0" IsChecked="{Binding IsStrictHistorySearch}" Background="Transparent" BorderThickness="0" Cursor="Hand" ToolTip="Toggle Strict RR Search" Padding="10,0,5,0">
+                    <ToggleButton.Template>
+                        <ControlTemplate TargetType="ToggleButton">
+                            <Border Background="Transparent" Padding="{TemplateBinding Padding}">
+                                <Grid VerticalAlignment="Center">
+                                    <fa:ImageAwesome Icon="Search" Width="12" Height="12" Foreground="{DynamicResource TextMuted}">
+                                        <fa:ImageAwesome.Style>
+                                            <Style TargetType="fa:ImageAwesome">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsStrictHistorySearch}" Value="False">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </fa:ImageAwesome.Style>
+                                    </fa:ImageAwesome>
+
+                                    <Border Width="16" Height="16" CornerRadius="2" Background="{DynamicResource PrimaryAccent}">
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsStrictHistorySearch}" Value="True">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                        <TextBlock Text="RR" Foreground="{DynamicResource CardBackground}" FontSize="10" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </Grid>
+                            </Border>
+                        </ControlTemplate>
+                    </ToggleButton.Template>
+                </ToggleButton>
+                
+                <!-- Changed Margin on the right side from 8 to 15 to give it breathing room since the button is gone -->
+                <TextBox Grid.Column="1" Text="{Binding HistorySearchQuery, UpdateSourceTrigger=PropertyChanged}" Background="Transparent" Foreground="{DynamicResource TextMain}" BorderThickness="0" FontSize="13" VerticalContentAlignment="Center" Margin="2,6,15,6">
+                    <TextBox.Style>
+                        <Style TargetType="TextBox">
+                            <Style.Triggers>
+                                <Trigger Property="Text" Value="">
+                                    <Setter Property="Background">
+                                        <Setter.Value>
+                                            <VisualBrush Stretch="None" AlignmentX="Left">
+                                                <VisualBrush.Visual>
+                                                    <TextBlock Opacity="0.7" FontSize="13">
+                                                        <TextBlock.Style>
+                                                            <Style TargetType="TextBlock">
+                                                                <Setter Property="Text" Value="{x:Static loc:Strings.Sea_SearchWatermark}"/>
+                                                                <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding IsStrictHistorySearch}" Value="True">
+                                                                        <Setter Property="Text" Value="{x:Static loc:Strings.Sea_StrictSearchWatermark}"/>
+                                                                        <Setter Property="Foreground" Value="{DynamicResource PrimaryAccent}"/>
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </TextBlock.Style>
+                                                    </TextBlock>
+                                                </VisualBrush.Visual>
+                                            </VisualBrush>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
+            </Grid>
+        </Border>
+        
+        <DataGrid Grid.Row="1" Margin="15,10,15,0" ItemsSource="{Binding HistoryRecords}" 
                   SelectedItem="{Binding SelectedHistoryRecord, Mode=TwoWay}"
                   AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True"
                   Background="{DynamicResource CardBackground}" Foreground="{DynamicResource TextMain}" 
@@ -708,12 +791,12 @@
                 </DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
-
-        <Border Grid.Row="1" Background="{DynamicResource PrimaryAccent}" Padding="15,0">
+        
+        <Border Grid.Row="2" Background="{DynamicResource PrimaryAccent}" Padding="15,0">
             <Grid>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
                     <TextBlock Foreground="{DynamicResource CardBackground}" FontSize="11">
-                        <Run Text="Total Records:"/>
+                        <Run Text="{x:Static loc:Strings.Ent_TotalRecords}"/>
                         <Run Text=" "/>
                         <Run Text="{Binding HistoryTotalCount, Mode=OneWay}" FontWeight="Bold"/>
                     </TextBlock>
