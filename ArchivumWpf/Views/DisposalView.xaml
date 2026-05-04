@@ -431,13 +431,98 @@
                 </ScrollViewer>
             </TabItem>
 
-            <TabItem Header="{x:Static loc:Strings.Dis_TabQueue}">
+<TabItem Header="{x:Static loc:Strings.Dis_TabQueue}">
                 <Grid>
-                    <DataGrid ItemsSource="{Binding PendingRecords}" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True"
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="28"/>
+                    </Grid.RowDefinitions>
+
+                    <Border Grid.Row="0" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="2" Width="350" HorizontalAlignment="Left" Margin="15,15,15,5" Background="{DynamicResource WindowBackground}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <ToggleButton Grid.Column="0" IsChecked="{Binding IsStrictQueueSearch}" Background="Transparent" BorderThickness="0" Cursor="Hand" ToolTip="Toggle Strict RR Search" Padding="10,0,5,0">
+                                <ToggleButton.Template>
+                                    <ControlTemplate TargetType="ToggleButton">
+                                        <Border Background="Transparent" Padding="{TemplateBinding Padding}">
+                                            <Grid VerticalAlignment="Center">
+                                                <fa:ImageAwesome Icon="Search" Width="12" Height="12" Foreground="{DynamicResource TextMuted}">
+                                                    <fa:ImageAwesome.Style>
+                                                        <Style TargetType="fa:ImageAwesome">
+                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding IsStrictQueueSearch}" Value="False">
+                                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </fa:ImageAwesome.Style>
+                                                </fa:ImageAwesome>
+
+                                                <Border Width="16" Height="16" CornerRadius="2" Background="{DynamicResource DangerAccent}">
+                                                    <Border.Style>
+                                                        <Style TargetType="Border">
+                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding IsStrictQueueSearch}" Value="True">
+                                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Border.Style>
+                                                    <TextBlock Text="RR" Foreground="{DynamicResource CardBackground}" FontSize="10" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                </Border>
+                                            </Grid>
+                                        </Border>
+                                    </ControlTemplate>
+                                </ToggleButton.Template>
+                            </ToggleButton>
+                            
+                            <TextBox Grid.Column="1" Text="{Binding QueueSearchQuery, UpdateSourceTrigger=PropertyChanged}" Background="Transparent" Foreground="{DynamicResource TextMain}" BorderThickness="0" FontSize="13" VerticalContentAlignment="Center" Margin="2,6,15,6">
+                                <TextBox.Style>
+                                    <Style TargetType="TextBox">
+                                        <Style.Triggers>
+                                            <Trigger Property="Text" Value="">
+                                                <Setter Property="Background">
+                                                    <Setter.Value>
+                                                        <VisualBrush Stretch="None" AlignmentX="Left">
+                                                            <VisualBrush.Visual>
+                                                                <TextBlock Opacity="0.7" FontSize="13">
+                                                                    <TextBlock.Style>
+                                                                        <Style TargetType="TextBlock">
+                                                                            <Setter Property="Text" Value="{x:Static loc:Strings.Sea_SearchWatermark}"/>
+                                                                            <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
+                                                                            <Style.Triggers>
+                                                                                <DataTrigger Binding="{Binding IsStrictQueueSearch}" Value="True">
+                                                                                    <Setter Property="Text" Value="{x:Static loc:Strings.Sea_StrictSearchWatermark}"/>
+                                                                                    <Setter Property="Foreground" Value="{DynamicResource DangerAccent}"/>
+                                                                                </DataTrigger>
+                                                                            </Style.Triggers>
+                                                                        </Style>
+                                                                    </TextBlock.Style>
+                                                                </TextBlock>
+                                                            </VisualBrush.Visual>
+                                                        </VisualBrush>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBox.Style>
+                            </TextBox>
+                        </Grid>
+                    </Border>
+
+                    <DataGrid Grid.Row="1" Margin="15,10,15,0" ItemsSource="{Binding PendingRecords}" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True"
                               Background="{DynamicResource CardBackground}" Foreground="{DynamicResource TextMain}" 
                               RowBackground="{DynamicResource CardBackground}" AlternatingRowBackground="{DynamicResource WindowBackground}" 
                               HeadersVisibility="Column" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="{DynamicResource BorderColor}" 
-                              BorderThickness="0" Margin="0">
+                              BorderThickness="0">
                         
                         <DataGrid.InputBindings>
                             <MouseBinding Gesture="LeftDoubleClick" Command="{Binding OpenPendingDetailsCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=DataGrid}, Path=SelectedItem}" />
@@ -552,16 +637,123 @@
                             </DataGridTemplateColumn>
                         </DataGrid.Columns>
                     </DataGrid>
+
+                    <Border Grid.Row="2" Background="{DynamicResource DangerAccent}" Padding="15,0">
+                        <Grid>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <TextBlock Foreground="{DynamicResource CardBackground}" FontSize="11">
+                                    <Run Text="{x:Static loc:Strings.Dis_TotalRecordsPending}"/>
+                                    <Run Text=" "/>
+                                    <Run Text="{Binding QueueTotalCount, Mode=OneWay}" FontWeight="Bold"/>
+                                </TextBlock>
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                <Button Command="{Binding PreviousQueuePageCommand}" Background="Transparent" BorderThickness="0" Cursor="Hand" Padding="8,4" Margin="0,0,5,0">
+                                    <fa:ImageAwesome Icon="ChevronLeft" Width="8" Height="8" Foreground="{DynamicResource CardBackground}"/>
+                                </Button>
+                                <TextBlock Text="{Binding QueueCurrentPage, Mode=OneWay}" Foreground="{DynamicResource CardBackground}" FontWeight="Bold" FontSize="11" VerticalAlignment="Center" Margin="5,0"/>
+                                <Button Command="{Binding NextQueuePageCommand}" Background="Transparent" BorderThickness="0" Cursor="Hand" Padding="8,4" Margin="5,0,0,0">
+                                    <fa:ImageAwesome Icon="ChevronRight" Width="8" Height="8" Foreground="{DynamicResource CardBackground}"/>
+                                </Button>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
                 </Grid>
             </TabItem>
 
             <TabItem Header="{x:Static loc:Strings.Dis_TabAudit}">
                 <Grid>
-                    <DataGrid ItemsSource="{Binding DisposedHistory}" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True"
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="28"/>
+                    </Grid.RowDefinitions>
+
+                    <Border Grid.Row="0" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="2" Width="350" HorizontalAlignment="Left" Margin="15,15,15,5" Background="{DynamicResource WindowBackground}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <ToggleButton Grid.Column="0" IsChecked="{Binding IsStrictHistorySearch}" Background="Transparent" BorderThickness="0" Cursor="Hand" ToolTip="Toggle Strict RR Search" Padding="10,0,5,0">
+                                <ToggleButton.Template>
+                                    <ControlTemplate TargetType="ToggleButton">
+                                        <Border Background="Transparent" Padding="{TemplateBinding Padding}">
+                                            <Grid VerticalAlignment="Center">
+                                                <fa:ImageAwesome Icon="Search" Width="12" Height="12" Foreground="{DynamicResource TextMuted}">
+                                                    <fa:ImageAwesome.Style>
+                                                        <Style TargetType="fa:ImageAwesome">
+                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding IsStrictHistorySearch}" Value="False">
+                                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </fa:ImageAwesome.Style>
+                                                </fa:ImageAwesome>
+
+                                                <Border Width="16" Height="16" CornerRadius="2" Background="{DynamicResource DangerAccent}">
+                                                    <Border.Style>
+                                                        <Style TargetType="Border">
+                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding IsStrictHistorySearch}" Value="True">
+                                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Border.Style>
+                                                    <TextBlock Text="RR" Foreground="{DynamicResource CardBackground}" FontSize="10" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                </Border>
+                                            </Grid>
+                                        </Border>
+                                    </ControlTemplate>
+                                </ToggleButton.Template>
+                            </ToggleButton>
+                            
+                            <TextBox Grid.Column="1" Text="{Binding HistorySearchQuery, UpdateSourceTrigger=PropertyChanged}" Background="Transparent" Foreground="{DynamicResource TextMain}" BorderThickness="0" FontSize="13" VerticalContentAlignment="Center" Margin="2,6,15,6">
+                                <TextBox.Style>
+                                    <Style TargetType="TextBox">
+                                        <Style.Triggers>
+                                            <Trigger Property="Text" Value="">
+                                                <Setter Property="Background">
+                                                    <Setter.Value>
+                                                        <VisualBrush Stretch="None" AlignmentX="Left">
+                                                            <VisualBrush.Visual>
+                                                                <TextBlock Opacity="0.7" FontSize="13">
+                                                                    <TextBlock.Style>
+                                                                        <Style TargetType="TextBlock">
+                                                                            <Setter Property="Text" Value="{x:Static loc:Strings.Sea_SearchWatermark}"/>
+                                                                            <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
+                                                                            <Style.Triggers>
+                                                                                <DataTrigger Binding="{Binding IsStrictHistorySearch}" Value="True">
+                                                                                    <Setter Property="Text" Value="{x:Static loc:Strings.Sea_StrictSearchWatermark}"/>
+                                                                                    <Setter Property="Foreground" Value="{DynamicResource DangerAccent}"/>
+                                                                                </DataTrigger>
+                                                                            </Style.Triggers>
+                                                                        </Style>
+                                                                    </TextBlock.Style>
+                                                                </TextBlock>
+                                                            </VisualBrush.Visual>
+                                                        </VisualBrush>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBox.Style>
+                            </TextBox>
+                        </Grid>
+                    </Border>
+
+                    <DataGrid Grid.Row="1" Margin="15,10,15,0" ItemsSource="{Binding DisposedHistory}" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True"
                               Background="{DynamicResource CardBackground}" Foreground="{DynamicResource TextMain}" 
                               RowBackground="{DynamicResource CardBackground}" AlternatingRowBackground="{DynamicResource WindowBackground}" 
                               HeadersVisibility="Column" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="{DynamicResource BorderColor}" 
-                              BorderThickness="0" Margin="0">
+                              BorderThickness="0">
                         
                         <DataGrid.InputBindings>
                             <MouseBinding Gesture="LeftDoubleClick" Command="{Binding OpenDisposedDetailsCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=DataGrid}, Path=SelectedItem}" />
@@ -642,6 +834,28 @@
                             </DataGridTemplateColumn>
                         </DataGrid.Columns>
                     </DataGrid>
+
+                    <Border Grid.Row="2" Background="{DynamicResource DangerAccent}" Padding="15,0">
+                        <Grid>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <TextBlock Foreground="{DynamicResource CardBackground}" FontSize="11">
+                                    <Run Text="{x:Static loc:Strings.Dis_TotalRecords}"/>
+                                    <Run Text=" "/>
+                                    <Run Text="{Binding HistoryTotalCount, Mode=OneWay}" FontWeight="Bold"/>
+                                </TextBlock>
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                <Button Command="{Binding PreviousHistoryPageCommand}" Background="Transparent" BorderThickness="0" Cursor="Hand" Padding="8,4" Margin="0,0,5,0">
+                                    <fa:ImageAwesome Icon="ChevronLeft" Width="8" Height="8" Foreground="{DynamicResource CardBackground}"/>
+                                </Button>
+                                <TextBlock Text="{Binding HistoryCurrentPage, Mode=OneWay}" Foreground="{DynamicResource CardBackground}" FontWeight="Bold" FontSize="11" VerticalAlignment="Center" Margin="5,0"/>
+                                <Button Command="{Binding NextHistoryPageCommand}" Background="Transparent" BorderThickness="0" Cursor="Hand" Padding="8,4" Margin="5,0,0,0">
+                                    <fa:ImageAwesome Icon="ChevronRight" Width="8" Height="8" Foreground="{DynamicResource CardBackground}"/>
+                                </Button>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
                 </Grid>
             </TabItem>
         </TabControl>

@@ -55,6 +55,8 @@ public interface IArchiveService
     Task<int> GetTodayDisposalCountAsync();
     Task<(List<BorrowRecord> Items, int TotalCount)> GetBorrowHistoryPaginatedAsync (string searchTerm, int pageNumber, int pageSize);
     Task<(List<EntryHistoryRecord> Items, int TotalCount)> GetEntryHistoryPaginatedAsync (string searchTerm, bool isStrictRrSearch, int pageNumber, int pageSize);
+    Task<(List<FileRecord> Items, int TotalCount)> GetPendingDisposalsPaginatedAsync(string searchTerm, bool isStrictRrSearch, int pageNumber, int pageSize);
+    Task<(List<DisposedRecord> Items, int TotalCount)> GetDisposedHistoryPaginatedAsync(string searchTerm, bool isStrictRrSearch, int pageNumber, int pageSize);
 
     Task<IEnumerable<ActivityLog>> GetRecentActivitiesAsync(int limit = 15);
     Task LogActivityAsync(string serialNumber, string rrNumber, string actionType);
@@ -741,6 +743,72 @@ public class ArchiveService : IArchiveService
         var today = DateTime.Now.Date;
         return await context.FileRecords
             .CountAsync(f => f.ToBeRemovedDate != null && f.ToBeRemovedDate <= today && f.IsRemoved == false);
+    }
+
+    public async Task<(List<FileRecord> Items, int TotalCount)> GetPendingDisposalsPaginatedAsync(string searchTerm,
+        bool isStrictRrSearch, int pageNumber, int pageSize)
+    {
+        using var context = await _contextFactory.CreateDbContextAsync();
+        var query = context.FileRecords
+            .Where(f => f.ToBeRemovedDate != null && f.IsRemoved == false)
+            .AsSplitQuery();
+
+        if (!string.IsNullOrWhiteSpace(searchTerm))
+        {
+            searchTerm = searchTerm.ToLower();
+
+            if (isStrictRrSearch)
+            {
+                query = query.Where(f => f.RrNumber.ToLower() == searchTerm);
+            }
+            else
+            {
+                query = query.Where(f =>
+                    f.RrNumber.ToLower().Contains(searchTerm) ||
+                    f.Sector.ToLower().Contains(searchTerm) ||
+                    f.FileName.ToLower().Contains(searchTerm) ||
+                    f.ToBeRemovedDate.ToString().Contains(searchTerm)
+                );
+            }
+        }
+
+        query = query.OrderBy(f => f.ToBeRemovedDate);
+
+        int totalCount = await query.CountAsync();
+        var items = await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+        return (items, totalCount);
+    }
+
+    public async Task<(List<DisposedRecord> Items, int TotalCount)> GetDisposedHistoryPaginatedAsync(string searchTerm,
+        bool isStrictRrSearch, int pageNumber, int pageSize)
+    {
+        using var context = await _contextFactory.CreateDbContextAsync();
+        var query = context.DisposedRecords.Include(d => d.File).AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(searchTerm))
+        {
+            searchTerm = searchTerm.ToLower();
+            if (isStrictRrSearch)
+            {
+                query = query.Where(d => d.File != null && d.File.RrNumber.ToLower() == searchTerm);
+            }
+            else
+            {
+                query = query.Where(d =>
+                    (d.File != null && d.File.RrNumber.ToLower().Contains(searchTerm)) ||
+                    (d.File != null && d.File.FileName.ToLower().Contains(searchTerm)) ||
+                    d.Reason.ToLower().Contains(searchTerm) ||
+                    d.AuthorizedBy.ToLower().Contains(searchTerm) ||
+                    d.RemovedDate.ToString().Contains(searchTerm)
+                );
+            }
+        }
+
+        query = query.OrderByDescending(d => d.RemovedDate);
+
+        int totalCount = await query.CountAsync();
+        var items = await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+        return (items, totalCount);
     }
     
 }

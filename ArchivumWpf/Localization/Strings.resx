@@ -433,7 +433,7 @@
         <value>Toggle Strict RR Number Search</value>
     </data>
     <data name="Sea_StrictToggleIndicator" xml:space="preserve">
-        <value>R</value>
+        <value>RR</value>
     </data>
     <data name="Sea_SearchWatermark" xml:space="preserve">
         <value>Enter record identifier or subject...</value>
@@ -983,5 +983,11 @@
     </data>
     <data name="Ent_AuditSearchWatermark" xml:space="preserve">
         <value>Search audit log by exact RR Number...</value>
+    </data>
+    <data name="Dis_TotalRecords" xml:space="preserve">
+        <value>Total Records:</value>
+    </data>
+    <data name="Dis_TotalRecordsPending" xml:space="preserve">
+        <value>Total Pending Records:</value>
     </data>
 </root>

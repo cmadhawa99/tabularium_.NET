@@ -52,6 +52,15 @@ public partial class DisposalViewModel : ObservableObject
     [ObservableProperty] private bool _isDisposedPopup = false;
 
     private const int PageSize = 50;
+
+    [ObservableProperty] private string _queueSearchQuery = string.Empty;
+    [ObservableProperty] private bool _isStrictQueueSearch = false;
+    [ObservableProperty] private int _queueCurrentPage = 1;
+    [ObservableProperty] private int _queueTotalPages = 1;
+    [ObservableProperty] private int _queueTotalCount = 0;
+
+    [ObservableProperty] private string _historySearchQuery = string.Empty;
+    [ObservableProperty] private bool _isStrictHistorySearch = false;
     [ObservableProperty] private int _historyCurrentPage = 1;
     [ObservableProperty] private int _historyTotalPages = 1;
     [ObservableProperty] private int _historyTotalCount = 0;
@@ -67,20 +76,41 @@ public partial class DisposalViewModel : ObservableObject
 
     private async Task LoadTablesAsync()
     {
+        
+    }
+
+    private async Task LoadQueueAsync()
+    {
         var prefs = _preferencesService.GetPreferences();
         var colorMap = prefs.Sectors.ToDictionary(s => s.Name, s => s.ColorHex);
-            
-        var pending = await _archiveService.GetPendingDisposalsAsync();
+        
+        var result = await _archiveService.GetPendingDisposalsPaginatedAsync(QueueSearchQuery, IsStrictQueueSearch, QueueCurrentPage, PageSize);
+
+        QueueTotalCount = result.TotalCount;
+        QueueTotalPages = (int)Math.Ceiling((double)QueueTotalCount / PageSize);
+        if (QueueTotalPages == 0) QueueTotalPages = 1;
+        
         PendingRecords.Clear();
-        foreach (var p in pending)
+        foreach (var p in result.Items)
         {
             p.SectorColorHex = colorMap.ContainsKey(p.Sector) ? colorMap[p.Sector] : "#8f9bb3";
             PendingRecords.Add(p);
         }
+    }
 
-        var history = await _archiveService.GetDisposedHistoryAsync();
+    private async Task LoadHistoryAsync()
+    {
+        var prefs = _preferencesService.GetPreferences();
+        var colorMap = prefs.Sectors.ToDictionary(s => s.Name, s => s.ColorHex);
+
+        var result = await _archiveService.GetDisposedHistoryPaginatedAsync(HistorySearchQuery, IsStrictHistorySearch, HistoryCurrentPage, PageSize);
+
+        HistoryTotalCount = result.TotalCount;
+        HistoryTotalPages = (int)Math.Ceiling((double)HistoryTotalCount / PageSize);
+        if (HistoryTotalPages == 0) HistoryTotalPages = 1;
+        
         DisposedHistory.Clear();
-        foreach (var h in history)
+        foreach (var h in result.Items)
         {
             if (h.File != null)
             {
@@ -273,8 +303,6 @@ public partial class DisposalViewModel : ObservableObject
         IsDialogOpen = false;
     }
     
-    
-
 
     [RelayCommand]
     private void ClearLoadedFile()

@@ -375,7 +375,7 @@
         <value>නිශ්චිත RR අංක සෙවුම සක්‍රිය / අක්‍රිය කරන්න</value>
     </data>
     <data name="Sea_StrictToggleIndicator" xml:space="preserve">
-        <value>R</value>
+        <value>RR</value>
     </data>
     <data name="Sea_SearchWatermark" xml:space="preserve">
         <value>වාර්තා හැඳුනුම් අංකය හෝ විෂය ඇතුළත් කරන්න...</value>
@@ -918,6 +918,12 @@
         <value>RR අංකය</value>
     </data>
     <data name="Ent_TotalRecords" xml:space="preserve">
+        <value>මුළු වාර්තා ගණන:</value>
+    </data>
+    <data name="Dis_TotalRecordsPending" xml:space="preserve">
+        <value>විසඳීමට ඇති මුළු වාර්තා ගණන:</value>
+    </data>
+    <data name="Dis_TotalRecords" xml:space="preserve">
         <value>මුළු වාර්තා ගණන:</value>
     </data>
 </root>

@@ -1005,6 +1005,24 @@ namespace ArchivumWpf.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Total Records:.
+        /// </summary>
+        public static string Dis_TotalRecords {
+            get {
+                return ResourceManager.GetString("Dis_TotalRecords", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total Pending Records:.
+        /// </summary>
+        public static string Dis_TotalRecordsPending {
+            get {
+                return ResourceManager.GetString("Dis_TotalRecordsPending", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Target exact RR Number to amend....
         /// </summary>
         public static string Ent_AmendSearchWatermark {
@@ -2526,7 +2544,7 @@ namespace ArchivumWpf.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to R.
+        ///   Looks up a localized string similar to RR.
         /// </summary>
         public static string Sea_StrictToggleIndicator {
             get {
