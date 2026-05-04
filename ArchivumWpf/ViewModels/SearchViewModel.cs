@@ -6,6 +6,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using ArchivumWpf.Models;
 using ArchivumWpf.Services;
+using CommunityToolkit.Mvvm.Messaging;
 using DocumentFormat.OpenXml.Bibliography;
 
 namespace ArchivumWpf.ViewModels;
@@ -14,7 +15,7 @@ public partial class SearchViewModel : ObservableObject
 {
     private readonly IArchiveService _archiveService;
     private readonly IPreferencesService  _preferencesService;
-    private const int PageSize = 50;
+    [ObservableProperty] private int _pageSize;
     
     [ObservableProperty] private string _searchQuery = string.Empty;
     [ObservableProperty] private ObservableCollection<FileRecord> _searchResults = new();
@@ -51,7 +52,15 @@ public partial class SearchViewModel : ObservableObject
         _archiveService = archiveService;
         _preferencesService = preferencesService;
 
-        //_ = LoadDataAsync();
+        PageSize = _preferencesService.GetPreferences().DefaultPaginationSize;
+
+        WeakReferenceMessenger.Default.Register<SettingsChangedMessage>(this, (recipient, message) =>
+        {
+            PageSize = _preferencesService.GetPreferences().DefaultPaginationSize;
+            CurrentPage = 1;
+            _ = LoadDataAsync();
+        });
+        
         _ = IntializeViewModelAsync();
     }
 
