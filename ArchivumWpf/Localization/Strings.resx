@@ -30,9 +30,6 @@
     <data name="Settings_OrgDetails" xml:space="preserve">
         <value>ORGANIZATION DETAILS</value>
     </data>
-    <data name="Settings_AppTitle" xml:space="preserve">
-        <value>Application Title</value>
-    </data>
     <data name="Settings_OrgName" xml:space="preserve">
         <value>Organization Name</value>
     </data>
@@ -50,9 +47,6 @@
     </data>
     <data name="Settings_DefPageSize" xml:space="preserve">
         <value>Default Pagination Size</value>
-    </data>
-    <data name="Settings_UITheme" xml:space="preserve">
-        <value>System Theme</value>
     </data>
     <data name="Settings_DefExportDir" xml:space="preserve">
         <value>Default Export Directory</value>
@@ -989,8 +983,5 @@
     </data>
     <data name="Dis_TotalRecordsPending" xml:space="preserve">
         <value>Total Pending Records:</value>
-    </data>
-    <data name="test" xml:space="preserve">
-        <value>Successfully exported {fullData.Count} records to CSV</value>
     </data>
 </root>

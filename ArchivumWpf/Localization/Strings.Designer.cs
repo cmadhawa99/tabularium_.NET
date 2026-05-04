@@ -2589,15 +2589,6 @@ namespace ArchivumWpf.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Application Title.
-        /// </summary>
-        public static string Settings_AppTitle {
-            get {
-                return ResourceManager.GetString("Settings_AppTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to AUTOMATED SQL BACKUPS.
         /// </summary>
         public static string Settings_AutoBackups {
@@ -2963,24 +2954,6 @@ namespace ArchivumWpf.Localization {
         public static string Settings_TestConnection {
             get {
                 return ResourceManager.GetString("Settings_TestConnection", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to System Theme.
-        /// </summary>
-        public static string Settings_UITheme {
-            get {
-                return ResourceManager.GetString("Settings_UITheme", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Successfully exported {fullData.Count} records to CSV.
-        /// </summary>
-        public static string test {
-            get {
-                return ResourceManager.GetString("test", resourceCulture);
             }
         }
     }

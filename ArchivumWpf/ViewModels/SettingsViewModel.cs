@@ -23,17 +23,18 @@ public partial class SettingsViewModel : ObservableObject
     private readonly string _appSettingsPath;
     
     [ObservableProperty] private string _organizationName =  string.Empty;
-    [ObservableProperty] private string _appTitle = string.Empty;
     [ObservableProperty] private string _currentUser  = string.Empty;
+    [ObservableProperty] private string _selectedTimeFormat = string.Empty;
     [ObservableProperty] private string _selectedLanguage  =  string.Empty;
-    [ObservableProperty] private string _selectedTheme = string.Empty;
     [ObservableProperty] private int _defaultPaginationSize;
+    [ObservableProperty] private string _selectedWindowMode = string.Empty;
     [ObservableProperty] private string _defaultExportDirectory  = string.Empty;
   
     
     public ObservableCollection<string> AvailableLanguages { get; } = new() { "English", "Sinhala", "Tamil" };
-    public ObservableCollection<string> AvailableThemes { get; } = new() { "Dark", "Light" };
     public ObservableCollection<int> PaginationOptions { get; } = new() { 25, 50, 100, 250, 500 };
+    public ObservableCollection<string> AvailableTimeFormats { get; } = new() { "12-Hour (AM/PM)", "24-Hour" };
+    public ObservableCollection<string> AvailableWindowModes { get; } = new() { "Normal", "Full Screen" };
     
     [ObservableProperty] private string _dbHost = string.Empty;
     [ObservableProperty] private string _dbName = string.Empty;
@@ -68,11 +69,11 @@ public partial class SettingsViewModel : ObservableObject
         var prefs = _preferencesService.GetPreferences();
         
         OrganizationName = prefs.OrganizationName;
-        AppTitle = prefs.AppTitle;
         CurrentUser = prefs.CurrentUser;
-        SelectedLanguage =  prefs.Language;
-        SelectedTheme = prefs.Theme;
+        SelectedTimeFormat = prefs.TimeFormat ?? "12-Hour (AM/PM)";
+        SelectedWindowMode = prefs.WindowMode ?? "Normal";
         DefaultPaginationSize = prefs.DefaultPaginationSize;
+        SelectedWindowMode = prefs.
         DefaultExportDirectory = prefs.DefaultExportDirectory;
         AutoBackupEnabled = prefs.AutoBackupEnabled;
         AutoBackupDirectory = prefs.AutoBackupDirectory;
@@ -180,11 +181,11 @@ public partial class SettingsViewModel : ObservableObject
         var prefs = new UserPreferences()
         {
             OrganizationName = this.OrganizationName,
-            AppTitle = this.AppTitle,
             CurrentUser = this.CurrentUser,
             Language = this.SelectedLanguage,
-            Theme = this.SelectedTheme,
+            TimeFormat = this.SelectedTimeFormat,
             DefaultPaginationSize = this.DefaultPaginationSize,
+            WindowMode = this.SelectedWindowMode,
             DefaultExportDirectory = this.DefaultExportDirectory,
             AutoBackupEnabled = this.AutoBackupEnabled,
             AutoBackupDirectory = this.AutoBackupDirectory,

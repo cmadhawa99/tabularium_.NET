@@ -11,11 +11,11 @@ public class SectorItem
 public class UserPreferences
 {
     public string OrganizationName { get; set; } = "Weligepola Divisional Council";
-    public string AppTitle { get; set; } = "Archivum";
     public string CurrentUser { get; set; } = "Admin";
+    public string TimeFormat { get; set; } = "12-Hour (AM/PM)";
     public string Language { get; set; } = "English";
-    public string Theme { get; set; } = "Dark";
     public int DefaultPaginationSize { get; set; } = 50;
+    public string WindowMode { get; set; } = "Normal";
     public string DefaultExportDirectory { get; set; } = "C:\\";
     
     public bool AutoBackupEnabled { get; set; } = false;

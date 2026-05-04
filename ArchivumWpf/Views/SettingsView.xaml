@@ -207,12 +207,12 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/> <ColumnDefinition Width="20"/> <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    
+    
                                     <StackPanel Grid.Column="0">
-                                        <TextBlock Text="{x:Static loc:Strings.Settings_AppTitle}" Style="{StaticResource FormLabel}"/>
-                                        <TextBox Text="{Binding AppTitle}" Style="{StaticResource CleanTextBox}"/>
+                                        <TextBlock Text="{x:Static loc:Strings.Settings_CurrentUser}" Style="{StaticResource FormLabel}"/>
+                                        <TextBox Text="{Binding CurrentUser}" Style="{StaticResource CleanTextBox}"/>
                                     </StackPanel>
-                                    
+    
                                     <StackPanel Grid.Column="2">
                                         <TextBlock Text="{x:Static loc:Strings.Settings_OrgName}" Style="{StaticResource FormLabel}"/>
                                         <TextBox Text="{Binding OrganizationName}" Style="{StaticResource CleanTextBox}"/>
@@ -232,15 +232,15 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/> <ColumnDefinition Width="20"/> <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    
+    
                                     <StackPanel Grid.Column="0">
-                                        <TextBlock Text="{x:Static loc:Strings.Settings_CurrentUser}" Style="{StaticResource FormLabel}"/>
-                                        <TextBox Text="{Binding CurrentUser}" Style="{StaticResource CleanTextBox}"/>
-                                    </StackPanel>
-                                    
-                                    <StackPanel Grid.Column="2">
                                         <TextBlock Text="{x:Static loc:Strings.Settings_SysLanguage}" Style="{StaticResource FormLabel}"/>
                                         <ComboBox ItemsSource="{Binding AvailableLanguages}" SelectedItem="{Binding SelectedLanguage}" Style="{StaticResource CleanComboBox}"/>
+                                    </StackPanel>
+    
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Text="System Time Format" Style="{StaticResource FormLabel}"/>
+                                        <ComboBox ItemsSource="{Binding AvailableTimeFormats}" SelectedItem="{Binding SelectedTimeFormat}" Style="{StaticResource CleanComboBox}"/>
                                     </StackPanel>
                                 </Grid>
                             </StackPanel>
@@ -257,15 +257,15 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/> <ColumnDefinition Width="20"/> <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    
+    
                                     <StackPanel Grid.Column="0">
                                         <TextBlock Text="{x:Static loc:Strings.Settings_DefPageSize}" Style="{StaticResource FormLabel}"/>
                                         <ComboBox ItemsSource="{Binding PaginationOptions}" SelectedItem="{Binding DefaultPaginationSize}" Style="{StaticResource CleanComboBox}"/>
                                     </StackPanel>
-                                    
+    
                                     <StackPanel Grid.Column="2">
-                                        <TextBlock Text="{x:Static loc:Strings.Settings_UITheme}" Style="{StaticResource FormLabel}"/>
-                                        <ComboBox ItemsSource="{Binding AvailableThemes}" SelectedItem="{Binding SelectedTheme}" Style="{StaticResource CleanComboBox}"/>
+                                        <TextBlock Text="Default Window Mode" Style="{StaticResource FormLabel}"/>
+                                        <ComboBox ItemsSource="{Binding AvailableWindowModes}" SelectedItem="{Binding SelectedWindowMode}" Style="{StaticResource CleanComboBox}"/>
                                     </StackPanel>
                                 </Grid>
 
