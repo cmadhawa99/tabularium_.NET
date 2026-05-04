@@ -926,4 +926,7 @@
     <data name="Dis_TotalRecords" xml:space="preserve">
         <value>මුළු වාර්තා ගණන:</value>
     </data>
+    <data name="test" xml:space="preserve">
+        <value>වාර්තා {fullData.Count}ක් සාර්ථකව CSV වෙත අපනයනය කරන ලදී.</value>
+    </data>
 </root>

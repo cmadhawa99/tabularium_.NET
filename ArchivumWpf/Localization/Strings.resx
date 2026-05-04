@@ -990,4 +990,7 @@
     <data name="Dis_TotalRecordsPending" xml:space="preserve">
         <value>Total Pending Records:</value>
     </data>
+    <data name="test" xml:space="preserve">
+        <value>Successfully exported {fullData.Count} records to CSV</value>
+    </data>
 </root>

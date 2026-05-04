@@ -2974,5 +2974,14 @@ namespace ArchivumWpf.Localization {
                 return ResourceManager.GetString("Settings_UITheme", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Successfully exported {fullData.Count} records to CSV.
+        /// </summary>
+        public static string test {
+            get {
+                return ResourceManager.GetString("test", resourceCulture);
+            }
+        }
     }
 }

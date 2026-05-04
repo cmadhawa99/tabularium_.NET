@@ -268,12 +268,22 @@ public partial class ReportsViewModel : ObservableObject
             csv.AppendLine(string.Join(",", row));
         }
 
-        await File.WriteAllTextAsync(dialog.FileName, csv.ToString());
-        
-        
-        
-        ShowStatus($"Successfully exported {fullData.Count} records to CSV.", "#4CAF50");
-        IsProcessing = false;
+        try
+        {
+            await File.WriteAllTextAsync(dialog.FileName, csv.ToString(), new System.Text.UTF8Encoding(true));
+            ShowStatus($"Successfully exported {fullData.Count} records to CSV.", "#4CAF50");
+        }
+        catch (IOException)
+        {
+            MessageBox.Show(
+                "The file is currently open in another program (like Excel). Please close the file and try again.",
+                "File in Use", MessageBoxButton.OK, MessageBoxImage.Error);
+            ShowStatus("Export failed: File is in use.", "#F44336");
+        }
+        finally
+        {
+            IsProcessing = false;
+        }
     }
 
     [RelayCommand]
@@ -394,11 +404,23 @@ public partial class ReportsViewModel : ObservableObject
                 dataGrid.Style.Border.OutsideBorderColor = XLColor.Gray;
                 
             }
+
+            try
+            {
+                workbook.SaveAs(dialog.FileName);
+                ShowStatus($"Successfully exported {fullData.Count} records to Excel.", "#4CAF50");
+            }
+            catch (IOException)
+            {
+                MessageBox.Show("The file is currently open in another program (like Excel). Please close the file and try again.", 
+                    "File in Use", MessageBoxButton.OK, MessageBoxImage.Error);
+                ShowStatus("Export failed: File is in use.", "#F44336");
+            }
             
-            workbook.SaveAs(dialog.FileName);
+
         }
 
-        ShowStatus($"Successfully exported {fullData.Count} records to Excel.", "#4CAF50");
+        
         IsProcessing = false;
     }
 
