@@ -53,138 +53,157 @@
         </Grid.ColumnDefinitions>
 
         <Border Grid.Column="0" Background="{DynamicResource SidebarBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,0,1,0" Panel.ZIndex="10">
-            <StackPanel Margin="0,40,0,0">
-                
-                <TextBlock Text="{x:Static loc:Strings.Main_BrandTitle}" Foreground="{DynamicResource PrimaryAccent}" FontSize="24" FontWeight="Bold" FontFamily="Segoe UI" HorizontalAlignment="Left" Margin="25,0,25,2" TextWrapping="Wrap"/>
-                <TextBlock Text="{x:Static loc:Strings.Main_BrandSubtitle}" Foreground="{DynamicResource TextMuted}" FontSize="11" FontWeight="SemiBold" HorizontalAlignment="Left" Margin="25,0,25,40" TextWrapping="Wrap"/>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/> <!-- Top section pushes down -->
+                    <RowDefinition Height="Auto"/> <!-- Bottom section for clock -->
+                </Grid.RowDefinitions>
 
-                <Button Command="{Binding NavigateToDashboardCommand}">
-                    <Button.Style>
-                        <Style TargetType="Button" BasedOn="{StaticResource SidebarNavButton}">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding ActivePage}" Value="Dashboard">
-                                    <Setter Property="Foreground" Value="{DynamicResource PrimaryAccent}"/>
-                                    <Setter Property="BorderBrush" Value="{DynamicResource PrimaryAccent}"/>
-                                    <Setter Property="Background" Value="#0A000000"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
-                    <StackPanel Orientation="Horizontal">
-                        <fa:ImageAwesome Icon="PieChart" Width="16" Height="16" Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" Margin="0,0,15,0"/>
-                        <TextBlock Text="{x:Static loc:Strings.Main_NavDashboard}" FontWeight="SemiBold" FontSize="13" VerticalAlignment="Center"/>
-                    </StackPanel>
-                </Button>
-                
-                <Button Command="{Binding NavigateToSearchCommand}">
-                    <Button.Style>
-                        <Style TargetType="Button" BasedOn="{StaticResource SidebarNavButton}">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding ActivePage}" Value="Search">
-                                    <Setter Property="Foreground" Value="{DynamicResource PrimaryAccent}"/>
-                                    <Setter Property="BorderBrush" Value="{DynamicResource PrimaryAccent}"/>
-                                    <Setter Property="Background" Value="#0A000000"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
-                    <StackPanel Orientation="Horizontal">
-                        <fa:ImageAwesome Icon="Search" Width="16" Height="16" Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" Margin="0,0,15,0"/>
-                        <TextBlock Text="{x:Static loc:Strings.Main_NavSearch}" FontWeight="SemiBold" FontSize="13" VerticalAlignment="Center"/>
-                    </StackPanel>
-                </Button>
-                
-                <Button Command="{Binding NavigateToCirculationCommand}">
-                    <Button.Style>
-                        <Style TargetType="Button" BasedOn="{StaticResource SidebarNavButton}">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding ActivePage}" Value="Circulation">
-                                    <Setter Property="Foreground" Value="{DynamicResource PrimaryAccent}"/>
-                                    <Setter Property="BorderBrush" Value="{DynamicResource PrimaryAccent}"/>
-                                    <Setter Property="Background" Value="#0A000000"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
-                    <StackPanel Orientation="Horizontal">
-                        <fa:ImageAwesome Icon="Exchange" Width="16" Height="16" Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" Margin="0,0,15,0"/>
-                        <TextBlock Text="{x:Static loc:Strings.Main_NavCirculation}" FontWeight="SemiBold" FontSize="13" VerticalAlignment="Center"/>
-                    </StackPanel>
-                </Button>
-                
-                <Button Command="{Binding NavigateToAddFileCommand}">
-                    <Button.Style>
-                        <Style TargetType="Button" BasedOn="{StaticResource SidebarNavButton}">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding ActivePage}" Value="Entry">
-                                    <Setter Property="Foreground" Value="{DynamicResource PrimaryAccent}"/>
-                                    <Setter Property="BorderBrush" Value="{DynamicResource PrimaryAccent}"/>
-                                    <Setter Property="Background" Value="#0A000000"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
-                    <StackPanel Orientation="Horizontal">
-                        <fa:ImageAwesome Icon="Plus" Width="16" Height="16" Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" Margin="0,0,15,0"/>
-                        <TextBlock Text="{x:Static loc:Strings.Main_NavNewEntry}" FontWeight="SemiBold" FontSize="13" VerticalAlignment="Center"/>
-                    </StackPanel>
-                </Button>
+                <!-- TOP NAVIGATION -->
+                <StackPanel Grid.Row="0" Margin="0,40,0,0">
+                    
+                    <TextBlock Text="{x:Static loc:Strings.Main_BrandTitle}" Foreground="{DynamicResource PrimaryAccent}" FontSize="24" FontWeight="Bold" FontFamily="Segoe UI" HorizontalAlignment="Left" Margin="25,0,25,2" TextWrapping="Wrap"/>
+                    <TextBlock Text="{x:Static loc:Strings.Main_BrandSubtitle}" Foreground="{DynamicResource TextMuted}" FontSize="11" FontWeight="SemiBold" HorizontalAlignment="Left" Margin="25,0,25,40" TextWrapping="Wrap"/>
 
-                <Button Command="{Binding NavigateToDisposalCommand}">
-                    <Button.Style>
-                        <Style TargetType="Button" BasedOn="{StaticResource SidebarNavButton}">
-                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding ActivePage}" Value="Disposal">
-                                    <Setter Property="Foreground" Value="{DynamicResource PrimaryAccent}"/>
-                                    <Setter Property="BorderBrush" Value="{DynamicResource PrimaryAccent}"/>
-                                    <Setter Property="Background" Value="#0A000000"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
-                    <StackPanel Orientation="Horizontal">
-                         <fa:ImageAwesome Icon="Trash" Width="16" Height="16" Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" Margin="0,0,15,0"/>
-                        <TextBlock Text="{x:Static loc:Strings.Main_NavDisposal}" FontWeight="SemiBold" FontSize="13" VerticalAlignment="Center"/>
-                    </StackPanel>
-                </Button>
-                 
-                <Button Command="{Binding NavigateToReportsCommand}">
-                    <Button.Style>
-                        <Style TargetType="Button" BasedOn="{StaticResource SidebarNavButton}">
-                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding ActivePage}" Value="Reports">
-                                    <Setter Property="Foreground" Value="{DynamicResource PrimaryAccent}"/>
-                                    <Setter Property="BorderBrush" Value="{DynamicResource PrimaryAccent}"/>
-                                    <Setter Property="Background" Value="#0A000000"/>
-                                </DataTrigger>
-                             </Style.Triggers>
-                        </Style>
-                    </Button.Style>
-                    <StackPanel Orientation="Horizontal">
-                         <fa:ImageAwesome Icon="Print" Width="16" Height="16" Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" Margin="0,0,15,0"/>
-                        <TextBlock Text="{x:Static loc:Strings.Main_NavReports}" FontWeight="SemiBold" FontSize="13" VerticalAlignment="Center"/>
-                    </StackPanel>
-                </Button>
-                 
-                <Button Command="{Binding NavigateToSettingsCommand}" Margin="0,20,0,0">
-                    <Button.Style>
-                        <Style TargetType="Button" BasedOn="{StaticResource SidebarNavButton}">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding ActivePage}" Value="Settings">
-                                    <Setter Property="Foreground" Value="{DynamicResource PrimaryAccent}"/>
-                                    <Setter Property="BorderBrush" Value="{DynamicResource PrimaryAccent}"/>
-                                    <Setter Property="Background" Value="#0A000000"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
-                    <StackPanel Orientation="Horizontal">
-                        <fa:ImageAwesome Icon="Cog" Width="16" Height="16" Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" Margin="0,0,15,0"/>
-                        <TextBlock Text="{x:Static loc:Strings.Main_NavSettings}" FontWeight="SemiBold" FontSize="13" VerticalAlignment="Center"/>
-                    </StackPanel>
-                </Button>
+                    <Button Command="{Binding NavigateToDashboardCommand}">
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource SidebarNavButton}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ActivePage}" Value="Dashboard">
+                                        <Setter Property="Foreground" Value="{DynamicResource PrimaryAccent}"/>
+                                        <Setter Property="BorderBrush" Value="{DynamicResource PrimaryAccent}"/>
+                                        <Setter Property="Background" Value="#0A000000"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                        <StackPanel Orientation="Horizontal">
+                            <fa:ImageAwesome Icon="PieChart" Width="16" Height="16" Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" Margin="0,0,15,0"/>
+                            <TextBlock Text="{x:Static loc:Strings.Main_NavDashboard}" FontWeight="SemiBold" FontSize="13" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    
+                    <Button Command="{Binding NavigateToSearchCommand}">
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource SidebarNavButton}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ActivePage}" Value="Search">
+                                        <Setter Property="Foreground" Value="{DynamicResource PrimaryAccent}"/>
+                                        <Setter Property="BorderBrush" Value="{DynamicResource PrimaryAccent}"/>
+                                        <Setter Property="Background" Value="#0A000000"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                        <StackPanel Orientation="Horizontal">
+                            <fa:ImageAwesome Icon="Search" Width="16" Height="16" Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" Margin="0,0,15,0"/>
+                            <TextBlock Text="{x:Static loc:Strings.Main_NavSearch}" FontWeight="SemiBold" FontSize="13" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    
+                    <Button Command="{Binding NavigateToCirculationCommand}">
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource SidebarNavButton}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ActivePage}" Value="Circulation">
+                                        <Setter Property="Foreground" Value="{DynamicResource PrimaryAccent}"/>
+                                        <Setter Property="BorderBrush" Value="{DynamicResource PrimaryAccent}"/>
+                                        <Setter Property="Background" Value="#0A000000"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                        <StackPanel Orientation="Horizontal">
+                            <fa:ImageAwesome Icon="Exchange" Width="16" Height="16" Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" Margin="0,0,15,0"/>
+                            <TextBlock Text="{x:Static loc:Strings.Main_NavCirculation}" FontWeight="SemiBold" FontSize="13" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    
+                    <Button Command="{Binding NavigateToAddFileCommand}">
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource SidebarNavButton}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ActivePage}" Value="Entry">
+                                        <Setter Property="Foreground" Value="{DynamicResource PrimaryAccent}"/>
+                                        <Setter Property="BorderBrush" Value="{DynamicResource PrimaryAccent}"/>
+                                        <Setter Property="Background" Value="#0A000000"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                        <StackPanel Orientation="Horizontal">
+                            <fa:ImageAwesome Icon="Plus" Width="16" Height="16" Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" Margin="0,0,15,0"/>
+                            <TextBlock Text="{x:Static loc:Strings.Main_NavNewEntry}" FontWeight="SemiBold" FontSize="13" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
 
-            </StackPanel>
+                    <Button Command="{Binding NavigateToDisposalCommand}">
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource SidebarNavButton}">
+                                 <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ActivePage}" Value="Disposal">
+                                        <Setter Property="Foreground" Value="{DynamicResource PrimaryAccent}"/>
+                                        <Setter Property="BorderBrush" Value="{DynamicResource PrimaryAccent}"/>
+                                        <Setter Property="Background" Value="#0A000000"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                        <StackPanel Orientation="Horizontal">
+                             <fa:ImageAwesome Icon="Trash" Width="16" Height="16" Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" Margin="0,0,15,0"/>
+                            <TextBlock Text="{x:Static loc:Strings.Main_NavDisposal}" FontWeight="SemiBold" FontSize="13" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                     
+                    <Button Command="{Binding NavigateToReportsCommand}">
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource SidebarNavButton}">
+                                 <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ActivePage}" Value="Reports">
+                                        <Setter Property="Foreground" Value="{DynamicResource PrimaryAccent}"/>
+                                        <Setter Property="BorderBrush" Value="{DynamicResource PrimaryAccent}"/>
+                                        <Setter Property="Background" Value="#0A000000"/>
+                                    </DataTrigger>
+                                 </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                        <StackPanel Orientation="Horizontal">
+                             <fa:ImageAwesome Icon="Print" Width="16" Height="16" Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" Margin="0,0,15,0"/>
+                            <TextBlock Text="{x:Static loc:Strings.Main_NavReports}" FontWeight="SemiBold" FontSize="13" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                     
+                    <Button Command="{Binding NavigateToSettingsCommand}" Margin="0,20,0,0">
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource SidebarNavButton}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ActivePage}" Value="Settings">
+                                        <Setter Property="Foreground" Value="{DynamicResource PrimaryAccent}"/>
+                                        <Setter Property="BorderBrush" Value="{DynamicResource PrimaryAccent}"/>
+                                        <Setter Property="Background" Value="#0A000000"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                        <StackPanel Orientation="Horizontal">
+                            <fa:ImageAwesome Icon="Cog" Width="16" Height="16" Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" Margin="0,0,15,0"/>
+                            <TextBlock Text="{x:Static loc:Strings.Main_NavSettings}" FontWeight="SemiBold" FontSize="13" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+
+                </StackPanel>
+
+                <!-- BOTTOM DIGITAL CLOCK -->
+                <!-- BOTTOM DIGITAL CLOCK -->
+                <StackPanel x:Name="ClockPanel" Grid.Row="1" Margin="25,0,25,30">
+                    <TextBlock Text="{Binding CurrentTime, StringFormat={}{0:hh:mm:ss tt}}" 
+                               Foreground="{DynamicResource PrimaryAccent}" FontSize="24" FontWeight="Bold" FontFamily="Segoe UI" Margin="0,0,0,2"/>
+               
+                    <TextBlock Text="{Binding CurrentTime, StringFormat={}{0:dddd, MMMM d, yyyy}}" 
+                               Foreground="{DynamicResource TextMuted}" FontSize="12" FontWeight="SemiBold" TextWrapping="Wrap"/>
+                </StackPanel>
+                
+            </Grid>
         </Border>
 
         <Grid Grid.Column="1" Background="Transparent">

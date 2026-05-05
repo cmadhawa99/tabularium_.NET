@@ -47,6 +47,7 @@ public partial class App : Application
         services.AddSingleton<EntryViewModel>();
         services.AddSingleton<ReportsViewModel>();
         services.AddSingleton<SettingsViewModel>();
+        services.AddSingleton<ClockViewModel>();
         
         services.AddSingleton<MainWindow>();
 

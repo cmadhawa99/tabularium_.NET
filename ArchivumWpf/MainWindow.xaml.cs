@@ -9,6 +9,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ArchivumWpf.ViewModels;
+using MaterialDesignThemes.Wpf;
 
 namespace ArchivumWpf;
 
@@ -17,8 +18,10 @@ namespace ArchivumWpf;
 /// </summary>
 public partial class MainWindow : Window
 {
-    public MainWindow()
+    public MainWindow(ClockViewModel clockViewModel)
     {
         InitializeComponent();
+        ClockPanel.DataContext = clockViewModel;
+        
     }
 }
