@@ -263,7 +263,7 @@ public partial class ReportsViewModel : ObservableObject
             if (IncStatus) row.Add(file.CurrentStatus ?? "");
             if (IncToBeRemovedDate) row.Add(file.ToBeRemovedDate?.ToString("yyyy-MM-dd") ?? "");
             if (IncRemovedDate) row.Add(file.RemovedDate?.ToString("yyyy-MM-dd") ?? "");
-            if (IncIsRemoved) row.Add(file.IsRemoved.ToString());
+            if (IncIsRemoved) row.Add(file.IsRemoved ? "Yes" : "No");
 
             csv.AppendLine(string.Join(",", row));
         }
@@ -374,7 +374,7 @@ public partial class ReportsViewModel : ObservableObject
                 if (IncStatus) ws.Cell(row, c++).Value = file.CurrentStatus;
                 if (IncToBeRemovedDate) ws.Cell(row, c++).Value = file.ToBeRemovedDate?.ToString("yyyy-MM-dd");
                 if (IncRemovedDate) ws.Cell(row, c++).Value = file.RemovedDate?.ToString("yyyy-MM-dd");
-                if (IncIsRemoved) ws.Cell(row, c++).Value = file.IsRemoved;
+                if (IncIsRemoved) ws.Cell(row, c++).Value = file.IsRemoved ? "Yes" : "No";
 
 
                 if (useColors && !string.IsNullOrWhiteSpace(file.Sector))

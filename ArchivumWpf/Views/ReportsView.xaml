@@ -12,6 +12,7 @@
         <converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
         <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
         <converters:BindingProxy x:Key="Proxy" Data="{Binding}" />
+        <converters:BooleanToYesNoConverter x:Key="YesNoConverter"/>
 
         <Style x:Key="RibbonTextBox" TargetType="TextBox">
             <Setter Property="Background" Value="{DynamicResource WindowBackground}"/>
@@ -640,7 +641,7 @@
                 
                 <DataGridTextColumn Header="{x:Static loc:Strings.Rep_GridColScheduledRemoval}" Binding="{Binding ToBeRemovedDate, StringFormat=yyyy-MM-dd}" Visibility="{Binding Data.IncToBeRemovedDate, Source={StaticResource Proxy}, Converter={StaticResource BoolToVisConverter}}" Foreground="{DynamicResource DangerAccent}" Width="140"/>
                 <DataGridTextColumn Header="{x:Static loc:Strings.Rep_GridColRemovedDate}" Binding="{Binding RemovedDate, StringFormat=yyyy-MM-dd}" Visibility="{Binding Data.IncRemovedDate, Source={StaticResource Proxy}, Converter={StaticResource BoolToVisConverter}}" Foreground="{DynamicResource DangerAccent}" Width="140"/>
-                <DataGridTextColumn Header="{x:Static loc:Strings.Rep_GridColIsRemoved}" Binding="{Binding IsRemoved}" Visibility="{Binding Data.IncIsRemoved, Source={StaticResource Proxy}, Converter={StaticResource BoolToVisConverter}}" Foreground="{DynamicResource DangerAccent}" Width="100"/>
+                 <DataGridTextColumn Header="{x:Static loc:Strings.Rep_GridColIsRemoved}" Binding="{Binding IsRemoved, Converter={StaticResource YesNoConverter}}" Visibility="{Binding Data.IncIsRemoved, Source={StaticResource Proxy}, Converter={StaticResource BoolToVisConverter}}" Foreground="{DynamicResource DangerAccent}" Width="100"/>
             </DataGrid.Columns>
         </DataGrid>
 
