@@ -76,7 +76,8 @@ public partial class DisposalViewModel : ObservableObject
 
     private async Task LoadTablesAsync()
     {
-        
+        await LoadQueueAsync();
+        await LoadHistoryAsync();
     }
 
     private async Task LoadQueueAsync()
@@ -117,6 +118,70 @@ public partial class DisposalViewModel : ObservableObject
                 h.File.SectorColorHex = colorMap.ContainsKey(h.File.Sector) ? colorMap[h.File.Sector] : "#8f9bb3";
             }
             DisposedHistory.Add(h);
+        }
+    }
+
+    partial void OnQueueSearchQueryChanged(string value)
+    {
+        QueueCurrentPage = 1;
+        _ = LoadQueueAsync();
+    }
+
+    partial void OnIsStrictQueueSearchChanged(bool value)
+    {
+        QueueCurrentPage = 1;
+        _ = LoadQueueAsync();
+    }
+
+    partial void OnHistorySearchQueryChanged(string value)
+    {
+        HistoryCurrentPage = 1;
+        _ = LoadHistoryAsync();
+    }
+
+    partial void OnIsStrictHistorySearchChanged(bool value)
+    {
+        HistoryCurrentPage = 1;
+        _ = LoadHistoryAsync();
+    }
+
+    [RelayCommand]
+    private async Task PreviousQueuePageAsync()
+    {
+        if (QueueCurrentPage > 1)
+        {
+            QueueCurrentPage--;
+            await LoadQueueAsync();
+        }
+    }
+
+    [RelayCommand]
+    private async Task NextQueuePageAsync()
+    {
+        if (QueueCurrentPage < QueueTotalPages)
+        {
+            QueueCurrentPage++;
+            await LoadQueueAsync();
+        }
+    }
+
+    [RelayCommand]
+    private async Task PreviousHistoryPageAsync()
+    {
+        if (HistoryCurrentPage > 1)
+        {
+            HistoryCurrentPage--;
+            await LoadHistoryAsync();
+        } 
+    }
+
+    [RelayCommand]
+    private async Task NextHistoryPageAsync()
+    {
+        if (HistoryCurrentPage < HistoryTotalPages)
+        {
+            HistoryCurrentPage++;
+            await LoadHistoryAsync();
         }
     }
     
