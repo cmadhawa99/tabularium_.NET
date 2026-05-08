@@ -53,6 +53,50 @@ public class AppDbContext : DbContext
             .Property(u => u.TotpSecret)
             .HasConversion(stringEncryptionConverter);
         
+        //Borrow
+        
+        modelBuilder.Entity<BorrowRecord>()
+            .Property(b => b.BorrowerName)
+            .HasConversion(stringEncryptionConverter);
+        
+        modelBuilder.Entity<BorrowRecord>()
+            .Property(b => b.SnapshotFileName)
+            .HasConversion(stringEncryptionConverter);
+        
+        modelBuilder.Entity<BorrowRecord>()
+            .Property(b => b.SnapshotSubjectNumber)
+            .HasConversion(stringEncryptionConverter);
+        
+        modelBuilder.Entity<BorrowRecord>()
+            .Property(b => b.SnapshotFileType)
+            .HasConversion(stringEncryptionConverter);
+        
+        //Disposed
+        
+        modelBuilder.Entity<DisposedRecord>()
+            .Property(d => d.Reason)
+            .HasConversion(stringEncryptionConverter);
+        
+        modelBuilder.Entity<DisposedRecord>()
+            .Property(d => d.AuthorizedBy)
+            .HasConversion(stringEncryptionConverter);
+        
+        //EntryHistory
+        
+        modelBuilder.Entity<EntryHistoryRecord>()
+            .Property(e => e.SubjectNumber)
+            .HasConversion(stringEncryptionConverter);
+        
+        modelBuilder.Entity<EntryHistoryRecord>()
+            .Property(e => e.FileName)
+            .HasConversion(stringEncryptionConverter);
+        
+        modelBuilder.Entity<EntryHistoryRecord>()
+            .Property(e => e.FileType)
+            .HasConversion(stringEncryptionConverter);
+        
+        
+        
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
