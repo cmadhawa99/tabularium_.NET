@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ArchivumWpf.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260505040541_initlalCommit")]
+    [Migration("20260508082302_initlalCommit")]
     partial class initlalCommit
     {
         /// <inheritdoc />
@@ -268,7 +268,11 @@ namespace ArchivumWpf.Migrations
                     b.Property<string>("FileName")
                         .IsRequired()
                         .HasColumnType("text")
-                        .HasColumnName("file_name");
+                        .HasColumnName("file_name_a");
+
+                    b.Property<string>("FileNameHash")
+                        .HasColumnType("text")
+                        .HasColumnName("file_name_b");
 
                     b.Property<int?>("FileNumber")
                         .HasColumnType("integer")

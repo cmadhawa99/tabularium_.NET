@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.IO;
 using Microsoft.EntityFrameworkCore;
 using ArchivumWpf.Models;
+using ArchivumWpf.Services;
 using Bogus.DataSets;
 
 namespace ArchivumWpf.Services;
@@ -67,6 +68,8 @@ public class ArchiveService : IArchiveService
 {
     // CHANGED to the Factory to prevent memory leaks and tracking collisions
     private readonly IDbContextFactory<AppDbContext> _contextFactory;
+
+    private readonly CryptoService _cryptoService = new CryptoService("W5bZnVXXs+eq9GLHdLTU6btIYmpHEQ9NLfxZjWAb4mI=");
 
     public ArchiveService(IDbContextFactory<AppDbContext> contextFactory)
     {
@@ -140,9 +143,11 @@ public class ArchiveService : IArchiveService
 
             else
             {
+                string searchHash = _cryptoService.GetBlindIndex(searchTerm);
+                
                 query = query.Where(f => f.RrNumber.ToLower().Contains(searchTerm) || 
-                                         f.FileName.ToLower().Contains(searchTerm) ||
-                                         f.Sector.ToLower().Contains(searchTerm));
+                                         f.Sector.ToLower().Contains(searchTerm) ||
+                                         f.FileNameHash == searchHash);
             }
         }
 
@@ -502,9 +507,13 @@ public class ArchiveService : IArchiveService
 
         if (!string.IsNullOrWhiteSpace(subjectNumber))
             query = query.Where(f => f.SubjectNumber != null && f.SubjectNumber.ToLower().Contains(subjectNumber.ToLower()));
-        
+
         if (!string.IsNullOrWhiteSpace(fileName))
-            query = query.Where(f => f.FileName.ToLower().Contains(fileName.ToLower()));
+        {
+            string hash = _cryptoService.GetBlindIndex(fileName.Trim());
+            query = query.Where(f => f.FileNameHash == hash);
+            
+        }
 
         if (!string.IsNullOrWhiteSpace(fileType))
             query = query.Where(f => f.FileType != null && f.FileType.ToLower().Contains(fileType.ToLower()));
@@ -763,10 +772,12 @@ public class ArchiveService : IArchiveService
             }
             else
             {
+                string searchHash = _cryptoService.GetBlindIndex(searchTerm);
+                
                 query = query.Where(f =>
                     f.RrNumber.ToLower().Contains(searchTerm) ||
                     f.Sector.ToLower().Contains(searchTerm) ||
-                    f.FileName.ToLower().Contains(searchTerm) ||
+                    f.FileNameHash == searchHash ||
                     f.ToBeRemovedDate.ToString().Contains(searchTerm)
                 );
             }
@@ -794,9 +805,11 @@ public class ArchiveService : IArchiveService
             }
             else
             {
+                string searchHash = _cryptoService.GetBlindIndex(searchTerm);
+                
                 query = query.Where(d =>
                     (d.File != null && d.File.RrNumber.ToLower().Contains(searchTerm)) ||
-                    (d.File != null && d.File.FileName.ToLower().Contains(searchTerm)) ||
+                    (d.File != null && d.File.FileNameHash == searchHash) ||
                     d.Reason.ToLower().Contains(searchTerm) ||
                     d.AuthorizedBy.ToLower().Contains(searchTerm) ||
                     d.RemovedDate.ToString().Contains(searchTerm)

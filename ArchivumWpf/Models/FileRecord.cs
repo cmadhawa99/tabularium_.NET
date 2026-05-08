@@ -26,8 +26,11 @@ public class FileRecord
     [Column("subject_number")]
     public string? SubjectNumber { get; set; }
 
-    [Column("file_name")]
+    [Column("file_name_a")]
     public string FileName { get; set; } = null!;
+    
+    [Column("file_name_b")]
+    public string? FileNameHash { get; set; }
 
     [Column("file_type")]
     public string? FileType { get; set; }

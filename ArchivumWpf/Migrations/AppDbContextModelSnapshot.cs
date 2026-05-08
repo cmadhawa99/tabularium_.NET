@@ -265,7 +265,11 @@ namespace ArchivumWpf.Migrations
                     b.Property<string>("FileName")
                         .IsRequired()
                         .HasColumnType("text")
-                        .HasColumnName("file_name");
+                        .HasColumnName("file_name_a");
+
+                    b.Property<string>("FileNameHash")
+                        .HasColumnType("text")
+                        .HasColumnName("file_name_b");
 
                     b.Property<int?>("FileNumber")
                         .HasColumnType("integer")

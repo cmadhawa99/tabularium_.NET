@@ -1,8 +1,12 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Text.Json.Nodes;
+using System.Threading;
+using System.Threading.Tasks;
 using ArchivumWpf.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ArchivumWpf.Services;
 
@@ -18,13 +22,38 @@ public class AppDbContext : DbContext
     public DbSet<FileRecord> FileRecords { get; set; }
     public DbSet<BorrowRecord> BorrowRecords { get; set; }
     public DbSet<User> Users { get; set; }
-    //public DbSet<DisposedRecord> DisposedRecords { get; set; }
-    
     public DbSet<EntryHistoryRecord> EntryHistoryRecords { get; set; }
-    
     public DbSet<DisposedRecord> DisposedRecords { get; set; }
-    
     public DbSet<ActivityLog> ActivityLogs { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        var cryptoService = new CryptoService("W5bZnVXXs+eq9GLHdLTU6btIYmpHEQ9NLfxZjWAb4mI=");
+
+        var stringEncryptionConverter = new ValueConverter<string, string>(
+            v => cryptoService.Encrypt(v),
+            v => cryptoService.Decrypt(v)
+            );
+        
+        modelBuilder.Entity<FileRecord>()
+            .Property(f => f.FileName)
+            .HasConversion(stringEncryptionConverter);
+        
+        modelBuilder.Entity<FileRecord>()
+            .Property(f => f.SubjectNumber)
+            .HasConversion(stringEncryptionConverter);
+        
+        modelBuilder.Entity<FileRecord>()
+            .Property(f => f.FileType)
+            .HasConversion(stringEncryptionConverter);
+        
+        modelBuilder.Entity<User>()
+            .Property(u => u.TotpSecret)
+            .HasConversion(stringEncryptionConverter);
+        
+    }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -43,5 +72,36 @@ public class AppDbContext : DbContext
                 }
             }
         }
+    }
+
+    public override int SaveChanges()
+    {
+        GenerateBlindIndexes();
+        return base.SaveChanges();
+    }
+
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        GenerateBlindIndexes();
+        return base.SaveChangesAsync(cancellationToken);
+    }
+
+    private void GenerateBlindIndexes()
+    {
+        var cryptoService = new CryptoService("W5bZnVXXs+eq9GLHdLTU6btIYmpHEQ9NLfxZjWAb4mI=");
+        
+        var entries = ChangeTracker.Entries<FileRecord>()
+            .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified);
+
+        foreach (var entry in entries)
+        {
+            if (entry.Property(e => e.FileName).IsModified || entry.State == EntityState.Added)
+            {
+                string unencryptedFileName = entry.Property(e => e.FileName).CurrentValue;
+                
+                entry.Entity.FileNameHash = cryptoService.GetBlindIndex(unencryptedFileName);
+            }
+        }
+        
     }
 }

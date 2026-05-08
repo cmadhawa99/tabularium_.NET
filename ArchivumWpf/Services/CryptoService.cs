@@ -64,5 +64,16 @@ namespace ArchivumWpf.Services
             return Encoding.UTF8.GetString(plainBytes);
 
         }
+
+        public string GetBlindIndex(string plainText)
+        {
+            if (string.IsNullOrEmpty(plainText)) return plainText;
+            
+            using (var hmac = new HMACSHA256(_key))
+            {
+                byte[] hasgBytes = hmac.ComputeHash(Encoding.UTF8.GetBytes (plainText.ToLowerInvariant()));
+                return Convert.ToBase64String(hasgBytes);
+            }
+        }
     }
 }
