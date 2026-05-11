@@ -30,7 +30,8 @@ public class AppDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        var cryptoService = new CryptoService("W5bZnVXXs+eq9GLHdLTU6btIYmpHEQ9NLfxZjWAb4mI=");
+        var masterKey = KeyVaultService.GetMasterKey();
+        var cryptoService = new CryptoService(masterKey);
 
         var stringEncryptionConverter = new ValueConverter<string, string>(
             v => cryptoService.Encrypt(v),
@@ -129,5 +130,6 @@ public class AppDbContext : DbContext
             }
         }
     }
+    
     
 }

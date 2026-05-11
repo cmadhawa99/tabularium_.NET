@@ -69,7 +69,7 @@ public class ArchiveService : IArchiveService
     // CHANGED to the Factory to prevent memory leaks and tracking collisions
     private readonly IDbContextFactory<AppDbContext> _contextFactory;
 
-    private readonly CryptoService _cryptoService = new CryptoService("W5bZnVXXs+eq9GLHdLTU6btIYmpHEQ9NLfxZjWAb4mI=");
+    private readonly CryptoService _cryptoService = new CryptoService(KeyVaultService.GetMasterKey());
 
     public ArchiveService(IDbContextFactory<AppDbContext> contextFactory)
     {
