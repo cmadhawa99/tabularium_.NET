@@ -17,7 +17,7 @@ public interface IArchiveService
 
     Task<(List<FileRecord> Items, int TotalCount)> SearchFilesPaginatedAsync(string searchTerm, string sectorFilter,
         int? yearFilter,
-        int? monthFilter, bool isRecentOnly, bool isAvailableOnly, bool isRemovedOnly, bool isStrictRrSearch, int pageNumber, int pageSize);
+        int? monthFilter, bool isRecentOnly, bool isAvailableOnly, bool isRemovedOnly, int pageNumber, int pageSize);
    
     Task<List<string>> GetExistingSectorsAsync();
     
@@ -55,9 +55,9 @@ public interface IArchiveService
     Task<List<DisposedRecord>> GetDisposedHistoryAsync();
     Task<int> GetTodayDisposalCountAsync();
     Task<(List<BorrowRecord> Items, int TotalCount)> GetBorrowHistoryPaginatedAsync (string searchTerm, int pageNumber, int pageSize);
-    Task<(List<EntryHistoryRecord> Items, int TotalCount)> GetEntryHistoryPaginatedAsync (string searchTerm, bool isStrictRrSearch, int pageNumber, int pageSize);
-    Task<(List<FileRecord> Items, int TotalCount)> GetPendingDisposalsPaginatedAsync(string searchTerm, bool isStrictRrSearch, int pageNumber, int pageSize);
-    Task<(List<DisposedRecord> Items, int TotalCount)> GetDisposedHistoryPaginatedAsync(string searchTerm, bool isStrictRrSearch, int pageNumber, int pageSize);
+    Task<(List<EntryHistoryRecord> Items, int TotalCount)> GetEntryHistoryPaginatedAsync (string searchTerm, int pageNumber, int pageSize);
+    Task<(List<FileRecord> Items, int TotalCount)> GetPendingDisposalsPaginatedAsync(string searchTerm, int pageNumber, int pageSize);
+    Task<(List<DisposedRecord> Items, int TotalCount)> GetDisposedHistoryPaginatedAsync(string searchTerm, int pageNumber, int pageSize);
 
     Task<IEnumerable<ActivityLog>> GetRecentActivitiesAsync(int limit = 15);
     Task LogActivityAsync(string serialNumber, string rrNumber, string actionType);
@@ -127,27 +127,18 @@ public class ArchiveService : IArchiveService
     //Search
 
     public async Task<(List<FileRecord> Items, int TotalCount)> SearchFilesPaginatedAsync(string searchTerm, string sectorFilter, int? yearFilter,
-    int? monthFilter, bool isRecentOnly, bool isAvailableOnly, bool isRemovedOnly, bool isStrictRrSearch, int pageNumber, int pageSize)
+    int? monthFilter, bool isRecentOnly, bool isAvailableOnly, bool isRemovedOnly, int pageNumber, int pageSize)
     {
         using var context = await _contextFactory.CreateDbContextAsync();
         var query = context.FileRecords.AsQueryable();
 
         if (!string.IsNullOrWhiteSpace(searchTerm))
         {
-            searchTerm = searchTerm.ToLower().Trim();
 
-            if (isStrictRrSearch)
             {
-                query = query.Where(f => f.RrNumber.ToLower() == searchTerm);
-            }
-
-            else
-            {
-                string searchHash = _cryptoService.GetBlindIndex(searchTerm);
-                
-                query = query.Where(f => f.RrNumber.ToLower().Contains(searchTerm) || 
-                                         f.Sector.ToLower().Contains(searchTerm) ||
-                                         f.FileNameHash == searchHash);
+                //string searchHash = _cryptoService.GetBlindIndex(searchTerm);
+                searchTerm = searchTerm.ToLower().Trim();
+                query = query.Where(f => f.RrNumber.ToLower().Contains(searchTerm));
             }
         }
 
@@ -453,29 +444,18 @@ public class ArchiveService : IArchiveService
             .FirstOrDefaultAsync();
     }
 
-    public async Task<(List<EntryHistoryRecord> Items, int TotalCount)> GetEntryHistoryPaginatedAsync(string searchTerm, bool isStrictRrSearch, int pageNumber, int pageSize)
+    public async Task<(List<EntryHistoryRecord> Items, int TotalCount)> GetEntryHistoryPaginatedAsync(string searchTerm, int pageNumber, int pageSize)
     {
         using var context = await _contextFactory.CreateDbContextAsync();
         var query = context.EntryHistoryRecords.AsQueryable();
 
         if (!string.IsNullOrWhiteSpace(searchTerm))
         {
-            searchTerm = searchTerm.ToLower();
 
-            if (isStrictRrSearch)
+
             {
-                query = query.Where(h => h.RrNumber.ToLower() == searchTerm);
-            }
-            else
-            {
-                query = query.Where(h => 
-                    h.RrNumber.ToLower().Contains(searchTerm) ||
-                    h.ActionType.ToLower().Contains(searchTerm) ||
-                    h.FileName.ToLower().Contains(searchTerm) ||
-                    (h.SubjectNumber != null && h.SubjectNumber.ToLower().Contains(searchTerm)) ||
-                    h.Sector.ToLower().Contains(searchTerm) ||
-                    h.Timestamp.ToString().Contains(searchTerm)
-                );
+                searchTerm = searchTerm.ToLower().Trim();
+                query = query.Where(h => h.RrNumber.ToLower().Contains(searchTerm));
             }
             
         }
@@ -507,13 +487,7 @@ public class ArchiveService : IArchiveService
 
         if (!string.IsNullOrWhiteSpace(subjectNumber))
             query = query.Where(f => f.SubjectNumber != null && f.SubjectNumber.ToLower().Contains(subjectNumber.ToLower()));
-
-        if (!string.IsNullOrWhiteSpace(fileName))
-        {
-            string hash = _cryptoService.GetBlindIndex(fileName.Trim());
-            query = query.Where(f => f.FileNameHash == hash);
-            
-        }
+        
 
         if (!string.IsNullOrWhiteSpace(fileType))
             query = query.Where(f => f.FileType != null && f.FileType.ToLower().Contains(fileType.ToLower()));
@@ -527,14 +501,12 @@ public class ArchiveService : IArchiveService
         if (!string.IsNullOrWhiteSpace(totalPages) && int.TryParse(totalPages, out int tp))
             query = query.Where(f => f.TotalPages == tp);
         
-        if (!string.IsNullOrWhiteSpace(shelfNumber) && int.TryParse(shelfNumber, out int sn))
-            query = query.Where(f => f.ShelfNumber == sn);
+        if (!string.IsNullOrWhiteSpace(shelfNumber))
+            query = query.Where(f => f.ShelfNumber == shelfNumber);
 
-        if (!string.IsNullOrWhiteSpace(deckNumber) && int.TryParse(deckNumber, out int dn))
-            query = query.Where(f => f.DeckNumber == dn);
-
-        if (!string.IsNullOrWhiteSpace(fileNumber) && int.TryParse(fileNumber, out int fn))
-            query = query.Where(f => f.FileNumber == fn);
+        if (!string.IsNullOrWhiteSpace(deckNumber))
+            query = query.Where(f => f.DeckNumber == deckNumber);
+        
         
         if (!string.IsNullOrWhiteSpace(currentStatus)) 
             query = query.Where(f => f.CurrentStatus.ToLower().Contains(currentStatus.ToLower()));
@@ -754,8 +726,7 @@ public class ArchiveService : IArchiveService
             .CountAsync(f => f.ToBeRemovedDate != null && f.ToBeRemovedDate <= today && f.IsRemoved == false);
     }
 
-    public async Task<(List<FileRecord> Items, int TotalCount)> GetPendingDisposalsPaginatedAsync(string searchTerm,
-        bool isStrictRrSearch, int pageNumber, int pageSize)
+    public async Task<(List<FileRecord> Items, int TotalCount)> GetPendingDisposalsPaginatedAsync(string searchTerm, int pageNumber, int pageSize)
     {
         using var context = await _contextFactory.CreateDbContextAsync();
         var query = context.FileRecords
@@ -764,23 +735,11 @@ public class ArchiveService : IArchiveService
 
         if (!string.IsNullOrWhiteSpace(searchTerm))
         {
-            searchTerm = searchTerm.ToLower();
+            
+                //string searchHash = _cryptoService.GetBlindIndex(searchTerm);
+                searchTerm = searchTerm.ToLower().Trim();
+                query = query.Where(f => f.RrNumber.ToLower().Contains(searchTerm));
 
-            if (isStrictRrSearch)
-            {
-                query = query.Where(f => f.RrNumber.ToLower() == searchTerm);
-            }
-            else
-            {
-                string searchHash = _cryptoService.GetBlindIndex(searchTerm);
-                
-                query = query.Where(f =>
-                    f.RrNumber.ToLower().Contains(searchTerm) ||
-                    f.Sector.ToLower().Contains(searchTerm) ||
-                    f.FileNameHash == searchHash ||
-                    f.ToBeRemovedDate.ToString().Contains(searchTerm)
-                );
-            }
         }
 
         query = query.OrderBy(f => f.ToBeRemovedDate);
@@ -790,31 +749,17 @@ public class ArchiveService : IArchiveService
         return (items, totalCount);
     }
 
-    public async Task<(List<DisposedRecord> Items, int TotalCount)> GetDisposedHistoryPaginatedAsync(string searchTerm,
-        bool isStrictRrSearch, int pageNumber, int pageSize)
+    public async Task<(List<DisposedRecord> Items, int TotalCount)> GetDisposedHistoryPaginatedAsync(string searchTerm, int pageNumber, int pageSize)
     {
         using var context = await _contextFactory.CreateDbContextAsync();
         var query = context.DisposedRecords.Include(d => d.File).AsQueryable();
 
         if (!string.IsNullOrWhiteSpace(searchTerm))
         {
-            searchTerm = searchTerm.ToLower();
-            if (isStrictRrSearch)
-            {
-                query = query.Where(d => d.File != null && d.File.RrNumber.ToLower() == searchTerm);
-            }
-            else
-            {
-                string searchHash = _cryptoService.GetBlindIndex(searchTerm);
-                
-                query = query.Where(d =>
-                    (d.File != null && d.File.RrNumber.ToLower().Contains(searchTerm)) ||
-                    (d.File != null && d.File.FileNameHash == searchHash) ||
-                    d.Reason.ToLower().Contains(searchTerm) ||
-                    d.AuthorizedBy.ToLower().Contains(searchTerm) ||
-                    d.RemovedDate.ToString().Contains(searchTerm)
-                );
-            }
+
+                //string searchHash = _cryptoService.GetBlindIndex(searchTerm);
+                searchTerm = searchTerm.ToLower().Trim();
+                query = query.Where(d => (d.File != null && d.File.RrNumber.ToLower().Contains(searchTerm)));
         }
 
         query = query.OrderByDescending(d => d.RemovedDate);

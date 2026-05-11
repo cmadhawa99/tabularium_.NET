@@ -24,9 +24,9 @@ public class EntryHistoryRecord
     public DateTime? StartDate { get; set; }
     public DateTime? EndDate { get; set; }
     public int? TotalPages { get; set; }
-    public int? ShelfNumber { get; set; }
-    public int? DeckNumber { get; set; }
-    public int? FileNumber { get; set; }
+    public string? ShelfNumber { get; set; }
+    public string? DeckNumber { get; set; }
+    public string? FileNumber { get; set; }
     
     public string ActionType { get; set; }
     public DateTime Timestamp { get; set; } =  DateTime.Now;

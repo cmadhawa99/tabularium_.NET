@@ -54,13 +54,11 @@ public partial class DisposalViewModel : ObservableObject
     private const int PageSize = 50;
 
     [ObservableProperty] private string _queueSearchQuery = string.Empty;
-    [ObservableProperty] private bool _isStrictQueueSearch = false;
     [ObservableProperty] private int _queueCurrentPage = 1;
     [ObservableProperty] private int _queueTotalPages = 1;
     [ObservableProperty] private int _queueTotalCount = 0;
 
     [ObservableProperty] private string _historySearchQuery = string.Empty;
-    [ObservableProperty] private bool _isStrictHistorySearch = false;
     [ObservableProperty] private int _historyCurrentPage = 1;
     [ObservableProperty] private int _historyTotalPages = 1;
     [ObservableProperty] private int _historyTotalCount = 0;
@@ -85,7 +83,7 @@ public partial class DisposalViewModel : ObservableObject
         var prefs = _preferencesService.GetPreferences();
         var colorMap = prefs.Sectors.ToDictionary(s => s.Name, s => s.ColorHex);
         
-        var result = await _archiveService.GetPendingDisposalsPaginatedAsync(QueueSearchQuery, IsStrictQueueSearch, QueueCurrentPage, PageSize);
+        var result = await _archiveService.GetPendingDisposalsPaginatedAsync(QueueSearchQuery, QueueCurrentPage, PageSize);
 
         QueueTotalCount = result.TotalCount;
         QueueTotalPages = (int)Math.Ceiling((double)QueueTotalCount / PageSize);
@@ -104,7 +102,7 @@ public partial class DisposalViewModel : ObservableObject
         var prefs = _preferencesService.GetPreferences();
         var colorMap = prefs.Sectors.ToDictionary(s => s.Name, s => s.ColorHex);
 
-        var result = await _archiveService.GetDisposedHistoryPaginatedAsync(HistorySearchQuery, IsStrictHistorySearch, HistoryCurrentPage, PageSize);
+        var result = await _archiveService.GetDisposedHistoryPaginatedAsync(HistorySearchQuery, HistoryCurrentPage, PageSize);
 
         HistoryTotalCount = result.TotalCount;
         HistoryTotalPages = (int)Math.Ceiling((double)HistoryTotalCount / PageSize);
@@ -126,24 +124,14 @@ public partial class DisposalViewModel : ObservableObject
         QueueCurrentPage = 1;
         _ = LoadQueueAsync();
     }
-
-    partial void OnIsStrictQueueSearchChanged(bool value)
-    {
-        QueueCurrentPage = 1;
-        _ = LoadQueueAsync();
-    }
+    
 
     partial void OnHistorySearchQueryChanged(string value)
     {
         HistoryCurrentPage = 1;
         _ = LoadHistoryAsync();
     }
-
-    partial void OnIsStrictHistorySearchChanged(bool value)
-    {
-        HistoryCurrentPage = 1;
-        _ = LoadHistoryAsync();
-    }
+    
 
     [RelayCommand]
     private async Task PreviousQueuePageAsync()

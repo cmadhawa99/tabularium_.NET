@@ -57,13 +57,13 @@ public class BorrowRecord
     public int? SnapshotTotalPages { get; set; }
 
     [Column("snapshot_shelf_number")]
-    public int? SnapshotShelfNumber { get; set; }
+    public string? SnapshotShelfNumber { get; set; }
 
     [Column("snapshot_deck_number")]
-    public int? SnapshotDeckNumber { get; set; }
+    public string? SnapshotDeckNumber { get; set; }
 
     [Column("snapshot_file_number")]
-    public int? SnapshotFileNumber { get; set; }
+    public string? SnapshotFileNumber { get; set; }
     
     [ForeignKey(nameof(FileSerialNumber))]
     public virtual FileRecord File { get; set; } = null!;

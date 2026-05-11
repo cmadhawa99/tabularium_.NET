@@ -62,8 +62,7 @@ public partial class EntryViewModel : ObservableObject
     [ObservableProperty] private bool _isDialogOpen = false;
     [ObservableProperty] private string _dialogTitle = string.Empty;
     [ObservableProperty] private EntryHistoryRecord _selectedHistoryRecord;
-
-    [ObservableProperty] private bool _isStrictHistorySearch = false;
+    
     
     public ObservableCollection<ChangeItem> RecordChanges { get; } = new();
     
@@ -88,12 +87,7 @@ public partial class EntryViewModel : ObservableObject
         HistoryCurrentPage = 1;
         _ = LoadHistoryAsync();
     }
-
-    partial void OnIsStrictHistorySearchChanged(bool value)
-    {
-        HistoryCurrentPage = 1;
-        _ = LoadHistoryAsync();
-    }
+    
 
     [RelayCommand]
     private void PerformHistorySearch()
@@ -115,7 +109,7 @@ public partial class EntryViewModel : ObservableObject
 
     private async Task LoadHistoryAsync()
     {
-        var result = await _archiveService.GetEntryHistoryPaginatedAsync(HistorySearchQuery, IsStrictHistorySearch, HistoryCurrentPage, PageSize);
+        var result = await _archiveService.GetEntryHistoryPaginatedAsync(HistorySearchQuery, HistoryCurrentPage, PageSize);
 
         HistoryTotalCount = result.TotalCount;
         HistoryTotalPages = (int)Math.Ceiling((double)HistoryTotalCount / PageSize);
@@ -171,9 +165,9 @@ public partial class EntryViewModel : ObservableObject
             EndDate = this.AddEndDate,
             
             TotalPages = int.TryParse(this.AddTotalPages, out int tp) ? tp : null,
-            ShelfNumber = int.TryParse(this.AddShelfNumber, out int sn) ? sn : null,
-            DeckNumber = int.TryParse(this.AddDeckNumber, out int dn) ? dn : null,
-            FileNumber = int.TryParse(this.AddFileNumber, out int fn) ? fn : null
+            ShelfNumber = string.IsNullOrWhiteSpace(this.AddShelfNumber) ? null : this.AddShelfNumber,
+            DeckNumber = string.IsNullOrWhiteSpace(this.AddDeckNumber) ? null : this.AddDeckNumber,
+            FileNumber = string.IsNullOrWhiteSpace(this.AddFileNumber) ? null : this.AddFileNumber
         };
 
         var result = await _archiveService.AddNewFileAsync(newRecord);
@@ -254,9 +248,9 @@ public partial class EntryViewModel : ObservableObject
         _currentEditingFile.StartDate = EditStartDate;
         _currentEditingFile.EndDate = EditEndDate;
         _currentEditingFile.TotalPages = int.TryParse(EditTotalPages, out int tp) ? tp : null;
-        _currentEditingFile.ShelfNumber = int.TryParse(EditShelfNumber, out int sn) ? sn : null;
-        _currentEditingFile.DeckNumber = int.TryParse(EditDeckNumber, out int dn) ? dn : null;
-        _currentEditingFile.FileNumber = int.TryParse(EditFileNumber, out int fn) ? fn : null;
+        _currentEditingFile.ShelfNumber = string.IsNullOrWhiteSpace(EditShelfNumber) ? null : EditShelfNumber;
+        _currentEditingFile.DeckNumber = string.IsNullOrWhiteSpace(EditDeckNumber) ? null : EditDeckNumber;
+        _currentEditingFile.FileNumber = string.IsNullOrWhiteSpace(EditFileNumber) ? null : EditFileNumber;
         
         var result = await _archiveService.UpdateFileAsync(_currentEditingFile);
         ShowStatus(result.Message, result.Success ? "#4CAF50" : "#F44336");

@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ArchivumWpf.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260508082302_initlalCommit")]
+    [Migration("20260511062129_initlalCommit")]
     partial class initlalCommit
     {
         /// <inheritdoc />
@@ -83,8 +83,8 @@ namespace ArchivumWpf.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("returned_date");
 
-                    b.Property<int?>("SnapshotDeckNumber")
-                        .HasColumnType("integer")
+                    b.Property<string>("SnapshotDeckNumber")
+                        .HasColumnType("text")
                         .HasColumnName("snapshot_deck_number");
 
                     b.Property<DateTime?>("SnapshotEndDate")
@@ -96,8 +96,8 @@ namespace ArchivumWpf.Migrations
                         .HasColumnType("text")
                         .HasColumnName("snapshot_file_name");
 
-                    b.Property<int?>("SnapshotFileNumber")
-                        .HasColumnType("integer")
+                    b.Property<string>("SnapshotFileNumber")
+                        .HasColumnType("text")
                         .HasColumnName("snapshot_file_number");
 
                     b.Property<string>("SnapshotFileType")
@@ -118,8 +118,8 @@ namespace ArchivumWpf.Migrations
                         .HasColumnType("text")
                         .HasColumnName("snapshot_sector_color");
 
-                    b.Property<int?>("SnapshotShelfNumber")
-                        .HasColumnType("integer")
+                    b.Property<string>("SnapshotShelfNumber")
+                        .HasColumnType("text")
                         .HasColumnName("snapshot_shelf_number");
 
                     b.Property<DateTime?>("SnapshotStartDate")
@@ -190,8 +190,8 @@ namespace ArchivumWpf.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("DeckNumber")
-                        .HasColumnType("integer");
+                    b.Property<string>("DeckNumber")
+                        .HasColumnType("text");
 
                     b.Property<DateTime?>("EndDate")
                         .HasColumnType("timestamp with time zone");
@@ -200,8 +200,8 @@ namespace ArchivumWpf.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("FileNumber")
-                        .HasColumnType("integer");
+                    b.Property<string>("FileNumber")
+                        .HasColumnType("text");
 
                     b.Property<int>("FileSerialNumber")
                         .HasColumnType("integer");
@@ -218,8 +218,8 @@ namespace ArchivumWpf.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("ShelfNumber")
-                        .HasColumnType("integer");
+                    b.Property<string>("ShelfNumber")
+                        .HasColumnType("text");
 
                     b.Property<DateTime?>("StartDate")
                         .HasColumnType("timestamp with time zone");
@@ -257,8 +257,8 @@ namespace ArchivumWpf.Migrations
                         .HasColumnType("text")
                         .HasColumnName("current_status");
 
-                    b.Property<int?>("DeckNumber")
-                        .HasColumnType("integer")
+                    b.Property<string>("DeckNumber")
+                        .HasColumnType("text")
                         .HasColumnName("deck_number");
 
                     b.Property<DateTime?>("EndDate")
@@ -268,14 +268,10 @@ namespace ArchivumWpf.Migrations
                     b.Property<string>("FileName")
                         .IsRequired()
                         .HasColumnType("text")
-                        .HasColumnName("file_name_a");
+                        .HasColumnName("file_name");
 
-                    b.Property<string>("FileNameHash")
+                    b.Property<string>("FileNumber")
                         .HasColumnType("text")
-                        .HasColumnName("file_name_b");
-
-                    b.Property<int?>("FileNumber")
-                        .HasColumnType("integer")
                         .HasColumnName("file_number");
 
                     b.Property<string>("FileType")
@@ -300,8 +296,8 @@ namespace ArchivumWpf.Migrations
                         .HasColumnType("text")
                         .HasColumnName("sector");
 
-                    b.Property<int?>("ShelfNumber")
-                        .HasColumnType("integer")
+                    b.Property<string>("ShelfNumber")
+                        .HasColumnType("text")
                         .HasColumnName("shelf_number");
 
                     b.Property<DateTime?>("StartDate")

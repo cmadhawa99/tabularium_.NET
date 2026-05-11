@@ -72,9 +72,9 @@ public class DatabaseSeeder
             .RuleFor(f => f.StartDate, f => f.Date.Past(3)) 
             .RuleFor(f => f.EndDate, (f, u) => f.Date.Between(u.StartDate.Value, DateTime.Now))
             .RuleFor(f => f.TotalPages, f => f.Random.Number(1, 500))
-            .RuleFor(f => f.ShelfNumber, f => f.Random.Number(1, 15))
-            .RuleFor(f => f.DeckNumber, f => f.Random.Number(1, 8))
-            .RuleFor(f => f.FileNumber, f => f.Random.Number(1, 150))
+            .RuleFor(f => f.ShelfNumber, f => f.Random.Number(1, 15).ToString())
+            .RuleFor(f => f.DeckNumber, f => $"{f.Random.String2(1, "ABC")}-{f.Random.Number(1, 8)}")
+            .RuleFor(f => f.FileNumber, f => f.Random.Number(1, 150).ToString())
             .RuleFor(f => f.CurrentStatus, f => f.PickRandom(statuses))
             .RuleFor(f => f.IsRemoved, f => f.Random.Bool(0.05f)) 
             .RuleFor(f => f.AddedDateTime, f => f.Date.Recent(60));

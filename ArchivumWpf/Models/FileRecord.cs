@@ -26,11 +26,8 @@ public class FileRecord
     [Column("subject_number")]
     public string? SubjectNumber { get; set; }
 
-    [Column("file_name_a")]
+    [Column("file_name")]
     public string FileName { get; set; } = null!;
-    
-    [Column("file_name_b")]
-    public string? FileNameHash { get; set; }
 
     [Column("file_type")]
     public string? FileType { get; set; }
@@ -45,13 +42,13 @@ public class FileRecord
     public int? TotalPages { get; set; }
 
     [Column("shelf_number")]
-    public int? ShelfNumber { get; set; }
+    public string? ShelfNumber { get; set; }
 
     [Column("deck_number")]
-    public int? DeckNumber { get; set; }
+    public string? DeckNumber { get; set; }
 
     [Column("file_number")]
-    public int? FileNumber { get; set; }
+    public string? FileNumber { get; set; }
 
     [Column("current_status")]
     public string CurrentStatus { get; set; } = "Available";

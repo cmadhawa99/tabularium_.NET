@@ -49,6 +49,10 @@ public class AppDbContext : DbContext
             .Property(f => f.FileType)
             .HasConversion(stringEncryptionConverter);
         
+        modelBuilder.Entity<FileRecord>()
+            .Property(f => f.FileNumber)
+            .HasConversion(stringEncryptionConverter);
+        
         modelBuilder.Entity<User>()
             .Property(u => u.TotpSecret)
             .HasConversion(stringEncryptionConverter);
@@ -69,6 +73,10 @@ public class AppDbContext : DbContext
         
         modelBuilder.Entity<BorrowRecord>()
             .Property(b => b.SnapshotFileType)
+            .HasConversion(stringEncryptionConverter);
+        
+        modelBuilder.Entity<BorrowRecord>()
+            .Property(b => b.SnapshotFileNumber)
             .HasConversion(stringEncryptionConverter);
         
         //Disposed
@@ -95,6 +103,10 @@ public class AppDbContext : DbContext
             .Property(e => e.FileType)
             .HasConversion(stringEncryptionConverter);
         
+        modelBuilder.Entity<EntryHistoryRecord>()
+            .Property(e => e.FileNumber)
+            .HasConversion(stringEncryptionConverter);
+        
         
         
     }
@@ -117,35 +129,5 @@ public class AppDbContext : DbContext
             }
         }
     }
-
-    public override int SaveChanges()
-    {
-        GenerateBlindIndexes();
-        return base.SaveChanges();
-    }
-
-    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
-    {
-        GenerateBlindIndexes();
-        return base.SaveChangesAsync(cancellationToken);
-    }
-
-    private void GenerateBlindIndexes()
-    {
-        var cryptoService = new CryptoService("W5bZnVXXs+eq9GLHdLTU6btIYmpHEQ9NLfxZjWAb4mI=");
-        
-        var entries = ChangeTracker.Entries<FileRecord>()
-            .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified);
-
-        foreach (var entry in entries)
-        {
-            if (entry.Property(e => e.FileName).IsModified || entry.State == EntityState.Added)
-            {
-                string unencryptedFileName = entry.Property(e => e.FileName).CurrentValue;
-                
-                entry.Entity.FileNameHash = cryptoService.GetBlindIndex(unencryptedFileName);
-            }
-        }
-        
-    }
+    
 }
