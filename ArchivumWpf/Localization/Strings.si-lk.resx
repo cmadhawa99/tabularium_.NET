@@ -60,10 +60,10 @@
         <value>දත්ත සමුදායේ නම</value>
     </data>
     <data name="Settings_DbPassword" xml:space="preserve">
-        <value>පරිශීලක නාමය</value>
+        <value>මුරපදය</value>
     </data>
     <data name="Settings_DbUser" xml:space="preserve">
-        <value>මුරපදය</value>
+        <value>පරිශීලක නාමය</value>
     </data>
     <data name="Settings_TestConnection" xml:space="preserve">
         <value>සම්බන්ධතාවය පරීක්ෂා කරන්න</value>

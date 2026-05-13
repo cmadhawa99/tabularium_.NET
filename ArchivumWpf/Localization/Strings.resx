@@ -67,10 +67,10 @@
         <value>Database Name</value>
     </data>
     <data name="Settings_DbUser" xml:space="preserve">
-        <value>Password</value>
+        <value>Username </value>
     </data>
     <data name="Settings_DbPassword" xml:space="preserve">
-        <value>Username</value>
+        <value>Password </value>
     </data>
     <data name="Settings_TestConnection" xml:space="preserve">
         <value>Test Connection</value>

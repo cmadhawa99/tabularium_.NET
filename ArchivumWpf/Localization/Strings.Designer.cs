@@ -2715,7 +2715,7 @@ namespace ArchivumWpf.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Username.
+        ///   Looks up a localized string similar to Password .
         /// </summary>
         public static string Settings_DbPassword {
             get {
@@ -2724,7 +2724,7 @@ namespace ArchivumWpf.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Password.
+        ///   Looks up a localized string similar to Username .
         /// </summary>
         public static string Settings_DbUser {
             get {

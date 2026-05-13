@@ -89,15 +89,21 @@ public partial class SettingsViewModel : ObservableObject
             try
             {
                 var jsonNode = JsonNode.Parse(File.ReadAllText(_appSettingsPath));
-                string connString = jsonNode?["ConnectionStrings"]?["DefaultConnection"]?.ToString() ?? "";
+                string encryptedConnString = jsonNode?["ConnectionStrings"]?["DefaultConnection"]?.ToString() ?? "";
 
-                if (!string.IsNullOrEmpty(connString))
+                if (!string.IsNullOrEmpty(encryptedConnString))
                 {
-                    var builder = new NpgsqlConnectionStringBuilder(connString);
-                    DbHost = builder.Host ?? "";
-                    DbName = builder.Database ?? "";
-                    DbUser = builder.Username ?? "";
-                    DbPassword = builder.Password ?? "";
+
+                    var masterKey = KeyVaultService.GetMasterKey();
+                    var cryptoService = new CryptoService(masterKey);
+                    
+                    string decryptedConnString = cryptoService.Decrypt(encryptedConnString);
+                    
+                    var builder = new NpgsqlConnectionStringBuilder(decryptedConnString);
+                    // DbHost = builder.Host ?? "";
+                    // DbName = builder.Database ?? "";
+                    // DbUser = builder.Username ?? "";
+                    // DbPassword = builder.Password ?? "";
                 }
             }
             catch{}
@@ -200,22 +206,28 @@ public partial class SettingsViewModel : ObservableObject
         {
             try
             {
-                var builder = new NpgsqlConnectionStringBuilder
+                if (!string.IsNullOrWhiteSpace(DbHost) && !string.IsNullOrWhiteSpace(DbName))
                 {
-                    Host = DbHost,
-                    Database = DbName,
-                    Username = DbUser,
-                    Password = DbPassword
+                    var builder = new NpgsqlConnectionStringBuilder
+                    {
+                        Host = DbHost,
+                        Database = DbName,
+                        Username = DbUser,
+                        Password = DbPassword
 
-                };
+                    };
 
-                var jsonNode = JsonNode.Parse(File.ReadAllText(_appSettingsPath));
-                if (jsonNode?["ConnectionStrings"] != null)
-                {
-                    jsonNode["ConnectionStrings"]!["DefaultConnection"] = builder.ToString();
+                    var jsonNode = JsonNode.Parse(File.ReadAllText(_appSettingsPath));
+                    if (jsonNode?["ConnectionStrings"] != null)
+                    {
+                        var masterKey = KeyVaultService.GetMasterKey();
+                        var cryptoService = new CryptoService(masterKey);
 
-                    var options = new JsonSerializerOptions { WriteIndented = true };
-                    File.WriteAllText(_appSettingsPath, jsonNode.ToJsonString(options));
+                        jsonNode["ConnectionStrings"]!["DefaultConnection"] = cryptoService.Encrypt(builder.ToString());
+
+                        var options = new JsonSerializerOptions { WriteIndented = true };
+                        File.WriteAllText(_appSettingsPath, jsonNode.ToJsonString(options));
+                    }
                 }
             }
 

@@ -115,17 +115,21 @@ public class AppDbContext : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         if (!optionsBuilder.IsConfigured)
-        {
+        { 
             string appSettingsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "appsettings.json");
 
             if (File.Exists(appSettingsPath))
             {
                 var jsonNode = JsonNode.Parse(File.ReadAllText(appSettingsPath));
-                string connString = jsonNode?["ConnectionStrings"]?["DefaultConnection"]?.ToString() ?? "";
+                string encryptedConnString = jsonNode?["ConnectionStrings"]?["DefaultConnection"]?.ToString() ?? "";
 
-                if (!string.IsNullOrEmpty(connString))
+                if (!string.IsNullOrEmpty(encryptedConnString))
                 {
-                    optionsBuilder.UseNpgsql(connString);
+                    var masterKey = KeyVaultService.GetMasterKey();
+                    var cryptoService = new CryptoService(masterKey);
+                    string plainTextConnString = cryptoService.Decrypt(encryptedConnString);
+                    
+                    optionsBuilder.UseNpgsql(plainTextConnString);
                 }
             }
         }

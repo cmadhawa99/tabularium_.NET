@@ -32,8 +32,26 @@ public partial class App : Application
             .AddJsonFile("appsettings.json", optional:false, reloadOnChange: true)
             .Build();
         
+        string rawConnString = config.GetConnectionString("DefaultConnection");
+        string activeConnString = rawConnString;
+
+        if (!string.IsNullOrEmpty(rawConnString) && !rawConnString.Contains("Host="))
+        {
+            try
+            {
+                var masterKey = KeyVaultService.GetMasterKey();
+                var cryptoService = new CryptoService(masterKey);
+                activeConnString = cryptoService.Decrypt(rawConnString);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to decrypt database connection string: {ex.Message}", 
+                    "Security Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        
         services.AddDbContextFactory<AppDbContext>(options =>
-            options.UseNpgsql(config.GetConnectionString("DefaultConnection")));
+            options.UseNpgsql(activeConnString));
         
         services.AddSingleton<IPreferencesService, PreferencesService>();
         
