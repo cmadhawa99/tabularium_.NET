@@ -50,6 +50,23 @@ namespace ArchivumWpf.Migrations
                     b.ToTable("activity_log");
                 });
 
+            modelBuilder.Entity("ArchivumWpf.Models.AppSecurityMeta", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("EncryptedCanary")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AppSecurityMetas");
+                });
+
             modelBuilder.Entity("ArchivumWpf.Models.BorrowRecord", b =>
                 {
                     b.Property<int>("Id")

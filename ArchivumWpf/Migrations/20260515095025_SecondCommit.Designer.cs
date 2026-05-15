@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ArchivumWpf.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260511062129_initlalCommit")]
-    partial class initlalCommit
+    [Migration("20260515095025_SecondCommit")]
+    partial class SecondCommit
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -51,6 +51,23 @@ namespace ArchivumWpf.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("activity_log");
+                });
+
+            modelBuilder.Entity("ArchivumWpf.Models.AppSecurityMeta", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("EncryptedCanary")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AppSecurityMetas");
                 });
 
             modelBuilder.Entity("ArchivumWpf.Models.BorrowRecord", b =>

@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ArchivumWpf.Migrations
 {
     /// <inheritdoc />
-    public partial class initlalCommit : Migration
+    public partial class SecondCommit : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -26,6 +26,19 @@ namespace ArchivumWpf.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_activity_log", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AppSecurityMetas",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    EncryptedCanary = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AppSecurityMetas", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -179,6 +192,9 @@ namespace ArchivumWpf.Migrations
         {
             migrationBuilder.DropTable(
                 name: "activity_log");
+
+            migrationBuilder.DropTable(
+                name: "AppSecurityMetas");
 
             migrationBuilder.DropTable(
                 name: "borrow_records");

@@ -25,6 +25,7 @@ public class AppDbContext : DbContext
     public DbSet<EntryHistoryRecord> EntryHistoryRecords { get; set; }
     public DbSet<DisposedRecord> DisposedRecords { get; set; }
     public DbSet<ActivityLog> ActivityLogs { get; set; }
+    public DbSet<AppSecurityMeta> AppSecurityMetas { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

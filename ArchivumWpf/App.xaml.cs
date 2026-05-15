@@ -43,10 +43,8 @@ public partial class App : Application
                 var cryptoService = new CryptoService(masterKey);
                 activeConnString = cryptoService.Decrypt(rawConnString);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                MessageBox.Show($"Failed to decrypt database connection string: {ex.Message}", 
-                    "Security Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         
@@ -146,6 +144,21 @@ public partial class App : Application
         // =========================================================================
         // =================== [REMOVE BEFORE DEPLOYMENT END] ======================
         // =========================================================================
+        
+        // 2. Security check
+
+        if (!ArchivumWpf.Services.KeyVaultService.VaultExists())
+        {
+            var setupWindow = new ArchivumWpf.Views.SetupWindow(); 
+            setupWindow.ShowDialog();
+
+            if (!ArchivumWpf.Services.KeyVaultService.VaultExists())
+            {
+                MessageBox.Show("Application cannot start without initializing the security vault.", "Initialization Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                Current.Shutdown();
+                return;
+            }
+        }
 
         base.OnStartup(e);
         
