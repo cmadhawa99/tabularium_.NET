@@ -10,5 +10,21 @@ namespace ArchivumWpf.Views
             InitializeComponent();
             this.DataContext = new SetupViewModel();
         }
+
+        private void DbPasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (this.DataContext is SetupViewModel viewModel)
+            {
+                viewModel.DbPassword = DbPasswordBox.Password;
+            }
+        }
+
+        private void RecoveryKeyBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (this.DataContext is SetupViewModel viewModel)
+            {
+                viewModel.RecoveryKeyInput = RecoveryKeyBox.Password;
+            }
+        }
     }
 }

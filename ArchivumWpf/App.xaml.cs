@@ -29,10 +29,10 @@ public partial class App : Application
         
         IConfiguration config = new ConfigurationBuilder()
             .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-            .AddJsonFile("appsettings.json", optional:false, reloadOnChange: true)
+            .AddJsonFile("appsettings.json", optional:true, reloadOnChange: true)
             .Build();
         
-        string rawConnString = config.GetConnectionString("DefaultConnection");
+        string rawConnString = config.GetConnectionString("DefaultConnection") ?? string.Empty;
         string activeConnString = rawConnString;
 
         if (!string.IsNullOrEmpty(rawConnString) && !rawConnString.Contains("Host="))
@@ -46,6 +46,11 @@ public partial class App : Application
             catch (Exception)
             {
             }
+        }
+
+        if (string.IsNullOrWhiteSpace(activeConnString))
+        {
+            activeConnString = "Host=placeholder;Database=placeholder;Username=placeholder;Password=placeholder";
         }
         
         services.AddDbContextFactory<AppDbContext>(options =>
@@ -112,6 +117,49 @@ public partial class App : Application
         // =================== [REMOVE BEFORE DEPLOYMENT START] ====================
         // =========================================================================
         string[] args = e.Args;
+
+        if (args.Length > 0 && args[0].ToLower() == "--seed-security")
+        {
+            try
+            {
+                var factory = Services.GetRequiredService<IDbContextFactory<AppDbContext>>();
+                using var context = await factory.CreateDbContextAsync();
+
+                if (!context.AppSecurityMetas.Any())
+                {
+                    
+                    string existingMasterKey = "W5bZnVXXs+eq9GLHdLTU6btIYmpHEQ9NLfxZjWAb4mI=";
+
+                    byte[] canaryBytes = new byte[32];
+                    System.Security.Cryptography.RandomNumberGenerator.Fill(canaryBytes);
+                    string plainTextCanary = Convert.ToBase64String(canaryBytes);
+
+                    var cryptoService = new ArchivumWpf.Services.CryptoService(existingMasterKey);
+                    string encryptedCanary = cryptoService.Encrypt(plainTextCanary);
+
+                    context.AppSecurityMetas.Add(new ArchivumWpf.Models.AppSecurityMeta
+                        { EncryptedCanary = encryptedCanary });
+                    await context.SaveChangesAsync();
+
+                    MessageBox.Show("Security Canary injected into the database!\n\nIt was encrypted using your existing Master Key.", 
+                        "Terminal Seeder", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                else
+                {
+                    MessageBox.Show(
+                        "A Security Canary already exists in the database. Please clear the AppSecurityMetas table if you want to generate a new one.",
+                        "Notice", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Security seeding failed: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            
+            Current.Shutdown();
+            return;
+            
+        }
         
         if (args.Length > 0 && args[0].ToLower() == "--seed")
         {
@@ -147,18 +195,28 @@ public partial class App : Application
         
         // 2. Security check
 
-        if (!ArchivumWpf.Services.KeyVaultService.VaultExists())
-        {
-            var setupWindow = new ArchivumWpf.Views.SetupWindow(); 
-            setupWindow.ShowDialog();
+        string appSettingsPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "appsettings.json");
+        bool appSettingsExists = System.IO.File.Exists(appSettingsPath);
+        bool valueExists = ArchivumWpf.Services.KeyVaultService.VaultExists();
 
-            if (!ArchivumWpf.Services.KeyVaultService.VaultExists())
-            {
-                MessageBox.Show("Application cannot start without initializing the security vault.", "Initialization Failed", MessageBoxButton.OK, MessageBoxImage.Error);
-                Current.Shutdown();
-                return;
-            }
+        if (!valueExists)
+        {
+            var setupWindow = new ArchivumWpf.Views.SetupWindow();
+            setupWindow.ShowDialog();
+        } 
+        else if (!appSettingsExists)
+        {
+            var dbSetupWindow = new ArchivumWpf.Views.DatabaseSetupWindow();
+            dbSetupWindow.ShowDialog();
         }
+        
+        if (!ArchivumWpf.Services.KeyVaultService.VaultExists() || !System.IO.File.Exists(appSettingsPath))
+        {
+            MessageBox.Show("Application cannot start without valid database configuration and a security vault.", "Initialization Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+            Current.Shutdown();
+            return;
+        }  
+        
 
         base.OnStartup(e);
         

@@ -100,20 +100,22 @@ public partial class SetupViewModel : ObservableObject
             KeyVaultService.ImportKey(pastedKey);
 
             string appSettingsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "appsettings.json");
-            if (File.Exists(appSettingsPath))
+            
+            var jsonNode = File.Exists(appSettingsPath) 
+                ? JsonNode.Parse(File.ReadAllText(appSettingsPath)) 
+                : new JsonObject { ["ConnectionStrings"] = new JsonObject() };
+
+            if (jsonNode!["ConnectionStrings"] == null)
             {
-                var jsonNode = JsonNode.Parse(File.ReadAllText(appSettingsPath));
-                if (jsonNode?["ConnectionStrings"] != null)
-                {
-                    var cryptoService = new CryptoService(pastedKey);
-                    jsonNode["ConnectionStrings"]!["DefaultConnection"] = cryptoService.Encrypt(builder.ToString());
-
-                    var options = new JsonSerializerOptions { WriteIndented = true };
-                    File.WriteAllText(appSettingsPath, jsonNode.ToJsonString(options));
-
-                }
+                jsonNode["ConnectionStrings"] = new JsonObject();
             }
-
+            
+            var cryptoWriter = new CryptoService(pastedKey);
+            jsonNode["ConnectionStrings"]!["DefaultConnection"] = cryptoWriter.Encrypt(builder.ToString());
+            
+            var options = new JsonSerializerOptions { WriteIndented = true };
+            File.WriteAllText(appSettingsPath, jsonNode.ToJsonString(options));
+            
             MessageBox.Show("Database connected and Security Vault restored successfully!", "System Restored",
                 MessageBoxButton.OK, MessageBoxImage.Information);
 
