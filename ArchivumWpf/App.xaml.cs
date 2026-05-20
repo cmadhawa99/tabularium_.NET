@@ -70,6 +70,9 @@ public partial class App : Application
         services.AddSingleton<SettingsViewModel>();
         services.AddSingleton<ClockViewModel>();
         
+        services.AddTransient<LoginViewModel>();
+        services.AddTransient<LoginWindow>();
+        
         services.AddSingleton<MainWindow>();
 
         return services.BuildServiceProvider();
@@ -220,8 +223,17 @@ public partial class App : Application
 
         base.OnStartup(e);
         
-        var mainWindow = Services.GetRequiredService<MainWindow>();
-        mainWindow.DataContext = Services.GetRequiredService<MainViewModel>();
-        mainWindow.Show();
+        var loginWindow = Services.GetRequiredService<LoginWindow>();
+
+        if (loginWindow.ShowDialog() == true)
+        {
+            var mainWindow = Services.GetRequiredService<MainWindow>();
+            mainWindow.DataContext = Services.GetRequiredService<MainViewModel>();
+            mainWindow.Show();
+        }
+        else
+        {
+            Current.Shutdown();
+        }
     }
 }

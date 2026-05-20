@@ -55,9 +55,6 @@ public class AppDbContext : DbContext
             .Property(f => f.FileNumber)
             .HasConversion(stringEncryptionConverter);
         
-        modelBuilder.Entity<User>()
-            .Property(u => u.TotpSecret)
-            .HasConversion(stringEncryptionConverter);
         
         //Borrow
         

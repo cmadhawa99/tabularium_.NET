@@ -1,0 +1,64 @@
+﻿<Window x:Class="ArchivumWpf.Views.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Archivum Login" Height="500" Width="400"
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
+        xmlns:converters="clr-namespace:ArchivumWpf.Converters"
+        Background="{DynamicResource WindowBackground}">
+    
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+        <converters:InverseBooleanToVisibilityConverter x:Key="InverseBoolToVis"/>
+    </Window.Resources>
+
+    <Grid Margin="30">
+        <StackPanel>
+            
+            <TextBlock Text="System Login" Foreground="{DynamicResource PrimaryAccent}" FontSize="24" FontWeight="Bold" Margin="0,0,0,20" HorizontalAlignment="Center"/>
+            
+            <TextBlock Text="{Binding ErrorMessage}" Foreground="#F44336" FontWeight="SemiBold" Margin="0,0,0,15" TextWrapping="Wrap" HorizontalAlignment="Center">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ErrorMessage}" Value="">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+
+            <Border Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="4" Padding="20">
+                <Grid>
+                    <StackPanel Visibility="{Binding IsRecoveryMode, Converter={StaticResource InverseBoolToVis}}">
+                        <TextBlock Text="Username" Foreground="{DynamicResource TextMuted}" FontSize="12" Margin="0,0,0,4"/>
+                        <TextBox Text="{Binding UsernameInput}" Background="{DynamicResource WindowBackground}" Foreground="{DynamicResource TextMain}" Padding="6" Margin="0,0,0,15"/>
+                        
+                        <TextBlock Text="Password" Foreground="{DynamicResource TextMuted}" FontSize="12" Margin="0,0,0,4"/>
+                        <PasswordBox x:Name="LoginPasswordBox" PasswordChanged="LoginPasswordBox_PasswordChanged" Background="{DynamicResource WindowBackground}" Foreground="{DynamicResource TextMain}" Padding="6" Margin="0,0,0,25"/>
+
+                        <Button Content="Login" Command="{Binding LoginCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}" Background="{DynamicResource PrimaryAccent}" Foreground="White" Padding="15,10" Cursor="Hand" Margin="0,0,0,15"/>
+                        
+                        <Button Content="Forgot Password?" Command="{Binding ToggleRecoveryModeCommand}" Background="Transparent" Foreground="{DynamicResource PrimaryAccent}" BorderThickness="0" Cursor="Hand" HorizontalAlignment="Center"/>
+                    </StackPanel>
+
+                    <StackPanel Visibility="{Binding IsRecoveryMode, Converter={StaticResource BoolToVis}}">
+                        <TextBlock Text="Master Recovery Key" Foreground="#F44336" FontWeight="Bold" FontSize="12" Margin="0,0,0,4"/>
+                        <PasswordBox x:Name="MasterKeyBox" PasswordChanged="MasterKeyBox_PasswordChanged" Background="{DynamicResource WindowBackground}" Foreground="{DynamicResource TextMain}" Padding="6" Margin="0,0,0,15" FontFamily="Consolas"/>
+                        
+                        <TextBlock Text="New Username" Foreground="{DynamicResource TextMuted}" FontSize="12" Margin="0,0,0,4"/>
+                        <TextBox Text="{Binding NewUsernameInput}" Background="{DynamicResource WindowBackground}" Foreground="{DynamicResource TextMain}" Padding="6" Margin="0,0,0,15"/>
+                        
+                        <TextBlock Text="New Password" Foreground="{DynamicResource TextMuted}" FontSize="12" Margin="0,0,0,4"/>
+                        <PasswordBox x:Name="NewPasswordBox" PasswordChanged="NewPasswordBox_PasswordChanged" Background="{DynamicResource WindowBackground}" Foreground="{DynamicResource TextMain}" Padding="6" Margin="0,0,0,25"/>
+
+                        <Button Content="Verify and Reset" Command="{Binding ResetAccountCommand}" Background="#F44336" Foreground="White" Padding="15,10" Cursor="Hand" Margin="0,0,0,15"/>
+                        
+                        <Button Content="Cancel" Command="{Binding ToggleRecoveryModeCommand}" Background="Transparent" Foreground="{DynamicResource TextMuted}" BorderThickness="0" Cursor="Hand" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </StackPanel>
+    </Grid>
+</Window>

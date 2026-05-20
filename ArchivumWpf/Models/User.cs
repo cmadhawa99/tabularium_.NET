@@ -19,9 +19,6 @@ public class User
     [Column("role")]
     public string Role { get; set; } = "Viewer";
 
-    [Column("totp_secret")]
-    public string? TotpSecret { get; set; }
-
     [Column("is_active")]
     public bool IsActive { get; set; } = true;
 }
