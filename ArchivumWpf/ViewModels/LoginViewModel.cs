@@ -59,7 +59,6 @@ public partial class LoginViewModel : ObservableObject
             }
 
             window.DialogResult = true;
-            window.Close();
         }
         catch (Exception ex)
         {

@@ -222,11 +222,15 @@ public partial class App : Application
         
 
         base.OnStartup(e);
+
+        Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
         
         var loginWindow = Services.GetRequiredService<LoginWindow>();
 
         if (loginWindow.ShowDialog() == true)
         {
+            Current.ShutdownMode = ShutdownMode.OnLastWindowClose;
+            
             var mainWindow = Services.GetRequiredService<MainWindow>();
             mainWindow.DataContext = Services.GetRequiredService<MainViewModel>();
             mainWindow.Show();
