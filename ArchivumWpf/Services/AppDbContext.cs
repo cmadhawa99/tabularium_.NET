@@ -39,6 +39,20 @@ public class AppDbContext : DbContext
             v => cryptoService.Decrypt(v)
             );
         
+        
+        modelBuilder.Entity<User>()
+            .Property(u => u.Username)
+            .HasConversion(stringEncryptionConverter);
+        
+        modelBuilder.Entity<User>()
+            .Property(u => u.PasswordHash)
+            .HasConversion(stringEncryptionConverter);
+        
+        modelBuilder.Entity<User>()
+            .Property(u => u.Role)
+            .HasConversion(stringEncryptionConverter);
+        
+        
         modelBuilder.Entity<FileRecord>()
             .Property(f => f.FileName)
             .HasConversion(stringEncryptionConverter);
@@ -105,6 +119,7 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<EntryHistoryRecord>()
             .Property(e => e.FileNumber)
             .HasConversion(stringEncryptionConverter);
+        
         
         
         

@@ -137,7 +137,7 @@ public partial class LoginViewModel : ObservableObject
     {
         byte[] salt = new byte[16];
         RandomNumberGenerator.Fill(salt);
-        using var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 100000, HashAlgorithmName.SHA256);
+        using var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 1200000, HashAlgorithmName.SHA256);
         byte[] hash = pbkdf2.GetBytes(32);
         return $"{Convert.ToBase64String(salt)}:{Convert.ToBase64String(hash)}";
     }
@@ -150,7 +150,7 @@ public partial class LoginViewModel : ObservableObject
         byte[] salt = Convert.FromBase64String(parts[0]);
         byte[] expectedHash = Convert.FromBase64String(parts[1]);
         
-        using var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 100000, HashAlgorithmName.SHA256);
+        using var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 1200000, HashAlgorithmName.SHA256);
         byte[] actualHash = pbkdf2.GetBytes(32);
         
         return CryptographicOperations.FixedTimeEquals(actualHash, expectedHash);
