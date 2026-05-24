@@ -225,31 +225,6 @@
                         <Border BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,0,0,1" Padding="0,0,0,25" Margin="0,0,0,25">
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,30,0,20">
-                                    <fa:ImageAwesome Icon="BuildingOutline" Width="16" Height="16" Foreground="{DynamicResource PrimaryAccent}" Margin="0,0,10,0" VerticalAlignment="Center"/>
-                                    <TextBlock Text="{x:Static loc:Strings.Settings_OrgDetails}" Foreground="{DynamicResource PrimaryAccent}" FontSize="14" FontWeight="SemiBold"/>
-                                </StackPanel>
-                                
-                                <Grid Margin="0,0,0,15">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/> <ColumnDefinition Width="20"/> <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-    
-                                    <StackPanel Grid.Column="0">
-                                        <TextBlock Text="{x:Static loc:Strings.Settings_CurrentUser}" Style="{StaticResource FormLabel}"/>
-                                        <TextBox Text="{Binding CurrentUser}" Style="{StaticResource CleanTextBox}"/>
-                                    </StackPanel>
-    
-                                    <StackPanel Grid.Column="2">
-                                        <TextBlock Text="{x:Static loc:Strings.Settings_OrgName}" Style="{StaticResource FormLabel}"/>
-                                        <TextBox Text="{Binding OrganizationName}" Style="{StaticResource CleanTextBox}"/>
-                                    </StackPanel>
-                                </Grid>
-                            </StackPanel>
-                        </Border>
-
-                        <Border BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,0,0,1" Padding="0,0,0,25" Margin="0,0,0,25">
-                            <StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
                                     <fa:ImageAwesome Icon="UserOutline" Width="16" Height="16" Foreground="{DynamicResource PrimaryAccent}" Margin="0,0,10,0" VerticalAlignment="Center"/>
                                     <TextBlock Text="{x:Static loc:Strings.Settings_LocUser}" Foreground="{DynamicResource PrimaryAccent}" FontSize="14" FontWeight="SemiBold"/>
                                 </StackPanel>
@@ -294,11 +269,6 @@
                                         <ComboBox ItemsSource="{Binding AvailableWindowModes}" SelectedItem="{Binding SelectedWindowMode}" Style="{StaticResource CleanComboBox}"/>
                                     </StackPanel>
                                 </Grid>
-
-                                <StackPanel>
-                                    <TextBlock Text="{x:Static loc:Strings.Settings_DefExportDir}" Style="{StaticResource FormLabel}"/>
-                                    <TextBox Text="{Binding DefaultExportDirectory}" Style="{StaticResource CleanTextBox}"/>
-                                </StackPanel>
                             </StackPanel>
                         </Border>
 
@@ -403,7 +373,21 @@
                                 
                                 <StackPanel>
                                     <TextBlock Text="{x:Static loc:Strings.Settings_BackupDest}" Style="{StaticResource FormLabel}"/>
-                                    <TextBox Text="{Binding AutoBackupDirectory}" IsEnabled="{Binding AutoBackupEnabled}" Style="{StaticResource CleanTextBox}"/>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        
+                                        <TextBox Grid.Column="0" Text="{Binding AutoBackupDirectory, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding AutoBackupEnabled}" Style="{StaticResource CleanTextBox}" Margin="0,0,10,0"/>
+                                        
+                                        <Button Grid.Column="1" Command="{Binding BrowseBackupDirectoryCommand}" IsEnabled="{Binding AutoBackupEnabled}" Height="34" Padding="15,0" Background="Transparent" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" Cursor="Hand" Foreground="{DynamicResource TextMain}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <fa:ImageAwesome Icon="FolderOpen" Width="14" Height="14" Foreground="{DynamicResource PrimaryAccent}" Margin="0,0,8,0"/>
+                                                <TextBlock Text="Browse..." FontWeight="SemiBold" FontSize="12" VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                        </Button>
+                                    </Grid>
                                 </StackPanel>
                             </StackPanel>
                         </Border>
@@ -643,7 +627,8 @@
                                 </ControlTemplate>
                             </Button.Template>
                         </Button>
-                        </StackPanel>
+
+                    </StackPanel>
                 </ScrollViewer>
             </TabItem>
 

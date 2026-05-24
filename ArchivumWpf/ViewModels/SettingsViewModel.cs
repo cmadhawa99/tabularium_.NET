@@ -22,13 +22,10 @@ public partial class SettingsViewModel : ObservableObject
     private readonly IPreferencesService _preferencesService;
     private readonly string _appSettingsPath;
     
-    [ObservableProperty] private string _organizationName =  string.Empty;
-    [ObservableProperty] private string _currentUser  = string.Empty;
     [ObservableProperty] private string _selectedTimeFormat = string.Empty;
     [ObservableProperty] private string _selectedLanguage  =  string.Empty;
     [ObservableProperty] private int _defaultPaginationSize;
     [ObservableProperty] private string _selectedWindowMode = string.Empty;
-    [ObservableProperty] private string _defaultExportDirectory  = string.Empty;
   
     
     public ObservableCollection<string> AvailableLanguages { get; } = new() { "English", "Sinhala", "Tamil" };
@@ -68,8 +65,6 @@ public partial class SettingsViewModel : ObservableObject
     {
         var prefs = _preferencesService.GetPreferences();
         
-        OrganizationName = prefs.OrganizationName;
-        CurrentUser = prefs.CurrentUser;
         SelectedTimeFormat = prefs.TimeFormat ?? "12-Hour (AM/PM)";
         SelectedWindowMode = prefs.WindowMode ?? "Normal";
         DefaultPaginationSize = prefs.DefaultPaginationSize;
@@ -183,14 +178,11 @@ public partial class SettingsViewModel : ObservableObject
     private void SaveGeneralSettings()
     {
         var prefs = _preferencesService.GetPreferences();
-
-        prefs.OrganizationName = this.OrganizationName;
-        prefs.CurrentUser = this.CurrentUser;
+        
         prefs.Language = this.SelectedLanguage;
         prefs.TimeFormat = this.SelectedTimeFormat;
         prefs.DefaultPaginationSize = this.DefaultPaginationSize;
         prefs.WindowMode = this.SelectedWindowMode;
-        prefs.DefaultExportDirectory = this.DefaultExportDirectory;
         
         _preferencesService.SavePreferences(prefs);
 
@@ -255,6 +247,21 @@ public partial class SettingsViewModel : ObservableObject
         
         WeakReferenceMessenger.Default.Send(new SettingsChangedMessage());
         ShowStatus("Vault categories saved successfully!", "#4CAF50");
+    }
+
+    [RelayCommand]
+    private void BrowseBackupDirectory()
+    {
+        var dialog = new Microsoft.Win32.OpenFolderDialog()
+        {
+            Title = "Select Auto-Backup Destination Directory",
+            Multiselect = false
+        };
+
+        if (dialog.ShowDialog() == true)
+        {
+            AutoBackupDirectory = dialog.FolderName;
+        }
     }
 
     private void ShowStatus(string message, string color)

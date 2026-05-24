@@ -23,8 +23,11 @@ public partial class MainViewModel : ObservableObject
     private readonly SettingsViewModel _settingsVm;
     private readonly DisposalViewModel _disposalVm;
 
+    private readonly IPreferencesService _preferencesService;
+
     public MainViewModel(
         IArchiveService archiveService,
+        IPreferencesService preferencesService,
         DashboardViewModel dashboardVm,
         SearchViewModel searchVm,
         CirculationViewModel circulationVm,
@@ -35,6 +38,7 @@ public partial class MainViewModel : ObservableObject
         )
     {
         _archiveService = archiveService;
+        _preferencesService = preferencesService;
         _dashboardVm = dashboardVm;
         _searchVm = searchVm;
         _circulationVm = circulationVm;
@@ -45,6 +49,7 @@ public partial class MainViewModel : ObservableObject
         
         _currentPageViewModel = _dashboardVm;
         _ = CheckDisposalAlertsAsync();
+        _ = RunDailyAutoBackupAsync();
     }
 
     private async Task CheckDisposalAlertsAsync()
@@ -120,5 +125,39 @@ public partial class MainViewModel : ObservableObject
         
         app.Resources.MergedDictionaries.Clear();
         app.Resources.MergedDictionaries.Add(dict);
+    }
+
+    private async Task RunDailyAutoBackupAsync()
+    {
+        try
+        {
+            var prefs = _preferencesService.GetPreferences();
+
+            if (prefs.AutoBackupEnabled && !string.IsNullOrWhiteSpace(prefs.AutoBackupDirectory) &&
+                System.IO.Directory.Exists(prefs.AutoBackupDirectory))
+            {
+                string todayBackupFileName = $"ArchiveDB_AutoBackup_{DateTime.Now:yyyyMMdd}.backup";
+                string fullBackupPath = System.IO.Path.Combine(prefs.AutoBackupDirectory, todayBackupFileName);
+
+                if (!System.IO.File.Exists(fullBackupPath))
+                {
+                    var result = await _archiveService.BackupDatabaseAsync(fullBackupPath);
+                    
+                    if (!result.Success)
+                    {
+                        System.Windows.MessageBox.Show(
+                            $"Auto-Backup Failed!\n\nDatabase Error: {result.Message}\n\n", 
+                            "Backup Error", 
+                            System.Windows.MessageBoxButton.OK, 
+                            System.Windows.MessageBoxImage.Warning);
+                    }
+                }
+            }
+        }
+
+        catch (Exception ex)
+        {
+            System.Windows.MessageBox.Show($"Auto-Backup Exception: {ex.Message}", "Backup Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+        }
     }
 }
