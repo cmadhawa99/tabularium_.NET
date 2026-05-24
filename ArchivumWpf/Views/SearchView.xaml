@@ -190,6 +190,7 @@
                         <ComboBox ItemsSource="{Binding AvailableSectors}" SelectedItem="{Binding SelectedSector}" Style="{StaticResource CleanComboBox}" MinWidth="110" Margin="0,0,10,0"/>
                         <ToggleButton Content="{x:Static loc:Strings.Sea_FilterRecent}" IsChecked="{Binding IsRecentActive}" Style="{StaticResource FilterToggleStyle}"/>
                         <ToggleButton Content="{x:Static loc:Strings.Sea_FilterAvailable}" IsChecked="{Binding IsAvailableActive}" Style="{StaticResource FilterToggleStyle}"/>
+                        <ToggleButton Content="{x:Static loc:Strings.Sea_FilterBorrowed}" IsChecked="{Binding IsBorrowedActive}" Style="{StaticResource FilterToggleStyle}"/>
                         <ToggleButton Content="{x:Static loc:Strings.Sea_FilterRemoved}" IsChecked="{Binding IsRemovedActive}" Style="{StaticResource FilterToggleStyle}"/>
                     </StackPanel>
                 </Grid>

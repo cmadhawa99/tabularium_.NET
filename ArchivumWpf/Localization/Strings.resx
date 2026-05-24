@@ -984,4 +984,10 @@
     <data name="Dis_TotalRecordsPending" xml:space="preserve">
         <value>Total Pending Records:</value>
     </data>
+    <data name="Sea_FilterBorrowed" xml:space="preserve">
+        <value>Borrowed</value>
+    </data>
+    <data name="Settings_SaveVault" xml:space="preserve">
+        <value>Save Vault Settings</value>
+    </data>
 </root>

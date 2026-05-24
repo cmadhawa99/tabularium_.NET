@@ -25,7 +25,7 @@ public partial class EntryViewModel : ObservableObject
     [ObservableProperty] private int _historyCurrentPage = 1;
     [ObservableProperty] private int _historyTotalPages = 1;
     [ObservableProperty] private int _historyTotalCount = 0;
-    private const int PageSize = 50;
+    [ObservableProperty] private int _pageSize;
     
     //Add entry properties
     [ObservableProperty] private string _addRrNumber = string.Empty;
@@ -73,11 +73,20 @@ public partial class EntryViewModel : ObservableObject
     {
         _archiveService = archiveService;
         _preferencesService = preferencesService;
+        
+        PageSize = _preferencesService.GetPreferences().DefaultPaginationSize;
+        
         LoadDropdowns();
         _ = LoadHistoryAsync();
+        
         WeakReferenceMessenger.Default.Register<SettingsChangedMessage>(this, (recipient, message) =>
         {
             LoadDropdowns();
+
+            PageSize = _preferencesService.GetPreferences().DefaultPaginationSize;
+            HistoryCurrentPage = 1;
+            _ = LoadHistoryAsync();
+
         });
         
     }

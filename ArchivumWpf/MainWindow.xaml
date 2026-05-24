@@ -196,7 +196,7 @@
                 <!-- BOTTOM DIGITAL CLOCK -->
                 <!-- BOTTOM DIGITAL CLOCK -->
                 <StackPanel x:Name="ClockPanel" Grid.Row="1" Margin="25,0,25,30">
-                    <TextBlock Text="{Binding CurrentTime, StringFormat={}{0:hh:mm:ss tt}}" 
+                    <TextBlock Text="{Binding FormattedTime}" 
                                Foreground="{DynamicResource PrimaryAccent}" FontSize="24" FontWeight="Bold" FontFamily="Segoe UI" Margin="0,0,0,2"/>
                
                     <TextBlock Text="{Binding CurrentTime, StringFormat={}{0:dddd, MMMM d, yyyy}}" 

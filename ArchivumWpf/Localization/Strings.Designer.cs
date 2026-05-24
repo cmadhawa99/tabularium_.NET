@@ -2319,6 +2319,15 @@ namespace ArchivumWpf.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Borrowed.
+        /// </summary>
+        public static string Sea_FilterBorrowed {
+            get {
+                return ResourceManager.GetString("Sea_FilterBorrowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to FILTER BY DATE:.
         /// </summary>
         public static string Sea_FilterByDate {
@@ -2891,6 +2900,15 @@ namespace ArchivumWpf.Localization {
         public static string Settings_SaveGeneral {
             get {
                 return ResourceManager.GetString("Settings_SaveGeneral", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save Vault Settings.
+        /// </summary>
+        public static string Settings_SaveVault {
+            get {
+                return ResourceManager.GetString("Settings_SaveVault", resourceCulture);
             }
         }
         

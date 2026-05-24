@@ -34,6 +34,7 @@ public partial class SearchViewModel : ObservableObject
 
     [ObservableProperty] private bool _isRecentActive;
     [ObservableProperty] private bool _isAvailableActive;
+    [ObservableProperty] private bool _isBorrowedActive;
     [ObservableProperty] private bool _isRemovedActive;
     
     //Pagination
@@ -87,6 +88,7 @@ public partial class SearchViewModel : ObservableObject
     partial void OnSelectedMonthChanged(string value) { CurrentPage = 1; _ = LoadDataAsync(); }
     partial void OnIsRecentActiveChanged(bool value) { CurrentPage = 1; _ = LoadDataAsync(); }
     partial void OnIsAvailableActiveChanged(bool value) { CurrentPage = 1; _ = LoadDataAsync(); }
+    partial void OnIsBorrowedActiveChanged(bool value) {CurrentPage = 1; _ = LoadDataAsync(); }
     partial void OnIsRemovedActiveChanged(bool value) { CurrentPage = 1; _ = LoadDataAsync(); }
     
 
@@ -160,6 +162,7 @@ public partial class SearchViewModel : ObservableObject
             parsedMonth,
             IsRecentActive,
             IsAvailableActive,
+            IsBorrowedActive,
             IsRemovedActive,
             CurrentPage,
             PageSize);

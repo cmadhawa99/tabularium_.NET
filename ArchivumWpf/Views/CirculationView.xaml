@@ -294,11 +294,42 @@
             <TabItem Header="{x:Static loc:Strings.Circ_TabActiveLoans}">
                 <Grid>
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="28"/>
                     </Grid.RowDefinitions>
 
-                    <DataGrid Grid.Row="0" ItemsSource="{Binding ActiveLoans}" 
+                    <Border Grid.Row="0" Background="{DynamicResource WindowBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="2" Padding="8,6" Width="350" HorizontalAlignment="Left" Margin="15,15,15,15">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/> <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <fa:ImageAwesome Grid.Column="0" Icon="Search" Width="12" Height="12" Foreground="{DynamicResource TextMuted}" Margin="5,0,10,0"/>
+                            <TextBox Grid.Column="1" Text="{Binding ActiveLoansSearchQuery, UpdateSourceTrigger=PropertyChanged}" 
+                                        Background="Transparent" Foreground="{DynamicResource TextMain}" BorderThickness="0" 
+                                        FontSize="13" VerticalContentAlignment="Center">
+                                <TextBox.Style>
+                                    <Style TargetType="TextBox">
+                                        <Style.Triggers>
+                                            <Trigger Property="Text" Value="">
+                                                <Setter Property="Background">
+                                                    <Setter.Value>
+                                                        <VisualBrush Stretch="None" AlignmentX="Left">
+                                                            <VisualBrush.Visual>
+                                                                <TextBlock Text="{x:Static loc:Strings.Circ_SearchWatermark}" Foreground="{DynamicResource TextMuted}" Opacity="0.7" FontSize="13"/>
+                                                            </VisualBrush.Visual>
+                                                        </VisualBrush>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBox.Style>
+                            </TextBox>
+                        </Grid>
+                    </Border>
+
+                    <DataGrid Grid.Row="1" ItemsSource="{Binding ActiveLoans}" 
                               AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True"
                               Background="{DynamicResource CardBackground}" Foreground="{DynamicResource TextMain}" 
                               RowBackground="{DynamicResource CardBackground}" AlternatingRowBackground="{DynamicResource WindowBackground}" 
@@ -332,7 +363,7 @@
 
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="{x:Static loc:Strings.Circ_ColRrNumber}" Binding="{Binding SnapshotRrNumber}" Width="140">
-                                    <DataGridTextColumn.ElementStyle>
+                                <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
                                         <Setter Property="VerticalAlignment" Value="Center"/>
@@ -384,7 +415,7 @@
                         </DataGrid.Columns>
                     </DataGrid>
 
-                    <Border Grid.Row="1" Background="{DynamicResource PrimaryAccent}" Padding="15,0">
+                    <Border Grid.Row="2" Background="{DynamicResource PrimaryAccent}" Padding="15,0">
                         <Grid>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
                                 <TextBlock Foreground="{DynamicResource CardBackground}" FontSize="11">

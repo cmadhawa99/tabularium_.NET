@@ -361,10 +361,6 @@ namespace ArchivumWpf.Migrations
                         .HasColumnType("text")
                         .HasColumnName("role");
 
-                    b.Property<string>("TotpSecret")
-                        .HasColumnType("text")
-                        .HasColumnName("totp_secret");
-
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("text")

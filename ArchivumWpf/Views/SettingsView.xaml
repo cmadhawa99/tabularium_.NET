@@ -47,7 +47,7 @@
             <Setter Property="FontSize" Value="13"/>
             <Setter Property="Template">
                 <Setter.Value>
-                    <ControlTemplate TargetType="PasswordBox">
+                     <ControlTemplate TargetType="PasswordBox">
                         <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2">
                             <ScrollViewer x:Name="PART_ContentHost" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
                         </Border>
@@ -124,7 +124,7 @@
                                         <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
                                     </ScrollViewer>
                                 </Border>
-                            </Popup>
+                             </Popup>
                         </Grid>
                     </ControlTemplate>
                 </Setter.Value>
@@ -147,7 +147,7 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-                            
+                           
                             <TabPanel x:Name="HeaderPanel" Grid.Row="0" IsItemsHost="true" Margin="15,0,15,0" Panel.ZIndex="1"/>
                             
                             <Border Grid.Row="1" Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,1,0,0">
@@ -162,7 +162,7 @@
         <Style TargetType="TabItem">
             <Setter Property="Template">
                 <Setter.Value>
-                    <ControlTemplate TargetType="TabItem">
+                     <ControlTemplate TargetType="TabItem">
                         <Border x:Name="Border" 
                                 Padding="15,8" 
                                 Margin="2,0,2,-1" 
@@ -302,7 +302,7 @@
                             </StackPanel>
                         </Border>
 
-                        <Button Command="{Binding SaveSettingsCommand}" Height="36" Background="{DynamicResource PrimaryAccent}" Foreground="{DynamicResource WindowBackground}" BorderThickness="0" Cursor="Hand" HorizontalAlignment="Right" Padding="25,0">
+                        <Button Command="{Binding SaveGeneralSettingsCommand}" Height="36" Background="{DynamicResource PrimaryAccent}" Foreground="{DynamicResource WindowBackground}" BorderThickness="0" Cursor="Hand" HorizontalAlignment="Right" Padding="25,0">
                             <Button.Template>
                                 <ControlTemplate TargetType="Button">
                                     <Border Background="{TemplateBinding Background}" CornerRadius="2">
@@ -350,7 +350,7 @@
                                         <TextBlock Text="{x:Static loc:Strings.Settings_DbName}" Style="{StaticResource FormLabel}"/>
                                         <TextBox Text="{Binding DbName}" Style="{StaticResource CleanTextBox}"/>
                                     </StackPanel>
-                                </Grid>
+                               </Grid>
 
                                 <Grid Margin="0,0,0,25">
                                     <Grid.ColumnDefinitions>
@@ -366,7 +366,7 @@
                                         <TextBlock Text="{x:Static loc:Strings.Settings_DbPassword}" Style="{StaticResource FormLabel}"/>
                                         <PasswordBox x:Name="DbPasswordBox" PasswordChanged="DbPasswordBox_PasswordChanged" Style="{StaticResource CleanPasswordBox}"/>
                                     </StackPanel>
-                                </Grid>
+                               </Grid>
                                 
                                 <Button Command="{Binding TestDatabaseConnectionCommand}" Height="36" Background="Transparent" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" Foreground="{DynamicResource PrimaryAccent}" Cursor="Hand" HorizontalAlignment="Left" Padding="20,0" IsEnabled="{Binding IsProcessing, Converter={StaticResource InverseBooleanConverter}}">
                                     <Button.Template>
@@ -398,7 +398,7 @@
                                     <fa:ImageAwesome Icon="CloudUpload" Width="16" Height="16" Foreground="{DynamicResource PrimaryAccent}" Margin="0,0,10,0" VerticalAlignment="Center"/>
                                     <TextBlock Text="{x:Static loc:Strings.Settings_AutoBackups}" Foreground="{DynamicResource PrimaryAccent}" FontSize="14" FontWeight="SemiBold"/>
                                 </StackPanel>
-                                
+                                 
                                 <CheckBox IsChecked="{Binding AutoBackupEnabled}" Content="{x:Static loc:Strings.Settings_EnableAutoBackup}" Foreground="{DynamicResource TextMain}" FontWeight="SemiBold" Margin="0,0,0,20"/>
                                 
                                 <StackPanel>
@@ -408,7 +408,7 @@
                             </StackPanel>
                         </Border>
 
-                        <Button Command="{Binding SaveSettingsCommand}" Height="36" Background="{DynamicResource PrimaryAccent}" Foreground="{DynamicResource WindowBackground}" BorderThickness="0" Cursor="Hand" HorizontalAlignment="Right" Padding="25,0" IsEnabled="{Binding IsProcessing, Converter={StaticResource InverseBooleanConverter}}">
+                        <Button Command="{Binding SaveDatabaseSettingsCommand}" Height="36" Background="{DynamicResource PrimaryAccent}" Foreground="{DynamicResource WindowBackground}" BorderThickness="0" Cursor="Hand" HorizontalAlignment="Right" Padding="25,0" IsEnabled="{Binding IsProcessing, Converter={StaticResource InverseBooleanConverter}}">
                             <Button.Template>
                                 <ControlTemplate TargetType="Button">
                                     <Border Background="{TemplateBinding Background}" CornerRadius="2">
@@ -630,7 +630,20 @@
                                 </Grid>
                             </Border>
                         </Grid>
-                    </StackPanel>
+                        
+                        <Button Command="{Binding SaveVaultSettingsCommand}" Height="36" Background="{DynamicResource PrimaryAccent}" Foreground="{DynamicResource WindowBackground}" BorderThickness="0" Cursor="Hand" HorizontalAlignment="Right" Padding="25,0" Margin="0,20,0,0">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}" CornerRadius="2">
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}">
+                                            <fa:ImageAwesome Icon="Save" Width="12" Height="12" Margin="0,0,8,0" Foreground="{DynamicResource WindowBackground}"/>
+                                            <TextBlock Text="{x:Static loc:Strings.Settings_SaveVault}" FontWeight="SemiBold"/>
+                                        </StackPanel>
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                        </StackPanel>
                 </ScrollViewer>
             </TabItem>
 

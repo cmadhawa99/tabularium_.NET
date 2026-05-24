@@ -178,28 +178,32 @@ public partial class SettingsViewModel : ObservableObject
             IsProcessing = false;
         }
     }
-    
-    
 
     [RelayCommand]
-    private void SaveSettings()
+    private void SaveGeneralSettings()
     {
-        var prefs = new UserPreferences()
-        {
-            OrganizationName = this.OrganizationName,
-            CurrentUser = this.CurrentUser,
-            Language = this.SelectedLanguage,
-            TimeFormat = this.SelectedTimeFormat,
-            DefaultPaginationSize = this.DefaultPaginationSize,
-            WindowMode = this.SelectedWindowMode,
-            DefaultExportDirectory = this.DefaultExportDirectory,
-            AutoBackupEnabled = this.AutoBackupEnabled,
-            AutoBackupDirectory = this.AutoBackupDirectory,
-            
-            Sectors = new List<SectorItem>(this.Sectors),
-            FileTypes = new List<string>(this.FileTypes)
-        };
+        var prefs = _preferencesService.GetPreferences();
+
+        prefs.OrganizationName = this.OrganizationName;
+        prefs.CurrentUser = this.CurrentUser;
+        prefs.Language = this.SelectedLanguage;
+        prefs.TimeFormat = this.SelectedTimeFormat;
+        prefs.DefaultPaginationSize = this.DefaultPaginationSize;
+        prefs.WindowMode = this.SelectedWindowMode;
+        prefs.DefaultExportDirectory = this.DefaultExportDirectory;
         
+        _preferencesService.SavePreferences(prefs);
+
+        WeakReferenceMessenger.Default.Send(new SettingsChangedMessage());
+        ShowStatus("General settings saved successfully!", "#4CAF50");
+    }
+
+    [RelayCommand]
+    private void SaveDatabaseSettings()
+    {
+        var prefs = _preferencesService.GetPreferences();
+        prefs.AutoBackupEnabled = this.AutoBackupEnabled;
+        prefs.AutoBackupDirectory = this.AutoBackupDirectory;
         _preferencesService.SavePreferences(prefs);
 
         if (File.Exists(_appSettingsPath))
@@ -214,7 +218,6 @@ public partial class SettingsViewModel : ObservableObject
                         Database = DbName,
                         Username = DbUser,
                         Password = DbPassword
-
                     };
 
                     var jsonNode = JsonNode.Parse(File.ReadAllText(_appSettingsPath));
@@ -230,19 +233,29 @@ public partial class SettingsViewModel : ObservableObject
                     }
                 }
             }
-
             catch (Exception ex)
             {
                 ShowStatus($"Error saving appsettings.json: {ex.Message}", "#F44336");
                 return;
             }
         }
-
         WeakReferenceMessenger.Default.Send(new SettingsChangedMessage());
-        ShowStatus("Settings saved successfully! (App restart required for Database changes to apply).", "#4CAF50");
-        
+        ShowStatus("Database settings saved! (App restart required for connection changes).", "#4CAF50");
     }
-    
+
+    [RelayCommand]
+    private void SaveVaultSettings()
+    {
+        var prefs = _preferencesService.GetPreferences();
+        
+        prefs.Sectors = new List<SectorItem>(this.Sectors);
+        prefs.FileTypes = new List<string>(this.FileTypes);
+        
+        _preferencesService.SavePreferences(prefs);
+        
+        WeakReferenceMessenger.Default.Send(new SettingsChangedMessage());
+        ShowStatus("Vault categories saved successfully!", "#4CAF50");
+    }
 
     private void ShowStatus(string message, string color)
     {

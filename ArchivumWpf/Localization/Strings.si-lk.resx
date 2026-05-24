@@ -929,4 +929,7 @@
     <data name="test" xml:space="preserve">
         <value>වාර්තා {fullData.Count}ක් සාර්ථකව CSV වෙත අපනයනය කරන ලදී.</value>
     </data>
+    <data name="Sea_FilterBorrowed" xml:space="preserve">
+        <value>ලබා දුන්</value>
+    </data>
 </root>

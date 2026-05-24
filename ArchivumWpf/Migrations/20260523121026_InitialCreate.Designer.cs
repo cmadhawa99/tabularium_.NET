@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ArchivumWpf.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260515095025_SecondCommit")]
-    partial class SecondCommit
+    [Migration("20260523121026_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -363,10 +363,6 @@ namespace ArchivumWpf.Migrations
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("role");
-
-                    b.Property<string>("TotpSecret")
-                        .HasColumnType("text")
-                        .HasColumnName("totp_secret");
 
                     b.Property<string>("Username")
                         .IsRequired()

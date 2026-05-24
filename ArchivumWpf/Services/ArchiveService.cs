@@ -17,7 +17,7 @@ public interface IArchiveService
 
     Task<(List<FileRecord> Items, int TotalCount)> SearchFilesPaginatedAsync(string searchTerm, string sectorFilter,
         int? yearFilter,
-        int? monthFilter, bool isRecentOnly, bool isAvailableOnly, bool isRemovedOnly, int pageNumber, int pageSize);
+        int? monthFilter, bool isRecentOnly, bool isAvailableOnly, bool isBorrowedOnly, bool isRemovedOnly, int pageNumber, int pageSize);
    
     Task<List<string>> GetExistingSectorsAsync();
     
@@ -127,7 +127,7 @@ public class ArchiveService : IArchiveService
     //Search
 
     public async Task<(List<FileRecord> Items, int TotalCount)> SearchFilesPaginatedAsync(string searchTerm, string sectorFilter, int? yearFilter,
-    int? monthFilter, bool isRecentOnly, bool isAvailableOnly, bool isRemovedOnly, int pageNumber, int pageSize)
+    int? monthFilter, bool isRecentOnly, bool isAvailableOnly, bool isBorrowedOnly, bool isRemovedOnly, int pageNumber, int pageSize)
     {
         using var context = await _contextFactory.CreateDbContextAsync();
         var query = context.FileRecords.AsQueryable();
@@ -166,6 +166,11 @@ public class ArchiveService : IArchiveService
         if (isAvailableOnly)
         {
             query = query.Where(f => f.CurrentStatus == "Available" && !f.IsRemoved);
+        }
+
+        if (isBorrowedOnly)
+        {
+            query = query.Where(f => f.CurrentStatus == "Borrowed" && !f.IsRemoved);
         }
 
         if (isRemovedOnly)
@@ -579,7 +584,7 @@ public class ArchiveService : IArchiveService
             var processStartInfo = new ProcessStartInfo
             {
                 FileName = "pg_dump",
-                Arguments = $"-U {dbUser} -d {dbName} -f \"{backupPath}\" -F p",
+                Arguments = $"-U {dbUser} -d {dbName} -f \"{backupPath}\" -F c -Z zstd:19",
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 UseShellExecute = false,

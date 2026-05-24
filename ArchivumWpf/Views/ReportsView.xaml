@@ -13,6 +13,8 @@
         <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
         <converters:BindingProxy x:Key="Proxy" Data="{Binding}" />
         <converters:BooleanToYesNoConverter x:Key="YesNoConverter"/>
+        
+        <converters:DynamicTimeConverter x:Key="DynamicTimeConverter"/>
 
         <Style x:Key="RibbonTextBox" TargetType="TextBox">
             <Setter Property="Background" Value="{DynamicResource WindowBackground}"/>
@@ -605,7 +607,9 @@
             </DataGrid.Resources>
 
             <DataGrid.Columns>
-                 <DataGridTextColumn Header="{x:Static loc:Strings.Rep_GridColTimestamp}" Binding="{Binding AddedDateTime, StringFormat=yyyy-MM-dd HH:mm}" Visibility="{Binding Data.IncAddedDate, Source={StaticResource Proxy}, Converter={StaticResource BoolToVisConverter}}" Width="140"/>
+                <DataGridTextColumn Header="{x:Static loc:Strings.Rep_GridColTimestamp}" 
+                                    Binding="{Binding AddedDateTime, Converter={StaticResource DynamicTimeConverter}}" 
+                                    Visibility="{Binding Data.IncAddedDate, Source={StaticResource Proxy}, Converter={StaticResource BoolToVisConverter}}" Width="140"/>
                 <DataGridTextColumn Header="{x:Static loc:Strings.Rep_GridColSerial}" Binding="{Binding SerialNumber}" Visibility="{Binding Data.IncSerial, Source={StaticResource Proxy}, Converter={StaticResource BoolToVisConverter}}" Width="100"/>
                 <DataGridTextColumn Header="{x:Static loc:Strings.Rep_GridColRrNum}" Binding="{Binding RrNumber}" Visibility="{Binding Data.IncRrNumber, Source={StaticResource Proxy}, Converter={StaticResource BoolToVisConverter}}" FontFamily="Consolas" Width="140"/>
                 

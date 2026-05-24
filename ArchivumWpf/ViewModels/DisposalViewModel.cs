@@ -6,6 +6,7 @@ using System.Private.Windows;
 using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using ArchivumWpf.Models;
 using ArchivumWpf.Services;
 
@@ -51,7 +52,7 @@ public partial class DisposalViewModel : ObservableObject
     [ObservableProperty] private bool _isPendingPopup = false;
     [ObservableProperty] private bool _isDisposedPopup = false;
 
-    private const int PageSize = 50;
+    [ObservableProperty] private int _pageSize;
 
     [ObservableProperty] private string _queueSearchQuery = string.Empty;
     [ObservableProperty] private int _queueCurrentPage = 1;
@@ -69,7 +70,18 @@ public partial class DisposalViewModel : ObservableObject
     {
         _archiveService = archiveService;
         _preferencesService = preferencesService;
+        
+        PageSize = _preferencesService.GetPreferences().DefaultPaginationSize;
+        
         _ = LoadTablesAsync();
+        
+        WeakReferenceMessenger.Default.Register<SettingsChangedMessage>(this, (recipient, message) =>
+        {
+            PageSize = _preferencesService.GetPreferences().DefaultPaginationSize;
+            QueueCurrentPage = 1;
+            HistoryCurrentPage = 1;
+            _ = LoadTablesAsync();
+        });
     }
 
     private async Task LoadTablesAsync()

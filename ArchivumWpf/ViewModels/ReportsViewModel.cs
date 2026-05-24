@@ -29,7 +29,8 @@ public partial class ReportsViewModel : ObservableObject
     public ObservableCollection<SectorItem> RawSectors { get; } = new();
     [ObservableProperty] private bool _enableRowColors = false;
 
-    private const int PageSize = 50;
+    [ObservableProperty] private int _pageSize;
+    
     [ObservableProperty] private int _currentPage = 1;
     [ObservableProperty] private int _totalPageCount = 1;
     [ObservableProperty] private int _totalResultCount = 0;
@@ -86,10 +87,19 @@ public partial class ReportsViewModel : ObservableObject
     {
         _archiveService = archiveService;
         _preferencesService = preferencesService;
+        
+        PageSize = _preferencesService.GetPreferences().DefaultPaginationSize;
+        
         LoadDropdowns();
         _ = UpdatePreviewAsync();
-        WeakReferenceMessenger.Default.Register<SettingsChangedMessage>(this,
-            (recipient, message) => { LoadDropdowns(); });
+        WeakReferenceMessenger.Default.Register<SettingsChangedMessage>(this, (recipient, message) =>
+            {
+                LoadDropdowns();
+                
+                PageSize = _preferencesService.GetPreferences().DefaultPaginationSize;
+                CurrentPage = 1;
+                _ = UpdatePreviewAsync();
+            });
     }
 
     private void LoadDropdowns()
@@ -211,6 +221,9 @@ public partial class ReportsViewModel : ObservableObject
         IsProcessing = true;
         ShowStatus("Generating CSV...", "Yellow");
         
+        string timePref = _preferencesService.GetPreferences().TimeFormat;
+        string dtFormat = timePref == "24-Hour" ? "yyyy-MM-dd HH:mm" : "yyyy-MM-dd hh:mm tt";
+        
         var combinedFrom = CombineDateTime(AddedDateFrom, AddedTimeFrom);
         var combinedTo = CombineDateTime(AddedDateTo, AddedTimeTo);
         
@@ -247,7 +260,7 @@ public partial class ReportsViewModel : ObservableObject
             var row = new List<string>();
             string safeName = file.FileName?.Replace(",", " ") ?? ""; 
 
-            if (IncAddedDate) row.Add(file.AddedDateTime.ToString("yyyy-MM-dd HH:mm"));
+            if (IncAddedDate) row.Add(file.AddedDateTime.ToString(dtFormat, System.Globalization.CultureInfo.InvariantCulture));
             if (IncSerial) row.Add(file.SerialNumber.ToString());
             if (IncRrNumber) row.Add(file.RrNumber ?? "");
             if (IncSector) row.Add(file.Sector ?? "");
@@ -304,6 +317,9 @@ public partial class ReportsViewModel : ObservableObject
         
         IsProcessing = true;
         ShowStatus("Generating Excel file...", "Yellow");
+        
+        string timePref = _preferencesService.GetPreferences().TimeFormat;
+        string dtFormat = timePref == "24-Hour" ? "yyyy-MM-dd HH:mm" : "yyyy-MM-dd hh:mm tt";
 
         var combinedFrom = CombineDateTime(AddedDateFrom, AddedTimeFrom);
         var combinedTo = CombineDateTime(AddedDateTo, AddedDateFrom);
@@ -358,7 +374,7 @@ public partial class ReportsViewModel : ObservableObject
                 var file = fullData[r];
                 var row = r + startDataRow;
 
-                if (IncAddedDate) ws.Cell(row, c++).Value = file.AddedDateTime.ToString("yyyy-MM-dd HH:mm");
+                if (IncAddedDate) ws.Cell(row, c++).Value = file.AddedDateTime.ToString(dtFormat, System.Globalization.CultureInfo.InvariantCulture);
                 if (IncSerial) ws.Cell(row, c++).Value = file.SerialNumber;
                 if (IncRrNumber) ws.Cell(row, c++).Value = file.RrNumber;
                 if (IncSector) ws.Cell(row, c++).Value = file.Sector;
@@ -427,7 +443,11 @@ public partial class ReportsViewModel : ObservableObject
     [RelayCommand]
     private async Task BackupSqlAsync()
     {
-        var dialog = new SaveFileDialog { Filter = "SQL Backup File (*.sql)|*.sql", FileName = $"Full_Backup_{DateTime.Now:yyyyMMdd}.sql" };
+        var dialog = new SaveFileDialog { 
+            Filter = "PostgreSQL Backup File (*.backup)|*.backup", 
+            FileName = $"Full_Backup_{DateTime.Now:yyyyMMdd}.backup"
+        };
+        
         if (dialog.ShowDialog() != true) return;
 
         IsProcessing = true;

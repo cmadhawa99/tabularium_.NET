@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using ArchivumWpf.Models;
 using ArchivumWpf.Services;
 using DocumentFormat.OpenXml.Wordprocessing;
@@ -14,7 +15,7 @@ public partial class CirculationViewModel : ObservableObject
 {
     private readonly IArchiveService _archiveService;
     private readonly IPreferencesService _preferencesService;
-    private const int PageSize = 50;
+    [ObservableProperty] private int _pageSize;
     
     [ObservableProperty] private string _targetRrNumber = string.Empty;
     [ObservableProperty] private FileRecord _loadedFile;
@@ -30,6 +31,8 @@ public partial class CirculationViewModel : ObservableObject
     [ObservableProperty] private int _activeLoansCurrentPage = 1;
     [ObservableProperty] private int _activeLoansTotalPages = 1;
     [ObservableProperty] private int _activeLoansTotalCount = 0;
+    
+    [ObservableProperty] private string _activeLoansSearchQuery = string.Empty;
     
     public ObservableCollection<BorrowRecord> BorrowHistoryRecords { get; } = new();
     [ObservableProperty] private string _historySearchQuery = string.Empty;
@@ -51,13 +54,39 @@ public partial class CirculationViewModel : ObservableObject
         _archiveService = archiveService;
         _preferencesService = preferencesService;
 
+        PageSize = _preferencesService.GetPreferences().DefaultPaginationSize;
+
         _ = LoadActiveLoansAsync();
         _ = LoadHistoryAsync();
+        
+        WeakReferenceMessenger.Default.Register<SettingsChangedMessage>(this, (recipient, message) =>
+        {
+            PageSize = _preferencesService.GetPreferences().DefaultPaginationSize;
+            ActiveLoansCurrentPage = 1;
+            HistoryCurrentPage = 1;
+            _ = LoadActiveLoansAsync();
+            _ = LoadHistoryAsync();
+        });
+        
+    }
+
+    partial void OnActiveLoansSearchQueryChanged(string value)
+    {
+        ActiveLoansCurrentPage = 1;
+        _ = LoadActiveLoansAsync();
     }
 
     private async Task LoadActiveLoansAsync()
     {
         var allLoans = await _archiveService.GetActiveLoansAsync();
+
+        if (!string.IsNullOrWhiteSpace(ActiveLoansSearchQuery))
+        {
+            var query = ActiveLoansSearchQuery.ToLower().Trim();
+            allLoans = allLoans.Where(l =>
+                !string.IsNullOrEmpty(l.SnapshotRrNumber) &&
+                l.SnapshotRrNumber.ToLower().Contains(query)).ToList();
+        }
         
         ActiveLoansTotalCount = allLoans.Count();
         ActiveLoansTotalPages = (int)Math.Ceiling((double)ActiveLoansTotalCount / PageSize);

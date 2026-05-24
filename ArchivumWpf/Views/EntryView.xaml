@@ -4,10 +4,12 @@
              xmlns:fa="http://schemas.fontawesome.io/icons/"
              xmlns:models="clr-namespace:ArchivumWpf.Models"
              xmlns:loc="clr-namespace:ArchivumWpf.Localization"
+             xmlns:converters="clr-namespace:ArchivumWpf.Converters"
              Background="{DynamicResource WindowBackground}">
 
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
+        <converters:DynamicTimeConverter x:Key="DynamicTimeConverter"/>
 
         <Style x:Key="CleanTextBox" TargetType="TextBox">
             <Setter Property="Background" Value="{DynamicResource CardBackground}"/>
@@ -723,7 +725,8 @@
             </DataGrid.Resources>
 
             <DataGrid.Columns>
-                <DataGridTextColumn Header="{x:Static loc:Strings.Ent_ColTimestamp}" Binding="{Binding Timestamp, StringFormat=yyyy-MM-dd HH:mm}" Width="140">
+                <DataGridTextColumn Header="{x:Static loc:Strings.Ent_ColTimestamp}" 
+                                    Binding="{Binding Timestamp, Converter={StaticResource DynamicTimeConverter}}" Width="140">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
