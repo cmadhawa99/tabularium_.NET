@@ -8,9 +8,8 @@
         Title="{x:Static loc:Strings.Main_WindowTitle}" 
         Height="900" Width="1380" MinWidth="1100" MinHeight="700"
         WindowStartupLocation="CenterScreen"
-        Background="{DynamicResource WindowBackground}">
-    
-    <Window.Resources>
+        Background="{DynamicResource WindowBackground}"
+        TextElement.FontFamily="Segoe UI Variable, Segoe UI, sans-serif"> <Window.Resources>
         <DataTemplate DataType="{x:Type viewmodels:DashboardViewModel}"><views:DashboardView /></DataTemplate>
         <DataTemplate DataType="{x:Type viewmodels:SearchViewModel}"><views:SearchView /></DataTemplate>
         <DataTemplate DataType="{x:Type viewmodels:CirculationViewModel}"><views:CirculationView /></DataTemplate>
@@ -19,20 +18,20 @@
         <DataTemplate DataType="{x:Type viewmodels:ReportsViewModel}"><views:ReportsView /></DataTemplate>
         <DataTemplate DataType="{x:Type viewmodels:SettingsViewModel}"><views:SettingsView /></DataTemplate>
 
+        <DropShadowEffect x:Key="Win11Shadow" BlurRadius="16" ShadowDepth="4" Direction="270" Color="#000000" Opacity="0.12"/>
+
         <Style x:Key="SidebarNavButton" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
-            <Setter Property="BorderThickness" Value="4,0,0,0"/>
-            <Setter Property="BorderBrush" Value="Transparent"/>
-            <Setter Property="Height" Value="50"/>
-            <Setter Property="Margin" Value="0,2"/>
-            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="BorderBrush" Value="Transparent"/> <Setter Property="Height" Value="44"/> <Setter Property="Margin" Value="12,3,12,3"/> <Setter Property="HorizontalContentAlignment" Value="Left"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
-                            <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center" Margin="21,0,0,0"/>
+                        <Border Background="{TemplateBinding Background}" CornerRadius="6"> <Grid>
+                                <Border Background="{TemplateBinding BorderBrush}" Width="3" Height="18" CornerRadius="1.5" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2,0,0,0"/>
+                                <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center" Margin="14,0,0,0"/>
+                            </Grid>
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
@@ -40,8 +39,7 @@
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Foreground" Value="{DynamicResource PrimaryAccent}"/>
-                    <Setter Property="Background" Value="#0A000000"/>
-                </Trigger>
+                    <Setter Property="Background" Value="#0A808080"/> </Trigger>
             </Style.Triggers>
         </Style>
     </Window.Resources>
@@ -55,15 +53,14 @@
         <Border Grid.Column="0" Background="{DynamicResource SidebarBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,0,1,0" Panel.ZIndex="10">
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/> <!-- Top section pushes down -->
-                    <RowDefinition Height="Auto"/> <!-- Bottom section for clock -->
+                    <RowDefinition Height="*"/> 
+                    <RowDefinition Height="Auto"/> 
                 </Grid.RowDefinitions>
 
-                <!-- TOP NAVIGATION -->
                 <StackPanel Grid.Row="0" Margin="0,40,0,0">
                     
-                    <TextBlock Text="{x:Static loc:Strings.Main_BrandTitle}" Foreground="{DynamicResource PrimaryAccent}" FontSize="24" FontWeight="Bold" FontFamily="Segoe UI" HorizontalAlignment="Left" Margin="25,0,25,2" TextWrapping="Wrap"/>
-                    <TextBlock Text="{x:Static loc:Strings.Main_BrandSubtitle}" Foreground="{DynamicResource TextMuted}" FontSize="11" FontWeight="SemiBold" HorizontalAlignment="Left" Margin="25,0,25,40" TextWrapping="Wrap"/>
+                    <TextBlock Text="{x:Static loc:Strings.Main_BrandTitle}" Foreground="{DynamicResource PrimaryAccent}" FontSize="24" FontWeight="Normal" HorizontalAlignment="Left" Margin="24,0,24,2" TextWrapping="Wrap"/>
+                    <TextBlock Text="{x:Static loc:Strings.Main_BrandSubtitle}" Foreground="{DynamicResource TextMuted}" FontSize="12" FontWeight="Normal" HorizontalAlignment="Left" Margin="24,0,24,40" TextWrapping="Wrap"/>
 
                     <Button Command="{Binding NavigateToDashboardCommand}">
                         <Button.Style>
@@ -72,14 +69,14 @@
                                     <DataTrigger Binding="{Binding ActivePage}" Value="Dashboard">
                                         <Setter Property="Foreground" Value="{DynamicResource PrimaryAccent}"/>
                                         <Setter Property="BorderBrush" Value="{DynamicResource PrimaryAccent}"/>
-                                        <Setter Property="Background" Value="#0A000000"/>
+                                        <Setter Property="Background" Value="#0A808080"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </Button.Style>
                         <StackPanel Orientation="Horizontal">
-                            <fa:ImageAwesome Icon="PieChart" Width="16" Height="16" Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" Margin="0,0,15,0"/>
-                            <TextBlock Text="{x:Static loc:Strings.Main_NavDashboard}" FontWeight="SemiBold" FontSize="13" VerticalAlignment="Center"/>
+                            <fa:ImageAwesome Icon="PieChart" Width="16" Height="16" Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" Margin="0,0,12,0"/>
+                            <TextBlock Text="{x:Static loc:Strings.Main_NavDashboard}" FontWeight="Normal" FontSize="14" VerticalAlignment="Center"/>
                         </StackPanel>
                     </Button>
                     
@@ -90,14 +87,14 @@
                                     <DataTrigger Binding="{Binding ActivePage}" Value="Search">
                                         <Setter Property="Foreground" Value="{DynamicResource PrimaryAccent}"/>
                                         <Setter Property="BorderBrush" Value="{DynamicResource PrimaryAccent}"/>
-                                        <Setter Property="Background" Value="#0A000000"/>
+                                        <Setter Property="Background" Value="#0A808080"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </Button.Style>
                         <StackPanel Orientation="Horizontal">
-                            <fa:ImageAwesome Icon="Search" Width="16" Height="16" Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" Margin="0,0,15,0"/>
-                            <TextBlock Text="{x:Static loc:Strings.Main_NavSearch}" FontWeight="SemiBold" FontSize="13" VerticalAlignment="Center"/>
+                            <fa:ImageAwesome Icon="Search" Width="16" Height="16" Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" Margin="0,0,12,0"/>
+                            <TextBlock Text="{x:Static loc:Strings.Main_NavSearch}" FontWeight="Normal" FontSize="14" VerticalAlignment="Center"/>
                         </StackPanel>
                     </Button>
                     
@@ -108,14 +105,14 @@
                                     <DataTrigger Binding="{Binding ActivePage}" Value="Circulation">
                                         <Setter Property="Foreground" Value="{DynamicResource PrimaryAccent}"/>
                                         <Setter Property="BorderBrush" Value="{DynamicResource PrimaryAccent}"/>
-                                        <Setter Property="Background" Value="#0A000000"/>
+                                        <Setter Property="Background" Value="#0A808080"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </Button.Style>
                         <StackPanel Orientation="Horizontal">
-                            <fa:ImageAwesome Icon="Exchange" Width="16" Height="16" Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" Margin="0,0,15,0"/>
-                            <TextBlock Text="{x:Static loc:Strings.Main_NavCirculation}" FontWeight="SemiBold" FontSize="13" VerticalAlignment="Center"/>
+                            <fa:ImageAwesome Icon="Exchange" Width="16" Height="16" Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" Margin="0,0,12,0"/>
+                            <TextBlock Text="{x:Static loc:Strings.Main_NavCirculation}" FontWeight="Normal" FontSize="14" VerticalAlignment="Center"/>
                         </StackPanel>
                     </Button>
                     
@@ -126,14 +123,14 @@
                                     <DataTrigger Binding="{Binding ActivePage}" Value="Entry">
                                         <Setter Property="Foreground" Value="{DynamicResource PrimaryAccent}"/>
                                         <Setter Property="BorderBrush" Value="{DynamicResource PrimaryAccent}"/>
-                                        <Setter Property="Background" Value="#0A000000"/>
+                                        <Setter Property="Background" Value="#0A808080"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </Button.Style>
                         <StackPanel Orientation="Horizontal">
-                            <fa:ImageAwesome Icon="Plus" Width="16" Height="16" Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" Margin="0,0,15,0"/>
-                            <TextBlock Text="{x:Static loc:Strings.Main_NavNewEntry}" FontWeight="SemiBold" FontSize="13" VerticalAlignment="Center"/>
+                            <fa:ImageAwesome Icon="Plus" Width="16" Height="16" Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" Margin="0,0,12,0"/>
+                            <TextBlock Text="{x:Static loc:Strings.Main_NavNewEntry}" FontWeight="Normal" FontSize="14" VerticalAlignment="Center"/>
                         </StackPanel>
                     </Button>
 
@@ -144,14 +141,14 @@
                                     <DataTrigger Binding="{Binding ActivePage}" Value="Disposal">
                                         <Setter Property="Foreground" Value="{DynamicResource PrimaryAccent}"/>
                                         <Setter Property="BorderBrush" Value="{DynamicResource PrimaryAccent}"/>
-                                        <Setter Property="Background" Value="#0A000000"/>
+                                        <Setter Property="Background" Value="#0A808080"/>
                                     </DataTrigger>
-                                </Style.Triggers>
+                                 </Style.Triggers>
                             </Style>
                         </Button.Style>
                         <StackPanel Orientation="Horizontal">
-                             <fa:ImageAwesome Icon="Trash" Width="16" Height="16" Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" Margin="0,0,15,0"/>
-                            <TextBlock Text="{x:Static loc:Strings.Main_NavDisposal}" FontWeight="SemiBold" FontSize="13" VerticalAlignment="Center"/>
+                             <fa:ImageAwesome Icon="Trash" Width="16" Height="16" Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" Margin="0,0,12,0"/>
+                            <TextBlock Text="{x:Static loc:Strings.Main_NavDisposal}" FontWeight="Normal" FontSize="14" VerticalAlignment="Center"/>
                         </StackPanel>
                     </Button>
                      
@@ -162,45 +159,43 @@
                                     <DataTrigger Binding="{Binding ActivePage}" Value="Reports">
                                         <Setter Property="Foreground" Value="{DynamicResource PrimaryAccent}"/>
                                         <Setter Property="BorderBrush" Value="{DynamicResource PrimaryAccent}"/>
-                                        <Setter Property="Background" Value="#0A000000"/>
+                                        <Setter Property="Background" Value="#0A808080"/>
                                     </DataTrigger>
                                  </Style.Triggers>
                             </Style>
                         </Button.Style>
                         <StackPanel Orientation="Horizontal">
-                             <fa:ImageAwesome Icon="Print" Width="16" Height="16" Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" Margin="0,0,15,0"/>
-                            <TextBlock Text="{x:Static loc:Strings.Main_NavReports}" FontWeight="SemiBold" FontSize="13" VerticalAlignment="Center"/>
+                             <fa:ImageAwesome Icon="Print" Width="16" Height="16" Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" Margin="0,0,12,0"/>
+                             <TextBlock Text="{x:Static loc:Strings.Main_NavReports}" FontWeight="Normal" FontSize="14" VerticalAlignment="Center"/>
                         </StackPanel>
                     </Button>
                      
-                    <Button Command="{Binding NavigateToSettingsCommand}" Margin="0,20,0,0">
+                    <Button Command="{Binding NavigateToSettingsCommand}" Margin="12,20,12,3">
                         <Button.Style>
                             <Style TargetType="Button" BasedOn="{StaticResource SidebarNavButton}">
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding ActivePage}" Value="Settings">
                                         <Setter Property="Foreground" Value="{DynamicResource PrimaryAccent}"/>
                                         <Setter Property="BorderBrush" Value="{DynamicResource PrimaryAccent}"/>
-                                        <Setter Property="Background" Value="#0A000000"/>
+                                        <Setter Property="Background" Value="#0A808080"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </Button.Style>
                         <StackPanel Orientation="Horizontal">
-                            <fa:ImageAwesome Icon="Cog" Width="16" Height="16" Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" Margin="0,0,15,0"/>
-                            <TextBlock Text="{x:Static loc:Strings.Main_NavSettings}" FontWeight="SemiBold" FontSize="13" VerticalAlignment="Center"/>
+                            <fa:ImageAwesome Icon="Cog" Width="16" Height="16" Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" Margin="0,0,12,0"/>
+                            <TextBlock Text="{x:Static loc:Strings.Main_NavSettings}" FontWeight="Normal" FontSize="14" VerticalAlignment="Center"/>
                         </StackPanel>
                     </Button>
 
                 </StackPanel>
 
-                <!-- BOTTOM DIGITAL CLOCK -->
-                <!-- BOTTOM DIGITAL CLOCK -->
-                <StackPanel x:Name="ClockPanel" Grid.Row="1" Margin="25,0,25,30">
+                <StackPanel x:Name="ClockPanel" Grid.Row="1" Margin="24,0,24,35">
                     <TextBlock Text="{Binding FormattedTime}" 
-                               Foreground="{DynamicResource PrimaryAccent}" FontSize="24" FontWeight="Bold" FontFamily="Segoe UI" Margin="0,0,0,2"/>
+                               Foreground="{DynamicResource PrimaryAccent}" FontSize="28" FontWeight="Light" Margin="0,0,0,2"/>
                
                     <TextBlock Text="{Binding CurrentTime, StringFormat={}{0:dddd, MMMM d, yyyy}}" 
-                               Foreground="{DynamicResource TextMuted}" FontSize="12" FontWeight="SemiBold" TextWrapping="Wrap"/>
+                               Foreground="{DynamicResource TextMuted}" FontSize="13" FontWeight="SemiBold" TextWrapping="Wrap"/>
                 </StackPanel>
                 
             </Grid>
@@ -208,26 +203,27 @@
 
         <Grid Grid.Column="1" Background="Transparent">
             <Grid.RowDefinitions>
-                <RowDefinition Height="70"/> 
+                <RowDefinition Height="74"/> 
                 <RowDefinition Height="*"/>  
             </Grid.RowDefinitions>
 
-            <Border Grid.Row="0" BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,0,0,1" Background="{DynamicResource CardBackground}" Padding="40,0">
+            <Border Grid.Row="0" BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,0,0,1" Background="Transparent" Padding="40,0">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/> <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     
                     <StackPanel Grid.Column="0" VerticalAlignment="Center">
-                        <TextBlock Text="{x:Static loc:Strings.Main_HeaderTitle}" Foreground="{DynamicResource PrimaryAccent}" FontSize="16" FontWeight="SemiBold" FontFamily="Segoe UI"/>
-                        <TextBlock Text="{x:Static loc:Strings.Main_HeaderSubtitle}" Foreground="{DynamicResource TextMuted}" FontSize="11" Margin="0,2,0,0"/>
+                        <TextBlock Text="{x:Static loc:Strings.Main_HeaderTitle}" Foreground="{DynamicResource PrimaryAccent}" FontSize="18" FontWeight="SemiBold"/>
+                        <TextBlock Text="{x:Static loc:Strings.Main_HeaderSubtitle}" Foreground="{DynamicResource TextMuted}" FontSize="12" Margin="0,2,0,0"/>
                     </StackPanel>
 
                     <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                        <Border Background="{DynamicResource WindowBackground}" CornerRadius="2" Padding="12,6" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" Margin="0,0,20,0">
+                        
+                        <Border Background="{DynamicResource CardBackground}" CornerRadius="6" Padding="14,8" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" Margin="0,0,20,0">
                             <StackPanel Orientation="Horizontal">
-                                <fa:ImageAwesome Icon="UserCircle" Width="14" Height="14" Foreground="{DynamicResource PrimaryAccent}" Margin="0,0,8,0"/>
-                                <TextBlock Text="{x:Static loc:Strings.Main_WelcomeUser}" Foreground="{DynamicResource TextMain}" FontWeight="SemiBold" FontSize="12" VerticalAlignment="Center"/>
+                                <fa:ImageAwesome Icon="UserCircle" Width="14" Height="14" Foreground="{DynamicResource PrimaryAccent}" Margin="0,0,10,0"/>
+                                <TextBlock Text="{x:Static loc:Strings.Main_WelcomeUser}" Foreground="{DynamicResource TextMain}" FontWeight="SemiBold" FontSize="13" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Border>
 
@@ -242,17 +238,19 @@
                 </Grid>
             </Border>
 
-            <ContentControl Grid.Row="1" Content="{Binding CurrentPageViewModel}" Margin="40"/>
+            <ContentControl Grid.Row="1" Content="{Binding CurrentPageViewModel}" Margin="10,10,10,10"/>
             
-            <Border Grid.Row="1" Background="{DynamicResource DangerAccent}" CornerRadius="2" Padding="15,10" 
+            <Border Grid.Row="1" Background="{DynamicResource DangerAccent}" CornerRadius="8" Padding="16,12" 
                     HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,20,40,0"
-                    Visibility="{Binding HasDisposalAlert, Converter={StaticResource BoolToVisConverter}}">
+                    Visibility="{Binding HasDisposalAlert, Converter={StaticResource BoolToVisConverter}}"
+                    Effect="{StaticResource Win11Shadow}">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{Binding DisposalAlertText}" Foreground="White" FontWeight="SemiBold" FontSize="13" VerticalAlignment="Center" Margin="0,0,15,0"/>
-                    <Button Command="{Binding GoToDisposalQueueCommand}" Content="{x:Static loc:Strings.Main_BtnReviewDisposal}" Background="#B71C1C" Foreground="White" FontWeight="SemiBold" BorderThickness="0" Padding="15,6" Cursor="Hand">
+                    <fa:ImageAwesome Icon="Warning" Width="14" Height="14" Foreground="White" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding DisposalAlertText}" Foreground="White" FontWeight="SemiBold" FontSize="13" VerticalAlignment="Center" Margin="0,0,16,0"/>
+                    <Button Command="{Binding GoToDisposalQueueCommand}" Content="{x:Static loc:Strings.Main_BtnReviewDisposal}" Background="#99000000" Foreground="White" FontWeight="SemiBold" BorderThickness="0" Padding="16,8" Cursor="Hand">
                         <Button.Template>
                             <ControlTemplate TargetType="Button">
-                                <Border Background="{TemplateBinding Background}" CornerRadius="2">
+                                <Border Background="{TemplateBinding Background}" CornerRadius="4">
                                     <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
                                 </Border>
                             </ControlTemplate>

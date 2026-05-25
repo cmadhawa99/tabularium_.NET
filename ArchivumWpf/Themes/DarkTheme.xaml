@@ -1,22 +1,26 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     
-    <SolidColorBrush x:Key="WindowBackground" Color="#000000"/>
-    <SolidColorBrush x:Key="SidebarBackground" Color="#161616"/>
-    <SolidColorBrush x:Key="CardBackground" Color="#212121"/>
-    <SolidColorBrush x:Key="CardBackground2" Color="#222222"/>
+    <SolidColorBrush x:Key="WindowBackground" Color="#202020"/>
+    <SolidColorBrush x:Key="SidebarBackground" Color="#282828"/>
+    <SolidColorBrush x:Key="CardBackground" Color="#2D2D2D"/>
+    <SolidColorBrush x:Key="CardBackground2" Color="#323232"/>
     
-    <SolidColorBrush x:Key="PrimaryAccent" Color="#33C481"/> 
-    <SolidColorBrush x:Key="DangerAccent" Color="#F3695F"/>
+    <SolidColorBrush x:Key="PrimaryAccent" Color="#60CDFF"/> 
+    <SolidColorBrush x:Key="DangerAccent" Color="#FF99A4"/>
     
     <SolidColorBrush x:Key="TextMain" Color="#FFFFFF"/>
-    <SolidColorBrush x:Key="TextMuted" Color="#A0A0A0"/>
+    <SolidColorBrush x:Key="TextMuted" Color="#A8A8A8"/>
     
-    <SolidColorBrush x:Key="BorderColor" Color="#444444"/>
+    <SolidColorBrush x:Key="BorderColor" Color="#1FFFFFFF"/>
     
-    <SolidColorBrush x:Key="AvailableColor" Color="#33C481"/>
-    <SolidColorBrush x:Key="BorrowedColor" Color="#6B5C1B"/>
-    <SolidColorBrush x:Key="RemovedColor" Color="#F3695F"/>
+    <SolidColorBrush x:Key="AvailableColor" Color="#6CCB5F"/>
+    <SolidColorBrush x:Key="BorrowedColor" Color="#FCE100"/>
+    <SolidColorBrush x:Key="RemovedColor" Color="#FF99A4"/>
+    
+    <SolidColorBrush x:Key="IconBgTotal" Color="#1A60CDFF"/>
+    <SolidColorBrush x:Key="IconBgLent" Color="#1A6CCB5F"/>
+    <SolidColorBrush x:Key="IconBgPurged" Color="#1AFF99A4"/>
     
     <SolidColorBrush x:Key="Test" Color="#FFFFFF"/>
     
