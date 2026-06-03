@@ -3,70 +3,142 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:fa="http://schemas.fontawesome.io/icons/"
         xmlns:converters="clr-namespace:ArchivumWpf.Converters"
-        Title="Database Configuration" Height="420" Width="450"
+        Title="Database Configuration" Width="500" MinHeight="450"
+        SizeToContent="Height"
         WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
-        Background="{DynamicResource WindowBackground}">
+        Background="{DynamicResource WindowBackground}"
+        TextElement.FontFamily="Segoe UI Variable, Segoe UI, sans-serif">
     
     <Window.Resources>
         <converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+        
+        <DropShadowEffect x:Key="Win11Shadow" BlurRadius="16" ShadowDepth="3" Direction="270" Color="#000000" Opacity="0.08"/>
+
+        <Style x:Key="FormLabel" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Margin" Value="2,0,0,6"/>
+        </Style>
+
+        <Style x:Key="CleanTextBox" TargetType="TextBox">
+            <Setter Property="Background" Value="{DynamicResource WindowBackground}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="12,10"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6">
+                            <ScrollViewer x:Name="PART_ContentHost" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsKeyboardFocused" Value="True">
+                    <Setter Property="BorderBrush" Value="{DynamicResource PrimaryAccent}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="CleanPasswordBox" TargetType="PasswordBox">
+            <Setter Property="Background" Value="{DynamicResource WindowBackground}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="12,10"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                     <ControlTemplate TargetType="PasswordBox">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6">
+                            <ScrollViewer x:Name="PART_ContentHost" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsKeyboardFocused" Value="True">
+                    <Setter Property="BorderBrush" Value="{DynamicResource PrimaryAccent}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
 
-    <Grid Margin="30">
-        <StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                <fa:ImageAwesome Icon="Database" Width="20" Height="20" Foreground="{DynamicResource PrimaryAccent}" Margin="0,0,10,0"/>
-                <TextBlock Text="Missing Configuration" Foreground="{DynamicResource PrimaryAccent}" FontSize="20" FontWeight="Bold"/>
-            </StackPanel>
-            
-            <TextBlock Text="Your database configuration file is missing. Your security vault is intact, so you only need to provide your database connection details." TextWrapping="Wrap" Foreground="{DynamicResource TextMuted}" Margin="0,0,0,20"/>
-            
-            <TextBlock Text="{Binding ErrorMessage}" Foreground="#F44336" FontWeight="SemiBold" Margin="0,0,0,15" TextWrapping="Wrap">
-                <TextBlock.Style>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="Visibility" Value="Visible"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding ErrorMessage}" Value="">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </TextBlock.Style>
-            </TextBlock>
-
-            <Border Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="4" Padding="20">
-                <StackPanel>
-                    
-                    <Grid Margin="0,0,0,15">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/> <ColumnDefinition Width="10"/> <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <StackPanel Grid.Column="0">
-                            <TextBlock Text="Host" Foreground="{DynamicResource TextMuted}" FontSize="12" Margin="0,0,0,4"/>
-                            <TextBox Text="{Binding DbHost}" Background="{DynamicResource WindowBackground}" Foreground="{DynamicResource TextMain}" Padding="6" BorderBrush="{DynamicResource BorderColor}"/>
-                        </StackPanel>
-                        <StackPanel Grid.Column="2">
-                            <TextBlock Text="Database Name" Foreground="{DynamicResource TextMuted}" FontSize="12" Margin="0,0,0,4"/>
-                            <TextBox Text="{Binding DbName}" Background="{DynamicResource WindowBackground}" Foreground="{DynamicResource TextMain}" Padding="6" BorderBrush="{DynamicResource BorderColor}"/>
-                        </StackPanel>
-                    </Grid>
-
-                    <Grid Margin="0,0,0,25">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/> <ColumnDefinition Width="10"/> <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <StackPanel Grid.Column="0">
-                            <TextBlock Text="Username" Foreground="{DynamicResource TextMuted}" FontSize="12" Margin="0,0,0,4"/>
-                            <TextBox Text="{Binding DbUser}" Background="{DynamicResource WindowBackground}" Foreground="{DynamicResource TextMain}" Padding="6" BorderBrush="{DynamicResource BorderColor}"/>
-                        </StackPanel>
-                        <StackPanel Grid.Column="2">
-                            <TextBlock Text="Password" Foreground="{DynamicResource TextMuted}" FontSize="12" Margin="0,0,0,4"/>
-                            <PasswordBox x:Name="DbPasswordBox" PasswordChanged="DbPasswordBox_PasswordChanged" Background="{DynamicResource WindowBackground}" Foreground="{DynamicResource TextMain}" Padding="6" BorderBrush="{DynamicResource BorderColor}"/>
-                        </StackPanel>
-                    </Grid>
-
-                    <Button Content="Connect and Save" Command="{Binding ConnectAndSaveCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}" Background="{DynamicResource PrimaryAccent}" Foreground="White" Padding="15,10" Cursor="Hand" IsEnabled="{Binding IsProcessing, Converter={StaticResource InverseBooleanConverter}}"/>
+    <Grid Margin="24">
+        <Border Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="8" Padding="32" Effect="{StaticResource Win11Shadow}">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                    <fa:ImageAwesome Icon="Database" Width="20" Height="20" Foreground="{DynamicResource PrimaryAccent}" Margin="0,0,12,0" VerticalAlignment="Center"/>
+                    <TextBlock Text="Missing Configuration" Foreground="{DynamicResource PrimaryAccent}" FontSize="20"/>
                 </StackPanel>
-            </Border>
-        </StackPanel>
+                
+                <TextBlock Text="Your database configuration file is missing. Your security vault is intact, so you only need to provide your database connection details." TextWrapping="Wrap" Foreground="{DynamicResource TextMuted}" FontSize="14" Margin="0,0,0,24"/>
+                
+                <TextBlock Text="{Binding ErrorMessage}" Foreground="{DynamicResource DangerAccent}" FontSize="13" TextWrapping="Wrap" Margin="0,0,0,20">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ErrorMessage}" Value="">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ErrorMessage}" Value="{x:Null}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+
+                <Grid Margin="0,0,0,16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/> <ColumnDefinition Width="16"/> <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="Server Host" Style="{StaticResource FormLabel}"/>
+                        <TextBox Text="{Binding DbHost}" Style="{StaticResource CleanTextBox}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Text="Database Name" Style="{StaticResource FormLabel}"/>
+                        <TextBox Text="{Binding DbName}" Style="{StaticResource CleanTextBox}"/>
+                    </StackPanel>
+                </Grid>
+
+                <Grid Margin="0,0,0,32">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/> <ColumnDefinition Width="16"/> <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="Username" Style="{StaticResource FormLabel}"/>
+                        <TextBox Text="{Binding DbUser}" Style="{StaticResource CleanTextBox}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Text="Password" Style="{StaticResource FormLabel}"/>
+                        <PasswordBox x:Name="DbPasswordBox" PasswordChanged="DbPasswordBox_PasswordChanged" Style="{StaticResource CleanPasswordBox}"/>
+                    </StackPanel>
+                </Grid>
+
+                <Button Command="{Binding ConnectAndSaveCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}" Background="{DynamicResource PrimaryAccent}" Foreground="{DynamicResource WindowBackground}" BorderThickness="0" Cursor="Hand" Padding="24,12" IsEnabled="{Binding IsProcessing, Converter={StaticResource InverseBooleanConverter}}">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}" CornerRadius="6">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}">
+                                    <fa:ImageAwesome Icon="Plug" Width="14" Height="14" Margin="0,0,10,0" Foreground="{DynamicResource WindowBackground}"/>
+                                    <TextBlock Text="Connect and Save" FontSize="14"/>
+                                </StackPanel>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Opacity" Value="0.5"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </StackPanel>
+        </Border>
     </Grid>
 </Window>
