@@ -7,6 +7,8 @@
              TextElement.FontFamily="Segoe UI Variable, Segoe UI, sans-serif">
 
     <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
+        
         <DropShadowEffect x:Key="Win11Shadow" BlurRadius="12" ShadowDepth="2" Direction="270" Color="#000000" Opacity="0.06"/>
         
         <Style TargetType="DataGridCell">
@@ -28,10 +30,11 @@
 
     <Grid Margin="10,10,10,20">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/> <RowDefinition Height="*"/>    </Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/> 
+            <RowDefinition Height="*"/>    
+        </Grid.RowDefinitions>
 
         <UniformGrid Grid.Row="0" Columns="3" Margin="0,0,0,25">
-            
             <Border Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource BorderColor}" 
                     BorderThickness="1" CornerRadius="8" Margin="0,0,15,0" Padding="24" Effect="{StaticResource Win11Shadow}">
                 <Grid>
@@ -58,7 +61,7 @@
                     </Grid.RowDefinitions>
                     <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,20">
                         <Border Background="{DynamicResource IconBgLent}" CornerRadius="6" Padding="8" Margin="0,0,12,0">
-                            <fa:ImageAwesome Icon="Exchange" Width="16" Height="16" Foreground="{DynamicResource AvailableColor}"/>
+                             <fa:ImageAwesome Icon="Exchange" Width="16" Height="16" Foreground="{DynamicResource AvailableColor}"/>
                         </Border>
                         <TextBlock Text="{x:Static loc:Strings.Dash_LentRecords}" Foreground="{DynamicResource TextMuted}" FontSize="14" FontWeight="SemiBold" VerticalAlignment="Center"/>
                     </StackPanel>
@@ -68,7 +71,7 @@
 
             <Border Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource BorderColor}" 
                     BorderThickness="1" CornerRadius="8" Margin="15,0,0,0" Padding="24" Effect="{StaticResource Win11Shadow}">
-                <Grid>
+                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
@@ -89,7 +92,8 @@
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/> </Grid.RowDefinitions>
+                    <RowDefinition Height="*"/> 
+                    <RowDefinition Height="Auto"/> </Grid.RowDefinitions>
                 
                 <Border Grid.Row="0" BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,0,0,1" Padding="24,18" Background="Transparent">
                     <StackPanel Orientation="Horizontal">
@@ -102,7 +106,6 @@
                           ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True"
                           Background="Transparent" Foreground="{DynamicResource TextMain}" RowBackground="Transparent" AlternatingRowBackground="Transparent" 
                           HeadersVisibility="Column" GridLinesVisibility="None" BorderThickness="0" Margin="10">
-                    
                     <DataGrid.Resources>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="Background" Value="Transparent"/>
@@ -113,7 +116,6 @@
                             <Setter Property="BorderThickness" Value="0,0,0,1"/>
                             <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
                         </Style>
-                        
                         <Style TargetType="DataGridRow">
                             <Setter Property="Padding" Value="0,6"/>
                             <Setter Property="BorderThickness" Value="0"/>
@@ -146,7 +148,7 @@
                             </Style.Triggers>
                         </Style>
                     </DataGrid.Resources>
-                    
+               
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="{x:Static loc:Strings.Dash_RefID}" Binding="{Binding SerialNumber}" Width="160">
                             <DataGridTextColumn.ElementStyle>
@@ -186,7 +188,159 @@
                         </DataGridTextColumn>
                     </DataGrid.Columns>
                 </DataGrid>
+
+                <Border Grid.Row="2" BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,1,0,0" Padding="16,12" Background="Transparent">
+                    <Button Command="{Binding OpenActivityLogDialogCommand}" Background="Transparent" BorderThickness="0" Cursor="Hand" HorizontalAlignment="Center">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="View All Activity Logs" Foreground="{DynamicResource PrimaryAccent}" FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                            <fa:ImageAwesome Icon="AngleRight" Width="12" Height="12" Foreground="{DynamicResource PrimaryAccent}" Margin="8,0,0,0" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                </Border>
             </Grid>
         </Border>
+
+        <Grid Grid.Row="0" Grid.RowSpan="2" Visibility="{Binding IsActivityLogDialogOpen, Converter={StaticResource BoolToVisConverter}}" Panel.ZIndex="100">
+            <Border Background="#66000000"/>
+            
+            <Border Background="{DynamicResource CardBackground}" CornerRadius="12" Padding="32" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="850" MinHeight="600" MaxHeight="750" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" Effect="{StaticResource Win11Shadow}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/> <RowDefinition Height="Auto"/> <RowDefinition Height="*"/>    <RowDefinition Height="Auto"/> </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0" Margin="0,0,0,24">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <fa:ImageAwesome Icon="History" Width="20" Height="20" Foreground="{DynamicResource PrimaryAccent}" Margin="0,0,12,0" VerticalAlignment="Center"/>
+                            <TextBlock Text="Complete Activity Log" Foreground="{DynamicResource TextMain}" FontSize="20"/>
+                        </StackPanel>
+                        <Button Command="{Binding CloseActivityLogDialogCommand}" Background="Transparent" BorderThickness="0" Cursor="Hand" HorizontalAlignment="Right" VerticalAlignment="Center">
+                            <fa:ImageAwesome Icon="Times" Width="16" Height="16" Foreground="{DynamicResource TextMuted}"/>
+                        </Button>
+                    </Grid>
+
+                    <Border Grid.Row="1" Background="{DynamicResource WindowBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="6" Padding="12,8" MinWidth="350" MaxWidth="450" HorizontalAlignment="Left" Margin="0,0,0,15">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/> <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <fa:ImageAwesome Grid.Column="0" Icon="Search" Width="14" Height="14" Foreground="{DynamicResource TextMuted}" Margin="5,0,12,0"/>
+                            <TextBox Grid.Column="1" Text="{Binding ActivityLogSearchQuery, UpdateSourceTrigger=PropertyChanged}" 
+                                     Background="Transparent" Foreground="{DynamicResource TextMain}" BorderThickness="0" FontSize="14" VerticalContentAlignment="Center">
+                                <TextBox.Style>
+                                    <Style TargetType="TextBox">
+                                        <Style.Triggers>
+                                            <Trigger Property="Text" Value="">
+                                                <Setter Property="Background">
+                                                    <Setter.Value>
+                                                        <VisualBrush Stretch="None" AlignmentX="Left">
+                                                            <VisualBrush.Visual>
+                                                                <TextBlock Text="{x:Static loc:Strings.Circ_LedgerSearchWatermark}" Foreground="{DynamicResource TextMuted}" Opacity="0.7" FontSize="14"/>
+                                                            </VisualBrush.Visual>
+                                                        </VisualBrush>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBox.Style>
+                            </TextBox>
+                        </Grid>
+                    </Border>
+
+                    <DataGrid Grid.Row="2" ItemsSource="{Binding AllActivityLogs}" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True"
+                              Background="Transparent" Foreground="{DynamicResource TextMain}" RowBackground="Transparent" AlternatingRowBackground="Transparent" 
+                              HeadersVisibility="Column" GridLinesVisibility="None" BorderThickness="0">
+                        <DataGrid.Resources>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
+                                <Setter Property="FontWeight" Value="SemiBold"/>
+                                <Setter Property="FontSize" Value="13"/>
+                                <Setter Property="Padding" Value="16,12"/>
+                                <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                                <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
+                            </Style>
+                            <Style TargetType="DataGridRow">
+                                <Setter Property="Padding" Value="0,6"/>
+                                <Setter Property="BorderThickness" Value="0"/>
+                                <Setter Property="Margin" Value="0,2"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#0A808080"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.Resources>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="{x:Static loc:Strings.Dash_RefID}" Binding="{Binding SerialNumber}" Width="160">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="FontFamily" Value="Consolas"/>
+                                        <Setter Property="Foreground" Value="{DynamicResource PrimaryAccent}"/>
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                        <Setter Property="FontWeight" Value="SemiBold"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="{x:Static loc:Strings.Dash_RRNumber}" Binding="{Binding RrNumber}" Width="*">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock"><Setter Property="VerticalAlignment" Value="Center"/></Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="{x:Static loc:Strings.Dash_ActionType}" Binding="{Binding ActionType}" Width="220">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                        <Setter Property="FontWeight" Value="SemiBold"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="{x:Static loc:Strings.Dash_Timestap}" Binding="{Binding Timestamp, StringFormat='MMM dd, HH:mm'}" Width="180">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <Border Grid.Row="3" Background="{DynamicResource PrimaryAccent}" CornerRadius="6" Padding="20,10" Margin="0,15,0,0" HorizontalAlignment="Stretch">
+                        <Grid>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <TextBlock Foreground="{DynamicResource CardBackground}" FontSize="13">
+                                    <Run Text="Total Records: "/>
+                                    <Run Text="{Binding ActivityLogTotalCount, Mode=OneWay}"/>
+                                </TextBlock>
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                <Button Command="{Binding PreviousActivityLogPageCommand}" Background="#1AFFFFFF" BorderThickness="0" Cursor="Hand" Padding="12,6" Margin="0,0,10,0">
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border Background="{TemplateBinding Background}" CornerRadius="4">
+                                                <fa:ImageAwesome Icon="ChevronLeft" Width="10" Height="10" Foreground="{DynamicResource CardBackground}" Margin="{TemplateBinding Padding}"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+                                <TextBlock Text="{Binding ActivityLogCurrentPage, Mode=OneWay}" Foreground="{DynamicResource CardBackground}" FontSize="14" VerticalAlignment="Center" Margin="5,0"/>
+                                <Button Command="{Binding NextActivityLogPageCommand}" Background="#1AFFFFFF" BorderThickness="0" Cursor="Hand" Padding="12,6" Margin="10,0,0,0">
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border Background="{TemplateBinding Background}" CornerRadius="4">
+                                                <fa:ImageAwesome Icon="ChevronRight" Width="10" Height="10" Foreground="{DynamicResource CardBackground}" Margin="{TemplateBinding Padding}"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Border>
+        </Grid>
+
     </Grid>
 </UserControl>

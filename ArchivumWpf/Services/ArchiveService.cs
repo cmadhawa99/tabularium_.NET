@@ -60,6 +60,9 @@ public interface IArchiveService
     Task<(List<DisposedRecord> Items, int TotalCount)> GetDisposedHistoryPaginatedAsync(string searchTerm, int pageNumber, int pageSize);
 
     Task<IEnumerable<ActivityLog>> GetRecentActivitiesAsync(int limit = 15);
+    
+    Task<(List<ActivityLog> Items, int TotalCount)> GetActivityLogsPaginatedAsync (string searchTerm, int pageNumber, int pageSize);
+    
     Task LogActivityAsync(string serialNumber, string rrNumber, string actionType);
     
 }
@@ -104,6 +107,28 @@ public class ArchiveService : IArchiveService
             .OrderByDescending(a => a.Timestamp)
             .Take(limit)
             .ToListAsync();
+    }
+
+    public async Task<(List<ActivityLog> Items, int TotalCount)> GetActivityLogsPaginatedAsync(string searchTerm,
+        int pageNumber, int pageSize)
+    {
+        using var context =  await _contextFactory.CreateDbContextAsync();
+        var query = context.ActivityLogs.AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(searchTerm))
+        {
+            searchTerm = searchTerm.ToLower().Trim();
+            query = query.Where (a =>
+                (a.RrNumber != null && a.RrNumber.ToLower().Contains(searchTerm)) || 
+                (a.ActionType != null && a.ActionType.ToLower().Contains(searchTerm)));
+        }
+        
+        query = query.OrderByDescending(a => a.Timestamp);
+        
+        int totalCount = await query.CountAsync();
+        var items = await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+        
+        return (items, totalCount);
     }
 
     public async Task LogActivityAsync(string serialNumber, string rrNumber, string actionType)
