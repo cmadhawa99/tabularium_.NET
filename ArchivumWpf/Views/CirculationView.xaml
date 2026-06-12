@@ -39,6 +39,36 @@
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         </Style>
+
+        <Style x:Key="FilterToggleStyle" TargetType="ToggleButton">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="16,8"/> 
+            <Setter Property="Margin" Value="4,4,4,4"/> 
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6"> 
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource IconBgLent}"/> 
+                    <Setter Property="Foreground" Value="{DynamicResource PrimaryAccent}"/>
+                    <Setter Property="BorderBrush" Value="{DynamicResource PrimaryAccent}"/>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#0A808080"/> 
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </UserControl.Resources>
 
     <Grid>
@@ -69,9 +99,7 @@
                                         <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="*"/>
                                     </Grid.RowDefinitions>
-                                    
                                     <TabPanel x:Name="HeaderPanel" Grid.Row="0" IsItemsHost="true" Margin="10,0,10,0" Panel.ZIndex="1"/>
-                                    
                                     <Border Grid.Row="1" Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,1,0,0">
                                         <ContentPresenter x:Name="PART_SelectedContentHost" ContentSource="SelectedContent"/>
                                     </Border>
@@ -110,7 +138,6 @@
             <TabItem Header="{x:Static loc:Strings.Circ_TabDesk}">
                 <ScrollViewer VerticalScrollBarVisibility="Auto" Background="Transparent">
                     <StackPanel HorizontalAlignment="Stretch" Margin="20,20,20,40">
-                        
                         <Border Background="{DynamicResource WindowBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="8" Padding="24" Margin="0,0,0,25">
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -217,11 +244,9 @@
                             </Border>
 
                             <Grid Grid.Column="2">
-                                
                                 <Border Visibility="{Binding CanIssue, Converter={StaticResource BoolToVisConverter}}" Background="{DynamicResource WindowBackground}" BorderBrush="{DynamicResource PrimaryAccent}" BorderThickness="2,0,0,0" Padding="24" CornerRadius="8">
                                     <StackPanel VerticalAlignment="Center">
                                         <TextBlock Text="{x:Static loc:Strings.Circ_IssueTitle}" Foreground="{DynamicResource PrimaryAccent}" FontSize="16" Margin="0,0,0,15"/>
-                                        
                                         <TextBlock Text="{x:Static loc:Strings.Circ_BorrowerWatermark}" Foreground="{DynamicResource TextMuted}" FontSize="13" Margin="0,0,0,8"/>
                                         <TextBox Text="{Binding BorrowerName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CleanTextBox}" Margin="0,0,0,20"/>
                                         
@@ -456,35 +481,40 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     
-                    <Border Grid.Row="0" Background="{DynamicResource WindowBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="6" Padding="12,8" MinWidth="350" MaxWidth="450" HorizontalAlignment="Left" Margin="20,20,20,15">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/> <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <fa:ImageAwesome Grid.Column="0" Icon="Search" Width="14" Height="14" Foreground="{DynamicResource TextMuted}" Margin="5,0,12,0"/>
-                            <TextBox Grid.Column="1" Text="{Binding HistorySearchQuery, UpdateSourceTrigger=PropertyChanged}" 
-                                     Background="Transparent" Foreground="{DynamicResource TextMain}" BorderThickness="0" 
-                                     FontSize="14" VerticalContentAlignment="Center">
-                                <TextBox.Style>
-                                    <Style TargetType="TextBox">
-                                        <Style.Triggers>
-                                            <Trigger Property="Text" Value="">
-                                                <Setter Property="Background">
-                                                    <Setter.Value>
-                                                        <VisualBrush Stretch="None" AlignmentX="Left">
-                                                            <VisualBrush.Visual>
-                                                                <TextBlock Text="{x:Static loc:Strings.Circ_LedgerSearchWatermark}" Foreground="{DynamicResource TextMuted}" Opacity="0.7" FontSize="14"/>
-                                                            </VisualBrush.Visual>
-                                                        </VisualBrush>
-                                                    </Setter.Value>
-                                                </Setter>
-                                            </Trigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBox.Style>
-                            </TextBox>
-                        </Grid>
-                    </Border>
+                    <WrapPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="20,20,20,15">
+                        <Border Background="{DynamicResource WindowBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="6" Padding="12,8" MinWidth="350" MaxWidth="450" Margin="0,0,16,0">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/> <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <fa:ImageAwesome Grid.Column="0" Icon="Search" Width="14" Height="14" Foreground="{DynamicResource TextMuted}" Margin="5,0,12,0"/>
+                                <TextBox Grid.Column="1" Text="{Binding HistorySearchQuery, UpdateSourceTrigger=PropertyChanged}" 
+                                         Background="Transparent" Foreground="{DynamicResource TextMain}" BorderThickness="0" 
+                                         FontSize="14" VerticalContentAlignment="Center">
+                                    <TextBox.Style>
+                                        <Style TargetType="TextBox">
+                                            <Style.Triggers>
+                                                <Trigger Property="Text" Value="">
+                                                    <Setter Property="Background">
+                                                        <Setter.Value>
+                                                            <VisualBrush Stretch="None" AlignmentX="Left">
+                                                                <VisualBrush.Visual>
+                                                                    <TextBlock Text="{x:Static loc:Strings.Circ_LedgerSearchWatermark}" Foreground="{DynamicResource TextMuted}" Opacity="0.7" FontSize="14"/>
+                                                                </VisualBrush.Visual>
+                                                            </VisualBrush>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBox.Style>
+                                </TextBox>
+                            </Grid>
+                        </Border>
+
+                        <ToggleButton Content="{x:Static loc:Strings.Circ_StatusReturned}" IsChecked="{Binding IsHistoryActiveOnly}" Style="{StaticResource FilterToggleStyle}"/>
+                        <ToggleButton Content="{x:Static loc:Strings.Circ_StatusActiveLoan}" IsChecked="{Binding IsHistoryReturnedOnly}" Style="{StaticResource FilterToggleStyle}"/>
+                    </WrapPanel>
 
                     <DataGrid Grid.Row="1" ItemsSource="{Binding BorrowHistoryRecords}" 
                               SelectedItem="{Binding SelectedHistoryRecord, Mode=TwoWay}"

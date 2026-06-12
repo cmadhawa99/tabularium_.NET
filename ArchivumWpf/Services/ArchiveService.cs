@@ -54,7 +54,7 @@ public interface IArchiveService
     Task<List<FileRecord>> GetPendingDisposalsAsync();
     Task<List<DisposedRecord>> GetDisposedHistoryAsync();
     Task<int> GetTodayDisposalCountAsync();
-    Task<(List<BorrowRecord> Items, int TotalCount)> GetBorrowHistoryPaginatedAsync (string searchTerm, int pageNumber, int pageSize);
+    Task<(List<BorrowRecord> Items, int TotalCount)> GetBorrowHistoryPaginatedAsync (string searchTerm, bool isActiveOnly, bool isReturnedOnly, int pageNumber, int pageSize);
     Task<(List<EntryHistoryRecord> Items, int TotalCount)> GetEntryHistoryPaginatedAsync (string searchTerm, int pageNumber, int pageSize);
     Task<(List<FileRecord> Items, int TotalCount)> GetPendingDisposalsPaginatedAsync(string searchTerm, int pageNumber, int pageSize);
     Task<(List<DisposedRecord> Items, int TotalCount)> GetDisposedHistoryPaginatedAsync(string searchTerm, int pageNumber, int pageSize);
@@ -305,7 +305,7 @@ public class ArchiveService : IArchiveService
     
 
     public async Task<(List<BorrowRecord> Items, int TotalCount)> GetBorrowHistoryPaginatedAsync(string searchTerm,
-        int pageNumber, int pageSize)
+        bool isActiveOnly, bool isReturnedOnly, int pageNumber, int pageSize)
     {
         using var context = await _contextFactory.CreateDbContextAsync();
         
@@ -315,6 +315,16 @@ public class ArchiveService : IArchiveService
         {
             searchTerm = searchTerm.ToLower();
             query = query.Where(b=> b.SnapshotRrNumber.ToLower().Contains(searchTerm));
+        }
+
+        if (isActiveOnly)
+        {
+            query = query.Where(b => b.IsReturned == true);
+        }
+
+        if (isReturnedOnly)
+        {
+            query = query.Where(b => b.IsReturned == false);
         }
         
         query = query.OrderByDescending(b => b.Id);

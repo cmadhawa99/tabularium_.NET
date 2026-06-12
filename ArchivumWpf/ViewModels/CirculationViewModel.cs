@@ -39,6 +39,9 @@ public partial class CirculationViewModel : ObservableObject
     [ObservableProperty] private int _historyCurrentPage = 1;
     [ObservableProperty] private int _historyTotalPages = 1;
     [ObservableProperty] private int _historyTotalCount = 0;
+
+    [ObservableProperty] private bool _isHistoryActiveOnly;
+    [ObservableProperty] private bool _isHistoryReturnedOnly;
     
     [ObservableProperty] private BorrowRecord _selectedHistoryRecord;
     [ObservableProperty] private bool _isDialogOpen = false;
@@ -74,6 +77,20 @@ public partial class CirculationViewModel : ObservableObject
     {
         ActiveLoansCurrentPage = 1;
         _ = LoadActiveLoansAsync();
+    }
+
+    partial void OnIsHistoryActiveOnlyChanged(bool value)
+    {
+        if (value && IsHistoryReturnedOnly) IsHistoryReturnedOnly = false;
+        HistoryCurrentPage = 1;
+        _ = LoadHistoryAsync();
+    }
+
+    partial void OnIsHistoryReturnedOnlyChanged(bool value)
+    {
+        if (value && IsHistoryActiveOnly) IsHistoryActiveOnly = false;
+        HistoryCurrentPage = 1;
+        _ = LoadHistoryAsync();
     }
 
     private async Task LoadActiveLoansAsync()
@@ -202,7 +219,7 @@ public partial class CirculationViewModel : ObservableObject
 
     private async Task LoadHistoryAsync()
     {
-        var result = await _archiveService.GetBorrowHistoryPaginatedAsync(HistorySearchQuery, HistoryCurrentPage, PageSize);
+        var result = await _archiveService.GetBorrowHistoryPaginatedAsync(HistorySearchQuery, IsHistoryActiveOnly, IsHistoryReturnedOnly, HistoryCurrentPage, PageSize);
         
         HistoryTotalCount = result.TotalCount;
         HistoryTotalPages = (int)Math.Ceiling((double)HistoryTotalCount/PageSize);
