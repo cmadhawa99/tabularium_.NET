@@ -37,6 +37,12 @@ public partial class SearchViewModel : ObservableObject
     [ObservableProperty] private bool _isBorrowedActive;
     [ObservableProperty] private bool _isRemovedActive;
     
+    //img stuff
+    [ObservableProperty] private ObservableCollection<string> _selectedFileImages = new();
+    [ObservableProperty] private string _selectedImage;
+    [ObservableProperty] private bool _isImageViewerOpen;
+    
+    
     //Pagination
     [ObservableProperty] private int _currentPage = 1;
     [ObservableProperty] private int _totalPages = 1;
@@ -90,6 +96,17 @@ public partial class SearchViewModel : ObservableObject
     partial void OnIsAvailableActiveChanged(bool value) { CurrentPage = 1; _ = LoadDataAsync(); }
     partial void OnIsBorrowedActiveChanged(bool value) {CurrentPage = 1; _ = LoadDataAsync(); }
     partial void OnIsRemovedActiveChanged(bool value) { CurrentPage = 1; _ = LoadDataAsync(); }
+
+    partial void OnSelectedFileChanged(FileRecord? value)
+    {
+        if (value != null)
+        {
+            SelectedFileImages.Clear();
+            SelectedFileImages.Add("Document_Page_1.enc");
+            SelectedFileImages.Add("Document_Page_2.enc");
+            SelectedFileImages.Add("ID_Copy_Front.enc");
+        }
+    }
     
 
     [RelayCommand]
@@ -135,6 +152,20 @@ public partial class SearchViewModel : ObservableObject
     private void CloseDetails()
     {
         IsDetailsOpen = false;
+    }
+
+    [RelayCommand]
+    private void OpenImage(string imagePath)
+    {
+        SelectedImage = imagePath;
+        IsImageViewerOpen = true;
+    }
+    
+    [RelayCommand]
+    private void CloseImage()
+    {
+        IsImageViewerOpen = false;
+        SelectedImage = string.Empty;
     }
 
 
