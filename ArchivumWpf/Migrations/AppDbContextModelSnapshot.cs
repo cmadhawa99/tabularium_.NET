@@ -155,6 +155,53 @@ namespace ArchivumWpf.Migrations
                     b.ToTable("borrow_records");
                 });
 
+            modelBuilder.Entity("ArchivumWpf.Models.DigitalFile", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<string>("EncryptedDEK")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("encrypted_dek");
+
+                    b.Property<long>("FileSize")
+                        .HasColumnType("bigint")
+                        .HasColumnName("file_size");
+
+                    b.Property<int>("FolderId")
+                        .HasColumnType("integer")
+                        .HasColumnName("folder_id");
+
+                    b.Property<string>("IV")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("iv");
+
+                    b.Property<string>("MimeType")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("mime_type");
+
+                    b.Property<string>("OriginalFileName")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("original_file_name");
+
+                    b.Property<string>("PhysicalFileName")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("physical_file_name");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FolderId");
+
+                    b.ToTable("digital_files");
+                });
+
             modelBuilder.Entity("ArchivumWpf.Models.DisposedRecord", b =>
                 {
                     b.Property<int>("Id")
@@ -338,6 +385,37 @@ namespace ArchivumWpf.Migrations
                     b.ToTable("file_records");
                 });
 
+            modelBuilder.Entity("ArchivumWpf.Models.Folder", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("FileRecordSerialNumber")
+                        .HasColumnType("integer")
+                        .HasColumnName("file_record_serial");
+
+                    b.Property<string>("FolderName")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("folder_name");
+
+                    b.Property<int?>("ParentFolderId")
+                        .HasColumnType("integer")
+                        .HasColumnName("parent_folder_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FileRecordSerialNumber");
+
+                    b.HasIndex("ParentFolderId");
+
+                    b.ToTable("folders");
+                });
+
             modelBuilder.Entity("ArchivumWpf.Models.User", b =>
                 {
                     b.Property<int>("Id")
@@ -382,6 +460,17 @@ namespace ArchivumWpf.Migrations
                     b.Navigation("File");
                 });
 
+            modelBuilder.Entity("ArchivumWpf.Models.DigitalFile", b =>
+                {
+                    b.HasOne("ArchivumWpf.Models.Folder", "Folder")
+                        .WithMany()
+                        .HasForeignKey("FolderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Folder");
+                });
+
             modelBuilder.Entity("ArchivumWpf.Models.DisposedRecord", b =>
                 {
                     b.HasOne("ArchivumWpf.Models.FileRecord", "File")
@@ -393,9 +482,31 @@ namespace ArchivumWpf.Migrations
                     b.Navigation("File");
                 });
 
+            modelBuilder.Entity("ArchivumWpf.Models.Folder", b =>
+                {
+                    b.HasOne("ArchivumWpf.Models.FileRecord", null)
+                        .WithMany("Folders")
+                        .HasForeignKey("FileRecordSerialNumber")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ArchivumWpf.Models.Folder", "ParentFolder")
+                        .WithMany("SubFolders")
+                        .HasForeignKey("ParentFolderId");
+
+                    b.Navigation("ParentFolder");
+                });
+
             modelBuilder.Entity("ArchivumWpf.Models.FileRecord", b =>
                 {
                     b.Navigation("BorrowHistory");
+
+                    b.Navigation("Folders");
+                });
+
+            modelBuilder.Entity("ArchivumWpf.Models.Folder", b =>
+                {
+                    b.Navigation("SubFolders");
                 });
 #pragma warning restore 612, 618
         }

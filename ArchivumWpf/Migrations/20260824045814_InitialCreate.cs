@@ -169,10 +169,65 @@ namespace ArchivumWpf.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "folders",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    parent_folder_id = table.Column<int>(type: "integer", nullable: true),
+                    folder_name = table.Column<string>(type: "text", nullable: false),
+                    file_record_serial = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_folders", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_folders_file_records_file_record_serial",
+                        column: x => x.file_record_serial,
+                        principalTable: "file_records",
+                        principalColumn: "serial_number",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_folders_folders_parent_folder_id",
+                        column: x => x.parent_folder_id,
+                        principalTable: "folders",
+                        principalColumn: "id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "digital_files",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    folder_id = table.Column<int>(type: "integer", nullable: false),
+                    original_file_name = table.Column<string>(type: "text", nullable: false),
+                    physical_file_name = table.Column<string>(type: "text", nullable: false),
+                    file_size = table.Column<long>(type: "bigint", nullable: false),
+                    mime_type = table.Column<string>(type: "text", nullable: false),
+                    encrypted_dek = table.Column<string>(type: "text", nullable: false),
+                    iv = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_digital_files", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_digital_files_folders_folder_id",
+                        column: x => x.folder_id,
+                        principalTable: "folders",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_borrow_records_file_serial_number",
                 table: "borrow_records",
                 column: "file_serial_number");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_digital_files_folder_id",
+                table: "digital_files",
+                column: "folder_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_disposed_records_file_serial_number",
@@ -184,6 +239,16 @@ namespace ArchivumWpf.Migrations
                 table: "file_records",
                 column: "rr_number",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_folders_file_record_serial",
+                table: "folders",
+                column: "file_record_serial");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_folders_parent_folder_id",
+                table: "folders",
+                column: "parent_folder_id");
         }
 
         /// <inheritdoc />
@@ -199,6 +264,9 @@ namespace ArchivumWpf.Migrations
                 name: "borrow_records");
 
             migrationBuilder.DropTable(
+                name: "digital_files");
+
+            migrationBuilder.DropTable(
                 name: "disposed_records");
 
             migrationBuilder.DropTable(
@@ -206,6 +274,9 @@ namespace ArchivumWpf.Migrations
 
             migrationBuilder.DropTable(
                 name: "users");
+
+            migrationBuilder.DropTable(
+                name: "folders");
 
             migrationBuilder.DropTable(
                 name: "file_records");

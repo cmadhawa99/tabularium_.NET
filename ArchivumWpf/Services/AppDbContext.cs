@@ -26,6 +26,8 @@ public class AppDbContext : DbContext
     public DbSet<DisposedRecord> DisposedRecords { get; set; }
     public DbSet<ActivityLog> ActivityLogs { get; set; }
     public DbSet<AppSecurityMeta> AppSecurityMetas { get; set; }
+    public DbSet<Folder> Folders { get; set; }
+    public DbSet<DigitalFile> DigitalFiles { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -119,16 +121,26 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<EntryHistoryRecord>()
             .Property(e => e.FileNumber)
             .HasConversion(stringEncryptionConverter);
+
+
+        modelBuilder.Entity<Folder>()
+            .Property(f => f.FolderName)
+            .HasConversion(stringEncryptionConverter);
         
-        
-        
-        
+        modelBuilder.Entity<DigitalFile>()
+            .Property(d => d.OriginalFileName)
+            .HasConversion(stringEncryptionConverter);
+
+
+
+
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         if (!optionsBuilder.IsConfigured)
         { 
+
             string appSettingsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "appsettings.json");
 
             if (File.Exists(appSettingsPath))
@@ -145,6 +157,7 @@ public class AppDbContext : DbContext
                     optionsBuilder.UseNpgsql(plainTextConnString);
                 }
             }
+
         }
     }
     

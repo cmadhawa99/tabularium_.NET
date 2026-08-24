@@ -69,4 +69,6 @@ public class FileRecord
     public string SectorColorHex {get; set;} = "#8f9bb3";
     
     public virtual ICollection<BorrowRecord> BorrowHistory { get; set; } = new List<BorrowRecord>();
+    
+    public virtual ICollection<Folder> Folders { get; set; } = new List<Folder>();
 }
