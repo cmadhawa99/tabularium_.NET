@@ -612,9 +612,9 @@ public class ArchiveService : IArchiveService
     {
         try
         {
-            string dbName = "archive_db";
+            string dbName = "testDb";
             string dbUser = "postgres";
-            string dbPassword = "su753421#2";
+            string dbPassword = "testPw";
 
             var processStartInfo = new ProcessStartInfo
             {
