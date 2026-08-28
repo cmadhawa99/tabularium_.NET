@@ -14,6 +14,8 @@ namespace ArchivumWpf.ViewModels;
 public partial class DocumentManagerViewModel : ObservableObject
 {
     private readonly IDocumentService _documentService;
+    private readonly IPdfRenderService _pdfRenderService;
+    private byte[]? _currentPdfBytes;
     
     [ObservableProperty] private int _fileRecordSerial;
     [ObservableProperty] private string _recordTitle = string.Empty;
@@ -29,9 +31,18 @@ public partial class DocumentManagerViewModel : ObservableObject
     [ObservableProperty] private BitmapImage? _previewImage;
     [ObservableProperty] private string _previewFileName  = string.Empty;
     
-    public DocumentManagerViewModel (IDocumentService documentService)
+    [ObservableProperty] private bool _isPdfMode = false;
+    [ObservableProperty] private bool _isPdfLoading = false;
+    [ObservableProperty] private BitmapImage? _pdfPageImage;
+    [ObservableProperty] private int _pdfCurrentPage = 1;
+    [ObservableProperty] private int _pdfTotalPages = 1;
+    [ObservableProperty] private double _pdfZoom = 1.5;
+    public ObservableCollection<BitmapImage?> PdfThumbnails { get; } = new();
+    
+    public DocumentManagerViewModel (IDocumentService documentService, IPdfRenderService pdfRenderService)
     {
         _documentService = documentService;
+        _pdfRenderService = pdfRenderService;
     }
 
     public async Task InitializeAsync(int fileRecordSerial, string rrNumber, string fileName)
@@ -95,26 +106,33 @@ public partial class DocumentManagerViewModel : ObservableObject
     {
         if (file == null) return;
 
-        if (!file.MimeType.StartsWith("image/"))
-        {
-            ShowStatus("In-app preview is only available for images. Use Export for other file types.", "#FF9800");
-            return;
-        }
-
         try
         {
-            using var ms = await _documentService.GetPreviewStreamAsync(file.Id);
+            if (file.MimeType == "application/pdf")
+            {
+                await OpenPdfPreviewAsync (file);
+            }
+            
+            else if (file.MimeType.StartsWith ("image/"))
+            {
+                using var ms = await _documentService.GetPreviewStreamAsync(file.Id);
 
-            var bitmap = new BitmapImage();
-            bitmap.BeginInit();
-            bitmap.CacheOption = BitmapCacheOption.OnLoad;
-            bitmap.StreamSource = ms;
-            bitmap.EndInit();
-            bitmap.Freeze();
+                var bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                bitmap.StreamSource = ms;
+                bitmap.EndInit();
+                bitmap.Freeze();
 
-            PreviewImage = bitmap;
-            PreviewFileName = file.OriginalFileName;
-            IsPreviewOpen = true;
+                PreviewImage = bitmap;
+                PreviewFileName = file.OriginalFileName;
+                IsPdfMode = false;
+                IsPreviewOpen = true;
+            }
+            else
+            {
+                ShowStatus("In-app preview is only available for images and PDFs. Use Export for other file types.", "#FF9800");
+            }
         }
         catch (Exception ex)
         {
@@ -123,11 +141,95 @@ public partial class DocumentManagerViewModel : ObservableObject
         
     }
 
+    private async Task OpenPdfPreviewAsync(DigitalFile file)
+    {
+        IsPdfLoading = true;
+        IsPdfMode = true;
+        IsPreviewOpen = true;
+        PreviewFileName = file.OriginalFileName;
+        PdfThumbnails.Clear();
+
+        using (var ms = await _documentService.GetPreviewStreamAsync(file.Id))
+        {
+            _currentPdfBytes = ms.ToArray();
+        }
+
+        PdfTotalPages = await _pdfRenderService.GetPageCountAsync(_currentPdfBytes);
+        PdfCurrentPage = 1;
+
+        await RenderCurrentPdfPageAsync();
+        IsPdfLoading = false;
+
+        _ = LoadPdfThumbnailsAsync();
+    }
+
+    private async Task RenderCurrentPdfPageAsync()
+    {
+        if (_currentPdfBytes == null) return;
+        PdfPageImage = await _pdfRenderService.RenderPageAsync(_currentPdfBytes, PdfCurrentPage - 1, PdfZoom);
+    }
+
+    private async Task LoadPdfThumbnailsAsync()
+    {
+        if (_currentPdfBytes == null) return;
+        for (int i = 0; i < PdfTotalPages; i++)
+        {
+            if (_currentPdfBytes == null) return;
+            var thumb = await _pdfRenderService.RenderPageAsync(_currentPdfBytes, i, scale: 0.4);
+            PdfThumbnails.Add(thumb);
+        }
+    }
+
+    [RelayCommand]
+    private async Task NextPdfPageAsync()
+    {
+        if (PdfCurrentPage >= PdfTotalPages) return;
+        PdfCurrentPage++;
+        await RenderCurrentPdfPageAsync();
+    }
+
+    [RelayCommand]
+    private async Task PreviousPdfPageAsync()
+    {
+        if (PdfCurrentPage <= 1) return;
+        PdfCurrentPage--;
+        await RenderCurrentPdfPageAsync();
+    }
+
+    [RelayCommand]
+    private async Task JumpToPdfPageAsync(BitmapImage thumbnail)
+    {
+        int index = PdfThumbnails.IndexOf(thumbnail);
+        if (index < 0) return;
+        PdfCurrentPage = index + 1;
+        await RenderCurrentPdfPageAsync();
+    }
+
+    [RelayCommand]
+    private async Task ZoomInPdfAsync()
+    {
+        if (PdfZoom >= 4.0) return;
+        PdfZoom += 0.5;
+        await RenderCurrentPdfPageAsync();
+    }
+
+    [RelayCommand]
+    private async Task ZoomOutPdfAsync()
+    {
+        if (PdfZoom <= 0.5) return;
+        PdfZoom -= 0.5;
+        await RenderCurrentPdfPageAsync();
+    }
+
     [RelayCommand]
     private void ClosePreview()
     {
         IsPreviewOpen = false;
         PreviewImage = null;
+        PdfPageImage = null;
+        PdfThumbnails.Clear();
+        _currentPdfBytes = null;
+        IsPdfMode = false;
     }
 
     [RelayCommand]

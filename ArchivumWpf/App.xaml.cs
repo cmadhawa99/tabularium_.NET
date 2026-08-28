@@ -59,6 +59,7 @@ public partial class App : Application
         services.AddSingleton<IPreferencesService, PreferencesService>();
         services.AddTransient<IArchiveService, ArchiveService>();
         services.AddSingleton<IDocumentService, DocumentService>();
+        services.AddSingleton<IPdfRenderService, PdfRenderService>();
         
         services.AddSingleton<MainViewModel>();
         services.AddSingleton<DashboardViewModel>();

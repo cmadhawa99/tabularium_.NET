@@ -3,11 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
              AllowDrop="True" Drop="UserControl_Drop"
+             xmlns:converters="clr-namespace:ArchivumWpf.Converters"
              Background="{DynamicResource WindowBackground}"
              TextElement.FontFamily="Segoe UI Variable, Segoe UI, sans-serif">
 
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
+        <converters:InverseBooleanToVisibilityConverter x:Key="InverseBoolToVis"/>
     </UserControl.Resources>
 
     <Grid>
@@ -75,18 +77,85 @@
         </ScrollViewer>
 
         <!-- Zero-disk-footprint image preview -->
-        <Grid Grid.Row="0" Grid.RowSpan="3" Background="#CC000000" Visibility="{Binding IsPreviewOpen, Converter={StaticResource BoolToVisConverter}}">
-            <Border Background="{DynamicResource CardBackground}" CornerRadius="10" Padding="20" MaxWidth="700" MaxHeight="600" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Grid Grid.Row="0" Grid.RowSpan="3" Background="#DD000000"
+              Visibility="{Binding IsPreviewOpen, Converter={StaticResource BoolToVisConverter}}"
+              Focusable="True" KeyDown="PreviewOverlay_KeyDown">
+            <Border Background="{DynamicResource CardBackground}" CornerRadius="10" Margin="40"
+                    BorderBrush="{DynamicResource BorderColor}" BorderThickness="1">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <Grid Grid.Row="0" Margin="0,0,0,12">
-                        <TextBlock Text="{Binding PreviewFileName}" FontSize="14" Foreground="{DynamicResource TextMain}"/>
-                        <Button Content="Close" HorizontalAlignment="Right" Command="{Binding ClosePreviewCommand}" Background="Transparent" BorderThickness="0" Foreground="{DynamicResource PrimaryAccent}" Cursor="Hand"/>
+
+                    <!-- Toolbar -->
+                    <Border Grid.Row="0" BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,0,0,1" Padding="16,10">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Column="0" Text="{Binding PreviewFileName}" FontSize="14" Foreground="{DynamicResource TextMain}" VerticalAlignment="Center"/>
+
+                            <!-- PDF-only controls -->
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,20,0"
+                                        Visibility="{Binding IsPdfMode, Converter={StaticResource BoolToVisConverter}}">
+                                <Button Command="{Binding PreviousPdfPageCommand}" Content="◀" Padding="10,4" Margin="0,0,8,0" Background="Transparent" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" Foreground="{DynamicResource TextMain}" Cursor="Hand"/>
+                                <TextBlock VerticalAlignment="Center" Foreground="{DynamicResource TextMain}" Margin="0,0,8,0">
+                                    <Run Text="{Binding PdfCurrentPage, Mode=OneWay}"/> / <Run Text="{Binding PdfTotalPages, Mode=OneWay}"/>
+                                </TextBlock>
+                                <Button Command="{Binding NextPdfPageCommand}" Content="▶" Padding="10,4" Margin="0,0,16,0" Background="Transparent" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" Foreground="{DynamicResource TextMain}" Cursor="Hand"/>
+
+                                <Button Command="{Binding ZoomOutPdfCommand}" Content="－" Padding="10,4" Margin="0,0,4,0" Background="Transparent" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" Foreground="{DynamicResource TextMain}" Cursor="Hand"/>
+                                <TextBlock Text="{Binding PdfZoom, StringFormat={}{0:P0}}" VerticalAlignment="Center" Foreground="{DynamicResource TextMuted}" Width="50" TextAlignment="Center"/>
+                                <Button Command="{Binding ZoomInPdfCommand}" Content="＋" Padding="10,4" Background="Transparent" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" Foreground="{DynamicResource TextMain}" Cursor="Hand"/>
+                            </StackPanel>
+
+                            <Button Grid.Column="2" Content="✕" Command="{Binding ClosePreviewCommand}" Background="Transparent" BorderThickness="0" Foreground="{DynamicResource PrimaryAccent}" FontSize="16" Cursor="Hand"/>
+                        </Grid>
+                    </Border>
+
+                    <!-- Body -->
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="120" MinWidth="0" MaxWidth="120"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Thumbnail rail (PDF only) -->
+                        <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto"
+                                      Visibility="{Binding IsPdfMode, Converter={StaticResource BoolToVisConverter}}"
+                                      Background="{DynamicResource WindowBackground}">
+                            <ItemsControl ItemsSource="{Binding PdfThumbnails}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Margin="8" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" Cursor="Hand">
+                                            <Border.InputBindings>
+                                                <MouseBinding MouseAction="LeftClick"
+                                                              Command="{Binding DataContext.JumpToPdfPageCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                              CommandParameter="{Binding}"/>
+                                            </Border.InputBindings>
+                                            <Image Source="{Binding}" Stretch="Uniform"/>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+
+                        <!-- Main page/image -->
+                        <ScrollViewer Grid.Column="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Padding="20">
+                            <Grid>
+                                <Image Source="{Binding PreviewImage}" Stretch="Uniform" MaxHeight="700"
+                                       Visibility="{Binding IsPdfMode, Converter={StaticResource InverseBoolToVis}}"/>
+                                <Image Source="{Binding PdfPageImage}" Stretch="Uniform"
+                                       Visibility="{Binding IsPdfMode, Converter={StaticResource BoolToVisConverter}}"/>
+                                <TextBlock Text="Rendering..." Foreground="{DynamicResource TextMuted}" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                           Visibility="{Binding IsPdfLoading, Converter={StaticResource BoolToVisConverter}}"/>
+                            </Grid>
+                        </ScrollViewer>
                     </Grid>
-                    <Image Grid.Row="1" Source="{Binding PreviewImage}" Stretch="Uniform"/>
                 </Grid>
             </Border>
         </Grid>
