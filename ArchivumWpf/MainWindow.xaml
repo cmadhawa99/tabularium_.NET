@@ -17,6 +17,7 @@
         <DataTemplate DataType="{x:Type viewmodels:DisposalViewModel}"><views:DisposalView /></DataTemplate>
         <DataTemplate DataType="{x:Type viewmodels:ReportsViewModel}"><views:ReportsView /></DataTemplate>
         <DataTemplate DataType="{x:Type viewmodels:SettingsViewModel}"><views:SettingsView /></DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:DocumentsSearchViewModel}"><views:DocumentsSearchView /></DataTemplate>
 
         <DropShadowEffect x:Key="Win11Shadow" BlurRadius="16" ShadowDepth="4" Direction="270" Color="#000000" Opacity="0.12"/>
 
@@ -149,6 +150,24 @@
                         <StackPanel Orientation="Horizontal">
                              <fa:ImageAwesome Icon="Trash" Width="16" Height="16" Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" Margin="0,0,12,0"/>
                             <TextBlock Text="{x:Static loc:Strings.Main_NavDisposal}" FontWeight="Normal" FontSize="14" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    
+                    <Button Command="{Binding NavigateToDocumentsCommand}">
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource SidebarNavButton}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ActivePage}" Value="Documents">
+                                        <Setter Property="Foreground" Value="{DynamicResource PrimaryAccent}"/>
+                                        <Setter Property="BorderBrush" Value="{DynamicResource PrimaryAccent}"/>
+                                        <Setter Property="Background" Value="#0A808080"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                        <StackPanel Orientation="Horizontal">
+                            <fa:ImageAwesome Icon="FolderOpen" Width="16" Height="16" Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" Margin="0,0,12,0"/>
+                            <TextBlock Text="DOCUMENTS" FontWeight="Normal" FontSize="14" VerticalAlignment="Center"/>
                         </StackPanel>
                     </Button>
                      

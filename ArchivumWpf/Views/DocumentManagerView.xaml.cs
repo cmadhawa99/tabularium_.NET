@@ -7,21 +7,14 @@ namespace ArchivumWpf.Views
 
     public partial class DocumentManagerView : UserControl
     {
-        public DocumentManagerView()
-        {
-            InitializeComponent();
-        }
+        public DocumentManagerView() => InitializeComponent();
 
-        private void UserControl_Drop(object sender, DragEventArgs e)
+        private async void UserControl_Drop(object sender, DragEventArgs e)
         {
-
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
                 string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-                if (DataContext is DocumentManagerViewModel vm)
-                {
-                    vm.HandleDrop(files);
-                }
+                if (DataContext is DocumentManagerViewModel vm) await vm.ImportPathsAsync(files);
             }
         }
     }

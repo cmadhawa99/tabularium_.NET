@@ -1,12 +1,15 @@
 ﻿using System;
+using System.Windows;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Globalization;
+using Microsoft.Extensions.DependencyInjection;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using ArchivumWpf.Models;
 using ArchivumWpf.Services;
-using CommunityToolkit.Mvvm.Messaging;
+using ArchivumWpf.Views;
 using DocumentFormat.OpenXml.Bibliography;
 
 namespace ArchivumWpf.ViewModels;
@@ -36,13 +39,8 @@ public partial class SearchViewModel : ObservableObject
     [ObservableProperty] private bool _isAvailableActive;
     [ObservableProperty] private bool _isBorrowedActive;
     [ObservableProperty] private bool _isRemovedActive;
-    
-    //img stuff
-    [ObservableProperty] private ObservableCollection<string> _selectedFileImages = new();
-    [ObservableProperty] private string _selectedImage;
-    [ObservableProperty] private bool _isImageViewerOpen;
-    
-    
+
+
     //Pagination
     [ObservableProperty] private int _currentPage = 1;
     [ObservableProperty] private int _totalPages = 1;
@@ -96,19 +94,8 @@ public partial class SearchViewModel : ObservableObject
     partial void OnIsAvailableActiveChanged(bool value) { CurrentPage = 1; _ = LoadDataAsync(); }
     partial void OnIsBorrowedActiveChanged(bool value) {CurrentPage = 1; _ = LoadDataAsync(); }
     partial void OnIsRemovedActiveChanged(bool value) { CurrentPage = 1; _ = LoadDataAsync(); }
-
-    partial void OnSelectedFileChanged(FileRecord? value)
-    {
-        if (value != null)
-        {
-            SelectedFileImages.Clear();
-            SelectedFileImages.Add("Document_Page_1.enc");
-            SelectedFileImages.Add("Document_Page_2.enc");
-            SelectedFileImages.Add("ID_Copy_Front.enc");
-        }
-    }
     
-
+    
     [RelayCommand]
     private async Task PerformSearchAsync()
     {
@@ -153,22 +140,7 @@ public partial class SearchViewModel : ObservableObject
     {
         IsDetailsOpen = false;
     }
-
-    [RelayCommand]
-    private void OpenImage(string imagePath)
-    {
-        SelectedImage = imagePath;
-        IsImageViewerOpen = true;
-    }
     
-    [RelayCommand]
-    private void CloseImage()
-    {
-        IsImageViewerOpen = false;
-        SelectedImage = string.Empty;
-    }
-
-
     private async Task LoadDataAsync()
     {
         IsSearching = true;
@@ -213,6 +185,22 @@ public partial class SearchViewModel : ObservableObject
         }
         
         IsSearching = false;
+    }
+
+    [RelayCommand]
+    private void OpenDocumentManager()
+    {
+        if (SelectedFile == null) return;
+        
+        var app = (App)Application.Current;
+        var window = app.Services.GetRequiredService<DocumentManagerWindow>();
+        var vm = (DocumentManagerViewModel)window.DataContext;
+
+        _ = vm.InitializeAsync(SelectedFile.SerialNumber, SelectedFile.RrNumber, SelectedFile.FileName);
+        
+        window.Owner = Application.Current.MainWindow;
+        window.ShowDialog();
+
     }
     
     

@@ -22,6 +22,7 @@ public partial class MainViewModel : ObservableObject
     private readonly ReportsViewModel _reportsVm;
     private readonly SettingsViewModel _settingsVm;
     private readonly DisposalViewModel _disposalVm;
+    private readonly DocumentsSearchViewModel _documentsSearchVm;
 
     private readonly IPreferencesService _preferencesService;
 
@@ -34,7 +35,8 @@ public partial class MainViewModel : ObservableObject
         EntryViewModel entryVm,
         ReportsViewModel reportsVm,
         SettingsViewModel settingsVm,
-        DisposalViewModel disposalVm
+        DisposalViewModel disposalVm,
+        DocumentsSearchViewModel documentsSearchVm
         )
     {
         _archiveService = archiveService;
@@ -46,6 +48,7 @@ public partial class MainViewModel : ObservableObject
         _reportsVm = reportsVm;
         _settingsVm = settingsVm;
         _disposalVm = disposalVm;
+        _documentsSearchVm = documentsSearchVm;
         
         _currentPageViewModel = _dashboardVm;
         _ = CheckDisposalAlertsAsync();
@@ -110,6 +113,12 @@ public partial class MainViewModel : ObservableObject
     private void NavigateToDisposal()
     {
         CurrentPageViewModel = _disposalVm; ActivePage =  "Disposal";
+    }
+
+    [RelayCommand]
+    private void NavigateToDocuments()
+    {
+        CurrentPageViewModel = _documentsSearchVm; ActivePage = "Documents";
     }
     
 

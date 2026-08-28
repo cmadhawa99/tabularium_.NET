@@ -57,8 +57,8 @@ public partial class App : Application
             options.UseNpgsql(activeConnString));
         
         services.AddSingleton<IPreferencesService, PreferencesService>();
-        
         services.AddTransient<IArchiveService, ArchiveService>();
+        services.AddSingleton<IDocumentService, DocumentService>();
         
         services.AddSingleton<MainViewModel>();
         services.AddSingleton<DashboardViewModel>();
@@ -72,6 +72,10 @@ public partial class App : Application
         
         services.AddTransient<LoginViewModel>();
         services.AddTransient<LoginWindow>();
+
+        services.AddSingleton<DocumentsSearchViewModel>();
+        services.AddTransient<DocumentManagerViewModel>();
+        services.AddTransient<DocumentManagerWindow>();
         
         services.AddSingleton<MainWindow>();
 

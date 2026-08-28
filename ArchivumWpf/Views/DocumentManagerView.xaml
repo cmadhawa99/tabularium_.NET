@@ -1,40 +1,94 @@
 ﻿<UserControl x:Class="ArchivumWpf.Views.DocumentManagerView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             AllowDrop="True" Drop="UserControl_Drop">
-    
-    <Grid Background="Transparent">
+             xmlns:fa="http://schemas.fontawesome.io/icons/"
+             AllowDrop="True" Drop="UserControl_Drop"
+             Background="{DynamicResource WindowBackground}"
+             TextElement.FontFamily="Segoe UI Variable, Segoe UI, sans-serif">
+
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
+    </UserControl.Resources>
+
+    <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Header: RR Number and Name -->
-        <TextBlock Grid.Row="0" Text="{Binding RecordTitle}" 
-                   FontSize="18" FontWeight="Bold" Margin="10"/>
+        <!-- RR Number and Name strip -->
+        <Border Grid.Row="0" Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,0,0,1" Padding="20,16">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="{Binding RecordTitle}" Foreground="{DynamicResource PrimaryAccent}" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                <Button Grid.Column="1" Command="{Binding ImportFilesCommand}" Background="{DynamicResource PrimaryAccent}" Foreground="{DynamicResource CardBackground}" BorderThickness="0" Cursor="Hand" Padding="16,8">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}" CornerRadius="6">
+                                <StackPanel Orientation="Horizontal" Margin="{TemplateBinding Padding}">
+                                    <fa:ImageAwesome Icon="CloudUpload" Width="12" Height="12" Margin="0,0,8,0" Foreground="{DynamicResource CardBackground}"/>
+                                    <TextBlock Text="Import Files" FontSize="13"/>
+                                </StackPanel>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </Grid>
+        </Border>
 
-        <!-- Document Icons Area with ScrollBars -->
-        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
-            <ItemsControl ItemsSource="{Binding Files}" Margin="10">
+        <Border Grid.Row="1" Padding="20,10">
+            <TextBlock Text="{Binding StatusMessage}" Foreground="{Binding StatusColor}" FontSize="12"/>
+        </Border>
+
+        <!-- Document icons grid -->
+        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" Padding="20">
+            <ItemsControl ItemsSource="{Binding Files}">
                 <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel Orientation="Horizontal"/>
-                    </ItemsPanelTemplate>
+                    <ItemsPanelTemplate><WrapPanel Orientation="Horizontal"/></ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Button Command="{Binding DataContext.ViewDocumentCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" 
-                                CommandParameter="{Binding}" 
-                                Margin="10" Width="80" Height="100">
-                            <StackPanel>
-                                <!-- Placeholder for Document Icon -->
-                                <Rectangle Width="40" Height="50" Fill="LightGray" Margin="0,0,0,5"/>
-                                <TextBlock Text="{Binding OriginalFileName}" TextTrimming="CharacterEllipsis" Width="70" TextAlignment="Center"/>
+                        <Border Width="120" Margin="0,0,16,16" Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="8" Padding="12">
+                            <StackPanel HorizontalAlignment="Center">
+                                <Button Command="{Binding DataContext.ViewDocumentCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                        CommandParameter="{Binding}"
+                                        Background="Transparent" BorderThickness="0" Cursor="Hand" ToolTip="{Binding OriginalFileName}">
+                                    <StackPanel>
+                                        <fa:ImageAwesome Icon="FileTextOutline" Width="36" Height="36" Foreground="{DynamicResource PrimaryAccent}" HorizontalAlignment="Center" Margin="0,0,0,8"/>
+                                        <TextBlock Text="{Binding OriginalFileName}" FontSize="11" Foreground="{DynamicResource TextMain}" TextTrimming="CharacterEllipsis" TextAlignment="Center" Width="96"/>
+                                    </StackPanel>
+                                </Button>
+                                <Button Content="Export" FontSize="10" Margin="0,8,0,0" Padding="8,4"
+                                        Command="{Binding DataContext.ExportDocumentCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                        CommandParameter="{Binding}"
+                                        Background="Transparent" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1"
+                                        Foreground="{DynamicResource TextMuted}" Cursor="Hand"/>
                             </StackPanel>
-                        </Button>
+                        </Border>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </ScrollViewer>
+
+        <!-- Zero-disk-footprint image preview -->
+        <Grid Grid.Row="0" Grid.RowSpan="3" Background="#CC000000" Visibility="{Binding IsPreviewOpen, Converter={StaticResource BoolToVisConverter}}">
+            <Border Background="{DynamicResource CardBackground}" CornerRadius="10" Padding="20" MaxWidth="700" MaxHeight="600" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0" Margin="0,0,0,12">
+                        <TextBlock Text="{Binding PreviewFileName}" FontSize="14" Foreground="{DynamicResource TextMain}"/>
+                        <Button Content="Close" HorizontalAlignment="Right" Command="{Binding ClosePreviewCommand}" Background="Transparent" BorderThickness="0" Foreground="{DynamicResource PrimaryAccent}" Cursor="Hand"/>
+                    </Grid>
+                    <Image Grid.Row="1" Source="{Binding PreviewImage}" Stretch="Uniform"/>
+                </Grid>
+            </Border>
+        </Grid>
     </Grid>
 </UserControl>
