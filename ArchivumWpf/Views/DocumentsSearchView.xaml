@@ -50,6 +50,18 @@
                   Background="Transparent" Foreground="{DynamicResource TextMain}"
                   RowBackground="Transparent" AlternatingRowBackground="Transparent"
                   HeadersVisibility="Column" GridLinesVisibility="None" BorderThickness="0" Margin="20,0,20,20">
+
+            <DataGrid.Resources>
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
+                    <Setter Property="FontSize" Value="13"/>
+                    <Setter Property="Padding" Value="16,12"/>
+                    <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                    <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
+                </Style>
+            </DataGrid.Resources>
+            
             <DataGrid.Columns>
                 <DataGridTextColumn Header="RR NUMBER" Binding="{Binding RrNumber}" Width="200"/>
                 <DataGridTextColumn Header="NAME" Binding="{Binding FileName}" Width="*"/>

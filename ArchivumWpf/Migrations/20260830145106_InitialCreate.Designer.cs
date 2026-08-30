@@ -3,6 +3,7 @@ using System;
 using ArchivumWpf.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ArchivumWpf.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260830145106_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -194,10 +197,6 @@ namespace ArchivumWpf.Migrations
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("physical_file_name");
-
-                    b.Property<Guid>("RecordStorageId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("record_storage_id");
 
                     b.HasKey("Id");
 
@@ -410,10 +409,6 @@ namespace ArchivumWpf.Migrations
                     b.Property<int?>("ParentFolderId")
                         .HasColumnType("integer")
                         .HasColumnName("parent_folder_id");
-
-                    b.Property<Guid?>("PhysicalStorageId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("physical_storage_id");
 
                     b.HasKey("Id");
 

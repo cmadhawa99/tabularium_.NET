@@ -35,6 +35,9 @@ public class DigitalFile
     [Required]
     [Column("iv")]
     public string IV { get; set; } = null!;
+    
+    [Column("record_storage_id")]
+    public Guid RecordStorageId { get; set; }
 
     [ForeignKey(nameof(FolderId))]
     public virtual Folder Folder { get; set; } = null!;

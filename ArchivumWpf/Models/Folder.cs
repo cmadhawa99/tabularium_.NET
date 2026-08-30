@@ -20,6 +20,9 @@ public class Folder
     [Column("file_record_serial")]
     public int FileRecordSerialNumber { get; set; }
     
+    [Column("physical_storage_id")]
+    public Guid? PhysicalStorageId { get; set; }
+    
     [ForeignKey(nameof(ParentFolderId))]
     public virtual Folder? ParentFolder { get; set; }
     
