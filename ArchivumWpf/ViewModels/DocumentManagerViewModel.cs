@@ -37,6 +37,8 @@ public partial class DocumentManagerViewModel : ObservableObject
     [ObservableProperty] private int _pdfCurrentPage = 1;
     [ObservableProperty] private int _pdfTotalPages = 1;
     [ObservableProperty] private double _pdfZoom = 1.5;
+    
+    [ObservableProperty] private bool _isImportAllowed = false;
     public ObservableCollection<BitmapImage?> PdfThumbnails { get; } = new();
     
     public DocumentManagerViewModel (IDocumentService documentService, IPdfRenderService pdfRenderService)
@@ -45,10 +47,11 @@ public partial class DocumentManagerViewModel : ObservableObject
         _pdfRenderService = pdfRenderService;
     }
 
-    public async Task InitializeAsync(int fileRecordSerial, string rrNumber, string fileName)
+    public async Task InitializeAsync(int fileRecordSerial, string rrNumber, string fileName, bool isImportAllowed)
     {
         FileRecordSerial = fileRecordSerial;
         RecordTitle = $"{rrNumber} — {fileName}";
+        IsImportAllowed = isImportAllowed;
 
         CurrentFolder = await _documentService.GetOrCreateRootFolderAsync(fileRecordSerial);
         await RefreshAsync();

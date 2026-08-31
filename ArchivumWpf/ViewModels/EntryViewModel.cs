@@ -2,12 +2,15 @@
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media.Effects;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using ArchivumWpf.Models;
 using ArchivumWpf.Services;
+using ArchivumWpf.Views;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ArchivumWpf.ViewModels;
 
@@ -63,6 +66,8 @@ public partial class EntryViewModel : ObservableObject
     [ObservableProperty] private string _dialogTitle = string.Empty;
     [ObservableProperty] private EntryHistoryRecord _selectedHistoryRecord;
     
+    [ObservableProperty] private FileRecord? _lastSavedRecordForDocs;
+    
     
     public ObservableCollection<ChangeItem> RecordChanges { get; } = new();
     
@@ -90,6 +95,12 @@ public partial class EntryViewModel : ObservableObject
         });
         
     }
+    
+    public async Task RefreshAsync()
+    {
+        LoadDropdowns();
+        await LoadHistoryAsync();
+    }
 
     partial void OnHistorySearchQueryChanged(string value)
     {
@@ -111,6 +122,7 @@ public partial class EntryViewModel : ObservableObject
         AvailableSectors.Clear();
         foreach (var s in prefs.Sectors) AvailableSectors.Add(s.Name);
         AvailableFileTypes.Clear();
+        AvailableFileTypes.Add("");
         foreach (var t in prefs.FileTypes) AvailableFileTypes.Add(t);
     }
     
@@ -185,6 +197,7 @@ public partial class EntryViewModel : ObservableObject
         if (result.Success)
         {
             ClearAddForm();
+            LastSavedRecordForDocs = newRecord;
             _ = LoadHistoryAsync();
         }
 
@@ -204,6 +217,7 @@ public partial class EntryViewModel : ObservableObject
         AddShelfNumber = string.Empty;
         AddDeckNumber = string.Empty;
         AddFileNumber = string.Empty;
+        LastSavedRecordForDocs = null;
     }
     
     
@@ -369,6 +383,35 @@ public partial class EntryViewModel : ObservableObject
             }
         }
     }
+    
+    // Document Attachments 
+    
+    [RelayCommand]
+    private void ManageNewRecordDocuments()
+    {
+        if (LastSavedRecordForDocs == null) return;
+        OpenDocumentManager(LastSavedRecordForDocs, isImportAllowed: true);
+    }
+
+    [RelayCommand]
+    private void ManageEditRecordDocuments()
+    {
+        if (_currentEditingFile == null) return;
+        OpenDocumentManager(_currentEditingFile, isImportAllowed: true);
+    }
+    
+    private void OpenDocumentManager(FileRecord record, bool isImportAllowed)
+    {
+        var app = (App)Application.Current;
+        var window = app.Services.GetRequiredService<DocumentManagerWindow>();
+        var vm = (DocumentManagerViewModel)window.DataContext;
+
+        _ = vm.InitializeAsync(record.SerialNumber, record.RrNumber, record.FileName, isImportAllowed);
+
+        window.Owner = Application.Current.MainWindow;
+        window.ShowDialog();
+    }
+    
 
     [RelayCommand]
     private void CloseDialog()

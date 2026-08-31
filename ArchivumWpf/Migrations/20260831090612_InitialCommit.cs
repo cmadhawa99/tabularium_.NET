@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ArchivumWpf.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class InitialCommit : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -49,11 +49,11 @@ namespace ArchivumWpf.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     FileSerialNumber = table.Column<int>(type: "integer", nullable: false),
                     RrNumber = table.Column<string>(type: "text", nullable: false),
-                    SubjectNumber = table.Column<string>(type: "text", nullable: false),
+                    SubjectNumber = table.Column<string>(type: "text", nullable: true),
                     FileName = table.Column<string>(type: "text", nullable: false),
                     Sector = table.Column<string>(type: "text", nullable: false),
                     Status = table.Column<string>(type: "text", nullable: false),
-                    FileType = table.Column<string>(type: "text", nullable: false),
+                    FileType = table.Column<string>(type: "text", nullable: true),
                     StartDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     EndDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     TotalPages = table.Column<int>(type: "integer", nullable: true),
@@ -177,7 +177,8 @@ namespace ArchivumWpf.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     parent_folder_id = table.Column<int>(type: "integer", nullable: true),
                     folder_name = table.Column<string>(type: "text", nullable: false),
-                    file_record_serial = table.Column<int>(type: "integer", nullable: false)
+                    file_record_serial = table.Column<int>(type: "integer", nullable: false),
+                    physical_storage_id = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -206,7 +207,8 @@ namespace ArchivumWpf.Migrations
                     file_size = table.Column<long>(type: "bigint", nullable: false),
                     mime_type = table.Column<string>(type: "text", nullable: false),
                     encrypted_dek = table.Column<string>(type: "text", nullable: false),
-                    iv = table.Column<string>(type: "text", nullable: false)
+                    iv = table.Column<string>(type: "text", nullable: false),
+                    record_storage_id = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {

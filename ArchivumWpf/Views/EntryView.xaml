@@ -11,6 +11,7 @@
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
         <converters:DynamicTimeConverter x:Key="DynamicTimeConverter"/>
+        <converters:NullToVisibilityConverter x:Key="NullToVisConverter"/>
         
         <DropShadowEffect x:Key="Win11Shadow" BlurRadius="16" ShadowDepth="3" Direction="270" Color="#000000" Opacity="0.08"/>
         <DropShadowEffect x:Key="Win11ShadowHeavy" BlurRadius="24" ShadowDepth="6" Direction="270" Color="#000000" Opacity="0.15"/>
@@ -365,6 +366,17 @@
                                 </Button.Template>
                             </Button>
                         </StackPanel>
+
+                        <!-- Added Success Border with Manage Documents Button -->
+                        <Border Margin="0,20,0,0" Padding="20" Background="{DynamicResource WindowBackground}" BorderBrush="{DynamicResource AvailableColor}" BorderThickness="1" CornerRadius="8"
+                                Visibility="{Binding LastSavedRecordForDocs, Converter={StaticResource NullToVisConverter}}">
+                            <Grid>
+                                <TextBlock Text="Record saved. You can now attach documents to this file." Foreground="{DynamicResource TextMain}" VerticalAlignment="Center"/>
+                                <Button Content="Manage Documents" HorizontalAlignment="Right" Command="{Binding ManageNewRecordDocumentsCommand}"
+                                        Background="{DynamicResource AvailableColor}" Foreground="White" BorderThickness="0" Padding="16,8" Cursor="Hand"/>
+                            </Grid>
+                        </Border>
+
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>
@@ -539,6 +551,11 @@
                         </Border>
 
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+                            <!-- Added Edit Tab Manage Documents Button -->
+                            <Button Content="Manage Documents" Command="{Binding ManageEditRecordDocumentsCommand}" IsEnabled="{Binding IsEditFormEnabled}"
+                                    Background="Transparent" BorderBrush="{DynamicResource PrimaryAccent}" BorderThickness="1" Foreground="{DynamicResource PrimaryAccent}"
+                                    Padding="20,10" Margin="0,0,15,0" Cursor="Hand"/>
+                            
                             <Button Command="{Binding ClearEditFormCommand}" Content="{x:Static loc:Strings.Ent_BtnCancelAmendment}" Background="Transparent" Foreground="{DynamicResource DangerAccent}" BorderThickness="0" Margin="0,0,15,0" Cursor="Hand" Padding="20,10">
                                 <Button.Template>
                                     <ControlTemplate TargetType="Button">

@@ -68,6 +68,8 @@ public partial class DashboardViewModel : ObservableObject
             RecentActivities.Add(activity);
         }
     }
+    
+    public async Task RefreshAsync() => await LoadStatsAsync();
 
     [RelayCommand]
     private async Task OpenActivityLogDialogAsync()

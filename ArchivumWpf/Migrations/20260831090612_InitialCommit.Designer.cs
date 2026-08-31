@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ArchivumWpf.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260830191335_AddRecordStorageFolders")]
-    partial class AddRecordStorageFolders
+    [Migration("20260831090612_InitialCommit")]
+    partial class InitialCommit
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -275,7 +275,6 @@ namespace ArchivumWpf.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("FileType")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("RrNumber")
@@ -297,7 +296,6 @@ namespace ArchivumWpf.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("SubjectNumber")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("Timestamp")

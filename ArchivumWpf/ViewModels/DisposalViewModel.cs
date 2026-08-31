@@ -89,6 +89,8 @@ public partial class DisposalViewModel : ObservableObject
         await LoadQueueAsync();
         await LoadHistoryAsync();
     }
+    
+    public async Task RefreshAsync() => await LoadTablesAsync();
 
     private async Task LoadQueueAsync()
     {

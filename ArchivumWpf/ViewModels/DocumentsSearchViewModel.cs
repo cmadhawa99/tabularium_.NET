@@ -32,6 +32,8 @@ public partial class DocumentsSearchViewModel : ObservableObject
         Results.Clear();
         foreach (var f in items) Results.Add(f);
     }
+    
+    public async Task RefreshAsync() => await SearchAsync();
 
     [RelayCommand]
     private void OpenDocumentManager(FileRecord record)
@@ -42,7 +44,7 @@ public partial class DocumentsSearchViewModel : ObservableObject
         var window = app.Services.GetRequiredService<DocumentManagerWindow>();
         var vm = (DocumentManagerViewModel)window.DataContext;
 
-        _ = vm.InitializeAsync(record.SerialNumber, record.RrNumber, record.FileName);
+        _ = vm.InitializeAsync(record.SerialNumber, record.RrNumber, record.FileName, isImportAllowed: true);
         
         window.Owner = Application.Current.MainWindow;
         window.ShowDialog();

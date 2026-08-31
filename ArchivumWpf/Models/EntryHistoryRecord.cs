@@ -15,12 +15,12 @@ public class EntryHistoryRecord
     public int FileSerialNumber { get; set; }
     
     public string RrNumber { get; set; }
-    public string SubjectNumber { get; set; }
+    public string? SubjectNumber { get; set; }
     public string FileName { get; set; }
     public string Sector { get; set; }
     public string Status { get; set; }
     
-    public string FileType { get; set; }
+    public string? FileType { get; set; }
     public DateTime? StartDate { get; set; }
     public DateTime? EndDate { get; set; }
     public int? TotalPages { get; set; }

@@ -78,7 +78,12 @@ public class DocumentService : IDocumentService
     public async Task<List<DigitalFile>> GetFilesAsync(int folderId)
     {
         using var context = await _contextFactory.CreateDbContextAsync();
-        return await context.DigitalFiles.Where(d => d.FolderId == folderId).ToListAsync();
+        var files = await context.DigitalFiles.AsNoTracking().Where(d => d.FolderId == folderId).ToListAsync();
+
+        foreach (var f in files)
+            f.IsMissing = !File.Exists(GetPhysicalPath(f.RecordStorageId, f.PhysicalFileName));
+
+        return files;
     }
 
     public async Task<Folder> CreateFolderAsync(int parentFolderId, int fileRecordSerial, string folderName)

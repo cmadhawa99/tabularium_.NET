@@ -272,7 +272,6 @@ namespace ArchivumWpf.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("FileType")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("RrNumber")
@@ -294,7 +293,6 @@ namespace ArchivumWpf.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("SubjectNumber")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("Timestamp")

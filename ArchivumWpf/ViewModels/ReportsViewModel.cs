@@ -119,6 +119,12 @@ public partial class ReportsViewModel : ObservableObject
         AvailableFileTypes.Add("");
         foreach (var t in prefs.FileTypes) AvailableFileTypes.Add(t);
     }
+    
+    public async Task RefreshAsync()
+    {
+        LoadDropdowns();
+        await UpdatePreviewAsync();
+    }
 
 
 

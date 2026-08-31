@@ -38,6 +38,9 @@ public class DigitalFile
     
     [Column("record_storage_id")]
     public Guid RecordStorageId { get; set; }
+    
+    [NotMapped]
+    public bool IsMissing { get; set; }
 
     [ForeignKey(nameof(FolderId))]
     public virtual Folder Folder { get; set; } = null!;

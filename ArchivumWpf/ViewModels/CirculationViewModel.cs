@@ -72,6 +72,12 @@ public partial class CirculationViewModel : ObservableObject
         });
         
     }
+    
+    public async Task RefreshAsync()
+    {
+        await LoadActiveLoansAsync();
+        await LoadHistoryAsync();
+    }
 
     partial void OnActiveLoansSearchQueryChanged(string value)
     {

@@ -12,10 +12,11 @@ namespace ArchivumWpf.Views
 
         private async void UserControl_Drop(object sender, DragEventArgs e)
         {
+            if (DataContext is not DocumentManagerViewModel vm || !vm.IsImportAllowed) return;
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
                 string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-                if (DataContext is DocumentManagerViewModel vm) await vm.ImportPathsAsync(files);
+                await vm.ImportPathsAsync(files);
             }
         }
 

@@ -73,6 +73,12 @@ public partial class SearchViewModel : ObservableObject
         await LoadFiltersAsync();
         await LoadDataAsync();
     }
+    
+    public async Task RefreshAsync()
+    {
+        await LoadFiltersAsync();
+        await LoadDataAsync();
+    }
 
     private async Task LoadFiltersAsync()
     {
@@ -196,7 +202,7 @@ public partial class SearchViewModel : ObservableObject
         var window = app.Services.GetRequiredService<DocumentManagerWindow>();
         var vm = (DocumentManagerViewModel)window.DataContext;
 
-        _ = vm.InitializeAsync(SelectedFile.SerialNumber, SelectedFile.RrNumber, SelectedFile.FileName);
+        _ = vm.InitializeAsync(SelectedFile.SerialNumber, SelectedFile.RrNumber, SelectedFile.FileName, isImportAllowed: false);
         
         window.Owner = Application.Current.MainWindow;
         window.ShowDialog();

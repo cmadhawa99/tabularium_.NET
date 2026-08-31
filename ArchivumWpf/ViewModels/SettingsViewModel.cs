@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -53,6 +54,8 @@ public partial class SettingsViewModel : ObservableObject
     [ObservableProperty] private string _statusMessage =  string.Empty;
     [ObservableProperty] private string _statusColor = "Gray";
     [ObservableProperty] private bool _isProcessing = false;
+    
+    private string _originalLanguage = string.Empty;
 
     public SettingsViewModel(IPreferencesService preferencesService)
     {
@@ -70,6 +73,9 @@ public partial class SettingsViewModel : ObservableObject
         DefaultPaginationSize = prefs.DefaultPaginationSize;
         SelectedWindowMode = prefs.
         DefaultExportDirectory = prefs.DefaultExportDirectory;
+        SelectedLanguage = prefs.Language ?? "English";
+        _originalLanguage = SelectedLanguage;
+        
         AutoBackupEnabled = prefs.AutoBackupEnabled;
         AutoBackupDirectory = prefs.AutoBackupDirectory;
         
@@ -185,9 +191,19 @@ public partial class SettingsViewModel : ObservableObject
         prefs.WindowMode = this.SelectedWindowMode;
         
         _preferencesService.SavePreferences(prefs);
-
         WeakReferenceMessenger.Default.Send(new SettingsChangedMessage());
+        
+        bool languageChanged = !string.Equals(_originalLanguage, SelectedLanguage, StringComparison.Ordinal);
+        _originalLanguage = SelectedLanguage;
+        
         ShowStatus("General settings saved successfully!", "#4CAF50");
+        
+        if (languageChanged)
+        {
+            MessageBox.Show(
+                "Your language preference has been saved. The change will take effect after you restart the application.",
+                "Restart Required", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
     }
 
     [RelayCommand]

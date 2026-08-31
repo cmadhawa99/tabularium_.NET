@@ -66,41 +66,46 @@ public partial class MainViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void GoToDisposalQueue()
+    private async Task GoToDisposalQueueAsync()
     {
         HasDisposalAlert = false;
         _disposalVm.SelectedTabIndex = 1;
-        NavigateToDisposal();
+        await NavigateToDisposalAsync();
     }
 
     [RelayCommand]
-    private void NavigateToDashboard()
+    private async Task NavigateToDashboardAsync()
     {
         CurrentPageViewModel = _dashboardVm; ActivePage = "Dashboard";
+        await _dashboardVm.RefreshAsync();
     }
 
     [RelayCommand]
-    private void NavigateToSearch()
+    private async Task NavigateToSearchAsync()
     {
-        CurrentPageViewModel =  _searchVm; ActivePage =  "Search";
+        CurrentPageViewModel = _searchVm; ActivePage = "Search";
+        await _searchVm.RefreshAsync();
     }
 
     [RelayCommand]
-    private void NavigateToCirculation()
+    private async Task NavigateToCirculationAsync()
     {
-        CurrentPageViewModel =  _circulationVm; ActivePage =  "Circulation";
+        CurrentPageViewModel = _circulationVm; ActivePage = "Circulation";
+        await _circulationVm.RefreshAsync();
     }
 
     [RelayCommand]
-    private void NavigateToAddFile()
+    private async Task NavigateToAddFileAsync()
     {
         CurrentPageViewModel = _entryVm; ActivePage = "Entry";
+        await _entryVm.RefreshAsync();
     }
 
     [RelayCommand]
-    private void NavigateToReports()
+    private async Task NavigateToReportsAsync()
     {
-        CurrentPageViewModel = _reportsVm; ActivePage =  "Reports";
+        CurrentPageViewModel = _reportsVm; ActivePage = "Reports";
+        await _reportsVm.RefreshAsync();
     }
 
     [RelayCommand]
@@ -110,15 +115,17 @@ public partial class MainViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void NavigateToDisposal()
+    private async Task NavigateToDisposalAsync()
     {
-        CurrentPageViewModel = _disposalVm; ActivePage =  "Disposal";
+        CurrentPageViewModel = _disposalVm; ActivePage = "Disposal";
+        await _disposalVm.RefreshAsync();
     }
 
     [RelayCommand]
-    private void NavigateToDocuments()
+    private async Task NavigateToDocumentsAsync()
     {
         CurrentPageViewModel = _documentsSearchVm; ActivePage = "Documents";
+        await _documentsSearchVm.RefreshAsync();
     }
     
 
