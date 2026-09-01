@@ -126,39 +126,48 @@ public class CryptoService
         var dekBase64 = Decrypt(encryptedDek);
         var dek = Convert.FromBase64String(dekBase64);
 
-        var nonceSize = AesGcm.NonceByteSizes.MaxSize;
-        var tagSize = AesGcm.TagByteSizes.MaxSize;
+        int nonceSize = AesGcm.NonceByteSizes.MaxSize;
+        int tagSize = AesGcm.TagByteSizes.MaxSize;
 
-        var nonce = new byte[nonceSize];
-        var tag = new byte[tagSize];
-        var lengthBytes = new byte[4];
+        byte[] nonce = new byte[nonceSize];
+        byte[] tag = new byte[tagSize];
+        byte[] lengthBytes = new byte[4];
 
         using (var aesGcm = new AesGcm(dek, tagSize))
         {
             while (inputStream.Position < inputStream.Length)
             {
-                var readNonce = inputStream.Read(nonce, 0, nonceSize);
+                int readNonce = ReadExact(inputStream, nonce, nonceSize);
                 if (readNonce == 0) break;
+                
+                ReadExact(inputStream, tag, tagSize);
+                ReadExact(inputStream, lengthBytes, lengthBytes.Length);
 
-                inputStream.Read(tag, 0, tagSize);
-                inputStream.Read(lengthBytes, 0, lengthBytes.Length);
+                int cipherLength = BitConverter.ToInt32(lengthBytes, 0);
+                byte[] cipherText = new byte[cipherLength];
+                ReadExact(inputStream, cipherText, cipherLength);
 
-                var cipherLength = BitConverter.ToInt32(lengthBytes, 0);
-                var cipherText = new byte[cipherLength];
-
-                var totalRead = 0;
-                while (totalRead < cipherLength)
-                {
-                    var read = inputStream.Read(cipherText, totalRead, cipherLength - totalRead);
-                    if (read == 0) throw new EndOfStreamException("Corrupted file: Unexpected end of stream.");
-                    totalRead += read;
-                }
-
-                var plainText = new byte[cipherLength];
-
+                byte[] plainText = new byte[cipherLength];
                 aesGcm.Decrypt(nonce, cipherText, tag, plainText);
                 outputStream.Write(plainText, 0, plainText.Length);
+                
             }
         }
+    }
+    
+    private static int ReadExact(Stream stream, byte[] buffer, int count)
+    {
+        int totalRead = 0;
+        while (totalRead < count)
+        {
+            int read = stream.Read(buffer, totalRead, count - totalRead);
+            if (read == 0)
+            {
+                if (totalRead == 0) return 0; // clean EOF at chunk boundary
+                throw new EndOfStreamException("Corrupted file: Unexpected end of stream while reading chunk header.");
+            }
+            totalRead += read;
+        }
+        return totalRead;
     }
 }

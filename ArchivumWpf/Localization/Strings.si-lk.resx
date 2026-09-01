@@ -802,10 +802,10 @@
         <value>Excel ලෙස නිර්යාත කරන්න</value>
     </data>
     <data name="Main_BrandTitle" xml:space="preserve">
-        <value>ලේඛනාගාර</value>
+        <value>වැලිගෙපොල</value>
     </data>
     <data name="Main_WindowTitle" xml:space="preserve">
-        <value>වැ.ප්‍රා.ස. - ලේඛනාගාරය</value>
+        <value>WPS Archive</value>
     </data>
     <data name="Main_WelcomeUser" xml:space="preserve">
         <value>ආයුබෝවන්, පරිපාලක!</value>
@@ -817,10 +817,10 @@
         <value>සමාලෝචනය කරන්න</value>
     </data>
     <data name="Main_HeaderSubtitle" xml:space="preserve">
-        <value>ඒකාබද්ධ ලේඛනාගාර කළමනාකරණය</value>
+        <value>ලේඛනාගාර කළමණාකරණ පද්ධතිය</value>
     </data>
     <data name="Main_BrandSubtitle" xml:space="preserve">
-        <value>වාර්තා කළමණාකරණ පද්ධතිය</value>
+        <value>ප්‍රාදේශීය සභාව</value>
     </data>
     <data name="Main_NavSearch" xml:space="preserve">
         <value>සෙවුම්</value>
@@ -844,7 +844,7 @@
         <value>පාලක පුවරුව</value>
     </data>
     <data name="Main_HeaderTitle" xml:space="preserve">
-        <value>වැලිගෙපොල ප්‍රාදේශීය සභාව</value>
+        <value>WPS Archive</value>
     </data>
     <data name="Dis_InforLblSector" xml:space="preserve">
         <value>අංශය:</value>
@@ -976,5 +976,29 @@
     </data>
     <data name="Main_NavDocuments" xml:space="preserve">
         <value>ලිපි ගොනු</value>
+    </data>
+    <data name="Settings_LangRestartTitle" xml:space="preserve">
+        <value>නැවත ආරම්භ කිරීම අවශ්‍යයි</value>
+    </data>
+    <data name="Settings_LangRestartMsg" xml:space="preserve">
+        <value>ඔබගේ භාෂා තේරීම සුරැකිණි. යෙදුම නැවත ආරම්භ කළ පසු මෙම වෙනස්වීම ක්‍රියාත්මක වනු ඇත.</value>
+    </data>
+    <data name="Dis_ConfirmDisposalTitle" xml:space="preserve">
+        <value>අපහරණය කිරීම තහවුරු කරන්න</value>
+    </data>
+    <data name="Dis_ConfirmDisposalMsg" xml:space="preserve">
+        <value>'{0}' ලිපිගොනුව ස්ථිරවම අපහරණය කිරීමට අවශ්‍ය බව ඔබට විශ්වාසද? 
+
+මෙමඟින් එය ගබඩාවෙන් ඉවත් කරනු ඇත.</value>
+    </data>
+    <data name="Dis_PermanentLockTitle" xml:space="preserve">
+        <value>අනතුරු ඇඟවීමයි: ස්ථිරවම අගුලු දැමේ</value>
+    </data>
+    <data name="Dis_PermanentLockMsg" xml:space="preserve">
+        <value>අවවාදයි: ස්ථිර අගුලු දැමීමක්
+
+මෙම ගොනුව ඉවත් කළ පසු ස්ථිරවම අගුලු වැටේ. ඔබට එය සංස්කරණය කිරීමට, වෙනත් අයට නිකුත් කිරීමට හෝ මෙම ක්‍රියාව අවලංගු කිරීමට නොහැකි වනු ඇත.
+
+ඔබට ඉදිරියට යාමට අවශ්‍යද?</value>
     </data>
 </root>

@@ -855,13 +855,13 @@
         <value>Export Excel</value>
     </data>
     <data name="Main_WindowTitle" xml:space="preserve">
-        <value>W.P.S. - Archive</value>
+        <value>WPS-Archive</value>
     </data>
     <data name="Main_BrandTitle" xml:space="preserve">
-        <value>Archive</value>
+        <value>Weligepola</value>
     </data>
     <data name="Main_BrandSubtitle" xml:space="preserve">
-        <value>Records Management System</value>
+        <value>Divisional Council</value>
     </data>
     <data name="Main_NavDashboard" xml:space="preserve">
         <value>DASHBOARD</value>
@@ -885,10 +885,10 @@
         <value>SETTINGS</value>
     </data>
     <data name="Main_HeaderTitle" xml:space="preserve">
-        <value>WELIGEPOLA DIVISIONAL COUNCIL</value>
+        <value>WPS Archive</value>
     </data>
     <data name="Main_HeaderSubtitle" xml:space="preserve">
-        <value>CONSOLIDATED ARCHIVE MANAGEMENT</value>
+        <value>Record Room Management System</value>
     </data>
     <data name="Main_WelcomeUser" xml:space="preserve">
         <value>Welcome, Admin!</value>
@@ -1035,5 +1035,31 @@
         <value>Are you sure you want to permanently remove file '{0}'?
 
 This deletes the encrypted file from the vault. This action cannot be undone.</value>
+    </data>
+    <data name="Settings_LangRestartTitle" xml:space="preserve">
+        <value>Restart Required</value>
+    </data>
+    <data name="Settings_LangRestartMsg" xml:space="preserve">
+        <value>Your language preference has been saved. The change will take effect after you restart the application.</value>
+    </data>
+    <data name="Dis_ConfirmDisposalTitle" xml:space="preserve">
+        <value>Confirm Disposal</value>
+    </data>
+    <data name="Dis_ConfirmDisposalMsg" xml:space="preserve">
+        <value>Are you sure you want to permanently dispose of File '{0}'?
+
+This will remove it from th vault.</value>
+    </data>
+    <data name="Dis_PermanentLockTitle" xml:space="preserve">
+        <value>PERMANENT LOCK WARNING</value>
+    </data>
+    <data name="Dis_PermanentLockMsg" xml:space="preserve">
+        <value>CRITICAL WARNING:
+
+Disposing this file will permanently lock it. You will no longer be able to edit its contents, issue it to borrowers, or undo this action.
+
+Do you want to proceed? 
+
+</value>
     </data>
 </root>

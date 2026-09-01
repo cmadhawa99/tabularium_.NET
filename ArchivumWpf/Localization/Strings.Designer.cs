@@ -762,6 +762,26 @@ namespace ArchivumWpf.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to permanently dispose of File &apos;{0}&apos;?
+        ///
+        ///This will remove it from th vault..
+        /// </summary>
+        public static string Dis_ConfirmDisposalMsg {
+            get {
+                return ResourceManager.GetString("Dis_ConfirmDisposalMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm Disposal.
+        /// </summary>
+        public static string Dis_ConfirmDisposalTitle {
+            get {
+                return ResourceManager.GetString("Dis_ConfirmDisposalTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to DOSSIER INTELLIGENCE.
         /// </summary>
         public static string Dis_InfoDossierIntel {
@@ -920,6 +940,30 @@ namespace ArchivumWpf.Localization {
         public static string Dis_PermanentDesc {
             get {
                 return ResourceManager.GetString("Dis_PermanentDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CRITICAL WARNING:
+        ///
+        ///Disposing this file will permanently lock it. You will no longer be able to edit its contents, issue it to borrowers, or undo this action.
+        ///
+        ///Do you want to proceed? 
+        ///
+        ///.
+        /// </summary>
+        public static string Dis_PermanentLockMsg {
+            get {
+                return ResourceManager.GetString("Dis_PermanentLockMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PERMANENT LOCK WARNING.
+        /// </summary>
+        public static string Dis_PermanentLockTitle {
+            get {
+                return ResourceManager.GetString("Dis_PermanentLockTitle", resourceCulture);
             }
         }
         
@@ -1484,7 +1528,7 @@ namespace ArchivumWpf.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Records Management System.
+        ///   Looks up a localized string similar to Divisional Council.
         /// </summary>
         public static string Main_BrandSubtitle {
             get {
@@ -1493,7 +1537,7 @@ namespace ArchivumWpf.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Archive.
+        ///   Looks up a localized string similar to Weligepola.
         /// </summary>
         public static string Main_BrandTitle {
             get {
@@ -1520,7 +1564,7 @@ namespace ArchivumWpf.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CONSOLIDATED ARCHIVE MANAGEMENT.
+        ///   Looks up a localized string similar to Record Room Management System.
         /// </summary>
         public static string Main_HeaderSubtitle {
             get {
@@ -1529,7 +1573,7 @@ namespace ArchivumWpf.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to WELIGEPOLA DIVISIONAL COUNCIL.
+        ///   Looks up a localized string similar to WPS Archive.
         /// </summary>
         public static string Main_HeaderTitle {
             get {
@@ -1628,7 +1672,7 @@ namespace ArchivumWpf.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to W.P.S. - Archive.
+        ///   Looks up a localized string similar to WPS-Archive.
         /// </summary>
         public static string Main_WindowTitle {
             get {
@@ -2920,6 +2964,24 @@ namespace ArchivumWpf.Localization {
         public static string Settings_HexHint {
             get {
                 return ResourceManager.GetString("Settings_HexHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your language preference has been saved. The change will take effect after you restart the application..
+        /// </summary>
+        public static string Settings_LangRestartMsg {
+            get {
+                return ResourceManager.GetString("Settings_LangRestartMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Restart Required.
+        /// </summary>
+        public static string Settings_LangRestartTitle {
+            get {
+                return ResourceManager.GetString("Settings_LangRestartTitle", resourceCulture);
             }
         }
         

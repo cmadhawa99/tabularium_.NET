@@ -12,7 +12,7 @@
         <PackageReference Include="Bogus" Version="35.6.4"/>
         <PackageReference Include="ClosedXML" Version="0.105.0"/>
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0"/>
-        <PackageReference Include="FontAwesome.WPF" Version="4.7.0.9"/>
+        <PackageReference Include="FontAwesome.WPF" Version="4.7.0.9" />
         <PackageReference Include="MaterialDesignThemes" Version="5.3.0"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.4"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.4">

@@ -10,6 +10,7 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Win32;
 using Npgsql;
+using Strings = ArchivumWpf.Localization.Strings;
 
 namespace ArchivumWpf.ViewModels;
 
@@ -200,8 +201,9 @@ public partial class SettingsViewModel : ObservableObject
 
         if (languageChanged)
             MessageBox.Show(
-                "Your language preference has been saved. The change will take effect after you restart the application.",
-                "Restart Required", MessageBoxButton.OK, MessageBoxImage.Information);
+                Strings.Settings_LangRestartMsg,
+                Strings.Settings_LangRestartTitle,
+                MessageBoxButton.OK, MessageBoxImage.Information);
     }
 
     [RelayCommand]

@@ -12,11 +12,11 @@ public class EntryHistoryRecord
 
     public int FileSerialNumber { get; set; }
 
-    public string RrNumber { get; set; }
+    public required string RrNumber { get; set; }
     public string? SubjectNumber { get; set; }
-    public string FileName { get; set; }
-    public string Sector { get; set; }
-    public string Status { get; set; }
+    public string? FileName { get; set; }
+    public string? Sector { get; set; }
+    public string? Status { get; set; }
 
     public string? FileType { get; set; }
     public DateTime? StartDate { get; set; }
@@ -28,4 +28,5 @@ public class EntryHistoryRecord
 
     public string ActionType { get; set; }
     public DateTime Timestamp { get; set; } = DateTime.Now;
+    
 }

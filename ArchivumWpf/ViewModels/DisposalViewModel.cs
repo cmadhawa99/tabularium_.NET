@@ -5,6 +5,7 @@ using ArchivumWpf.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using Strings = ArchivumWpf.Localization.Strings;
 
 namespace ArchivumWpf.ViewModels;
 
@@ -264,16 +265,16 @@ public partial class DisposalViewModel : ObservableObject
         }
 
         var firstWarning = MessageBox.Show(
-            $"Are you sure you want to permanently dispose of File '{PendingDisposalRrNumber}'?\n\nThis will remove it from the active vault.",
-            "Confirm Disposal",
+            string.Format(Strings.Dis_ConfirmDisposalMsg, PendingDisposalRrNumber),
+            Strings.Dis_ConfirmDisposalTitle,
             MessageBoxButton.YesNo,
             MessageBoxImage.Warning);
 
         if (firstWarning != MessageBoxResult.Yes) return;
 
         var secondWarning = MessageBox.Show(
-            "CRITICAL WARNING:\n\nDisposing this file will permanently lock it. You will no longer be able to edit its contents, issue it to borrowers, or undo this action.\n\nDo you want to proceed?",
-            "PERMANENT LOCK WARNING",
+            Strings.Dis_PermanentLockMsg,
+            Strings.Dis_PermanentLockTitle,
             MessageBoxButton.YesNo,
             MessageBoxImage.Error);
 
