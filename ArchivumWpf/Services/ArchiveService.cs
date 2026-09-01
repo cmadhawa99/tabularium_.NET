@@ -37,10 +37,10 @@ public interface IArchiveService
 
     Task<(bool Success, string Message)> BackupDatabaseAsync(string backupPath);
 
-    Task<FileRecord> GetFileByRrNumberAsync(string rrNumber);
+    Task<FileRecord?> GetFileByRrNumberAsync(string rrNumber);
     Task<(bool Success, string Message)> UpdateFileAsync(FileRecord updatedFile);
     Task<List<EntryHistoryRecord>> GetEntryHistoryAsync();
-    Task<EntryHistoryRecord> GetPreviousHistoryRecordAsync(int fileSerialNumber, DateTime currentTimestamp);
+    Task<EntryHistoryRecord?> GetPreviousHistoryRecordAsync(int fileSerialNumber, DateTime currentTimestamp);
 
     Task<(bool Success, string Message)> UpdateDisposalQueueAsync(string rrNumber, DateTime? toBeRemovedDate);
     Task<(bool Success, string Message)> DisposeFileAsync(string rrNumber, string reason, string authorizedBy);
@@ -371,7 +371,7 @@ public class ArchiveService : IArchiveService
         }
     }
 
-    public async Task<FileRecord> GetFileByRrNumberAsync(string rrNumber)
+    public async Task<FileRecord?> GetFileByRrNumberAsync(string rrNumber)
     {
         using var context = await _contextFactory.CreateDbContextAsync();
 
@@ -444,7 +444,7 @@ public class ArchiveService : IArchiveService
             .ToListAsync();
     }
 
-    public async Task<EntryHistoryRecord> GetPreviousHistoryRecordAsync(int fileSerialNumber, DateTime currentTimestamp)
+    public async Task<EntryHistoryRecord?> GetPreviousHistoryRecordAsync(int fileSerialNumber, DateTime currentTimestamp)
     {
         using var context = await _contextFactory.CreateDbContextAsync();
 

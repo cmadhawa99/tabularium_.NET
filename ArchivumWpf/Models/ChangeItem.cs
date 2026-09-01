@@ -2,7 +2,7 @@
 
 public class ChangeItem
 {
-    public string FieldName { get; set; }
-    public string OldValue { get; set; }
-    public string NewValue { get; set; }
+    public string FieldName { get; set; } = string.Empty;
+    public string OldValue { get; set; } = string.Empty;
+    public string NewValue { get; set; } = string.Empty;
 }

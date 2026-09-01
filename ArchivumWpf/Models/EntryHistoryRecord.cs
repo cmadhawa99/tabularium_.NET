@@ -12,11 +12,11 @@ public class EntryHistoryRecord
 
     public int FileSerialNumber { get; set; }
 
-    public required string RrNumber { get; set; }
+    public required string RrNumber { get; set; } = string.Empty;
     public string? SubjectNumber { get; set; }
-    public string? FileName { get; set; }
-    public string? Sector { get; set; }
-    public string? Status { get; set; }
+    public string? FileName { get; set; } = string.Empty;
+    public string? Sector { get; set; } = string.Empty;
+    public string? Status { get; set; } = string.Empty;
 
     public string? FileType { get; set; }
     public DateTime? StartDate { get; set; }
@@ -26,7 +26,7 @@ public class EntryHistoryRecord
     public string? DeckNumber { get; set; }
     public string? FileNumber { get; set; }
 
-    public string ActionType { get; set; }
+    public string ActionType { get; set; } = string.Empty;
     public DateTime Timestamp { get; set; } = DateTime.Now;
     
 }

@@ -18,30 +18,30 @@ public partial class EntryViewModel : ObservableObject
     [ObservableProperty] private DateTime? _addEndDate;
     [ObservableProperty] private string _addFileName = string.Empty;
     [ObservableProperty] private string _addFileNumber = string.Empty;
-    [ObservableProperty] private string _addFileType = string.Empty;
+    [ObservableProperty] private string? _addFileType;
 
     //Add entry properties
     [ObservableProperty] private string _addRrNumber = string.Empty;
     [ObservableProperty] private string _addSector = string.Empty;
     [ObservableProperty] private string _addShelfNumber = string.Empty;
     [ObservableProperty] private DateTime? _addStartDate;
-    [ObservableProperty] private string _addSubjectNumber = string.Empty;
+    [ObservableProperty] private string? _addSubjectNumber;
     [ObservableProperty] private string _addTotalPages = string.Empty; // Using string for UI input, parse to int later
 
-    private FileRecord _currentEditingFile;
+    private FileRecord? _currentEditingFile;
     [ObservableProperty] private string _dialogTitle = string.Empty;
     [ObservableProperty] private string _editDeckNumber = string.Empty;
     [ObservableProperty] private DateTime? _editEndDate;
     [ObservableProperty] private string _editFileName = string.Empty;
     [ObservableProperty] private string _editFileNumber = string.Empty;
-    [ObservableProperty] private string _editFileType = string.Empty;
+    [ObservableProperty] private string? _editFileType;
 
     [ObservableProperty] private string _editRrNumber = string.Empty;
 
     [ObservableProperty] private string _editSector = string.Empty;
     [ObservableProperty] private string _editShelfNumber = string.Empty;
     [ObservableProperty] private DateTime? _editStartDate;
-    [ObservableProperty] private string _editSubjectNumber = string.Empty;
+    [ObservableProperty] private string? _editSubjectNumber;
     [ObservableProperty] private string _editTotalPages = string.Empty;
     [ObservableProperty] private int _historyCurrentPage = 1;
 
@@ -57,7 +57,7 @@ public partial class EntryViewModel : ObservableObject
 
     //Edit entry properties
     [ObservableProperty] private string _searchRrNumber = string.Empty;
-    [ObservableProperty] private EntryHistoryRecord _selectedHistoryRecord;
+    [ObservableProperty] private EntryHistoryRecord? _selectedHistoryRecord;
     [ObservableProperty] private string _statusColor = "White";
 
     [ObservableProperty] private string _statusMessage = string.Empty;

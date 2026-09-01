@@ -54,10 +54,10 @@ public partial class SetupViewModel : ObservableObject
 
         var builder = new NpgsqlConnectionStringBuilder
         {
-            Host = _dbHost,
-            Database = _dbName,
-            Username = _dbUser,
-            Password = _dbPassword,
+            Host = DbHost,
+            Database = DbName,
+            Username = DbUser,
+            Password = DbPassword,
             Timeout = 5
         };
 

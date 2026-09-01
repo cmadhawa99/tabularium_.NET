@@ -37,6 +37,10 @@ public class AppDbContext : DbContext
             v => cryptoService.Encrypt(v),
             v => cryptoService.Decrypt(v)
         );
+        
+        var nullableStringEncryptionConverter = new ValueConverter<string?, string?>(
+            v => v == null ? null : cryptoService.Encrypt(v),
+            v => v == null ? null : cryptoService.Decrypt(v));
 
 
         modelBuilder.Entity<User>()
@@ -58,15 +62,15 @@ public class AppDbContext : DbContext
 
         modelBuilder.Entity<FileRecord>()
             .Property(f => f.SubjectNumber)
-            .HasConversion(stringEncryptionConverter);
+            .HasConversion(nullableStringEncryptionConverter);
 
         modelBuilder.Entity<FileRecord>()
             .Property(f => f.FileType)
-            .HasConversion(stringEncryptionConverter);
+            .HasConversion(nullableStringEncryptionConverter);
 
         modelBuilder.Entity<FileRecord>()
             .Property(f => f.FileNumber)
-            .HasConversion(stringEncryptionConverter);
+            .HasConversion(nullableStringEncryptionConverter);
 
 
         //Borrow
@@ -105,7 +109,7 @@ public class AppDbContext : DbContext
 
         modelBuilder.Entity<EntryHistoryRecord>()
             .Property(e => e.SubjectNumber)
-            .HasConversion(stringEncryptionConverter);
+            .HasConversion(nullableStringEncryptionConverter);
 
         modelBuilder.Entity<EntryHistoryRecord>()
             .Property(e => e.FileName)
@@ -113,11 +117,11 @@ public class AppDbContext : DbContext
 
         modelBuilder.Entity<EntryHistoryRecord>()
             .Property(e => e.FileType)
-            .HasConversion(stringEncryptionConverter);
+            .HasConversion(nullableStringEncryptionConverter);
 
         modelBuilder.Entity<EntryHistoryRecord>()
             .Property(e => e.FileNumber)
-            .HasConversion(stringEncryptionConverter);
+            .HasConversion(nullableStringEncryptionConverter);
 
 
         modelBuilder.Entity<Folder>()

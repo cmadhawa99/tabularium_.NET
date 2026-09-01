@@ -12,9 +12,9 @@ public class DisposedRecord
 
     [Column("file_serial_number")] public int FIleSerialNumber { get; set; }
 
-    [Column("reason_for_disposal")] public string Reason { get; set; }
+    [Column("reason_for_disposal")] public string Reason { get; set; } = string.Empty;
 
-    [Column("authorized_by")] public string AuthorizedBy { get; set; }
+    [Column("authorized_by")] public string AuthorizedBy { get; set; } = string.Empty;
 
     [Column("to_be_removed_date", TypeName = "date")]
     public DateTime? ToBeRemovedDate { get; set; }
@@ -22,5 +22,5 @@ public class DisposedRecord
     [Column("removed_date", TypeName = "date")]
     public DateTime? RemovedDate { get; set; } = DateTime.Now;
 
-    [ForeignKey(nameof(FIleSerialNumber))] public virtual FileRecord File { get; set; }
+    [ForeignKey(nameof(FIleSerialNumber))] public virtual FileRecord File { get; set; } = null!;
 }

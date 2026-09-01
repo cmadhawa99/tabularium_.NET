@@ -33,7 +33,7 @@ public partial class DisposalViewModel : ObservableObject
     [ObservableProperty] private bool _isFileLoaded;
     [ObservableProperty] private bool _isPendingPopup;
 
-    [ObservableProperty] private FileRecord _loadedFile;
+    [ObservableProperty] private FileRecord? _loadedFile;
     [ObservableProperty] private string _loadedFileColor = "#8f9bb3";
     [ObservableProperty] private string _loadedFileName = string.Empty;
     [ObservableProperty] private string _loadedRrNumber = string.Empty;
@@ -43,8 +43,8 @@ public partial class DisposalViewModel : ObservableObject
     [ObservableProperty] private int _pageSize;
     [ObservableProperty] private string _pendingDisposalRrNumber = string.Empty;
     [ObservableProperty] private string _popupBorderColor = "#333333";
-    [ObservableProperty] private DisposedRecord _popupDisposalData;
-    [ObservableProperty] private FileRecord _popupFileData;
+    [ObservableProperty] private DisposedRecord? _popupDisposalData;
+    [ObservableProperty] private FileRecord? _popupFileData;
     [ObservableProperty] private int _queueCurrentPage = 1;
 
     [ObservableProperty] private string _queueSearchQuery = string.Empty;

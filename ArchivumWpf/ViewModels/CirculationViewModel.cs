@@ -31,12 +31,12 @@ public partial class CirculationViewModel : ObservableObject
 
     [ObservableProperty] private bool _isHistoryActiveOnly;
     [ObservableProperty] private bool _isHistoryReturnedOnly;
-    [ObservableProperty] private FileRecord _loadedFile;
+    [ObservableProperty] private FileRecord? _loadedFile;
     [ObservableProperty] private string _loadedFileColor = "#f2ca50";
     [ObservableProperty] private int _pageSize;
     [ObservableProperty] private string _popupBorderColor = "#f2ca50";
 
-    [ObservableProperty] private BorrowRecord _selectedHistoryRecord;
+    [ObservableProperty] private BorrowRecord? _selectedHistoryRecord;
     [ObservableProperty] private string _statusColor = "White";
 
     [ObservableProperty] private string _statusMessage = string.Empty;
