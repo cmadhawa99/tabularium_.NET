@@ -1,13 +1,6 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using Microsoft.EntityFrameworkCore;
+﻿using System.Diagnostics;
 using ArchivumWpf.Models;
-using ArchivumWpf.Services;
-using Bogus.DataSets;
+using Microsoft.EntityFrameworkCore;
 
 namespace ArchivumWpf.Services;
 
@@ -17,10 +10,11 @@ public interface IArchiveService
 
     Task<(List<FileRecord> Items, int TotalCount)> SearchFilesPaginatedAsync(string searchTerm, string sectorFilter,
         int? yearFilter,
-        int? monthFilter, bool isRecentOnly, bool isAvailableOnly, bool isBorrowedOnly, bool isRemovedOnly, int pageNumber, int pageSize);
-   
+        int? monthFilter, bool isRecentOnly, bool isAvailableOnly, bool isBorrowedOnly, bool isRemovedOnly,
+        int pageNumber, int pageSize);
+
     Task<List<string>> GetExistingSectorsAsync();
-    
+
     Task<List<BorrowRecord>> GetActiveLoansAsync();
     Task<(bool Success, string Message)> IssueFileAsync(string rrNumber, string borrowerName, string sectorColorHex);
     Task<(bool Success, string Message)> ReturnFileASync(string rrNumber);
@@ -42,29 +36,37 @@ public interface IArchiveService
         DateTime? addedDateFrom, DateTime? addedDateTo);
 
     Task<(bool Success, string Message)> BackupDatabaseAsync(string backupPath);
-    
+
     Task<FileRecord> GetFileByRrNumberAsync(string rrNumber);
     Task<(bool Success, string Message)> UpdateFileAsync(FileRecord updatedFile);
     Task<List<EntryHistoryRecord>> GetEntryHistoryAsync();
     Task<EntryHistoryRecord> GetPreviousHistoryRecordAsync(int fileSerialNumber, DateTime currentTimestamp);
-    
+
     Task<(bool Success, string Message)> UpdateDisposalQueueAsync(string rrNumber, DateTime? toBeRemovedDate);
     Task<(bool Success, string Message)> DisposeFileAsync(string rrNumber, string reason, string authorizedBy);
     Task<(bool Success, string Message)> RecoverFileAsync(string rrNumber);
     Task<List<FileRecord>> GetPendingDisposalsAsync();
     Task<List<DisposedRecord>> GetDisposedHistoryAsync();
     Task<int> GetTodayDisposalCountAsync();
-    Task<(List<BorrowRecord> Items, int TotalCount)> GetBorrowHistoryPaginatedAsync (string searchTerm, bool isActiveOnly, bool isReturnedOnly, int pageNumber, int pageSize);
-    Task<(List<EntryHistoryRecord> Items, int TotalCount)> GetEntryHistoryPaginatedAsync (string searchTerm, int pageNumber, int pageSize);
-    Task<(List<FileRecord> Items, int TotalCount)> GetPendingDisposalsPaginatedAsync(string searchTerm, int pageNumber, int pageSize);
-    Task<(List<DisposedRecord> Items, int TotalCount)> GetDisposedHistoryPaginatedAsync(string searchTerm, int pageNumber, int pageSize);
+
+    Task<(List<BorrowRecord> Items, int TotalCount)> GetBorrowHistoryPaginatedAsync(string searchTerm,
+        bool isActiveOnly, bool isReturnedOnly, int pageNumber, int pageSize);
+
+    Task<(List<EntryHistoryRecord> Items, int TotalCount)> GetEntryHistoryPaginatedAsync(string searchTerm,
+        int pageNumber, int pageSize);
+
+    Task<(List<FileRecord> Items, int TotalCount)> GetPendingDisposalsPaginatedAsync(string searchTerm, int pageNumber,
+        int pageSize);
+
+    Task<(List<DisposedRecord> Items, int TotalCount)> GetDisposedHistoryPaginatedAsync(string searchTerm,
+        int pageNumber, int pageSize);
 
     Task<IEnumerable<ActivityLog>> GetRecentActivitiesAsync(int limit = 15);
-    
-    Task<(List<ActivityLog> Items, int TotalCount)> GetActivityLogsPaginatedAsync (string searchTerm, int pageNumber, int pageSize);
-    
+
+    Task<(List<ActivityLog> Items, int TotalCount)> GetActivityLogsPaginatedAsync(string searchTerm, int pageNumber,
+        int pageSize);
+
     Task LogActivityAsync(string serialNumber, string rrNumber, string actionType);
-    
 }
 
 public class ArchiveService : IArchiveService
@@ -72,7 +74,7 @@ public class ArchiveService : IArchiveService
     // CHANGED to the Factory to prevent memory leaks and tracking collisions
     private readonly IDbContextFactory<AppDbContext> _contextFactory;
 
-    private readonly CryptoService _cryptoService = new CryptoService(KeyVaultService.GetMasterKey());
+    private readonly CryptoService _cryptoService = new(KeyVaultService.GetMasterKey());
 
     public ArchiveService(IDbContextFactory<AppDbContext> contextFactory)
     {
@@ -82,27 +84,26 @@ public class ArchiveService : IArchiveService
     public async Task<DashboardStats> GetDashboardStatsAsync()
     {
         using var context = await _contextFactory.CreateDbContextAsync();
-        
-        int total = await context.FileRecords.CountAsync();
-        int borrowed = await context.FileRecords.CountAsync(f => f.CurrentStatus == "Borrowed");
-        int removed = await context.FileRecords.CountAsync(f => f.CurrentStatus == "Removed" || f.IsRemoved == true);
+
+        var total = await context.FileRecords.CountAsync();
+        var borrowed = await context.FileRecords.CountAsync(f => f.CurrentStatus == "Borrowed");
+        var removed = await context.FileRecords.CountAsync(f => f.CurrentStatus == "Removed" || f.IsRemoved == true);
 
         return new DashboardStats
         {
             TotalHoldings = total,
             ActiveLoans = borrowed,
-            ArchivedPurged = removed,
+            ArchivedPurged = removed
         };
     }
-    
-    
+
+
     //Dashboard
 
     public async Task<IEnumerable<ActivityLog>> GetRecentActivitiesAsync(int limit = 15)
     {
-        
         using var context = await _contextFactory.CreateDbContextAsync();
-        
+
         return await context.ActivityLogs
             .OrderByDescending(a => a.Timestamp)
             .Take(limit)
@@ -112,22 +113,22 @@ public class ArchiveService : IArchiveService
     public async Task<(List<ActivityLog> Items, int TotalCount)> GetActivityLogsPaginatedAsync(string searchTerm,
         int pageNumber, int pageSize)
     {
-        using var context =  await _contextFactory.CreateDbContextAsync();
+        using var context = await _contextFactory.CreateDbContextAsync();
         var query = context.ActivityLogs.AsQueryable();
 
         if (!string.IsNullOrWhiteSpace(searchTerm))
         {
             searchTerm = searchTerm.ToLower().Trim();
-            query = query.Where (a =>
-                (a.RrNumber != null && a.RrNumber.ToLower().Contains(searchTerm)) || 
+            query = query.Where(a =>
+                (a.RrNumber != null && a.RrNumber.ToLower().Contains(searchTerm)) ||
                 (a.ActionType != null && a.ActionType.ToLower().Contains(searchTerm)));
         }
-        
+
         query = query.OrderByDescending(a => a.Timestamp);
-        
-        int totalCount = await query.CountAsync();
+
+        var totalCount = await query.CountAsync();
         var items = await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
-        
+
         return (items, totalCount);
     }
 
@@ -142,45 +143,35 @@ public class ArchiveService : IArchiveService
             ActionType = actionType,
             Timestamp = DateTime.Now
         };
-        
+
         context.ActivityLogs.Add(log);
         await context.SaveChangesAsync();
-
     }
 
 
     //Search
 
-    public async Task<(List<FileRecord> Items, int TotalCount)> SearchFilesPaginatedAsync(string searchTerm, string sectorFilter, int? yearFilter,
-    int? monthFilter, bool isRecentOnly, bool isAvailableOnly, bool isBorrowedOnly, bool isRemovedOnly, int pageNumber, int pageSize)
+    public async Task<(List<FileRecord> Items, int TotalCount)> SearchFilesPaginatedAsync(string searchTerm,
+        string sectorFilter, int? yearFilter,
+        int? monthFilter, bool isRecentOnly, bool isAvailableOnly, bool isBorrowedOnly, bool isRemovedOnly,
+        int pageNumber, int pageSize)
     {
         using var context = await _contextFactory.CreateDbContextAsync();
         var query = context.FileRecords.AsQueryable();
 
         if (!string.IsNullOrWhiteSpace(searchTerm))
         {
-
-            {
-                //string searchHash = _cryptoService.GetBlindIndex(searchTerm);
-                searchTerm = searchTerm.ToLower().Trim();
-                query = query.Where(f => f.RrNumber.ToLower().Contains(searchTerm));
-            }
+            //string searchHash = _cryptoService.GetBlindIndex(searchTerm);
+            searchTerm = searchTerm.ToLower().Trim();
+            query = query.Where(f => f.RrNumber.ToLower().Contains(searchTerm));
         }
 
         if (!string.IsNullOrEmpty(sectorFilter) && sectorFilter != "All Sectors")
-        {
             query = query.Where(f => f.Sector == sectorFilter);
-        }
 
-        if (yearFilter.HasValue)
-        {
-            query = query.Where(f => f.AddedDateTime.Year == yearFilter.Value);
-        }
+        if (yearFilter.HasValue) query = query.Where(f => f.AddedDateTime.Year == yearFilter.Value);
 
-        if (monthFilter.HasValue)
-        {
-            query = query.Where(f => f.AddedDateTime.Month == monthFilter.Value);
-        }
+        if (monthFilter.HasValue) query = query.Where(f => f.AddedDateTime.Month == monthFilter.Value);
 
         if (isRecentOnly)
         {
@@ -188,31 +179,22 @@ public class ArchiveService : IArchiveService
             query = query.Where(f => f.AddedDateTime >= yesterday);
         }
 
-        if (isAvailableOnly)
-        {
-            query = query.Where(f => f.CurrentStatus == "Available" && !f.IsRemoved);
-        }
+        if (isAvailableOnly) query = query.Where(f => f.CurrentStatus == "Available" && !f.IsRemoved);
 
-        if (isBorrowedOnly)
-        {
-            query = query.Where(f => f.CurrentStatus == "Borrowed" && !f.IsRemoved);
-        }
+        if (isBorrowedOnly) query = query.Where(f => f.CurrentStatus == "Borrowed" && !f.IsRemoved);
 
-        if (isRemovedOnly)
-        {
-            query = query.Where(f => f.IsRemoved);
-        }
-        
+        if (isRemovedOnly) query = query.Where(f => f.IsRemoved);
+
 
         query = query.OrderByDescending(f => f.SerialNumber);
 
-        int totalCount = await query.CountAsync();
+        var totalCount = await query.CountAsync();
 
         var items = await query
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
-        
+
         return (items, totalCount);
     }
 
@@ -226,8 +208,8 @@ public class ArchiveService : IArchiveService
             .OrderBy(s => s)
             .ToListAsync();
     }
-    
-    
+
+
     // Circulation
     public async Task<List<BorrowRecord>> GetActiveLoansAsync()
     {
@@ -239,7 +221,8 @@ public class ArchiveService : IArchiveService
             .ToListAsync();
     }
 
-    public async Task<(bool Success, string Message)> IssueFileAsync(string rrNumber, string borrowerName, string sectorColorHex)
+    public async Task<(bool Success, string Message)> IssueFileAsync(string rrNumber, string borrowerName,
+        string sectorColorHex)
     {
         using var context = await _contextFactory.CreateDbContextAsync();
         var file = await context.FileRecords.FirstOrDefaultAsync(f => f.RrNumber == rrNumber);
@@ -256,18 +239,18 @@ public class ArchiveService : IArchiveService
             BorrowerName = borrowerName,
             BorrowedDate = DateTime.Now.Date,
             IsReturned = false,
-            
-            SnapshotRrNumber =  file.RrNumber,
+
+            SnapshotRrNumber = file.RrNumber,
             SnapshotFileName = file.FileName,
             SnapshotSector = file.Sector,
             SnapshotSectorColor = sectorColorHex,
-            SnapshotSubjectNumber =  file.SubjectNumber,
-            SnapshotFileType =  file.FileType,
-            SnapshotStartDate =  file.StartDate,
-            SnapshotEndDate =  file.EndDate,
-            SnapshotTotalPages =   file.TotalPages,
-            SnapshotShelfNumber =   file.ShelfNumber,
-            SnapshotDeckNumber =   file.DeckNumber,
+            SnapshotSubjectNumber = file.SubjectNumber,
+            SnapshotFileType = file.FileType,
+            SnapshotStartDate = file.StartDate,
+            SnapshotEndDate = file.EndDate,
+            SnapshotTotalPages = file.TotalPages,
+            SnapshotShelfNumber = file.ShelfNumber,
+            SnapshotDeckNumber = file.DeckNumber,
             SnapshotFileNumber = file.FileNumber
         };
 
@@ -302,58 +285,47 @@ public class ArchiveService : IArchiveService
 
         return (true, $"Success: File {rrNumber} has been returned to the vault.");
     }
-    
+
 
     public async Task<(List<BorrowRecord> Items, int TotalCount)> GetBorrowHistoryPaginatedAsync(string searchTerm,
         bool isActiveOnly, bool isReturnedOnly, int pageNumber, int pageSize)
     {
         using var context = await _contextFactory.CreateDbContextAsync();
-        
+
         var query = context.BorrowRecords.Include(b => b.File).AsQueryable();
-        
+
         if (!string.IsNullOrWhiteSpace(searchTerm))
         {
             searchTerm = searchTerm.ToLower();
-            query = query.Where(b=> b.SnapshotRrNumber.ToLower().Contains(searchTerm));
+            query = query.Where(b => b.SnapshotRrNumber.ToLower().Contains(searchTerm));
         }
 
-        if (isActiveOnly)
-        {
-            query = query.Where(b => b.IsReturned == true);
-        }
+        if (isActiveOnly) query = query.Where(b => b.IsReturned == true);
 
-        if (isReturnedOnly)
-        {
-            query = query.Where(b => b.IsReturned == false);
-        }
-        
+        if (isReturnedOnly) query = query.Where(b => b.IsReturned == false);
+
         query = query.OrderByDescending(b => b.Id);
-        
-        int totalCount = await query.CountAsync();
+
+        var totalCount = await query.CountAsync();
         var items = await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
-        
+
         return (items, totalCount);
     }
-    
+
     // Entry
     public async Task<(bool Success, string Message)> AddNewFileAsync(FileRecord newFile)
     {
         try
         {
             using var context = await _contextFactory.CreateDbContextAsync();
-            
-            bool exists = await context.FileRecords.AnyAsync(f => f.RrNumber == newFile.RrNumber);
-            if (exists)
-            {
-                return (false, $"Error: A file with RR Number '{newFile.RrNumber}' already exists.");
-            }
 
-            int maxSerial = 0;
+            var exists = await context.FileRecords.AnyAsync(f => f.RrNumber == newFile.RrNumber);
+            if (exists) return (false, $"Error: A file with RR Number '{newFile.RrNumber}' already exists.");
+
+            var maxSerial = 0;
             if (await context.FileRecords.AnyAsync())
-            {
                 maxSerial = await context.FileRecords.MaxAsync(f => f.SerialNumber);
-            }
-            
+
             newFile.SerialNumber = maxSerial + 1;
             newFile.CurrentStatus = "Available";
             newFile.IsRemoved = false;
@@ -369,41 +341,40 @@ public class ArchiveService : IArchiveService
                 FileName = newFile.FileName,
                 Sector = newFile.Sector,
                 Status = newFile.CurrentStatus,
-                
+
                 FileType = newFile.FileType,
                 StartDate = newFile.StartDate,
                 EndDate = newFile.EndDate,
-                TotalPages =  newFile.TotalPages,
+                TotalPages = newFile.TotalPages,
                 ShelfNumber = newFile.ShelfNumber,
                 DeckNumber = newFile.DeckNumber,
                 FileNumber = newFile.FileNumber,
-                
-                
+
+
                 ActionType = "Created",
                 Timestamp = DateTime.Now
             };
             context.EntryHistoryRecords.Add(history);
-            
+
             await context.SaveChangesAsync();
-            
+
             // Dashboard export
-            
+
             await LogActivityAsync(newFile.SerialNumber.ToString(), newFile.RrNumber, "Entry");
 
             return (true, $"Success: File '{newFile.RrNumber}' has been added to the vault.");
         }
-        catch (System.Exception ex)
+        catch (Exception ex)
         {
-            string exactError = ex.InnerException != null ? ex.InnerException.Message : ex.Message;
+            var exactError = ex.InnerException != null ? ex.InnerException.Message : ex.Message;
             return (false, $"Database Error : {exactError}");
         }
-        
     }
 
     public async Task<FileRecord> GetFileByRrNumberAsync(string rrNumber)
     {
         using var context = await _contextFactory.CreateDbContextAsync();
-        
+
         return await context.FileRecords
             .AsNoTracking()
             .FirstOrDefaultAsync(f => f.RrNumber == rrNumber);
@@ -414,27 +385,26 @@ public class ArchiveService : IArchiveService
         try
         {
             if (updatedFile.IsRemoved)
-            {
                 return (false,
                     "Error: This file has been disposed and it permanently locked. Modifications are forbidden");
-            }
-            
+
             using var context = await _contextFactory.CreateDbContextAsync();
 
-            var oldRecord = await context.FileRecords.AsNoTracking().FirstOrDefaultAsync(f => f.SerialNumber == updatedFile.SerialNumber);
-            string oldRr = oldRecord?.RrNumber ?? updatedFile.RrNumber;
-            
+            var oldRecord = await context.FileRecords.AsNoTracking()
+                .FirstOrDefaultAsync(f => f.SerialNumber == updatedFile.SerialNumber);
+            var oldRr = oldRecord?.RrNumber ?? updatedFile.RrNumber;
+
             context.FileRecords.Update(updatedFile);
 
             var history = new EntryHistoryRecord
             {
-                FileSerialNumber =  updatedFile.SerialNumber,
+                FileSerialNumber = updatedFile.SerialNumber,
                 RrNumber = updatedFile.RrNumber,
                 SubjectNumber = updatedFile.SubjectNumber,
                 FileName = updatedFile.FileName,
                 Sector = updatedFile.Sector,
                 Status = updatedFile.CurrentStatus,
-                
+
                 FileType = updatedFile.FileType,
                 StartDate = updatedFile.StartDate,
                 EndDate = updatedFile.EndDate,
@@ -442,24 +412,24 @@ public class ArchiveService : IArchiveService
                 ShelfNumber = updatedFile.ShelfNumber,
                 DeckNumber = updatedFile.DeckNumber,
                 FileNumber = updatedFile.FileNumber,
-                
+
                 ActionType = "Edited",
                 Timestamp = DateTime.Now
             };
-            
+
             context.EntryHistoryRecords.Add(history);
 
             await context.SaveChangesAsync();
-            
-            string formattedRr = oldRr == updatedFile.RrNumber
+
+            var formattedRr = oldRr == updatedFile.RrNumber
                 ? updatedFile.RrNumber
                 : $"{oldRr} → {updatedFile.RrNumber}";
 
             await LogActivityAsync(updatedFile.SerialNumber.ToString(), formattedRr, "Edit/Amend");
-            
+
             return (true, $"Success: File '{updatedFile.RrNumber}' has been updated.");
         }
-        catch (System.Exception ex)
+        catch (Exception ex)
         {
             return (false, $"Database Error : {(ex.InnerException != null ? ex.InnerException.Message : ex.Message)}");
         }
@@ -477,93 +447,30 @@ public class ArchiveService : IArchiveService
     public async Task<EntryHistoryRecord> GetPreviousHistoryRecordAsync(int fileSerialNumber, DateTime currentTimestamp)
     {
         using var context = await _contextFactory.CreateDbContextAsync();
-        
+
         return await context.EntryHistoryRecords
-            .Where (h => h.FileSerialNumber == fileSerialNumber && h.Timestamp < currentTimestamp)
+            .Where(h => h.FileSerialNumber == fileSerialNumber && h.Timestamp < currentTimestamp)
             .OrderByDescending(h => h.Timestamp)
             .FirstOrDefaultAsync();
     }
 
-    public async Task<(List<EntryHistoryRecord> Items, int TotalCount)> GetEntryHistoryPaginatedAsync(string searchTerm, int pageNumber, int pageSize)
+    public async Task<(List<EntryHistoryRecord> Items, int TotalCount)> GetEntryHistoryPaginatedAsync(string searchTerm,
+        int pageNumber, int pageSize)
     {
         using var context = await _contextFactory.CreateDbContextAsync();
         var query = context.EntryHistoryRecords.AsQueryable();
 
         if (!string.IsNullOrWhiteSpace(searchTerm))
         {
-
-
-            {
-                searchTerm = searchTerm.ToLower().Trim();
-                query = query.Where(h => h.RrNumber.ToLower().Contains(searchTerm));
-            }
-            
+            searchTerm = searchTerm.ToLower().Trim();
+            query = query.Where(h => h.RrNumber.ToLower().Contains(searchTerm));
         }
-        
+
         query = query.OrderByDescending(h => h.Timestamp);
-        
-        int totalCount = await query.CountAsync();
-        var items = await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync(); 
+
+        var totalCount = await query.CountAsync();
+        var items = await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
         return (items, totalCount);
-    }
-    
-    // Records
-    private IQueryable<FileRecord> BuildReportQuery(
-        IQueryable<FileRecord> query,
-        string serialNumber, string rrNumber, string sector, string subjectNumber,
-        string fileName, string fileType, DateTime? startDate, DateTime? endDate,
-        string totalPages, string shelfNumber, string deckNumber, string fileNumber,
-        string currentStatus, bool? isRemoved, DateTime? toBeRemovedDate, DateTime? removedDate,
-        DateTime? addedDateFrom, DateTime? addedDateTo)
-    {
-        if (!string.IsNullOrWhiteSpace(serialNumber) && int.TryParse(serialNumber, out int serial))
-            query = query.Where(f => f.SerialNumber == serial);
-        
-        if (!string.IsNullOrWhiteSpace(rrNumber))
-            query = query.Where(f => f.RrNumber.ToLower().Contains(rrNumber.ToLower()));
-        
-        if (!string.IsNullOrWhiteSpace(sector)) 
-            query = query.Where(f => f.Sector.ToLower().Contains(sector.ToLower()));
-
-        if (!string.IsNullOrWhiteSpace(subjectNumber))
-            query = query.Where(f => f.SubjectNumber != null && f.SubjectNumber.ToLower().Contains(subjectNumber.ToLower()));
-        
-
-        if (!string.IsNullOrWhiteSpace(fileType))
-            query = query.Where(f => f.FileType != null && f.FileType.ToLower().Contains(fileType.ToLower()));
-        
-        if (startDate.HasValue)
-            query = query.Where(f => f.StartDate >= startDate.Value);
-
-        if (endDate.HasValue)
-            query = query.Where(f => f.EndDate <= endDate.Value);
-        
-        if (!string.IsNullOrWhiteSpace(totalPages) && int.TryParse(totalPages, out int tp))
-            query = query.Where(f => f.TotalPages == tp);
-        
-        if (!string.IsNullOrWhiteSpace(shelfNumber))
-            query = query.Where(f => f.ShelfNumber == shelfNumber);
-
-        if (!string.IsNullOrWhiteSpace(deckNumber))
-            query = query.Where(f => f.DeckNumber == deckNumber);
-        
-        
-        if (!string.IsNullOrWhiteSpace(currentStatus)) 
-            query = query.Where(f => f.CurrentStatus.ToLower().Contains(currentStatus.ToLower()));
-        
-        if (isRemoved.HasValue) 
-            query = query.Where(f => f.IsRemoved == isRemoved.Value);
-        
-        if (toBeRemovedDate.HasValue) 
-            query = query.Where(f => f.ToBeRemovedDate >= toBeRemovedDate.Value);
-        
-        if (removedDate.HasValue) 
-            query = query.Where(f => f.RemovedDate >= removedDate.Value);
-        
-        if (addedDateFrom.HasValue) query = query.Where(f => f.AddedDateTime >= addedDateFrom.Value);
-        if (addedDateTo.HasValue) query = query.Where(f => f.AddedDateTime <= addedDateTo.Value);
-        
-        return query.OrderBy(f => f.SerialNumber);
     }
 
     public async Task<(List<FileRecord> Items, int TotalCount)> GetFilteredPreviewPaginatedAsync(
@@ -575,17 +482,17 @@ public class ArchiveService : IArchiveService
         int pageNumber, int pageSize)
     {
         using var context = await _contextFactory.CreateDbContextAsync();
-        
+
         var query = BuildReportQuery(
             context.FileRecords.AsQueryable(),
-            serialNumber, rrNumber, sector, subjectNumber, fileName, fileType, startDate, endDate, 
+            serialNumber, rrNumber, sector, subjectNumber, fileName, fileType, startDate, endDate,
             totalPages, shelfNumber, deckNumber, fileNumber, currentStatus, isRemoved, toBeRemovedDate, removedDate,
             addedDateFrom, addedDateTo);
-        
-        int totalCount = await query.CountAsync();
-        
+
+        var totalCount = await query.CountAsync();
+
         var items = await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
-        
+
         return (items, totalCount);
     }
 
@@ -597,24 +504,24 @@ public class ArchiveService : IArchiveService
         DateTime? addedDateFrom, DateTime? addedDateTo)
     {
         using var context = await _contextFactory.CreateDbContextAsync();
-        
+
         var query = BuildReportQuery(
             context.FileRecords.AsQueryable(),
-            serialNumber, rrNumber, sector, subjectNumber, fileName, fileType, startDate, endDate, 
+            serialNumber, rrNumber, sector, subjectNumber, fileName, fileType, startDate, endDate,
             totalPages, shelfNumber, deckNumber, fileNumber, currentStatus, isRemoved, toBeRemovedDate, removedDate,
             addedDateFrom, addedDateTo);
 
         return await query.ToListAsync();
     }
-    
+
     // SQL Backup
     public async Task<(bool Success, string Message)> BackupDatabaseAsync(string backupPath)
     {
         try
         {
-            string dbName = "testDb";
-            string dbUser = "postgres";
-            string dbPassword = "testPw";
+            var dbName = "testDb";
+            var dbUser = "postgres";
+            var dbPassword = "testPw";
 
             var processStartInfo = new ProcessStartInfo
             {
@@ -623,7 +530,7 @@ public class ArchiveService : IArchiveService
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 UseShellExecute = false,
-                CreateNoWindow = true,
+                CreateNoWindow = true
             };
 
             processStartInfo.EnvironmentVariables["PGPASSWORD"] = dbPassword;
@@ -632,23 +539,19 @@ public class ArchiveService : IArchiveService
             process.Start();
             await process.WaitForExitAsync();
 
-            if (process.ExitCode == 0)
-            {
-                return (true, "Database backup completed successfully.");
-            }
-            else
-            {
-                string error = await process.StandardError.ReadToEndAsync();
-                return (false, $"Backup failed : {error}");
-            }
+            if (process.ExitCode == 0) return (true, "Database backup completed successfully.");
+
+            var error = await process.StandardError.ReadToEndAsync();
+            return (false, $"Backup failed : {error}");
         }
-        catch (System.Exception ex)
+        catch (Exception ex)
         {
-            return (false, $"Failed to start backup process. Is PostgresSQL installed and in your PATH? Error: {ex.Message}");
+            return (false,
+                $"Failed to start backup process. Is PostgresSQL installed and in your PATH? Error: {ex.Message}");
         }
     }
-    
-    
+
+
     // ---- Disposal ----
 
     public async Task<(bool Success, string Message)> UpdateDisposalQueueAsync(string rrNumber,
@@ -664,16 +567,13 @@ public class ArchiveService : IArchiveService
         await context.SaveChangesAsync();
 
         if (toBeRemovedDate.HasValue)
-        {
             await LogActivityAsync(file.SerialNumber.ToString(), file.RrNumber, "Added To be removed queue");
-        }
-        
-        string msg = toBeRemovedDate.HasValue
-            ? $"File scheduled for disposal on {toBeRemovedDate.Value:yyyy-MM-dd}." 
-            : "File removed from disposal queue.";
-        
-        return  (true, msg);
 
+        var msg = toBeRemovedDate.HasValue
+            ? $"File scheduled for disposal on {toBeRemovedDate.Value:yyyy-MM-dd}."
+            : "File removed from disposal queue.";
+
+        return (true, msg);
     }
 
 
@@ -687,10 +587,7 @@ public class ArchiveService : IArchiveService
         if (file.IsRemoved) return (false, "FIle is already disposed.");
         if (file.CurrentStatus == "Borrowed") return (false, "Cannot dispose a file that is currently borrowed.");
 
-        if (file.ToBeRemovedDate == null)
-        {
-            file.ToBeRemovedDate = DateTime.Now.Date;
-        }
+        if (file.ToBeRemovedDate == null) file.ToBeRemovedDate = DateTime.Now.Date;
 
         file.IsRemoved = true;
         file.CurrentStatus = "Removed";
@@ -718,9 +615,9 @@ public class ArchiveService : IArchiveService
             Timestamp = DateTime.Now
         };
         await context.SaveChangesAsync();
-        
+
         await LogActivityAsync(file.SerialNumber.ToString(), file.RrNumber, "Dispose");
-        
+
         return (true, $"File {rrNumber} has been permanently locked and disposed.");
     }
 
@@ -746,15 +643,15 @@ public class ArchiveService : IArchiveService
     {
         using var context = await _contextFactory.CreateDbContextAsync();
         var file = await context.FileRecords.FirstOrDefaultAsync(f => f.RrNumber == rrNumber);
-        
+
         if (file == null) return (false, "File not found.");
         if (file.IsRemoved) return (false, "Cannot recover a permanently disposed file.");
 
         file.ToBeRemovedDate = null;
         await context.SaveChangesAsync();
-        
+
         await LogActivityAsync(file.SerialNumber.ToString(), file.RrNumber, "taken back from the removed queue");
-        
+
         return (true, $"File {rrNumber} recovered back to active vault.");
     }
 
@@ -766,7 +663,8 @@ public class ArchiveService : IArchiveService
             .CountAsync(f => f.ToBeRemovedDate != null && f.ToBeRemovedDate <= today && f.IsRemoved == false);
     }
 
-    public async Task<(List<FileRecord> Items, int TotalCount)> GetPendingDisposalsPaginatedAsync(string searchTerm, int pageNumber, int pageSize)
+    public async Task<(List<FileRecord> Items, int TotalCount)> GetPendingDisposalsPaginatedAsync(string searchTerm,
+        int pageNumber, int pageSize)
     {
         using var context = await _contextFactory.CreateDbContextAsync();
         var query = context.FileRecords
@@ -775,38 +673,95 @@ public class ArchiveService : IArchiveService
 
         if (!string.IsNullOrWhiteSpace(searchTerm))
         {
-            
-                //string searchHash = _cryptoService.GetBlindIndex(searchTerm);
-                searchTerm = searchTerm.ToLower().Trim();
-                query = query.Where(f => f.RrNumber.ToLower().Contains(searchTerm));
-
+            //string searchHash = _cryptoService.GetBlindIndex(searchTerm);
+            searchTerm = searchTerm.ToLower().Trim();
+            query = query.Where(f => f.RrNumber.ToLower().Contains(searchTerm));
         }
 
         query = query.OrderBy(f => f.ToBeRemovedDate);
 
-        int totalCount = await query.CountAsync();
+        var totalCount = await query.CountAsync();
         var items = await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
         return (items, totalCount);
     }
 
-    public async Task<(List<DisposedRecord> Items, int TotalCount)> GetDisposedHistoryPaginatedAsync(string searchTerm, int pageNumber, int pageSize)
+    public async Task<(List<DisposedRecord> Items, int TotalCount)> GetDisposedHistoryPaginatedAsync(string searchTerm,
+        int pageNumber, int pageSize)
     {
         using var context = await _contextFactory.CreateDbContextAsync();
         var query = context.DisposedRecords.Include(d => d.File).AsQueryable();
 
         if (!string.IsNullOrWhiteSpace(searchTerm))
         {
-
-                //string searchHash = _cryptoService.GetBlindIndex(searchTerm);
-                searchTerm = searchTerm.ToLower().Trim();
-                query = query.Where(d => (d.File != null && d.File.RrNumber.ToLower().Contains(searchTerm)));
+            //string searchHash = _cryptoService.GetBlindIndex(searchTerm);
+            searchTerm = searchTerm.ToLower().Trim();
+            query = query.Where(d => d.File != null && d.File.RrNumber.ToLower().Contains(searchTerm));
         }
 
         query = query.OrderByDescending(d => d.RemovedDate);
 
-        int totalCount = await query.CountAsync();
+        var totalCount = await query.CountAsync();
         var items = await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
         return (items, totalCount);
     }
-    
+
+    // Records
+    private IQueryable<FileRecord> BuildReportQuery(
+        IQueryable<FileRecord> query,
+        string serialNumber, string rrNumber, string sector, string subjectNumber,
+        string fileName, string fileType, DateTime? startDate, DateTime? endDate,
+        string totalPages, string shelfNumber, string deckNumber, string fileNumber,
+        string currentStatus, bool? isRemoved, DateTime? toBeRemovedDate, DateTime? removedDate,
+        DateTime? addedDateFrom, DateTime? addedDateTo)
+    {
+        if (!string.IsNullOrWhiteSpace(serialNumber) && int.TryParse(serialNumber, out var serial))
+            query = query.Where(f => f.SerialNumber == serial);
+
+        if (!string.IsNullOrWhiteSpace(rrNumber))
+            query = query.Where(f => f.RrNumber.ToLower().Contains(rrNumber.ToLower()));
+
+        if (!string.IsNullOrWhiteSpace(sector))
+            query = query.Where(f => f.Sector.ToLower().Contains(sector.ToLower()));
+
+        if (!string.IsNullOrWhiteSpace(subjectNumber))
+            query = query.Where(f =>
+                f.SubjectNumber != null && f.SubjectNumber.ToLower().Contains(subjectNumber.ToLower()));
+
+
+        if (!string.IsNullOrWhiteSpace(fileType))
+            query = query.Where(f => f.FileType != null && f.FileType.ToLower().Contains(fileType.ToLower()));
+
+        if (startDate.HasValue)
+            query = query.Where(f => f.StartDate >= startDate.Value);
+
+        if (endDate.HasValue)
+            query = query.Where(f => f.EndDate <= endDate.Value);
+
+        if (!string.IsNullOrWhiteSpace(totalPages) && int.TryParse(totalPages, out var tp))
+            query = query.Where(f => f.TotalPages == tp);
+
+        if (!string.IsNullOrWhiteSpace(shelfNumber))
+            query = query.Where(f => f.ShelfNumber == shelfNumber);
+
+        if (!string.IsNullOrWhiteSpace(deckNumber))
+            query = query.Where(f => f.DeckNumber == deckNumber);
+
+
+        if (!string.IsNullOrWhiteSpace(currentStatus))
+            query = query.Where(f => f.CurrentStatus.ToLower().Contains(currentStatus.ToLower()));
+
+        if (isRemoved.HasValue)
+            query = query.Where(f => f.IsRemoved == isRemoved.Value);
+
+        if (toBeRemovedDate.HasValue)
+            query = query.Where(f => f.ToBeRemovedDate >= toBeRemovedDate.Value);
+
+        if (removedDate.HasValue)
+            query = query.Where(f => f.RemovedDate >= removedDate.Value);
+
+        if (addedDateFrom.HasValue) query = query.Where(f => f.AddedDateTime >= addedDateFrom.Value);
+        if (addedDateTo.HasValue) query = query.Where(f => f.AddedDateTime <= addedDateTo.Value);
+
+        return query.OrderBy(f => f.SerialNumber);
+    }
 }

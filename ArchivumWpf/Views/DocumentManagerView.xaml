@@ -4,37 +4,68 @@
              xmlns:fa="http://schemas.fontawesome.io/icons/"
              AllowDrop="{Binding IsImportAllowed}" Drop="UserControl_Drop"
              xmlns:converters="clr-namespace:ArchivumWpf.Converters"
+             xmlns:loc="clr-namespace:ArchivumWpf.Localization"
              Background="{DynamicResource WindowBackground}"
              TextElement.FontFamily="Segoe UI Variable, Segoe UI, sans-serif">
 
     <UserControl.Resources>
-        <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
-        <converters:InverseBooleanToVisibilityConverter x:Key="InverseBoolToVis"/>
-        <converters:InverseBooleanConverter x:Key="InverseBoolConverter"/>
+        <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
+        <converters:InverseBooleanToVisibilityConverter x:Key="InverseBoolToVis" />
+        <converters:InverseBooleanConverter x:Key="InverseBoolConverter" />
+
+        <!-- Style to prevent buttons from turning white when disabled -->
+        <Style x:Key="FileCardButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"
+                                              Margin="{TemplateBinding Padding}" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" Value="0.4" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </UserControl.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <!-- RR Number and Name strip -->
-        <Border Grid.Row="0" Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,0,0,1" Padding="20,16">
+        <Border Grid.Row="0" Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource BorderColor}"
+                BorderThickness="0,0,0,1" Padding="20,16">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0" Text="{Binding RecordTitle}" Foreground="{DynamicResource PrimaryAccent}" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/>
-                <Button Grid.Column="1" Command="{Binding ImportFilesCommand}" Visibility="{Binding IsImportAllowed, Converter={StaticResource BoolToVisConverter}}" Background="{DynamicResource PrimaryAccent}" Foreground="{DynamicResource CardBackground}" BorderThickness="0" Cursor="Hand" Padding="16,8">
+                <TextBlock Grid.Column="0" Text="{Binding RecordTitle}" Foreground="{DynamicResource PrimaryAccent}"
+                           FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center" />
+                <Button Grid.Column="1" Command="{Binding ImportFilesCommand}"
+                        Visibility="{Binding IsImportAllowed, Converter={StaticResource BoolToVisConverter}}"
+                        Background="{DynamicResource PrimaryAccent}" Foreground="{DynamicResource CardBackground}"
+                        BorderThickness="0" Cursor="Hand" Padding="16,8">
                     <Button.Template>
                         <ControlTemplate TargetType="Button">
                             <Border Background="{TemplateBinding Background}" CornerRadius="6">
                                 <StackPanel Orientation="Horizontal" Margin="{TemplateBinding Padding}">
-                                    <fa:ImageAwesome Icon="CloudUpload" Width="12" Height="12" Margin="0,0,8,0" Foreground="{DynamicResource CardBackground}"/>
-                                    <TextBlock Text="Import Files" FontSize="13"/>
+                                    <fa:ImageAwesome Icon="CloudUpload" Width="12" Height="12" Margin="0,0,8,0"
+                                                     Foreground="{DynamicResource CardBackground}" />
+                                    <TextBlock Text="{x:Static loc:Strings.Doc_BtnImport}" FontSize="13" />
                                 </StackPanel>
                             </Border>
                         </ControlTemplate>
@@ -44,49 +75,95 @@
         </Border>
 
         <Border Grid.Row="1" Padding="20,10">
-            <TextBlock Text="{Binding StatusMessage}" Foreground="{Binding StatusColor}" FontSize="12"/>
+            <TextBlock Text="{Binding StatusMessage}" Foreground="{Binding StatusColor}" FontSize="12" />
         </Border>
 
         <!-- Document icons grid -->
         <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" Padding="20">
             <ItemsControl ItemsSource="{Binding Files}">
                 <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate><WrapPanel Orientation="Horizontal"/></ItemsPanelTemplate>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Border Width="120" Margin="0,0,16,16" Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="8" Padding="12">
-                            <StackPanel HorizontalAlignment="Center">
-                                <Button Command="{Binding DataContext.ViewDocumentCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                        <Border Width="180" Margin="0,0,16,16" Background="{DynamicResource CardBackground}"
+                                BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="8"
+                                Padding="12">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <Button Grid.Row="0" Style="{StaticResource FileCardButtonStyle}"
+                                        Command="{Binding DataContext.ViewDocumentCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                         CommandParameter="{Binding}"
                                         IsEnabled="{Binding IsMissing, Converter={StaticResource InverseBoolConverter}}"
-                                        Background="Transparent" BorderThickness="0" Cursor="Hand" ToolTip="{Binding OriginalFileName}">
+                                        BorderThickness="0" ToolTip="{Binding OriginalFileName}">
                                     <StackPanel>
-                                        <fa:ImageAwesome Width="36" Height="36" HorizontalAlignment="Center" Margin="0,0,0,8">
+                                        <fa:ImageAwesome Width="36" Height="36" HorizontalAlignment="Center"
+                                                         Margin="0,0,0,8">
                                             <fa:ImageAwesome.Style>
                                                 <Style TargetType="fa:ImageAwesome">
-                                                    <Setter Property="Icon" Value="FileTextOutline"/>
-                                                    <Setter Property="Foreground" Value="{DynamicResource PrimaryAccent}"/>
+                                                    <Setter Property="Icon" Value="FileTextOutline" />
+                                                    <Setter Property="Foreground"
+                                                            Value="{DynamicResource PrimaryAccent}" />
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding IsMissing}" Value="True">
-                                                            <Setter Property="Icon" Value="ExclamationTriangle"/>
-                                                            <Setter Property="Foreground" Value="{DynamicResource DangerAccent}"/>
+                                                            <Setter Property="Icon" Value="ExclamationTriangle" />
+                                                            <Setter Property="Foreground"
+                                                                    Value="{DynamicResource DangerAccent}" />
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
                                             </fa:ImageAwesome.Style>
                                         </fa:ImageAwesome>
-                                        <TextBlock Text="{Binding OriginalFileName}" FontSize="11" Foreground="{DynamicResource TextMain}" TextTrimming="CharacterEllipsis" TextAlignment="Center" Width="96"/>
-                                        <TextBlock Text="File Not Found" FontSize="9" Foreground="{DynamicResource DangerAccent}" TextAlignment="Center"
-                                                   Visibility="{Binding IsMissing, Converter={StaticResource BoolToVisConverter}}"/>
+                                        <TextBlock Text="{Binding OriginalFileName}" FontSize="11"
+                                                   Foreground="{DynamicResource TextMain}"
+                                                   TextTrimming="CharacterEllipsis" TextAlignment="Center"
+                                                   MaxWidth="150" />
+
+                                        <Border Background="{DynamicResource DangerAccent}" CornerRadius="4"
+                                                Padding="6,4" Margin="0,8,0,0"
+                                                Visibility="{Binding IsMissing, Converter={StaticResource BoolToVisConverter}}">
+                                            <TextBlock Text="{x:Static loc:Strings.Doc_FileNotFound}" FontSize="10"
+                                                       Foreground="White" FontWeight="SemiBold" TextAlignment="Center"
+                                                       TextWrapping="Wrap" />
+                                        </Border>
                                     </StackPanel>
                                 </Button>
-                                <Button Content="Export" FontSize="10" Margin="0,8,0,0" Padding="8,4"
-                                        Command="{Binding DataContext.ExportDocumentCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                        CommandParameter="{Binding}"
-                                        Background="Transparent" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1"
-                                        Foreground="{DynamicResource TextMuted}" Cursor="Hand"/>
-                            </StackPanel>
+
+                                <Grid Grid.Row="1" Margin="0,12,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Button Grid.Column="0" Style="{StaticResource FileCardButtonStyle}"
+                                            Margin="0,0,4,0" Padding="4,6"
+                                            Command="{Binding DataContext.ExportDocumentCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding}"
+                                            IsEnabled="{Binding IsMissing, Converter={StaticResource InverseBoolConverter}}"
+                                            BorderBrush="{DynamicResource BorderColor}" BorderThickness="1">
+                                        <TextBlock Text="{x:Static loc:Strings.Doc_BtnExport}"
+                                                   Foreground="{DynamicResource TextMuted}" FontSize="10"
+                                                   TextWrapping="Wrap" TextAlignment="Center" />
+                                    </Button>
+
+                                    <Button Grid.Column="1" Style="{StaticResource FileCardButtonStyle}"
+                                            Margin="4,0,0,0" Padding="4,6"
+                                            Command="{Binding DataContext.RemoveFileCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding}"
+                                            Visibility="{Binding DataContext.IsImportAllowed, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BoolToVisConverter}}"
+                                            BorderBrush="{DynamicResource DangerAccent}" BorderThickness="1">
+                                        <TextBlock Text="{x:Static loc:Strings.Doc_BtnRemove}"
+                                                   Foreground="{DynamicResource DangerAccent}" FontSize="10"
+                                                   TextWrapping="Wrap" TextAlignment="Center" />
+                                    </Button>
+                                </Grid>
+                            </Grid>
                         </Border>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
@@ -101,44 +178,63 @@
                     BorderBrush="{DynamicResource BorderColor}" BorderThickness="1">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
 
                     <!-- Toolbar -->
-                    <Border Grid.Row="0" BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,0,0,1" Padding="16,10">
+                    <Border Grid.Row="0" BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,0,0,1"
+                            Padding="16,10">
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
 
-                            <TextBlock Grid.Column="0" Text="{Binding PreviewFileName}" FontSize="14" Foreground="{DynamicResource TextMain}" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Column="0" Text="{Binding PreviewFileName}" FontSize="14"
+                                       Foreground="{DynamicResource TextMain}" VerticalAlignment="Center" />
 
                             <!-- PDF-only controls -->
-                            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,20,0"
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center"
+                                        Margin="0,0,20,0"
                                         Visibility="{Binding IsPdfMode, Converter={StaticResource BoolToVisConverter}}">
-                                <Button Command="{Binding PreviousPdfPageCommand}" Content="◀" Padding="10,4" Margin="0,0,8,0" Background="Transparent" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" Foreground="{DynamicResource TextMain}" Cursor="Hand"/>
-                                <TextBlock VerticalAlignment="Center" Foreground="{DynamicResource TextMain}" Margin="0,0,8,0">
-                                    <Run Text="{Binding PdfCurrentPage, Mode=OneWay}"/> / <Run Text="{Binding PdfTotalPages, Mode=OneWay}"/>
+                                <Button Command="{Binding PreviousPdfPageCommand}" Content="◀" Padding="10,4"
+                                        Margin="0,0,8,0" Background="Transparent"
+                                        BorderBrush="{DynamicResource BorderColor}" BorderThickness="1"
+                                        Foreground="{DynamicResource TextMain}" Cursor="Hand" />
+                                <TextBlock VerticalAlignment="Center" Foreground="{DynamicResource TextMain}"
+                                           Margin="0,0,8,0">
+                                    <Run Text="{Binding PdfCurrentPage, Mode=OneWay}" /> /
+                                    <Run Text="{Binding PdfTotalPages, Mode=OneWay}" />
                                 </TextBlock>
-                                <Button Command="{Binding NextPdfPageCommand}" Content="▶" Padding="10,4" Margin="0,0,16,0" Background="Transparent" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" Foreground="{DynamicResource TextMain}" Cursor="Hand"/>
+                                <Button Command="{Binding NextPdfPageCommand}" Content="▶" Padding="10,4"
+                                        Margin="0,0,16,0" Background="Transparent"
+                                        BorderBrush="{DynamicResource BorderColor}" BorderThickness="1"
+                                        Foreground="{DynamicResource TextMain}" Cursor="Hand" />
 
-                                <Button Command="{Binding ZoomOutPdfCommand}" Content="－" Padding="10,4" Margin="0,0,4,0" Background="Transparent" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" Foreground="{DynamicResource TextMain}" Cursor="Hand"/>
-                                <TextBlock Text="{Binding PdfZoom, StringFormat={}{0:P0}}" VerticalAlignment="Center" Foreground="{DynamicResource TextMuted}" Width="50" TextAlignment="Center"/>
-                                <Button Command="{Binding ZoomInPdfCommand}" Content="＋" Padding="10,4" Background="Transparent" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" Foreground="{DynamicResource TextMain}" Cursor="Hand"/>
+                                <Button Command="{Binding ZoomOutPdfCommand}" Content="－" Padding="10,4"
+                                        Margin="0,0,4,0" Background="Transparent"
+                                        BorderBrush="{DynamicResource BorderColor}" BorderThickness="1"
+                                        Foreground="{DynamicResource TextMain}" Cursor="Hand" />
+                                <TextBlock Text="{Binding PdfZoom, StringFormat={}{0:P0}}" VerticalAlignment="Center"
+                                           Foreground="{DynamicResource TextMuted}" Width="50" TextAlignment="Center" />
+                                <Button Command="{Binding ZoomInPdfCommand}" Content="＋" Padding="10,4"
+                                        Background="Transparent" BorderBrush="{DynamicResource BorderColor}"
+                                        BorderThickness="1" Foreground="{DynamicResource TextMain}" Cursor="Hand" />
                             </StackPanel>
 
-                            <Button Grid.Column="2" Content="✕" Command="{Binding ClosePreviewCommand}" Background="Transparent" BorderThickness="0" Foreground="{DynamicResource PrimaryAccent}" FontSize="16" Cursor="Hand"/>
+                            <Button Grid.Column="2" Content="✕" Command="{Binding ClosePreviewCommand}"
+                                    Background="Transparent" BorderThickness="0"
+                                    Foreground="{DynamicResource PrimaryAccent}" FontSize="16" Cursor="Hand" />
                         </Grid>
                     </Border>
 
                     <!-- Body -->
                     <Grid Grid.Row="1">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="120" MinWidth="0" MaxWidth="120"/>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="120" MinWidth="0" MaxWidth="120" />
+                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
                         <!-- Thumbnail rail (PDF only) -->
@@ -148,13 +244,14 @@
                             <ItemsControl ItemsSource="{Binding PdfThumbnails}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <Border Margin="8" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" Cursor="Hand">
+                                        <Border Margin="8" BorderBrush="{DynamicResource BorderColor}"
+                                                BorderThickness="1" Cursor="Hand">
                                             <Border.InputBindings>
                                                 <MouseBinding MouseAction="LeftClick"
                                                               Command="{Binding DataContext.JumpToPdfPageCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                                              CommandParameter="{Binding}"/>
+                                                              CommandParameter="{Binding}" />
                                             </Border.InputBindings>
-                                            <Image Source="{Binding}" Stretch="Uniform"/>
+                                            <Image Source="{Binding}" Stretch="Uniform" />
                                         </Border>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
@@ -162,14 +259,16 @@
                         </ScrollViewer>
 
                         <!-- Main page/image -->
-                        <ScrollViewer Grid.Column="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Padding="20">
+                        <ScrollViewer Grid.Column="1" HorizontalScrollBarVisibility="Auto"
+                                      VerticalScrollBarVisibility="Auto" Padding="20">
                             <Grid>
                                 <Image Source="{Binding PreviewImage}" Stretch="Uniform" MaxHeight="700"
-                                       Visibility="{Binding IsPdfMode, Converter={StaticResource InverseBoolToVis}}"/>
+                                       Visibility="{Binding IsPdfMode, Converter={StaticResource InverseBoolToVis}}" />
                                 <Image Source="{Binding PdfPageImage}" Stretch="Uniform"
-                                       Visibility="{Binding IsPdfMode, Converter={StaticResource BoolToVisConverter}}"/>
-                                <TextBlock Text="Rendering..." Foreground="{DynamicResource TextMuted}" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                           Visibility="{Binding IsPdfLoading, Converter={StaticResource BoolToVisConverter}}"/>
+                                       Visibility="{Binding IsPdfMode, Converter={StaticResource BoolToVisConverter}}" />
+                                <TextBlock Text="Rendering..." Foreground="{DynamicResource TextMuted}"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center"
+                                           Visibility="{Binding IsPdfLoading, Converter={StaticResource BoolToVisConverter}}" />
                             </Grid>
                         </ScrollViewer>
                     </Grid>

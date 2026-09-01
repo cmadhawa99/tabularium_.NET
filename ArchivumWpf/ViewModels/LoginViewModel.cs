@@ -1,35 +1,32 @@
-﻿using System;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Threading.Tasks;
+﻿using System.Security.Cryptography;
 using System.Windows;
+using ArchivumWpf.Models;
+using ArchivumWpf.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
-using ArchivumWpf.Services;
-using ArchivumWpf.Models;
 
 namespace ArchivumWpf.ViewModels;
 
 public partial class LoginViewModel : ObservableObject
 {
-    [ObservableProperty] private string _usernameInput = string.Empty;
-    public string PasswordInput { get; set; } = string.Empty;
-
-    [ObservableProperty] private bool _isRecoveryMode = false;
-    public string MasterKeyInput { get; set; } = string.Empty;
-    [ObservableProperty] private string _newUsernameInput = string.Empty;
-    public string NewPasswordInput { get; set; } = string.Empty;
-    
-    [ObservableProperty] private string _errorMessage = string.Empty;
-    [ObservableProperty] private bool _isProcessing = false;
-    
     private readonly IDbContextFactory<AppDbContext> _dbContextFactory;
+
+    [ObservableProperty] private string _errorMessage = string.Empty;
+    [ObservableProperty] private bool _isProcessing;
+
+    [ObservableProperty] private bool _isRecoveryMode;
+    [ObservableProperty] private string _newUsernameInput = string.Empty;
+    [ObservableProperty] private string _usernameInput = string.Empty;
 
     public LoginViewModel(IDbContextFactory<AppDbContext> dbContextFactory)
     {
         _dbContextFactory = dbContextFactory;
     }
+
+    public string PasswordInput { get; set; } = string.Empty;
+    public string MasterKeyInput { get; set; } = string.Empty;
+    public string NewPasswordInput { get; set; } = string.Empty;
 
     [RelayCommand]
     private async Task LoginAsync(Window window)
@@ -39,7 +36,7 @@ public partial class LoginViewModel : ObservableObject
             ErrorMessage = "Please enter both username and password.";
             return;
         }
-        
+
         IsProcessing = true;
         ErrorMessage = string.Empty;
 
@@ -86,6 +83,7 @@ public partial class LoginViewModel : ObservableObject
             ErrorMessage = "Please fill in all recovery fields.";
             return;
         }
+
         IsProcessing = true;
         ErrorMessage = string.Empty;
 
@@ -135,10 +133,10 @@ public partial class LoginViewModel : ObservableObject
 
     private string HashPassword(string password)
     {
-        byte[] salt = new byte[16];
+        var salt = new byte[16];
         RandomNumberGenerator.Fill(salt);
         using var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 1200000, HashAlgorithmName.SHA256);
-        byte[] hash = pbkdf2.GetBytes(32);
+        var hash = pbkdf2.GetBytes(32);
         return $"{Convert.ToBase64String(salt)}:{Convert.ToBase64String(hash)}";
     }
 
@@ -146,13 +144,13 @@ public partial class LoginViewModel : ObservableObject
     {
         var parts = storedHash.Split(':');
         if (parts.Length != 2) return false;
-        
-        byte[] salt = Convert.FromBase64String(parts[0]);
-        byte[] expectedHash = Convert.FromBase64String(parts[1]);
-        
+
+        var salt = Convert.FromBase64String(parts[0]);
+        var expectedHash = Convert.FromBase64String(parts[1]);
+
         using var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 1200000, HashAlgorithmName.SHA256);
-        byte[] actualHash = pbkdf2.GetBytes(32);
-        
+        var actualHash = pbkdf2.GetBytes(32);
+
         return CryptographicOperations.FixedTimeEquals(actualHash, expectedHash);
     }
 }

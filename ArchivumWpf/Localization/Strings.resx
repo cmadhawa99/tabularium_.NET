@@ -1,9 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 
 <root>
-    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root"
+                xmlns="">
         <xsd:element name="root" msdata:IsDataSet="true">
-            
+
         </xsd:element>
     </xsd:schema>
     <resheader name="resmimetype">
@@ -13,10 +14,14 @@
         <value>1.3</value>
     </resheader>
     <resheader name="reader">
-        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
     </resheader>
     <resheader name="writer">
-        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
     </resheader>
     <data name="Settings_MainTitle" xml:space="preserve">
         <value>System Settings &amp; Configuration</value>
@@ -967,7 +972,7 @@
         <value>Purged Records</value>
     </data>
     <data name="Dash_SubjectMatter" xml:space="preserve">
-        <value />
+        <value/>
     </data>
     <data name="Dash_RRNumber" xml:space="preserve">
         <value>RR Number</value>
@@ -989,5 +994,46 @@
     </data>
     <data name="Settings_SaveVault" xml:space="preserve">
         <value>Save Vault Settings</value>
+    </data>
+    <data name="Main_NavDocuments" xml:space="preserve">
+        <value>FILES</value>
+    </data>
+    <data name="Main_DisposalAlertFormat" xml:space="preserve">
+        <value>{0} record(s) are scheduled to be removed today!</value>
+    </data>
+    <data name="Doc_MainTitle" xml:space="preserve">
+        <value>File Management</value>
+    </data>
+    <data name="Doc_ColRrNumber" xml:space="preserve">
+        <value>RR NUMBER</value>
+    </data>
+    <data name="Doc_ColName" xml:space="preserve">
+        <value>NAME</value>
+    </data>
+    <data name="Doc_ColActions" xml:space="preserve">
+        <value>ACTIONS</value>
+    </data>
+    <data name="Doc_BtnManage" xml:space="preserve">
+        <value>Manage Files</value>
+    </data>
+    <data name="Doc_BtnImport" xml:space="preserve">
+        <value>Import</value>
+    </data>
+    <data name="Doc_BtnExport" xml:space="preserve">
+        <value>Export</value>
+    </data>
+    <data name="Doc_BtnRemove" xml:space="preserve">
+        <value>Remove</value>
+    </data>
+    <data name="Doc_FileNotFound" xml:space="preserve">
+        <value>File Not Found</value>
+    </data>
+    <data name="Doc_ConfirmRemoveTitle" xml:space="preserve">
+        <value>Confirm Removal</value>
+    </data>
+    <data name="Doc_ConfirmRemoveMsg" xml:space="preserve">
+        <value>Are you sure you want to permanently remove file '{0}'?
+
+This deletes the encrypted file from the vault. This action cannot be undone.</value>
     </data>
 </root>

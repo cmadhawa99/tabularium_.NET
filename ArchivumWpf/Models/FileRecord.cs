@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,7 +6,6 @@ namespace ArchivumWpf.Models;
 
 [Table("file_records")]
 [Index(nameof(RrNumber), IsUnique = true)]
-
 public class FileRecord
 {
     [Key]
@@ -16,21 +13,15 @@ public class FileRecord
     [DatabaseGenerated(DatabaseGeneratedOption.None)]
     public int SerialNumber { get; set; }
 
-    [Required]
-    [Column("rr_number")]
-    public string RrNumber { get; set; } = null!;
-    
-    [Column("sector")]
-    public string Sector { get; set; } = null!;
+    [Required] [Column("rr_number")] public string RrNumber { get; set; } = null!;
 
-    [Column("subject_number")]
-    public string? SubjectNumber { get; set; }
+    [Column("sector")] public string Sector { get; set; } = null!;
 
-    [Column("file_name")]
-    public string FileName { get; set; } = null!;
+    [Column("subject_number")] public string? SubjectNumber { get; set; }
 
-    [Column("file_type")]
-    public string? FileType { get; set; }
+    [Column("file_name")] public string FileName { get; set; } = null!;
+
+    [Column("file_type")] public string? FileType { get; set; }
 
     [Column("start_date", TypeName = "date")]
     public DateTime? StartDate { get; set; }
@@ -38,37 +29,30 @@ public class FileRecord
     [Column("end_date", TypeName = "date")]
     public DateTime? EndDate { get; set; }
 
-    [Column("total_pages")]
-    public int? TotalPages { get; set; }
+    [Column("total_pages")] public int? TotalPages { get; set; }
 
-    [Column("shelf_number")]
-    public string? ShelfNumber { get; set; }
+    [Column("shelf_number")] public string? ShelfNumber { get; set; }
 
-    [Column("deck_number")]
-    public string? DeckNumber { get; set; }
+    [Column("deck_number")] public string? DeckNumber { get; set; }
 
-    [Column("file_number")]
-    public string? FileNumber { get; set; }
+    [Column("file_number")] public string? FileNumber { get; set; }
 
-    [Column("current_status")]
-    public string CurrentStatus { get; set; } = "Available";
+    [Column("current_status")] public string CurrentStatus { get; set; } = "Available";
 
-    [Column("to_be_removed_date", TypeName =  "date")]
+    [Column("to_be_removed_date", TypeName = "date")]
     public DateTime? ToBeRemovedDate { get; set; }
 
-    [Column("removed_date", TypeName ="date")]
+    [Column("removed_date", TypeName = "date")]
     public DateTime? RemovedDate { get; set; }
 
-    [Column("is_removed")]
-    public bool IsRemoved { get; set; } = false;
-    
-    public DateTime AddedDateTime {get; set;} = DateTime.Now;
-    
+    [Column("is_removed")] public bool IsRemoved { get; set; } = false;
+
+    public DateTime AddedDateTime { get; set; } = DateTime.Now;
+
     //This property is ignored by db, for UI only
-    [System.ComponentModel.DataAnnotations.Schema.NotMapped]
-    public string SectorColorHex {get; set;} = "#8f9bb3";
-    
+    [NotMapped] public string SectorColorHex { get; set; } = "#8f9bb3";
+
     public virtual ICollection<BorrowRecord> BorrowHistory { get; set; } = new List<BorrowRecord>();
-    
+
     public virtual ICollection<Folder> Folders { get; set; } = new List<Folder>();
 }

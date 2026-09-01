@@ -1,30 +1,23 @@
 ﻿using System.Windows;
 using ArchivumWpf.ViewModels;
 
-namespace ArchivumWpf.Views
+namespace ArchivumWpf.Views;
+
+public partial class SetupWindow : Window
 {
-    public partial class SetupWindow : Window
+    public SetupWindow()
     {
-        public SetupWindow()
-        {
-            InitializeComponent();
-            this.DataContext = new SetupViewModel();
-        }
+        InitializeComponent();
+        DataContext = new SetupViewModel();
+    }
 
-        private void DbPasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
-        {
-            if (this.DataContext is SetupViewModel viewModel)
-            {
-                viewModel.DbPassword = DbPasswordBox.Password;
-            }
-        }
+    private void DbPasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+    {
+        if (DataContext is SetupViewModel viewModel) viewModel.DbPassword = DbPasswordBox.Password;
+    }
 
-        private void RecoveryKeyBox_PasswordChanged(object sender, RoutedEventArgs e)
-        {
-            if (this.DataContext is SetupViewModel viewModel)
-            {
-                viewModel.RecoveryKeyInput = RecoveryKeyBox.Password;
-            }
-        }
+    private void RecoveryKeyBox_PasswordChanged(object sender, RoutedEventArgs e)
+    {
+        if (DataContext is SetupViewModel viewModel) viewModel.RecoveryKeyInput = RecoveryKeyBox.Password;
     }
 }

@@ -1,55 +1,46 @@
-﻿using System;
-using System.Windows;
-using System.Collections.ObjectModel;
-using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
 using System.Globalization;
-using Microsoft.Extensions.DependencyInjection;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
+using System.Windows;
 using ArchivumWpf.Models;
 using ArchivumWpf.Services;
 using ArchivumWpf.Views;
-using DocumentFormat.OpenXml.Bibliography;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ArchivumWpf.ViewModels;
 
 public partial class SearchViewModel : ObservableObject
 {
     private readonly IArchiveService _archiveService;
-    private readonly IPreferencesService  _preferencesService;
-    [ObservableProperty] private int _pageSize;
-    
-    [ObservableProperty] private string _searchQuery = string.Empty;
-    [ObservableProperty] private ObservableCollection<FileRecord> _searchResults = new();
-    [ObservableProperty] private bool _isSearching;
-    [ObservableProperty] private FileRecord? _selectedFile;
-    [ObservableProperty] private bool _isDetailsOpen;
-
-    public ObservableCollection<string> AvailableSectors { get; } = new();
-    public ObservableCollection<string> AvailableYears { get; } = new();
-    public ObservableCollection<string> AvailableMonths { get; } = new()
-    { "Any Month", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
-    
-    [ObservableProperty] private string _selectedSector = "All Sectors";
-    [ObservableProperty] private string _selectedYear = "Any Year";
-    [ObservableProperty] private string _selectedMonth = "Any Month";
-
-    [ObservableProperty] private bool _isRecentActive;
-    [ObservableProperty] private bool _isAvailableActive;
-    [ObservableProperty] private bool _isBorrowedActive;
-    [ObservableProperty] private bool _isRemovedActive;
+    private readonly IPreferencesService _preferencesService;
 
 
     //Pagination
     [ObservableProperty] private int _currentPage = 1;
-    [ObservableProperty] private int _totalPages = 1;
-    [ObservableProperty] private int _totalResultsCount = 0;
-    
+    [ObservableProperty] private bool _isAvailableActive;
+    [ObservableProperty] private bool _isBorrowedActive;
+    [ObservableProperty] private bool _isDetailsOpen;
+
+    [ObservableProperty] private bool _isRecentActive;
+    [ObservableProperty] private bool _isRemovedActive;
+    [ObservableProperty] private bool _isSearching;
+    [ObservableProperty] private int _pageSize;
+
     //UI
     [ObservableProperty] private string _popupBorderColor = "#f2ca50";
-    
-    
+
+    [ObservableProperty] private string _searchQuery = string.Empty;
+    [ObservableProperty] private ObservableCollection<FileRecord> _searchResults = new();
+    [ObservableProperty] private FileRecord? _selectedFile;
+    [ObservableProperty] private string _selectedMonth = "Any Month";
+
+    [ObservableProperty] private string _selectedSector = "All Sectors";
+    [ObservableProperty] private string _selectedYear = "Any Year";
+    [ObservableProperty] private int _totalPages = 1;
+    [ObservableProperty] private int _totalResultsCount;
+
 
     public SearchViewModel(IArchiveService archiveService, IPreferencesService preferencesService)
     {
@@ -64,16 +55,25 @@ public partial class SearchViewModel : ObservableObject
             CurrentPage = 1;
             _ = LoadDataAsync();
         });
-        
+
         _ = IntializeViewModelAsync();
     }
+
+    public ObservableCollection<string> AvailableSectors { get; } = new();
+    public ObservableCollection<string> AvailableYears { get; } = new();
+
+    public ObservableCollection<string> AvailableMonths { get; } = new()
+    {
+        "Any Month", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October",
+        "November", "December"
+    };
 
     private async Task IntializeViewModelAsync()
     {
         await LoadFiltersAsync();
         await LoadDataAsync();
     }
-    
+
     public async Task RefreshAsync()
     {
         await LoadFiltersAsync();
@@ -86,22 +86,61 @@ public partial class SearchViewModel : ObservableObject
         AvailableSectors.Clear();
         AvailableSectors.Add("All Sectors");
         foreach (var s in dbSectors) AvailableSectors.Add(s);
-        
+
         AvailableYears.Clear();
         AvailableYears.Add("Any Year");
-        for (int y = DateTime.Now.Year; y >= 2010; y--) AvailableYears.Add(y.ToString());
+        for (var y = DateTime.Now.Year; y >= 2010; y--) AvailableYears.Add(y.ToString());
     }
-    
-    partial void OnSearchQueryChanged(string value) { CurrentPage = 1; _ = LoadDataAsync(); }
-    partial void OnSelectedSectorChanged(string value) { CurrentPage = 1; _ = LoadDataAsync(); }
-    partial void OnSelectedYearChanged(string value) { CurrentPage = 1; _ = LoadDataAsync(); }
-    partial void OnSelectedMonthChanged(string value) { CurrentPage = 1; _ = LoadDataAsync(); }
-    partial void OnIsRecentActiveChanged(bool value) { CurrentPage = 1; _ = LoadDataAsync(); }
-    partial void OnIsAvailableActiveChanged(bool value) { CurrentPage = 1; _ = LoadDataAsync(); }
-    partial void OnIsBorrowedActiveChanged(bool value) {CurrentPage = 1; _ = LoadDataAsync(); }
-    partial void OnIsRemovedActiveChanged(bool value) { CurrentPage = 1; _ = LoadDataAsync(); }
-    
-    
+
+    partial void OnSearchQueryChanged(string value)
+    {
+        CurrentPage = 1;
+        _ = LoadDataAsync();
+    }
+
+    partial void OnSelectedSectorChanged(string value)
+    {
+        CurrentPage = 1;
+        _ = LoadDataAsync();
+    }
+
+    partial void OnSelectedYearChanged(string value)
+    {
+        CurrentPage = 1;
+        _ = LoadDataAsync();
+    }
+
+    partial void OnSelectedMonthChanged(string value)
+    {
+        CurrentPage = 1;
+        _ = LoadDataAsync();
+    }
+
+    partial void OnIsRecentActiveChanged(bool value)
+    {
+        CurrentPage = 1;
+        _ = LoadDataAsync();
+    }
+
+    partial void OnIsAvailableActiveChanged(bool value)
+    {
+        CurrentPage = 1;
+        _ = LoadDataAsync();
+    }
+
+    partial void OnIsBorrowedActiveChanged(bool value)
+    {
+        CurrentPage = 1;
+        _ = LoadDataAsync();
+    }
+
+    partial void OnIsRemovedActiveChanged(bool value)
+    {
+        CurrentPage = 1;
+        _ = LoadDataAsync();
+    }
+
+
     [RelayCommand]
     private async Task PerformSearchAsync()
     {
@@ -146,22 +185,17 @@ public partial class SearchViewModel : ObservableObject
     {
         IsDetailsOpen = false;
     }
-    
+
     private async Task LoadDataAsync()
     {
         IsSearching = true;
 
         int? parsedYear = null;
-        if (SelectedYear != "Any Year" && int.TryParse(SelectedYear, out int y))
-        {
-            parsedYear = y;
-        }
+        if (SelectedYear != "Any Year" && int.TryParse(SelectedYear, out var y)) parsedYear = y;
 
         int? parsedMonth = null;
         if (SelectedMonth != "Any Month")
-        {
             parsedMonth = DateTime.ParseExact(SelectedMonth, "MMMM", CultureInfo.InvariantCulture).Month;
-        }
 
 
         var result = await _archiveService.SearchFilesPaginatedAsync(
@@ -175,21 +209,21 @@ public partial class SearchViewModel : ObservableObject
             IsRemovedActive,
             CurrentPage,
             PageSize);
-        
+
         TotalResultsCount = result.TotalCount;
         TotalPages = (int)Math.Ceiling((double)TotalResultsCount / PageSize);
         if (TotalPages == 0) TotalPages = 1;
-        
+
         var prefs = _preferencesService.GetPreferences();
         var colorMap = prefs.Sectors.ToDictionary(s => s.Name, s => s.ColorHex);
-        
+
         SearchResults.Clear();
         foreach (var file in result.Items)
         {
             file.SectorColorHex = colorMap.ContainsKey(file.Sector) ? colorMap[file.Sector] : "#8f9bb3";
             SearchResults.Add(file);
         }
-        
+
         IsSearching = false;
     }
 
@@ -197,17 +231,14 @@ public partial class SearchViewModel : ObservableObject
     private void OpenDocumentManager()
     {
         if (SelectedFile == null) return;
-        
+
         var app = (App)Application.Current;
         var window = app.Services.GetRequiredService<DocumentManagerWindow>();
         var vm = (DocumentManagerViewModel)window.DataContext;
 
-        _ = vm.InitializeAsync(SelectedFile.SerialNumber, SelectedFile.RrNumber, SelectedFile.FileName, isImportAllowed: false);
-        
+        _ = vm.InitializeAsync(SelectedFile.SerialNumber, SelectedFile.RrNumber, SelectedFile.FileName, false);
+
         window.Owner = Application.Current.MainWindow;
         window.ShowDialog();
-
     }
-    
-    
 }

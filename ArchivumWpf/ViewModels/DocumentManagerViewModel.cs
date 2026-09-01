@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.IO;
-using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media.Imaging;
+using ArchivumWpf.Models;
+using ArchivumWpf.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Win32;
-using ArchivumWpf.Models;
-using ArchivumWpf.Services;
+using Strings = ArchivumWpf.Localization.Strings;
 
 namespace ArchivumWpf.ViewModels;
 
@@ -15,37 +15,37 @@ public partial class DocumentManagerViewModel : ObservableObject
 {
     private readonly IDocumentService _documentService;
     private readonly IPdfRenderService _pdfRenderService;
-    private byte[]? _currentPdfBytes;
-    
-    [ObservableProperty] private int _fileRecordSerial;
-    [ObservableProperty] private string _recordTitle = string.Empty;
     [ObservableProperty] private Folder? _currentFolder;
+    private byte[]? _currentPdfBytes;
 
-    public ObservableCollection<DigitalFile> Files { get; } = new();
+    [ObservableProperty] private int _fileRecordSerial;
 
-    [ObservableProperty] private bool _isBusy = false;
-    [ObservableProperty] private string _statusMessage = string.Empty;
-    [ObservableProperty] private string _statusColor = "Gray";
+    [ObservableProperty] private bool _isBusy;
 
-    [ObservableProperty] private bool _isPreviewOpen = false;
-    [ObservableProperty] private BitmapImage? _previewImage;
-    [ObservableProperty] private string _previewFileName  = string.Empty;
-    
-    [ObservableProperty] private bool _isPdfMode = false;
-    [ObservableProperty] private bool _isPdfLoading = false;
-    [ObservableProperty] private BitmapImage? _pdfPageImage;
+    [ObservableProperty] private bool _isImportAllowed;
+    [ObservableProperty] private bool _isPdfLoading;
+
+    [ObservableProperty] private bool _isPdfMode;
+
+    [ObservableProperty] private bool _isPreviewOpen;
     [ObservableProperty] private int _pdfCurrentPage = 1;
+    [ObservableProperty] private BitmapImage? _pdfPageImage;
     [ObservableProperty] private int _pdfTotalPages = 1;
     [ObservableProperty] private double _pdfZoom = 1.5;
-    
-    [ObservableProperty] private bool _isImportAllowed = false;
-    public ObservableCollection<BitmapImage?> PdfThumbnails { get; } = new();
-    
-    public DocumentManagerViewModel (IDocumentService documentService, IPdfRenderService pdfRenderService)
+    [ObservableProperty] private string _previewFileName = string.Empty;
+    [ObservableProperty] private BitmapImage? _previewImage;
+    [ObservableProperty] private string _recordTitle = string.Empty;
+    [ObservableProperty] private string _statusColor = "Gray";
+    [ObservableProperty] private string _statusMessage = string.Empty;
+
+    public DocumentManagerViewModel(IDocumentService documentService, IPdfRenderService pdfRenderService)
     {
         _documentService = documentService;
         _pdfRenderService = pdfRenderService;
     }
+
+    public ObservableCollection<DigitalFile> Files { get; } = new();
+    public ObservableCollection<BitmapImage?> PdfThumbnails { get; } = new();
 
     public async Task InitializeAsync(int fileRecordSerial, string rrNumber, string fileName, bool isImportAllowed)
     {
@@ -69,10 +69,10 @@ public partial class DocumentManagerViewModel : ObservableObject
     [RelayCommand]
     private async Task ImportFilesAsync()
     {
-        var dialog = new OpenFileDialog {Multiselect = true, Title = "Select files to import and encrypt" };
+        var dialog = new OpenFileDialog { Multiselect = true, Title = "Select files to import and encrypt" };
         if (dialog.ShowDialog() != true) return;
-        
-        await ImportPathsAsync (dialog.FileNames);
+
+        await ImportPathsAsync(dialog.FileNames);
     }
 
     public async Task ImportPathsAsync(string[] paths)
@@ -80,7 +80,7 @@ public partial class DocumentManagerViewModel : ObservableObject
         if (CurrentFolder == null) return;
 
         IsBusy = true;
-        int successCount = 0;
+        var successCount = 0;
 
         foreach (var path in paths)
         {
@@ -96,11 +96,11 @@ public partial class DocumentManagerViewModel : ObservableObject
                 ShowStatus($"Failed to import '{Path.GetFileName(path)}': {ex.Message}", "#F44336");
             }
         }
-        
+
         await RefreshAsync();
         IsBusy = false;
-        
-        if (successCount == 0) 
+
+        if (successCount == 0)
             ShowStatus($"Successfully imported and encrypted {successCount} file(s).", "#4CAF50");
     }
 
@@ -113,10 +113,10 @@ public partial class DocumentManagerViewModel : ObservableObject
         {
             if (file.MimeType == "application/pdf")
             {
-                await OpenPdfPreviewAsync (file);
+                await OpenPdfPreviewAsync(file);
             }
-            
-            else if (file.MimeType.StartsWith ("image/"))
+
+            else if (file.MimeType.StartsWith("image/"))
             {
                 using var ms = await _documentService.GetPreviewStreamAsync(file.Id);
 
@@ -134,14 +134,30 @@ public partial class DocumentManagerViewModel : ObservableObject
             }
             else
             {
-                ShowStatus("In-app preview is only available for images and PDFs. Use Export for other file types.", "#FF9800");
+                ShowStatus("In-app preview is only available for images and PDFs. Use Export for other file types.",
+                    "#FF9800");
             }
         }
         catch (Exception ex)
         {
             ShowStatus($"Failed to decrypt file for preview: {ex.Message}", "#F44336");
         }
-        
+    }
+
+    [RelayCommand]
+    private async Task RemoveFileAsync(DigitalFile file)
+    {
+        if (file == null) return;
+
+        var result = MessageBox.Show(
+            string.Format(Strings.Doc_ConfirmRemoveMsg, file.OriginalFileName),
+            Strings.Doc_ConfirmRemoveTitle, MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+        if (result != MessageBoxResult.Yes) return;
+
+        await _documentService.DeleteFileAsync(file.Id);
+        await RefreshAsync();
+        ShowStatus($"'{file.OriginalFileName}' has been removed.", "#4CAF50");
     }
 
     private async Task OpenPdfPreviewAsync(DigitalFile file)
@@ -175,10 +191,10 @@ public partial class DocumentManagerViewModel : ObservableObject
     private async Task LoadPdfThumbnailsAsync()
     {
         if (_currentPdfBytes == null) return;
-        for (int i = 0; i < PdfTotalPages; i++)
+        for (var i = 0; i < PdfTotalPages; i++)
         {
             if (_currentPdfBytes == null) return;
-            var thumb = await _pdfRenderService.RenderPageAsync(_currentPdfBytes, i, scale: 0.4);
+            var thumb = await _pdfRenderService.RenderPageAsync(_currentPdfBytes, i, 0.4);
             PdfThumbnails.Add(thumb);
         }
     }
@@ -202,7 +218,7 @@ public partial class DocumentManagerViewModel : ObservableObject
     [RelayCommand]
     private async Task JumpToPdfPageAsync(BitmapImage thumbnail)
     {
-        int index = PdfThumbnails.IndexOf(thumbnail);
+        var index = PdfThumbnails.IndexOf(thumbnail);
         if (index < 0) return;
         PdfCurrentPage = index + 1;
         await RenderCurrentPdfPageAsync();
@@ -239,8 +255,8 @@ public partial class DocumentManagerViewModel : ObservableObject
     private async Task ExportDocumentAsync(DigitalFile file)
     {
         if (file == null) return;
-        
-        var dialog = new SaveFileDialog {FileName = file.OriginalFileName, Filter = "All Files (*.*)|*.*" };
+
+        var dialog = new SaveFileDialog { FileName = file.OriginalFileName, Filter = "All Files (*.*)|*.*" };
         if (dialog.ShowDialog() != true) return;
 
         try
@@ -264,7 +280,4 @@ public partial class DocumentManagerViewModel : ObservableObject
         StatusMessage = message;
         StatusColor = color;
     }
-    
-    
-    
 }

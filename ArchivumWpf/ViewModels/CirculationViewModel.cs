@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
+using ArchivumWpf.Models;
+using ArchivumWpf.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
-using ArchivumWpf.Models;
-using ArchivumWpf.Services;
-using DocumentFormat.OpenXml.Wordprocessing;
 
 namespace ArchivumWpf.ViewModels;
 
@@ -15,43 +11,39 @@ public partial class CirculationViewModel : ObservableObject
 {
     private readonly IArchiveService _archiveService;
     private readonly IPreferencesService _preferencesService;
-    [ObservableProperty] private int _pageSize;
-    
-    [ObservableProperty] private string _targetRrNumber = string.Empty;
-    [ObservableProperty] private FileRecord _loadedFile;
-    [ObservableProperty] private string _loadedFileColor = "#f2ca50";
-    [ObservableProperty] private bool _isFileLoaded = false;
-
-    [ObservableProperty] private bool _canIssue = false;
-    [ObservableProperty] private bool _canReturn = false;
-    [ObservableProperty] private string _borrowerName = string.Empty;
-    
-    public ObservableCollection<BorrowRecord> ActiveLoans { get; } = new();
 
     [ObservableProperty] private int _activeLoansCurrentPage = 1;
-    [ObservableProperty] private int _activeLoansTotalPages = 1;
-    [ObservableProperty] private int _activeLoansTotalCount = 0;
-    
+
     [ObservableProperty] private string _activeLoansSearchQuery = string.Empty;
-    
-    public ObservableCollection<BorrowRecord> BorrowHistoryRecords { get; } = new();
-    [ObservableProperty] private string _historySearchQuery = string.Empty;
+    [ObservableProperty] private int _activeLoansTotalCount;
+    [ObservableProperty] private int _activeLoansTotalPages = 1;
+    [ObservableProperty] private string _borrowerName = string.Empty;
+
+    [ObservableProperty] private bool _canIssue;
+    [ObservableProperty] private bool _canReturn;
+    [ObservableProperty] private string _dialogTitle = string.Empty;
     [ObservableProperty] private int _historyCurrentPage = 1;
+    [ObservableProperty] private string _historySearchQuery = string.Empty;
+    [ObservableProperty] private int _historyTotalCount;
     [ObservableProperty] private int _historyTotalPages = 1;
-    [ObservableProperty] private int _historyTotalCount = 0;
+    [ObservableProperty] private bool _isDialogOpen;
+    [ObservableProperty] private bool _isFileLoaded;
 
     [ObservableProperty] private bool _isHistoryActiveOnly;
     [ObservableProperty] private bool _isHistoryReturnedOnly;
-    
-    [ObservableProperty] private BorrowRecord _selectedHistoryRecord;
-    [ObservableProperty] private bool _isDialogOpen = false;
-    [ObservableProperty] private string _dialogTitle = string.Empty;
+    [ObservableProperty] private FileRecord _loadedFile;
+    [ObservableProperty] private string _loadedFileColor = "#f2ca50";
+    [ObservableProperty] private int _pageSize;
     [ObservableProperty] private string _popupBorderColor = "#f2ca50";
-    
-    [ObservableProperty] private string _statusMessage = string.Empty;
+
+    [ObservableProperty] private BorrowRecord _selectedHistoryRecord;
     [ObservableProperty] private string _statusColor = "White";
-    
-    
+
+    [ObservableProperty] private string _statusMessage = string.Empty;
+
+    [ObservableProperty] private string _targetRrNumber = string.Empty;
+
+
     public CirculationViewModel(IArchiveService archiveService, IPreferencesService preferencesService)
     {
         _archiveService = archiveService;
@@ -61,7 +53,7 @@ public partial class CirculationViewModel : ObservableObject
 
         _ = LoadActiveLoansAsync();
         _ = LoadHistoryAsync();
-        
+
         WeakReferenceMessenger.Default.Register<SettingsChangedMessage>(this, (recipient, message) =>
         {
             PageSize = _preferencesService.GetPreferences().DefaultPaginationSize;
@@ -70,9 +62,12 @@ public partial class CirculationViewModel : ObservableObject
             _ = LoadActiveLoansAsync();
             _ = LoadHistoryAsync();
         });
-        
     }
-    
+
+    public ObservableCollection<BorrowRecord> ActiveLoans { get; } = new();
+
+    public ObservableCollection<BorrowRecord> BorrowHistoryRecords { get; } = new();
+
     public async Task RefreshAsync()
     {
         await LoadActiveLoansAsync();
@@ -110,7 +105,7 @@ public partial class CirculationViewModel : ObservableObject
                 !string.IsNullOrEmpty(l.SnapshotRrNumber) &&
                 l.SnapshotRrNumber.ToLower().Contains(query)).ToList();
         }
-        
+
         ActiveLoansTotalCount = allLoans.Count();
         ActiveLoansTotalPages = (int)Math.Ceiling((double)ActiveLoansTotalCount / PageSize);
         if (ActiveLoansTotalPages == 0) ActiveLoansTotalPages = 1;
@@ -151,7 +146,7 @@ public partial class CirculationViewModel : ObservableObject
         if (LoadedFile == null)
         {
             ShowStatus($"No record found with RR Number: {TargetRrNumber}", "#F44336");
-            IsFileLoaded  = false;
+            IsFileLoaded = false;
             CanIssue = false;
             CanReturn = false;
             return;
@@ -160,11 +155,11 @@ public partial class CirculationViewModel : ObservableObject
         IsFileLoaded = true;
         CanIssue = LoadedFile.CurrentStatus == "Available" && !LoadedFile.IsRemoved;
         CanReturn = LoadedFile.CurrentStatus == "Borrowed";
-        
+
         var prefs = _preferencesService.GetPreferences();
         var sectorInfo = prefs.Sectors.FirstOrDefault(s => s.Name == LoadedFile.Sector);
         LoadedFileColor = sectorInfo?.ColorHex ?? "#f2ca50";
-        
+
         ShowStatus($"Dossier {TargetRrNumber} secured. Awaiting directive.", "#4FC3F7");
     }
 
@@ -200,10 +195,10 @@ public partial class CirculationViewModel : ObservableObject
         {
             ClearActionDesk();
             _ = LoadActiveLoansAsync();
-            _ =  LoadHistoryAsync();
+            _ = LoadHistoryAsync();
         }
     }
-    
+
 
     [RelayCommand]
     private void ClearActionDesk()
@@ -214,7 +209,6 @@ public partial class CirculationViewModel : ObservableObject
         CanIssue = false;
         CanReturn = false;
         BorrowerName = string.Empty;
-
     }
 
     partial void OnHistorySearchQueryChanged(string value)
@@ -225,17 +219,15 @@ public partial class CirculationViewModel : ObservableObject
 
     private async Task LoadHistoryAsync()
     {
-        var result = await _archiveService.GetBorrowHistoryPaginatedAsync(HistorySearchQuery, IsHistoryActiveOnly, IsHistoryReturnedOnly, HistoryCurrentPage, PageSize);
-        
+        var result = await _archiveService.GetBorrowHistoryPaginatedAsync(HistorySearchQuery, IsHistoryActiveOnly,
+            IsHistoryReturnedOnly, HistoryCurrentPage, PageSize);
+
         HistoryTotalCount = result.TotalCount;
-        HistoryTotalPages = (int)Math.Ceiling((double)HistoryTotalCount/PageSize);
+        HistoryTotalPages = (int)Math.Ceiling((double)HistoryTotalCount / PageSize);
         if (HistoryTotalPages == 0) HistoryTotalPages = 1;
-        
+
         BorrowHistoryRecords.Clear();
-        foreach (var record in result.Items)
-        {
-            BorrowHistoryRecords.Add(record);
-        }
+        foreach (var record in result.Items) BorrowHistoryRecords.Add(record);
     }
 
 
@@ -282,14 +274,13 @@ public partial class CirculationViewModel : ObservableObject
     [RelayCommand]
     private void CloseDialog()
     {
-        IsDialogOpen =  false;
+        IsDialogOpen = false;
     }
-    
-    
+
+
     private void ShowStatus(string message, string color)
     {
         StatusMessage = message;
         StatusColor = color;
     }
-
 }

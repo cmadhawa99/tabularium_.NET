@@ -1,28 +1,25 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Security.Cryptography;
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using System.Threading.Tasks;
 using System.Windows;
+using ArchivumWpf.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using ArchivumWpf.Services;
 using Npgsql;
 
 namespace ArchivumWpf.ViewModels;
 
 public partial class SetupViewModel : ObservableObject
 {
-    
     [ObservableProperty] private string _dbHost = string.Empty;
     [ObservableProperty] private string _dbName = string.Empty;
-    [ObservableProperty] private string _dbUser = string.Empty;
     [ObservableProperty] private string _dbPassword = string.Empty;
-    
-    [ObservableProperty] private string _recoveryKeyInput = string.Empty;
+    [ObservableProperty] private string _dbUser = string.Empty;
     [ObservableProperty] private string _errorMessage = string.Empty;
-    [ObservableProperty] private bool _isProcessing = false;
+    [ObservableProperty] private bool _isProcessing;
+
+    [ObservableProperty] private string _recoveryKeyInput = string.Empty;
 
     [RelayCommand]
     private async Task RestoreSystemAsync(Window window)
@@ -35,11 +32,11 @@ public partial class SetupViewModel : ObservableObject
             return;
         }
 
-        string pastedKey = RecoveryKeyInput.Trim();
+        var pastedKey = RecoveryKeyInput.Trim();
 
         try
         {
-            byte[] keyBytes = Convert.FromBase64String(pastedKey);
+            var keyBytes = Convert.FromBase64String(pastedKey);
             if (keyBytes.Length != 32)
             {
                 ErrorMessage = "Invalid key length. The master key must be exactly 32 bytes.";
@@ -62,7 +59,6 @@ public partial class SetupViewModel : ObservableObject
             Username = _dbUser,
             Password = _dbPassword,
             Timeout = 5
-
         };
 
         try
@@ -76,12 +72,12 @@ public partial class SetupViewModel : ObservableObject
 
             if (result != null && result != DBNull.Value)
             {
-                string encryptedCanary = result.ToString() ?? "";
+                var encryptedCanary = result.ToString() ?? "";
 
                 try
                 {
                     var cryptoService = new CryptoService(pastedKey);
-                    string testDecryption = cryptoService.Decrypt(encryptedCanary);
+                    var testDecryption = cryptoService.Decrypt(encryptedCanary);
                 }
                 catch (CryptographicException)
                 {
@@ -92,30 +88,28 @@ public partial class SetupViewModel : ObservableObject
             }
             else
             {
-                ErrorMessage = "No security artifact found in the database. Are you sure you restored your PostgreSQL data backup? (An empty database cannot be 'restored'. If this is a fresh installation, please use 'Initialize New Archive' instead).";
+                ErrorMessage =
+                    "No security artifact found in the database. Are you sure you restored your PostgreSQL data backup? (An empty database cannot be 'restored'. If this is a fresh installation, please use 'Initialize New Archive' instead).";
                 IsProcessing = false;
                 return;
             }
 
             KeyVaultService.ImportKey(pastedKey);
 
-            string appSettingsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "appsettings.json");
-            
-            var jsonNode = File.Exists(appSettingsPath) 
-                ? JsonNode.Parse(File.ReadAllText(appSettingsPath)) 
+            var appSettingsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "appsettings.json");
+
+            var jsonNode = File.Exists(appSettingsPath)
+                ? JsonNode.Parse(File.ReadAllText(appSettingsPath))
                 : new JsonObject { ["ConnectionStrings"] = new JsonObject() };
 
-            if (jsonNode!["ConnectionStrings"] == null)
-            {
-                jsonNode["ConnectionStrings"] = new JsonObject();
-            }
-            
+            if (jsonNode!["ConnectionStrings"] == null) jsonNode["ConnectionStrings"] = new JsonObject();
+
             var cryptoWriter = new CryptoService(pastedKey);
             jsonNode["ConnectionStrings"]!["DefaultConnection"] = cryptoWriter.Encrypt(builder.ToString());
-            
+
             var options = new JsonSerializerOptions { WriteIndented = true };
             File.WriteAllText(appSettingsPath, jsonNode.ToJsonString(options));
-            
+
             MessageBox.Show("Database connected and Security Vault restored successfully!", "System Restored",
                 MessageBoxButton.OK, MessageBoxImage.Information);
 

@@ -1,8 +1,6 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Text.Json;
 using ArchivumWpf.Models;
-using Microsoft.Extensions.Configuration;
 
 namespace ArchivumWpf.Services;
 
@@ -29,14 +27,14 @@ public class PreferencesService : IPreferencesService
             SavePreferences(defaultPrefs);
             return defaultPrefs;
         }
-        
-        string json = File.ReadAllText(_filePath);
+
+        var json = File.ReadAllText(_filePath);
         return JsonSerializer.Deserialize<UserPreferences>(json) ?? new UserPreferences();
     }
 
     public void SavePreferences(UserPreferences prefs)
     {
-        string json = JsonSerializer.Serialize(prefs, new JsonSerializerOptions { WriteIndented = true });
+        var json = JsonSerializer.Serialize(prefs, new JsonSerializerOptions { WriteIndented = true });
         File.WriteAllText(_filePath, json);
     }
 }

@@ -1,21 +1,15 @@
-﻿using System;
-using System.Private.Windows;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
+using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using Microsoft.Win32;
+using ArchivumWpf.Models;
+using ArchivumWpf.Services;
+using ClosedXML.Excel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
-using ArchivumWpf.Services;
-using ArchivumWpf.Models;
-using ClosedXML.Excel;
-using DocumentFormat.OpenXml;
+using Microsoft.Win32;
 
 namespace ArchivumWpf.ViewModels;
 
@@ -24,83 +18,83 @@ public partial class ReportsViewModel : ObservableObject
     private readonly IArchiveService _archiveService;
     private readonly IPreferencesService _preferencesService;
 
-    public ObservableCollection<string> AvailableSectors { get; } = new();
-    public ObservableCollection<string> AvailableFileTypes { get; } = new();
-    public ObservableCollection<SectorItem> RawSectors { get; } = new();
-    [ObservableProperty] private bool _enableRowColors = false;
-
-    [ObservableProperty] private int _pageSize;
-    
-    [ObservableProperty] private int _currentPage = 1;
-    [ObservableProperty] private int _totalPageCount = 1;
-    [ObservableProperty] private int _totalResultCount = 0;
-
-    [ObservableProperty] private ObservableCollection<FileRecord> _previewRecords = new();
-
-    [ObservableProperty] private string _serialNumber = string.Empty;
-    [ObservableProperty] private string _rrNumber = string.Empty;
-    [ObservableProperty] private string _sector = string.Empty;
-    [ObservableProperty] private string _subjectNumber = string.Empty;
-    [ObservableProperty] private string _fileName = string.Empty;
-    [ObservableProperty] private string _fileType = string.Empty;
-    [ObservableProperty] private DateTime? _startDate;
-    [ObservableProperty] private DateTime? _endDate;
-    [ObservableProperty] private string _totalPages = string.Empty;
-    [ObservableProperty] private string _shelfNumber = string.Empty;
-    [ObservableProperty] private string _deckNumber = string.Empty;
-    [ObservableProperty] private string _fileNumber = string.Empty;
-    [ObservableProperty] private string _currentStatus = string.Empty;
-    [ObservableProperty] private bool? _isRemovedFilter = null; // Null means "Show Both"
-    [ObservableProperty] private DateTime? _toBeRemovedDate;
-    [ObservableProperty] private DateTime? _removedDate;
-
     //
     [ObservableProperty] private DateTime? _addedDateFrom;
-    [ObservableProperty] private DateTime? _addedTimeFrom;
     [ObservableProperty] private DateTime? _addedDateTo;
+    [ObservableProperty] private DateTime? _addedTimeFrom;
     [ObservableProperty] private DateTime? _addedTimeTo;
+
+    [ObservableProperty] private int _currentPage = 1;
+    [ObservableProperty] private string _currentStatus = string.Empty;
+    [ObservableProperty] private string _deckNumber = string.Empty;
+    [ObservableProperty] private bool _enableRowColors;
+    [ObservableProperty] private DateTime? _endDate;
+    [ObservableProperty] private string _fileName = string.Empty;
+    [ObservableProperty] private string _fileNumber = string.Empty;
+    [ObservableProperty] private string _fileType = string.Empty;
 
     // exports
     [ObservableProperty] private bool _incAddedDate = true;
-    [ObservableProperty] private bool _incSerial = true;
+    [ObservableProperty] private bool _incDeck = true;
+    [ObservableProperty] private bool _incEndDate = true;
+    [ObservableProperty] private bool _incFileName = true;
+    [ObservableProperty] private bool _incFileNum = true;
+    [ObservableProperty] private bool _incFileType = true;
+    [ObservableProperty] private bool _incIsRemoved = true;
+    [ObservableProperty] private bool _incPages = true;
+    [ObservableProperty] private bool _incRemovedDate = true;
     [ObservableProperty] private bool _incRrNumber = true;
     [ObservableProperty] private bool _incSector = true;
-    [ObservableProperty] private bool _incSubject = true;
-    [ObservableProperty] private bool _incFileName = true;
-    [ObservableProperty] private bool _incFileType = true;
-    [ObservableProperty] private bool _incStartDate = true;
-    [ObservableProperty] private bool _incEndDate = true;
-    [ObservableProperty] private bool _incPages = true;
+    [ObservableProperty] private bool _incSerial = true;
     [ObservableProperty] private bool _incShelf = true;
-    [ObservableProperty] private bool _incDeck = true;
-    [ObservableProperty] private bool _incFileNum = true;
+    [ObservableProperty] private bool _incStartDate = true;
     [ObservableProperty] private bool _incStatus = true;
+    [ObservableProperty] private bool _incSubject = true;
     [ObservableProperty] private bool _incToBeRemovedDate = true;
-    [ObservableProperty] private bool _incRemovedDate = true;
-    [ObservableProperty] private bool _incIsRemoved = true;
+    [ObservableProperty] private bool _isProcessing;
+    [ObservableProperty] private bool? _isRemovedFilter; // Null means "Show Both"
+
+    [ObservableProperty] private int _pageSize;
+
+    [ObservableProperty] private ObservableCollection<FileRecord> _previewRecords = new();
+    [ObservableProperty] private DateTime? _removedDate;
+    [ObservableProperty] private string _rrNumber = string.Empty;
+    [ObservableProperty] private string _sector = string.Empty;
+
+    [ObservableProperty] private string _serialNumber = string.Empty;
+    [ObservableProperty] private string _shelfNumber = string.Empty;
+    [ObservableProperty] private DateTime? _startDate;
+    [ObservableProperty] private string _statusColor = "Gray";
 
     [ObservableProperty] private string _statusMessage = "Ready. Configure your report below.";
-    [ObservableProperty] private string _statusColor = "Gray";
-    [ObservableProperty] private bool _isProcessing = false;
+    [ObservableProperty] private string _subjectNumber = string.Empty;
+    [ObservableProperty] private DateTime? _toBeRemovedDate;
+    [ObservableProperty] private int _totalPageCount = 1;
+    [ObservableProperty] private string _totalPages = string.Empty;
+    [ObservableProperty] private int _totalResultCount;
 
     public ReportsViewModel(IArchiveService archiveService, IPreferencesService preferencesService)
     {
         _archiveService = archiveService;
         _preferencesService = preferencesService;
-        
+
         PageSize = _preferencesService.GetPreferences().DefaultPaginationSize;
-        
+
         LoadDropdowns();
         _ = UpdatePreviewAsync();
         WeakReferenceMessenger.Default.Register<SettingsChangedMessage>(this, (recipient, message) =>
-            {
-                LoadDropdowns();
-                
-                PageSize = _preferencesService.GetPreferences().DefaultPaginationSize;
-                CurrentPage = 1;
-                _ = UpdatePreviewAsync();
-            });
+        {
+            LoadDropdowns();
+
+            PageSize = _preferencesService.GetPreferences().DefaultPaginationSize;
+            CurrentPage = 1;
+            _ = UpdatePreviewAsync();
+        });
     }
+
+    public ObservableCollection<string> AvailableSectors { get; } = new();
+    public ObservableCollection<string> AvailableFileTypes { get; } = new();
+    public ObservableCollection<SectorItem> RawSectors { get; } = new();
 
     private void LoadDropdowns()
     {
@@ -119,7 +113,7 @@ public partial class ReportsViewModel : ObservableObject
         AvailableFileTypes.Add("");
         foreach (var t in prefs.FileTypes) AvailableFileTypes.Add(t);
     }
-    
+
     public async Task RefreshAsync()
     {
         LoadDropdowns();
@@ -127,29 +121,106 @@ public partial class ReportsViewModel : ObservableObject
     }
 
 
+    partial void OnSerialNumberChanged(string value)
+    {
+        TriggerFilterSearch();
+    }
 
-    partial void OnSerialNumberChanged(string value) => TriggerFilterSearch();
-    partial void OnRrNumberChanged(string value) => TriggerFilterSearch();
-    partial void OnSectorChanged(string value) => TriggerFilterSearch();
-    partial void OnSubjectNumberChanged(string value) => TriggerFilterSearch();
-    partial void OnFileNameChanged(string value) => TriggerFilterSearch();
-    partial void OnFileTypeChanged(string value) => TriggerFilterSearch();
-    partial void OnStartDateChanged(DateTime? value) => TriggerFilterSearch();
-    partial void OnEndDateChanged(DateTime? value) => TriggerFilterSearch();
-    partial void OnTotalPagesChanged(string value) => TriggerFilterSearch();
-    partial void OnShelfNumberChanged(string value) => TriggerFilterSearch();
-    partial void OnDeckNumberChanged(string value) => TriggerFilterSearch();
-    partial void OnFileNumberChanged(string value) => TriggerFilterSearch();
-    partial void OnCurrentStatusChanged(string value) => TriggerFilterSearch();
-    partial void OnIsRemovedFilterChanged(bool? value) => TriggerFilterSearch();
-    partial void OnToBeRemovedDateChanged(DateTime? value) => TriggerFilterSearch();
-    partial void OnRemovedDateChanged(DateTime? value) => TriggerFilterSearch();
+    partial void OnRrNumberChanged(string value)
+    {
+        TriggerFilterSearch();
+    }
+
+    partial void OnSectorChanged(string value)
+    {
+        TriggerFilterSearch();
+    }
+
+    partial void OnSubjectNumberChanged(string value)
+    {
+        TriggerFilterSearch();
+    }
+
+    partial void OnFileNameChanged(string value)
+    {
+        TriggerFilterSearch();
+    }
+
+    partial void OnFileTypeChanged(string value)
+    {
+        TriggerFilterSearch();
+    }
+
+    partial void OnStartDateChanged(DateTime? value)
+    {
+        TriggerFilterSearch();
+    }
+
+    partial void OnEndDateChanged(DateTime? value)
+    {
+        TriggerFilterSearch();
+    }
+
+    partial void OnTotalPagesChanged(string value)
+    {
+        TriggerFilterSearch();
+    }
+
+    partial void OnShelfNumberChanged(string value)
+    {
+        TriggerFilterSearch();
+    }
+
+    partial void OnDeckNumberChanged(string value)
+    {
+        TriggerFilterSearch();
+    }
+
+    partial void OnFileNumberChanged(string value)
+    {
+        TriggerFilterSearch();
+    }
+
+    partial void OnCurrentStatusChanged(string value)
+    {
+        TriggerFilterSearch();
+    }
+
+    partial void OnIsRemovedFilterChanged(bool? value)
+    {
+        TriggerFilterSearch();
+    }
+
+    partial void OnToBeRemovedDateChanged(DateTime? value)
+    {
+        TriggerFilterSearch();
+    }
+
+    partial void OnRemovedDateChanged(DateTime? value)
+    {
+        TriggerFilterSearch();
+    }
 
     //
-    partial void OnAddedDateFromChanged(DateTime? value) => TriggerFilterSearch();
-    partial void OnAddedTimeFromChanged(DateTime? value) => TriggerFilterSearch();
-    partial void OnAddedDateToChanged(DateTime? value) => TriggerFilterSearch();
-    partial void OnAddedTimeToChanged(DateTime? value) => TriggerFilterSearch();
+    partial void OnAddedDateFromChanged(DateTime? value)
+    {
+        TriggerFilterSearch();
+    }
+
+    partial void OnAddedTimeFromChanged(DateTime? value)
+    {
+        TriggerFilterSearch();
+    }
+
+    partial void OnAddedDateToChanged(DateTime? value)
+    {
+        TriggerFilterSearch();
+    }
+
+    partial void OnAddedTimeToChanged(DateTime? value)
+    {
+        TriggerFilterSearch();
+    }
 
     private void TriggerFilterSearch()
     {
@@ -163,36 +234,36 @@ public partial class ReportsViewModel : ObservableObject
         if (!time.HasValue) return date.Value.Date;
         return date.Value.Date + time.Value.TimeOfDay;
     }
-    
+
     private async Task UpdatePreviewAsync()
     {
-
         var combinedFrom = CombineDateTime(AddedDateFrom, AddedTimeFrom);
         var combineTo = CombineDateTime(AddedDateTo, AddedTimeTo);
-        
+
         var result = await _archiveService.GetFilteredPreviewPaginatedAsync(
-            SerialNumber, RrNumber, Sector, SubjectNumber, FileName, FileType, StartDate, EndDate, 
-            TotalPages, ShelfNumber, DeckNumber, FileNumber, CurrentStatus, IsRemovedFilter, ToBeRemovedDate, RemovedDate,
+            SerialNumber, RrNumber, Sector, SubjectNumber, FileName, FileType, StartDate, EndDate,
+            TotalPages, ShelfNumber, DeckNumber, FileNumber, CurrentStatus, IsRemovedFilter, ToBeRemovedDate,
+            RemovedDate,
             combinedFrom, combineTo,
             CurrentPage, PageSize);
 
         TotalResultCount = result.TotalCount;
         TotalPageCount = (int)Math.Ceiling((double)TotalResultCount / PageSize);
         if (TotalPageCount == 0) TotalPageCount = 1;
-        
+
         var prefs = _preferencesService.GetPreferences();
         var colorMap = prefs.Sectors.ToDictionary(s => s.Name, s => s.ColorHex);
-        
+
         PreviewRecords.Clear();
         foreach (var file in result.Items)
         {
             file.SectorColorHex = colorMap.ContainsKey(file.Sector) ? colorMap[file.Sector] : "#8f9bb3";
             PreviewRecords.Add(file);
         }
-        
+
         ShowStatus($"Previewing page {CurrentPage} of {TotalPageCount}. Total matches: {TotalResultCount}", "Gray");
     }
-    
+
     // paginaton
 
     [RelayCommand]
@@ -214,34 +285,36 @@ public partial class ReportsViewModel : ObservableObject
             await UpdatePreviewAsync();
         }
     }
-    
+
     // ----
-    
+
 
     [RelayCommand]
     private async Task ExportCsvAsync()
     {
-        var dialog = new SaveFileDialog { Filter = "CSV File (*.csv)|*.csv", FileName = $"Custom_Report_{DateTime.Now:yyyyMMdd}.csv" };
+        var dialog = new SaveFileDialog
+            { Filter = "CSV File (*.csv)|*.csv", FileName = $"Custom_Report_{DateTime.Now:yyyyMMdd}.csv" };
         if (dialog.ShowDialog() != true) return;
 
         IsProcessing = true;
         ShowStatus("Generating CSV...", "Yellow");
-        
-        string timePref = _preferencesService.GetPreferences().TimeFormat;
-        string dtFormat = timePref == "24-Hour" ? "yyyy-MM-dd HH:mm" : "yyyy-MM-dd hh:mm tt";
-        
+
+        var timePref = _preferencesService.GetPreferences().TimeFormat;
+        var dtFormat = timePref == "24-Hour" ? "yyyy-MM-dd HH:mm" : "yyyy-MM-dd hh:mm tt";
+
         var combinedFrom = CombineDateTime(AddedDateFrom, AddedTimeFrom);
         var combinedTo = CombineDateTime(AddedDateTo, AddedTimeTo);
-        
+
         var fullData = await _archiveService.GetFullFilteredExportAsync(
-            SerialNumber, RrNumber, Sector, SubjectNumber, FileName, FileType, StartDate, EndDate, 
-            TotalPages, ShelfNumber, DeckNumber, FileNumber, CurrentStatus, IsRemovedFilter, ToBeRemovedDate, RemovedDate,
+            SerialNumber, RrNumber, Sector, SubjectNumber, FileName, FileType, StartDate, EndDate,
+            TotalPages, ShelfNumber, DeckNumber, FileNumber, CurrentStatus, IsRemovedFilter, ToBeRemovedDate,
+            RemovedDate,
             combinedFrom, combinedTo);
 
         var csv = new StringBuilder();
         var headers = new List<string>();
-        
-        if(IncAddedDate) headers.Add("Added Date/Time");
+
+        if (IncAddedDate) headers.Add("Added Date/Time");
         if (IncSerial) headers.Add("Serial Number");
         if (IncRrNumber) headers.Add("RR Number");
         if (IncSector) headers.Add("Sector");
@@ -264,9 +337,9 @@ public partial class ReportsViewModel : ObservableObject
         foreach (var file in fullData)
         {
             var row = new List<string>();
-            string safeName = file.FileName?.Replace(",", " ") ?? ""; 
+            var safeName = file.FileName?.Replace(",", " ") ?? "";
 
-            if (IncAddedDate) row.Add(file.AddedDateTime.ToString(dtFormat, System.Globalization.CultureInfo.InvariantCulture));
+            if (IncAddedDate) row.Add(file.AddedDateTime.ToString(dtFormat, CultureInfo.InvariantCulture));
             if (IncSerial) row.Add(file.SerialNumber.ToString());
             if (IncRrNumber) row.Add(file.RrNumber ?? "");
             if (IncSector) row.Add(file.Sector ?? "");
@@ -276,9 +349,9 @@ public partial class ReportsViewModel : ObservableObject
             if (IncStartDate) row.Add(file.StartDate?.ToString("yyyy-MM-dd") ?? "");
             if (IncEndDate) row.Add(file.EndDate?.ToString("yyyy-MM-dd") ?? "");
             if (IncPages) row.Add(file.TotalPages?.ToString() ?? "");
-            if (IncShelf) row.Add(file.ShelfNumber?.ToString() ?? "");
-            if (IncDeck) row.Add(file.DeckNumber?.ToString() ?? "");
-            if (IncFileNum) row.Add(file.FileNumber?.ToString() ?? "");
+            if (IncShelf) row.Add(file.ShelfNumber ?? "");
+            if (IncDeck) row.Add(file.DeckNumber ?? "");
+            if (IncFileNum) row.Add(file.FileNumber ?? "");
             if (IncStatus) row.Add(file.CurrentStatus ?? "");
             if (IncToBeRemovedDate) row.Add(file.ToBeRemovedDate?.ToString("yyyy-MM-dd") ?? "");
             if (IncRemovedDate) row.Add(file.RemovedDate?.ToString("yyyy-MM-dd") ?? "");
@@ -289,7 +362,7 @@ public partial class ReportsViewModel : ObservableObject
 
         try
         {
-            await File.WriteAllTextAsync(dialog.FileName, csv.ToString(), new System.Text.UTF8Encoding(true));
+            await File.WriteAllTextAsync(dialog.FileName, csv.ToString(), new UTF8Encoding(true));
             ShowStatus($"Successfully exported {fullData.Count} records to CSV.", "#4CAF50");
         }
         catch (IOException)
@@ -308,38 +381,40 @@ public partial class ReportsViewModel : ObservableObject
     [RelayCommand]
     private async Task ExportExcel()
     {
-        var dialog = new SaveFileDialog { Filter = "Excel File (*.xlsx)|*.xlsx", FileName = $"Custom_Report_{DateTime.Now:yyyyMMdd}.xlsx" };
+        var dialog = new SaveFileDialog
+            { Filter = "Excel File (*.xlsx)|*.xlsx", FileName = $"Custom_Report_{DateTime.Now:yyyyMMdd}.xlsx" };
         if (dialog.ShowDialog() != true) return;
-        
+
         // pop up box added
-        
-        MessageBoxResult result = MessageBox.Show (
-            "Do you want to export this file with Sector Color Highlighting applied to the rows?", 
+
+        var result = MessageBox.Show(
+            "Do you want to export this file with Sector Color Highlighting applied to the rows?",
             "Excel Export Options", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
 
-        
+
         if (result == MessageBoxResult.Cancel) return;
-        bool useColors = (result == MessageBoxResult.Yes);
-        
+        var useColors = result == MessageBoxResult.Yes;
+
         IsProcessing = true;
         ShowStatus("Generating Excel file...", "Yellow");
-        
-        string timePref = _preferencesService.GetPreferences().TimeFormat;
-        string dtFormat = timePref == "24-Hour" ? "yyyy-MM-dd HH:mm" : "yyyy-MM-dd hh:mm tt";
+
+        var timePref = _preferencesService.GetPreferences().TimeFormat;
+        var dtFormat = timePref == "24-Hour" ? "yyyy-MM-dd HH:mm" : "yyyy-MM-dd hh:mm tt";
 
         var combinedFrom = CombineDateTime(AddedDateFrom, AddedTimeFrom);
         var combinedTo = CombineDateTime(AddedDateTo, AddedDateFrom);
-        
+
         var fullData = await _archiveService.GetFullFilteredExportAsync(
-            SerialNumber, RrNumber, Sector, SubjectNumber, FileName, FileType, StartDate, EndDate, 
-            TotalPages, ShelfNumber, DeckNumber, FileNumber, CurrentStatus, IsRemovedFilter, ToBeRemovedDate, RemovedDate,
+            SerialNumber, RrNumber, Sector, SubjectNumber, FileName, FileType, StartDate, EndDate,
+            TotalPages, ShelfNumber, DeckNumber, FileNumber, CurrentStatus, IsRemovedFilter, ToBeRemovedDate,
+            RemovedDate,
             combinedFrom, combinedTo);
 
         using (var workbook = new XLWorkbook())
         {
             var ws = workbook.Worksheets.Add("Vault Records");
-            
-            string title = $"ලේඛනාගාර ලිපි ගොණු වාර්තාව - {DateTime.Now:yyyy/MM/dd - hh:mm tt}";
+
+            var title = $"ලේඛනාගාර ලිපි ගොණු වාර්තාව - {DateTime.Now:yyyy/MM/dd - hh:mm tt}";
             ws.Cell("A1").Value = title;
             ws.Range("A1:K1").Merge();
             ws.Cell("A1").Style.Font.Bold = true;
@@ -347,8 +422,8 @@ public partial class ReportsViewModel : ObservableObject
             ws.Cell("A1").Style.Font.FontColor = XLColor.DarkBlue;
             ws.Cell("A1").Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
 
-            int headerRow = 3;
-            int col = 1;
+            var headerRow = 3;
+            var col = 1;
 
             if (IncAddedDate) ws.Cell(headerRow, col++).Value = "Added Timestamp";
             if (IncSerial) ws.Cell(headerRow, col++).Value = "Serial Number";
@@ -373,14 +448,15 @@ public partial class ReportsViewModel : ObservableObject
             headerRange.Style.Fill.BackgroundColor = XLColor.DarkSlateGray;
             headerRange.Style.Font.FontColor = XLColor.White;
 
-            int startDataRow = 4;
-            for (int r = 0; r < fullData.Count; r++)
+            var startDataRow = 4;
+            for (var r = 0; r < fullData.Count; r++)
             {
-                int c = 1;
+                var c = 1;
                 var file = fullData[r];
                 var row = r + startDataRow;
 
-                if (IncAddedDate) ws.Cell(row, c++).Value = file.AddedDateTime.ToString(dtFormat, System.Globalization.CultureInfo.InvariantCulture);
+                if (IncAddedDate)
+                    ws.Cell(row, c++).Value = file.AddedDateTime.ToString(dtFormat, CultureInfo.InvariantCulture);
                 if (IncSerial) ws.Cell(row, c++).Value = file.SerialNumber;
                 if (IncRrNumber) ws.Cell(row, c++).Value = file.RrNumber;
                 if (IncSector) ws.Cell(row, c++).Value = file.Sector;
@@ -403,16 +479,15 @@ public partial class ReportsViewModel : ObservableObject
                 {
                     var match = RawSectors.FirstOrDefault(s => s.Name == file.Sector);
                     if (match != null && !string.IsNullOrWhiteSpace(match.ColorHex))
-                    {
                         try
                         {
                             var xlColor = XLColor.FromHtml(match.ColorHex);
                             ws.Range(row, 1, row, col - 1).Style.Fill.BackgroundColor = xlColor;
                         }
-                        catch{}
-                    }
+                        catch
+                        {
+                        }
                 }
-                
             }
 
             ws.Columns().AdjustToContents();
@@ -424,7 +499,6 @@ public partial class ReportsViewModel : ObservableObject
                 dataGrid.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
                 dataGrid.Style.Border.InsideBorderColor = XLColor.LightGray;
                 dataGrid.Style.Border.OutsideBorderColor = XLColor.Gray;
-                
             }
 
             try
@@ -434,26 +508,26 @@ public partial class ReportsViewModel : ObservableObject
             }
             catch (IOException)
             {
-                MessageBox.Show("The file is currently open in another program (like Excel). Please close the file and try again.", 
+                MessageBox.Show(
+                    "The file is currently open in another program (like Excel). Please close the file and try again.",
                     "File in Use", MessageBoxButton.OK, MessageBoxImage.Error);
                 ShowStatus("Export failed: File is in use.", "#F44336");
             }
-            
-
         }
 
-        
+
         IsProcessing = false;
     }
 
     [RelayCommand]
     private async Task BackupSqlAsync()
     {
-        var dialog = new SaveFileDialog { 
-            Filter = "PostgreSQL Backup File (*.backup)|*.backup", 
+        var dialog = new SaveFileDialog
+        {
+            Filter = "PostgreSQL Backup File (*.backup)|*.backup",
             FileName = $"Full_Backup_{DateTime.Now:yyyyMMdd}.backup"
         };
-        
+
         if (dialog.ShowDialog() != true) return;
 
         IsProcessing = true;
@@ -466,20 +540,45 @@ public partial class ReportsViewModel : ObservableObject
     [RelayCommand]
     private void ClearFilters()
     {
-        SerialNumber = string.Empty; RrNumber = string.Empty; Sector = string.Empty;
-        SubjectNumber = string.Empty; FileName = string.Empty; FileType = string.Empty;
-        StartDate = null; EndDate = null; TotalPages = string.Empty;
-        ShelfNumber = string.Empty; DeckNumber = string.Empty; FileNumber = string.Empty;
-        CurrentStatus = string.Empty; IsRemovedFilter = null; ToBeRemovedDate = null; RemovedDate = null;
+        SerialNumber = string.Empty;
+        RrNumber = string.Empty;
+        Sector = string.Empty;
+        SubjectNumber = string.Empty;
+        FileName = string.Empty;
+        FileType = string.Empty;
+        StartDate = null;
+        EndDate = null;
+        TotalPages = string.Empty;
+        ShelfNumber = string.Empty;
+        DeckNumber = string.Empty;
+        FileNumber = string.Empty;
+        CurrentStatus = string.Empty;
+        IsRemovedFilter = null;
+        ToBeRemovedDate = null;
+        RemovedDate = null;
 
-        AddedDateFrom = null; AddedTimeFrom = null;
-        AddedDateTo = null; AddedTimeTo = null;
-        
-        IncSerial = true; IncRrNumber = true; IncSector = true; IncSubject = true;
-        IncFileName = true; IncFileType = true; IncStartDate = true; IncEndDate = true;
-        IncPages = true; IncShelf = true; IncDeck = true; IncFileNum = true; IncStatus = true;
-        IncToBeRemovedDate = true; IncRemovedDate = true; IncIsRemoved = true;
-        
+        AddedDateFrom = null;
+        AddedTimeFrom = null;
+        AddedDateTo = null;
+        AddedTimeTo = null;
+
+        IncSerial = true;
+        IncRrNumber = true;
+        IncSector = true;
+        IncSubject = true;
+        IncFileName = true;
+        IncFileType = true;
+        IncStartDate = true;
+        IncEndDate = true;
+        IncPages = true;
+        IncShelf = true;
+        IncDeck = true;
+        IncFileNum = true;
+        IncStatus = true;
+        IncToBeRemovedDate = true;
+        IncRemovedDate = true;
+        IncIsRemoved = true;
+
         TriggerFilterSearch();
     }
 
@@ -494,11 +593,10 @@ public partial class ReportsViewModel : ObservableObject
 
 public partial class TimeSelector : ObservableObject
 {
+    [ObservableProperty] private string _amPm = "__";
     [ObservableProperty] private string _hour = "__";
     [ObservableProperty] private string _minute = "__";
-    [ObservableProperty] private string _amPm = "__";
-    
-    public ObservableCollection<string> Hours { get; } = new() { "--", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12" };
-    
-    
+
+    public ObservableCollection<string> Hours { get; } = new()
+        { "--", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12" };
 }

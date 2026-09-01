@@ -1,30 +1,31 @@
-﻿using System.Threading.Tasks;
+﻿using System.IO;
+using System.Windows;
+using ArchivumWpf.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using ArchivumWpf.Services;
+using Strings = ArchivumWpf.Localization.Strings;
 
 namespace ArchivumWpf.ViewModels;
 
 public partial class MainViewModel : ObservableObject
 {
-    [ObservableProperty] private ObservableObject _currentPageViewModel;
-    [ObservableProperty] private bool _isDarkMode = true;
-    [ObservableProperty] private bool _hasDisposalAlert = false;
-    [ObservableProperty] private string _disposalAlertText = string.Empty;
-    
-    [ObservableProperty] private string _activePage = "Dashboard";
-
     private readonly IArchiveService _archiveService;
-    private readonly DashboardViewModel _dashboardVm;
-    private readonly SearchViewModel _searchVm;
     private readonly CirculationViewModel _circulationVm;
-    private readonly EntryViewModel _entryVm;
-    private readonly ReportsViewModel _reportsVm;
-    private readonly SettingsViewModel _settingsVm;
+    private readonly DashboardViewModel _dashboardVm;
     private readonly DisposalViewModel _disposalVm;
     private readonly DocumentsSearchViewModel _documentsSearchVm;
+    private readonly EntryViewModel _entryVm;
 
     private readonly IPreferencesService _preferencesService;
+    private readonly ReportsViewModel _reportsVm;
+    private readonly SearchViewModel _searchVm;
+    private readonly SettingsViewModel _settingsVm;
+
+    [ObservableProperty] private string _activePage = "Dashboard";
+    [ObservableProperty] private ObservableObject _currentPageViewModel;
+    [ObservableProperty] private string _disposalAlertText = string.Empty;
+    [ObservableProperty] private bool _hasDisposalAlert;
+    [ObservableProperty] private bool _isDarkMode = true;
 
     public MainViewModel(
         IArchiveService archiveService,
@@ -37,7 +38,7 @@ public partial class MainViewModel : ObservableObject
         SettingsViewModel settingsVm,
         DisposalViewModel disposalVm,
         DocumentsSearchViewModel documentsSearchVm
-        )
+    )
     {
         _archiveService = archiveService;
         _preferencesService = preferencesService;
@@ -49,7 +50,7 @@ public partial class MainViewModel : ObservableObject
         _settingsVm = settingsVm;
         _disposalVm = disposalVm;
         _documentsSearchVm = documentsSearchVm;
-        
+
         _currentPageViewModel = _dashboardVm;
         _ = CheckDisposalAlertsAsync();
         _ = RunDailyAutoBackupAsync();
@@ -57,10 +58,10 @@ public partial class MainViewModel : ObservableObject
 
     private async Task CheckDisposalAlertsAsync()
     {
-        int dueCount = await _archiveService.GetTodayDisposalCountAsync();
+        var dueCount = await _archiveService.GetTodayDisposalCountAsync();
         if (dueCount > 0)
         {
-            DisposalAlertText = $"⚠️ {dueCount} record(s) are scheduled to be removed today!";
+            DisposalAlertText = $"⚠️ {string.Format(Strings.Main_DisposalAlertFormat, dueCount)}";
             HasDisposalAlert = true;
         }
     }
@@ -76,69 +77,77 @@ public partial class MainViewModel : ObservableObject
     [RelayCommand]
     private async Task NavigateToDashboardAsync()
     {
-        CurrentPageViewModel = _dashboardVm; ActivePage = "Dashboard";
+        CurrentPageViewModel = _dashboardVm;
+        ActivePage = "Dashboard";
         await _dashboardVm.RefreshAsync();
     }
 
     [RelayCommand]
     private async Task NavigateToSearchAsync()
     {
-        CurrentPageViewModel = _searchVm; ActivePage = "Search";
+        CurrentPageViewModel = _searchVm;
+        ActivePage = "Search";
         await _searchVm.RefreshAsync();
     }
 
     [RelayCommand]
     private async Task NavigateToCirculationAsync()
     {
-        CurrentPageViewModel = _circulationVm; ActivePage = "Circulation";
+        CurrentPageViewModel = _circulationVm;
+        ActivePage = "Circulation";
         await _circulationVm.RefreshAsync();
     }
 
     [RelayCommand]
     private async Task NavigateToAddFileAsync()
     {
-        CurrentPageViewModel = _entryVm; ActivePage = "Entry";
+        CurrentPageViewModel = _entryVm;
+        ActivePage = "Entry";
         await _entryVm.RefreshAsync();
     }
 
     [RelayCommand]
     private async Task NavigateToReportsAsync()
     {
-        CurrentPageViewModel = _reportsVm; ActivePage = "Reports";
+        CurrentPageViewModel = _reportsVm;
+        ActivePage = "Reports";
         await _reportsVm.RefreshAsync();
     }
 
     [RelayCommand]
     private void NavigateToSettings()
     {
-        CurrentPageViewModel = _settingsVm; ActivePage =  "Settings";
+        CurrentPageViewModel = _settingsVm;
+        ActivePage = "Settings";
     }
 
     [RelayCommand]
     private async Task NavigateToDisposalAsync()
     {
-        CurrentPageViewModel = _disposalVm; ActivePage = "Disposal";
+        CurrentPageViewModel = _disposalVm;
+        ActivePage = "Disposal";
         await _disposalVm.RefreshAsync();
     }
 
     [RelayCommand]
     private async Task NavigateToDocumentsAsync()
     {
-        CurrentPageViewModel = _documentsSearchVm; ActivePage = "Documents";
+        CurrentPageViewModel = _documentsSearchVm;
+        ActivePage = "Documents";
         await _documentsSearchVm.RefreshAsync();
     }
-    
+
 
     [RelayCommand]
     private void ToggleTheme()
     {
         IsDarkMode = !IsDarkMode;
-        var app = System.Windows.Application.Current;
-        var dict = new System.Windows.ResourceDictionary
+        var app = Application.Current;
+        var dict = new ResourceDictionary
         {
-            Source = new System.Uri(IsDarkMode ? "Themes/DarkTheme.xaml" : "Themes/LightTheme.xaml", System.UriKind.Relative)
+            Source = new Uri(IsDarkMode ? "Themes/DarkTheme.xaml" : "Themes/LightTheme.xaml", UriKind.Relative)
         };
-        
+
         app.Resources.MergedDictionaries.Clear();
         app.Resources.MergedDictionaries.Add(dict);
     }
@@ -150,30 +159,29 @@ public partial class MainViewModel : ObservableObject
             var prefs = _preferencesService.GetPreferences();
 
             if (prefs.AutoBackupEnabled && !string.IsNullOrWhiteSpace(prefs.AutoBackupDirectory) &&
-                System.IO.Directory.Exists(prefs.AutoBackupDirectory))
+                Directory.Exists(prefs.AutoBackupDirectory))
             {
-                string todayBackupFileName = $"ArchiveDB_AutoBackup_{DateTime.Now:yyyyMMdd}.backup";
-                string fullBackupPath = System.IO.Path.Combine(prefs.AutoBackupDirectory, todayBackupFileName);
+                var todayBackupFileName = $"ArchiveDB_AutoBackup_{DateTime.Now:yyyyMMdd}.backup";
+                var fullBackupPath = Path.Combine(prefs.AutoBackupDirectory, todayBackupFileName);
 
-                if (!System.IO.File.Exists(fullBackupPath))
+                if (!File.Exists(fullBackupPath))
                 {
                     var result = await _archiveService.BackupDatabaseAsync(fullBackupPath);
-                    
+
                     if (!result.Success)
-                    {
-                        System.Windows.MessageBox.Show(
-                            $"Auto-Backup Failed!\n\nDatabase Error: {result.Message}\n\n", 
-                            "Backup Error", 
-                            System.Windows.MessageBoxButton.OK, 
-                            System.Windows.MessageBoxImage.Warning);
-                    }
+                        MessageBox.Show(
+                            $"Auto-Backup Failed!\n\nDatabase Error: {result.Message}\n\n",
+                            "Backup Error",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Warning);
                 }
             }
         }
 
         catch (Exception ex)
         {
-            System.Windows.MessageBox.Show($"Auto-Backup Exception: {ex.Message}", "Backup Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+            MessageBox.Show($"Auto-Backup Exception: {ex.Message}", "Backup Error", MessageBoxButton.OK,
+                MessageBoxImage.Error);
         }
     }
 }

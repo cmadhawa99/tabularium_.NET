@@ -6,10 +6,14 @@
         <value>1.3</value>
     </resheader>
     <resheader name="reader">
-        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
     </resheader>
     <resheader name="writer">
-        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
     </resheader>
     <data name="Settings_MainTitle" xml:space="preserve">
         <value>පද්ධති සැකසුම් සහ වින්‍යාස කිරීම්</value>
@@ -306,7 +310,7 @@
         <value>අංශය</value>
     </data>
     <data name="Dis_ColActions" xml:space="preserve">
-        <value>ක්‍රියාවන්</value>
+        <value>ක්‍රියාකාරකම්</value>
     </data>
     <data name="Dis_BtnRecover" xml:space="preserve">
         <value>ප්‍රතිසාධනය කරන්න</value>
@@ -429,7 +433,7 @@
         <value>තත්ත්වය</value>
     </data>
     <data name="Sea_ColActions" xml:space="preserve">
-        <value>ක්‍රියාවන්</value>
+        <value>ක්‍රියාකාරකම්</value>
     </data>
     <data name="Sea_ShowingMatchingResults" xml:space="preserve">
         <value>ගැළපෙන ප්‍රතිඵල පෙන්වයි</value>
@@ -931,5 +935,46 @@
     </data>
     <data name="Sea_FilterBorrowed" xml:space="preserve">
         <value>ලබා දුන්</value>
+    </data>
+    <data name="Main_DisposalAlertFormat" xml:space="preserve">
+        <value>අද දින වාර්තා {0}ක් ඉවත් කිරීමට නියමිතයි!</value>
+    </data>
+    <data name="Doc_ColRrNumber" xml:space="preserve">
+        <value>RR අංකය</value>
+    </data>
+    <data name="Doc_ColActions" xml:space="preserve">
+        <value>ක්‍රියාකාරකම්</value>
+    </data>
+    <data name="Doc_BtnExport" xml:space="preserve">
+        <value>නිර්යාත කිරීම</value>
+    </data>
+    <data name="Doc_BtnImport" xml:space="preserve">
+        <value>ආයාත කරන්න</value>
+    </data>
+    <data name="Doc_BtnRemove" xml:space="preserve">
+        <value>ඉවත් කිරීම</value>
+    </data>
+    <data name="Doc_ConfirmRemoveMsg" xml:space="preserve">
+        <value>'{0}' ලිපිගොනුව ස්ථිරවම ඉවත් කිරීමට අවශ්‍ය බව ඔබට විශ්වාසද?
+
+මෙමඟින් සංකේතනය කළ ලිපිගොනුව ගබඩාවෙන් මකා දැමෙයි. මෙම ක්‍රියාව ආපසු හැරවිය නොහැක.</value>
+    </data>
+    <data name="Doc_ConfirmRemoveTitle" xml:space="preserve">
+        <value>ඉවත් කිරීම තහවුරු කරන්න</value>
+    </data>
+    <data name="Doc_ColName" xml:space="preserve">
+        <value> නම</value>
+    </data>
+    <data name="Doc_BtnManage" xml:space="preserve">
+        <value>ලිපිගොනු කළමනාකරණය කරන්න</value>
+    </data>
+    <data name="Doc_FileNotFound" xml:space="preserve">
+        <value>ලිපිගොනුව සොයාගත නොහැකි විය</value>
+    </data>
+    <data name="Doc_MainTitle" xml:space="preserve">
+        <value>ලිපිගොනු කළමනාකරණය</value>
+    </data>
+    <data name="Main_NavDocuments" xml:space="preserve">
+        <value>ලිපි ගොනු</value>
     </data>
 </root>

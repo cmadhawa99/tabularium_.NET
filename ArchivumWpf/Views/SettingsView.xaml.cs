@@ -13,9 +13,6 @@ public partial class SettingsView : UserControl
 
     private void DbPasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
     {
-        if (this.DataContext is SettingsViewModel viewModel)
-        {
-            viewModel.DbPassword = ((PasswordBox)sender).Password;
-        }
+        if (DataContext is SettingsViewModel viewModel) viewModel.DbPassword = ((PasswordBox)sender).Password;
     }
 }

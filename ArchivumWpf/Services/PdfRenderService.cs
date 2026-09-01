@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Threading.Tasks;
+﻿using System.IO;
 using System.Windows.Media.Imaging;
 using PDFtoImage;
 using SkiaSharp;
@@ -36,7 +34,7 @@ public class PdfRenderService : IPdfRenderService
                 WithAspectRatio = true
             };
 
-            using SKBitmap bitmap = Conversion.ToImage(ms, page: pageIndex, options: options);
+            using var bitmap = Conversion.ToImage(ms, pageIndex, options: options);
 
             using var pngStream = new MemoryStream();
             bitmap.Encode(pngStream, SKEncodedImageFormat.Png, 100);
@@ -51,6 +49,4 @@ public class PdfRenderService : IPdfRenderService
             return img;
         });
     }
-    
-    
 }

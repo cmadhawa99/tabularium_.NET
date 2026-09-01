@@ -1,169 +1,164 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace ArchivumWpf.Services
+namespace ArchivumWpf.Services;
+
+public class CryptoService
 {
-    public class CryptoService
+    private const int ChunkSize = 4 * 1024 * 1024; //4MB Chunks
+    private readonly byte[] _key;
+
+    public CryptoService(string base64Key)
     {
-        private readonly byte[] _key;
-        private const int ChunkSize = 4 * 1024 * 1024; //4MB Chunks
-        
-        public CryptoService(string base64Key)
+        _key = Convert.FromBase64String(base64Key);
+    }
+
+    public string Encrypt(string plainText)
+    {
+        if (string.IsNullOrEmpty(plainText)) return plainText;
+        var plainBytes = Encoding.UTF8.GetBytes(plainText);
+
+        var nonce = new byte[AesGcm.NonceByteSizes.MaxSize];
+        RandomNumberGenerator.Fill(nonce);
+
+        var ciphertext = new byte[plainBytes.Length];
+        var tag = new byte[AesGcm.TagByteSizes.MaxSize];
+
+        using (var aesGcm = new AesGcm(_key, AesGcm.TagByteSizes.MaxSize))
         {
-            _key = Convert.FromBase64String(base64Key);
+            aesGcm.Encrypt(nonce, plainBytes, ciphertext, tag);
         }
 
-        public string Encrypt(string plainText)
+        var result = new byte[nonce.Length + tag.Length + ciphertext.Length];
+        Buffer.BlockCopy(nonce, 0, result, 0, nonce.Length);
+        Buffer.BlockCopy(tag, 0, result, nonce.Length, tag.Length);
+        Buffer.BlockCopy(ciphertext, 0, result, nonce.Length + tag.Length, ciphertext.Length);
+
+        return Convert.ToBase64String(result);
+    }
+
+    public string Decrypt(string cipherTextBase64)
+    {
+        if (string.IsNullOrEmpty(cipherTextBase64)) return cipherTextBase64;
+
+        var fullCipher = Convert.FromBase64String(cipherTextBase64);
+
+        var nonceSize = AesGcm.NonceByteSizes.MaxSize;
+        var tagSize = AesGcm.TagByteSizes.MaxSize;
+
+        var nonce = new byte[nonceSize];
+        var tag = new byte[tagSize];
+        var ciphertext = new byte[fullCipher.Length - nonceSize - tagSize];
+
+        Buffer.BlockCopy(fullCipher, 0, nonce, 0, nonceSize);
+        Buffer.BlockCopy(fullCipher, nonceSize, tag, 0, tagSize);
+        Buffer.BlockCopy(fullCipher, nonceSize + tagSize, ciphertext, 0, ciphertext.Length);
+
+        var plainBytes = new byte[ciphertext.Length];
+
+        using (var aesGcm = new AesGcm(_key, tagSize))
         {
-            if (string.IsNullOrEmpty(plainText)) return plainText;
-            byte[] plainBytes = Encoding.UTF8.GetBytes(plainText);
+            aesGcm.Decrypt(nonce, ciphertext, tag, plainBytes);
+        }
 
-            byte[] nonce = new byte[AesGcm.NonceByteSizes.MaxSize];
-            RandomNumberGenerator.Fill(nonce);
-            
-            byte[] ciphertext = new byte[plainBytes.Length];
-            byte[] tag = new byte[AesGcm.TagByteSizes.MaxSize];
+        return Encoding.UTF8.GetString(plainBytes);
+    }
 
-            using (var aesGcm = new AesGcm(_key, AesGcm.TagByteSizes.MaxSize))
+    public string GetBlindIndex(string plainText)
+    {
+        if (string.IsNullOrEmpty(plainText)) return plainText;
+
+        using (var hmac = new HMACSHA256(_key))
+        {
+            var hasgBytes = hmac.ComputeHash(Encoding.UTF8.GetBytes(plainText.ToLowerInvariant()));
+            return Convert.ToBase64String(hasgBytes);
+        }
+    }
+
+    // Encrypts a stream using AES-256-GCM chunking and Envelope Encryption
+
+    public (string EncryptedDek, long TotalFileSize) EncryptFileStream(Stream inputStream, Stream outputStream)
+    {
+        var dek = new byte[32];
+        RandomNumberGenerator.Fill(dek);
+
+        var dekBase64 = Convert.ToBase64String(dek);
+        var encryptedDek = Encrypt(dekBase64);
+
+        var buffer = new byte[ChunkSize];
+        int bytesRead;
+        long totalSize = 0;
+
+        using (var aesGcm = new AesGcm(dek, AesGcm.TagByteSizes.MaxSize))
+        {
+            while ((bytesRead = inputStream.Read(buffer, 0, buffer.Length)) > 0)
             {
-                aesGcm.Encrypt(nonce, plainBytes, ciphertext, tag);
+                var nonce = new byte[AesGcm.NonceByteSizes.MaxSize];
+                RandomNumberGenerator.Fill(nonce);
+
+                var tag = new byte[AesGcm.TagByteSizes.MaxSize];
+                var cipherText = new byte[bytesRead];
+
+                var plainTextSpan = new ReadOnlySpan<byte>(buffer, 0, bytesRead);
+
+                aesGcm.Encrypt(nonce, plainTextSpan, cipherText, tag);
+
+                outputStream.Write(nonce, 0, nonce.Length);
+                outputStream.Write(tag, 0, tag.Length);
+
+                var lengthBytes = BitConverter.GetBytes(bytesRead);
+                outputStream.Write(lengthBytes, 0, lengthBytes.Length);
+
+                outputStream.Write(cipherText, 0, cipherText.Length);
+
+                totalSize += nonce.Length + tag.Length + lengthBytes.Length + cipherText.Length;
             }
-            
-            byte[] result = new byte[nonce.Length + tag.Length + ciphertext.Length];
-            Buffer.BlockCopy(nonce, 0, result, 0, nonce.Length);
-            Buffer.BlockCopy(tag, 0, result, nonce.Length, tag.Length);
-            Buffer.BlockCopy(ciphertext, 0, result, nonce.Length + tag.Length, ciphertext.Length);
-            
-            return Convert.ToBase64String(result);
         }
 
-        public string Decrypt(string cipherTextBase64)
+        return (encryptedDek, totalSize);
+    }
+
+    // Decrypts a chunked AES-256-GCM stream back to plaintext on the fly
+
+    public void DecryptFileStream(Stream inputStream, Stream outputStream, string encryptedDek)
+    {
+        var dekBase64 = Decrypt(encryptedDek);
+        var dek = Convert.FromBase64String(dekBase64);
+
+        var nonceSize = AesGcm.NonceByteSizes.MaxSize;
+        var tagSize = AesGcm.TagByteSizes.MaxSize;
+
+        var nonce = new byte[nonceSize];
+        var tag = new byte[tagSize];
+        var lengthBytes = new byte[4];
+
+        using (var aesGcm = new AesGcm(dek, tagSize))
         {
-            if (string.IsNullOrEmpty(cipherTextBase64)) return cipherTextBase64;
-            
-            byte[] fullCipher = Convert.FromBase64String(cipherTextBase64);
-            
-            int nonceSize = AesGcm.NonceByteSizes.MaxSize;
-            int tagSize = AesGcm.TagByteSizes.MaxSize;
-            
-            byte[] nonce = new byte[nonceSize];
-            byte[] tag = new byte[tagSize];
-            byte[] ciphertext = new byte[fullCipher.Length - nonceSize - tagSize];
-            
-            Buffer.BlockCopy(fullCipher, 0, nonce, 0, nonceSize);
-            Buffer.BlockCopy(fullCipher, nonceSize, tag, 0, tagSize);
-            Buffer.BlockCopy(fullCipher, nonceSize + tagSize, ciphertext, 0, ciphertext.Length);
-
-            byte[] plainBytes = new byte[ciphertext.Length];
-
-            using (var aesGcm = new AesGcm(_key, tagSize))
+            while (inputStream.Position < inputStream.Length)
             {
-                aesGcm.Decrypt(nonce, ciphertext, tag, plainBytes);
-            }
+                var readNonce = inputStream.Read(nonce, 0, nonceSize);
+                if (readNonce == 0) break;
 
-            return Encoding.UTF8.GetString(plainBytes);
+                inputStream.Read(tag, 0, tagSize);
+                inputStream.Read(lengthBytes, 0, lengthBytes.Length);
 
-        }
+                var cipherLength = BitConverter.ToInt32(lengthBytes, 0);
+                var cipherText = new byte[cipherLength];
 
-        public string GetBlindIndex(string plainText)
-        {
-            if (string.IsNullOrEmpty(plainText)) return plainText;
-            
-            using (var hmac = new HMACSHA256(_key))
-            {
-                byte[] hasgBytes = hmac.ComputeHash(Encoding.UTF8.GetBytes (plainText.ToLowerInvariant()));
-                return Convert.ToBase64String(hasgBytes);
-            }
-        }
-        
-        // Encrypts a stream using AES-256-GCM chunking and Envelope Encryption
-
-        public (string EncryptedDek, long TotalFileSize) EncryptFileStream(Stream inputStream, Stream outputStream)
-        {
-            byte[] dek = new byte[32];
-            RandomNumberGenerator.Fill(dek);
-            
-            string dekBase64 = Convert.ToBase64String(dek);
-            string encryptedDek = Encrypt(dekBase64);
-            
-            byte[] buffer = new byte[ChunkSize];
-            int bytesRead;
-            long totalSize = 0;
-
-            using (var aesGcm = new AesGcm(dek, AesGcm.TagByteSizes.MaxSize))
-            {
-                while ((bytesRead = inputStream.Read(buffer, 0, buffer.Length)) > 0)
+                var totalRead = 0;
+                while (totalRead < cipherLength)
                 {
-                    byte[] nonce = new byte[AesGcm.NonceByteSizes.MaxSize];
-                    RandomNumberGenerator.Fill(nonce);
-                    
-                    byte[] tag = new byte[AesGcm.TagByteSizes.MaxSize];
-                    byte[] cipherText = new byte[bytesRead];
-                    
-                    ReadOnlySpan<byte> plainTextSpan = new ReadOnlySpan<byte>(buffer, 0, bytesRead);
-
-                    aesGcm.Encrypt(nonce, plainTextSpan, cipherText, tag);
-                    
-                    outputStream.Write(nonce, 0, nonce.Length);
-                    outputStream.Write(tag, 0, tag.Length);
-
-                    byte[] lengthBytes = BitConverter.GetBytes(bytesRead);
-                    outputStream.Write(lengthBytes, 0, lengthBytes.Length);
-                    
-                    outputStream.Write(cipherText, 0, cipherText.Length);
-                    
-                    totalSize += nonce.Length + tag.Length + lengthBytes.Length + cipherText.Length;
+                    var read = inputStream.Read(cipherText, totalRead, cipherLength - totalRead);
+                    if (read == 0) throw new EndOfStreamException("Corrupted file: Unexpected end of stream.");
+                    totalRead += read;
                 }
-            }
-            
-            return (encryptedDek, totalSize);
-        }
-        
-        // Decrypts a chunked AES-256-GCM stream back to plaintext on the fly
 
-        public void DecryptFileStream(Stream inputStream, Stream outputStream, string encryptedDek)
-        {
-            string dekBase64 = Decrypt(encryptedDek);
-            byte[] dek = Convert.FromBase64String(dekBase64);
-            
-            int nonceSize = AesGcm.NonceByteSizes.MaxSize;
-            int tagSize = AesGcm.TagByteSizes.MaxSize;
-            
-            byte[] nonce = new byte[nonceSize];
-            byte[] tag = new byte[tagSize];
-            byte[] lengthBytes = new byte[4];
+                var plainText = new byte[cipherLength];
 
-            using (var aesGcm = new AesGcm(dek, tagSize))
-            {
-                while (inputStream.Position < inputStream.Length)
-                {
-                    int readNonce = inputStream.Read(nonce, 0, nonceSize);
-                    if (readNonce == 0) break;
-                    
-                    inputStream.Read(tag, 0, tagSize);
-                    inputStream.Read(lengthBytes, 0, lengthBytes.Length);
-                    
-                    int cipherLength = BitConverter.ToInt32(lengthBytes, 0);
-                    byte[] cipherText = new byte[cipherLength];
-
-                    int totalRead = 0;
-                    while (totalRead < cipherLength)
-                    {
-                        int read = inputStream.Read(cipherText, totalRead, cipherLength - totalRead);
-                        if (read == 0) throw new EndOfStreamException("Corrupted file: Unexpected end of stream.");
-                        totalRead += read;
-                    }
-                    
-                    byte[] plainText = new byte[cipherLength];
-                    
-                    aesGcm.Decrypt(nonce, cipherText, tag, plainText);
-                    outputStream.Write(plainText, 0, plainText.Length);
-                    
-                }
+                aesGcm.Decrypt(nonce, cipherText, tag, plainText);
+                outputStream.Write(plainText, 0, plainText.Length);
             }
         }
-        
     }
 }

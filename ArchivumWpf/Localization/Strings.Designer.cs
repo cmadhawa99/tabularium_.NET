@@ -1023,6 +1023,107 @@ namespace ArchivumWpf.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Export.
+        /// </summary>
+        public static string Doc_BtnExport {
+            get {
+                return ResourceManager.GetString("Doc_BtnExport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Import.
+        /// </summary>
+        public static string Doc_BtnImport {
+            get {
+                return ResourceManager.GetString("Doc_BtnImport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manage Files.
+        /// </summary>
+        public static string Doc_BtnManage {
+            get {
+                return ResourceManager.GetString("Doc_BtnManage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove.
+        /// </summary>
+        public static string Doc_BtnRemove {
+            get {
+                return ResourceManager.GetString("Doc_BtnRemove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ACTIONS.
+        /// </summary>
+        public static string Doc_ColActions {
+            get {
+                return ResourceManager.GetString("Doc_ColActions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NAME.
+        /// </summary>
+        public static string Doc_ColName {
+            get {
+                return ResourceManager.GetString("Doc_ColName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to RR NUMBER.
+        /// </summary>
+        public static string Doc_ColRrNumber {
+            get {
+                return ResourceManager.GetString("Doc_ColRrNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to permanently remove file &apos;{0}&apos;?
+        ///
+        ///This deletes the encrypted file from the vault. This action cannot be undone..
+        /// </summary>
+        public static string Doc_ConfirmRemoveMsg {
+            get {
+                return ResourceManager.GetString("Doc_ConfirmRemoveMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm Removal.
+        /// </summary>
+        public static string Doc_ConfirmRemoveTitle {
+            get {
+                return ResourceManager.GetString("Doc_ConfirmRemoveTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File Not Found.
+        /// </summary>
+        public static string Doc_FileNotFound {
+            get {
+                return ResourceManager.GetString("Doc_FileNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File Management.
+        /// </summary>
+        public static string Doc_MainTitle {
+            get {
+                return ResourceManager.GetString("Doc_MainTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Target exact RR Number to amend....
         /// </summary>
         public static string Ent_AmendSearchWatermark {
@@ -1410,6 +1511,15 @@ namespace ArchivumWpf.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} record(s) are scheduled to be removed today!.
+        /// </summary>
+        public static string Main_DisposalAlertFormat {
+            get {
+                return ResourceManager.GetString("Main_DisposalAlertFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CONSOLIDATED ARCHIVE MANAGEMENT.
         /// </summary>
         public static string Main_HeaderSubtitle {
@@ -1451,6 +1561,15 @@ namespace ArchivumWpf.Localization {
         public static string Main_NavDisposal {
             get {
                 return ResourceManager.GetString("Main_NavDisposal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FILES.
+        /// </summary>
+        public static string Main_NavDocuments {
+            get {
+                return ResourceManager.GetString("Main_NavDocuments", resourceCulture);
             }
         }
         

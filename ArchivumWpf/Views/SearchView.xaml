@@ -6,148 +6,182 @@
              xmlns:loc="clr-namespace:ArchivumWpf.Localization"
              Background="{DynamicResource WindowBackground}"
              TextElement.FontFamily="Segoe UI Variable, Segoe UI, sans-serif">
-    
+
     <UserControl.Resources>
-        <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
-        <DropShadowEffect x:Key="Win11Shadow" BlurRadius="20" ShadowDepth="4" Direction="270" Color="#000000" Opacity="0.15"/>
+        <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
+        <DropShadowEffect x:Key="Win11Shadow" BlurRadius="20" ShadowDepth="4" Direction="270" Color="#000000"
+                          Opacity="0.15" />
 
         <Style x:Key="FilterToggleStyle" TargetType="ToggleButton">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
-            <Setter Property="BorderBrush" Value="Transparent"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Padding" Value="16,8"/> <Setter Property="Margin" Value="4,4,4,4"/> <Setter Property="FontSize" Value="13"/>
-            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="{DynamicResource TextMain}" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Padding" Value="16,8" /> <Setter Property="Margin" Value="4,4,4,4" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="Cursor" Value="Hand" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ToggleButton">
-                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6"> 
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"
+                                              Margin="{TemplateBinding Padding}" />
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
             <Style.Triggers>
                 <Trigger Property="IsChecked" Value="True">
-                    <Setter Property="Background" Value="{DynamicResource IconBgLent}"/> 
-                    <Setter Property="Foreground" Value="{DynamicResource PrimaryAccent}"/>
-                    <Setter Property="BorderBrush" Value="{DynamicResource PrimaryAccent}"/>
+                    <Setter Property="Background" Value="{DynamicResource IconBgLent}" />
+                    <Setter Property="Foreground" Value="{DynamicResource PrimaryAccent}" />
+                    <Setter Property="BorderBrush" Value="{DynamicResource PrimaryAccent}" />
                 </Trigger>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#0A808080"/> 
+                    <Setter Property="Background" Value="#0A808080" />
                 </Trigger>
             </Style.Triggers>
         </Style>
 
         <Style x:Key="CleanComboBox" TargetType="ComboBox">
-            <Setter Property="Background" Value="{DynamicResource CardBackground}"/>
-            <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
-            <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="FontSize" Value="13"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Padding" Value="12,8"/> 
+            <Setter Property="Background" Value="{DynamicResource CardBackground}" />
+            <Setter Property="Foreground" Value="{DynamicResource TextMain}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Padding" Value="12,8" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ComboBox">
                         <Grid>
-                            <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6">
+                            <Border Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6">
                                 <Grid>
-                                    <ToggleButton x:Name="ToggleButton" Focusable="false" IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" ClickMode="Press">
+                                    <ToggleButton x:Name="ToggleButton" Focusable="false"
+                                                  IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                                  ClickMode="Press">
                                         <ToggleButton.Template>
                                             <ControlTemplate TargetType="ToggleButton">
                                                 <Border Background="Transparent">
-                                                    <fa:ImageAwesome Icon="ChevronDown" Width="10" Height="10" Foreground="{DynamicResource TextMuted}" HorizontalAlignment="Right" Margin="0,0,12,0"/>
+                                                    <fa:ImageAwesome Icon="ChevronDown" Width="10" Height="10"
+                                                                     Foreground="{DynamicResource TextMuted}"
+                                                                     HorizontalAlignment="Right" Margin="0,0,12,0" />
                                                 </Border>
                                             </ControlTemplate>
                                         </ToggleButton.Template>
                                     </ToggleButton>
-                                    <ContentPresenter x:Name="ContentSite" IsHitTestVisible="False" Content="{TemplateBinding SelectionBoxItem}" Margin="12,6,30,6" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                                    <ContentPresenter x:Name="ContentSite" IsHitTestVisible="False"
+                                                      Content="{TemplateBinding SelectionBoxItem}" Margin="12,6,30,6"
+                                                      VerticalAlignment="Center" HorizontalAlignment="Left" />
                                 </Grid>
                             </Border>
-                            <Popup x:Name="Popup" Placement="Bottom" IsOpen="{TemplateBinding IsDropDownOpen}" AllowsTransparency="True" Focusable="False">
-                                <Border x:Name="DropDownBorder" Background="{DynamicResource CardBackground}" BorderThickness="1" BorderBrush="{DynamicResource BorderColor}" CornerRadius="6" Margin="0,4,0,0" MinWidth="{TemplateBinding ActualWidth}" MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                            <Popup x:Name="Popup" Placement="Bottom" IsOpen="{TemplateBinding IsDropDownOpen}"
+                                   AllowsTransparency="True" Focusable="False">
+                                <Border x:Name="DropDownBorder" Background="{DynamicResource CardBackground}"
+                                        BorderThickness="1" BorderBrush="{DynamicResource BorderColor}"
+                                        CornerRadius="6" Margin="0,4,0,0" MinWidth="{TemplateBinding ActualWidth}"
+                                        MaxHeight="{TemplateBinding MaxDropDownHeight}">
                                     <ScrollViewer SnapsToDevicePixels="True" Margin="0,4">
-                                        <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
+                                        <StackPanel IsItemsHost="True"
+                                                    KeyboardNavigation.DirectionalNavigation="Contained" />
                                     </ScrollViewer>
                                 </Border>
                             </Popup>
-                         </Grid>
+                        </Grid>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
     </UserControl.Resources>
-    
+
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Border Grid.Row="0" Background="Transparent" BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,0,0,1" Padding="24,20">
+        <Border Grid.Row="0" Background="Transparent" BorderBrush="{DynamicResource BorderColor}"
+                BorderThickness="0,0,0,1" Padding="24,20">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                <TextBlock Text="{x:Static loc:Strings.Sea_MainTitle}" Foreground="{DynamicResource PrimaryAccent}" FontSize="20" Margin="0,0,20,0"/>
-                <Rectangle Width="1" Height="18" Fill="{DynamicResource BorderColor}" Margin="0,0,20,0"/>
+                <TextBlock Text="{x:Static loc:Strings.Sea_MainTitle}" Foreground="{DynamicResource PrimaryAccent}"
+                           FontSize="20" Margin="0,0,20,0" />
+                <Rectangle Width="1" Height="18" Fill="{DynamicResource BorderColor}" Margin="0,0,20,0" />
             </StackPanel>
         </Border>
 
-        <Border Grid.Row="1" Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,1,0,0" Margin="10,15,10,0" CornerRadius="8,8,0,0">
+        <Border Grid.Row="1" Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource BorderColor}"
+                BorderThickness="0,1,0,0" Margin="10,15,10,0" CornerRadius="8,8,0,0">
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/> 
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-        
+
                 <WrapPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="20,20,20,10">
-                    <Border BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="6" MinWidth="380" MaxWidth="500" Margin="0,0,24,12" Background="{DynamicResource WindowBackground}">
+                    <Border BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="6"
+                            MinWidth="380" MaxWidth="500" Margin="0,0,24,12"
+                            Background="{DynamicResource WindowBackground}">
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
-                            
-                            <ToggleButton Grid.Column="0" IsChecked="{Binding IsStrictRrSearch}" Background="Transparent" BorderThickness="0" Cursor="Hand" ToolTip="{x:Static loc:Strings.Sea_TooltipToggleStrict}" Padding="12,0,8,0">
+
+                            <ToggleButton Grid.Column="0" IsChecked="{Binding IsStrictRrSearch}"
+                                          Background="Transparent" BorderThickness="0" Cursor="Hand"
+                                          ToolTip="{x:Static loc:Strings.Sea_TooltipToggleStrict}" Padding="12,0,8,0">
                                 <ToggleButton.Template>
                                     <ControlTemplate TargetType="ToggleButton">
                                         <Border Background="Transparent" Padding="{TemplateBinding Padding}">
                                             <Grid VerticalAlignment="Center">
-                                                <fa:ImageAwesome Icon="Search" Width="14" Height="14" Foreground="{DynamicResource TextMuted}">
+                                                <fa:ImageAwesome Icon="Search" Width="14" Height="14"
+                                                                 Foreground="{DynamicResource TextMuted}">
                                                     <fa:ImageAwesome.Style>
                                                         <Style TargetType="fa:ImageAwesome">
-                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                            <Setter Property="Visibility" Value="Collapsed" />
                                                             <Style.Triggers>
-                                                                <DataTrigger Binding="{Binding IsStrictRrSearch}" Value="False">
-                                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                                <DataTrigger Binding="{Binding IsStrictRrSearch}"
+                                                                             Value="False">
+                                                                    <Setter Property="Visibility" Value="Visible" />
                                                                 </DataTrigger>
                                                             </Style.Triggers>
                                                         </Style>
                                                     </fa:ImageAwesome.Style>
                                                 </fa:ImageAwesome>
 
-                                                <Border Width="20" Height="20" CornerRadius="4" Background="{DynamicResource PrimaryAccent}">
+                                                <Border Width="20" Height="20" CornerRadius="4"
+                                                        Background="{DynamicResource PrimaryAccent}">
                                                     <Border.Style>
                                                         <Style TargetType="Border">
-                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                            <Setter Property="Visibility" Value="Collapsed" />
                                                             <Style.Triggers>
-                                                                <DataTrigger Binding="{Binding IsStrictRrSearch}" Value="True">
-                                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                                <DataTrigger Binding="{Binding IsStrictRrSearch}"
+                                                                             Value="True">
+                                                                    <Setter Property="Visibility" Value="Visible" />
                                                                 </DataTrigger>
                                                             </Style.Triggers>
                                                         </Style>
                                                     </Border.Style>
-                                                    <TextBlock Text="{x:Static loc:Strings.Sea_StrictToggleIndicator}" Foreground="{DynamicResource CardBackground}" FontSize="10" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                    <TextBlock Text="{x:Static loc:Strings.Sea_StrictToggleIndicator}"
+                                                               Foreground="{DynamicResource CardBackground}"
+                                                               FontSize="10" FontWeight="Bold"
+                                                               HorizontalAlignment="Center" VerticalAlignment="Center" />
                                                 </Border>
                                             </Grid>
                                         </Border>
                                     </ControlTemplate>
                                 </ToggleButton.Template>
                             </ToggleButton>
-                            
-                            <TextBox Grid.Column="1" Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}" Background="Transparent" Foreground="{DynamicResource TextMain}" BorderThickness="0" FontSize="14" VerticalContentAlignment="Center" Margin="4,8,8,8">
+
+                            <TextBox Grid.Column="1" Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}"
+                                     Background="Transparent" Foreground="{DynamicResource TextMain}"
+                                     BorderThickness="0" FontSize="14" VerticalContentAlignment="Center"
+                                     Margin="4,8,8,8">
                                 <TextBox.InputBindings>
-                                    <KeyBinding Key="Enter" Command="{Binding PerformSearchCommand}"/>
+                                    <KeyBinding Key="Enter" Command="{Binding PerformSearchCommand}" />
                                 </TextBox.InputBindings>
                                 <TextBox.Style>
                                     <Style TargetType="TextBox">
@@ -160,12 +194,18 @@
                                                                 <TextBlock Opacity="0.7" FontSize="14">
                                                                     <TextBlock.Style>
                                                                         <Style TargetType="TextBlock">
-                                                                            <Setter Property="Text" Value="{x:Static loc:Strings.Sea_SearchWatermark}"/>
-                                                                            <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
+                                                                            <Setter Property="Text"
+                                                                                    Value="{x:Static loc:Strings.Sea_SearchWatermark}" />
+                                                                            <Setter Property="Foreground"
+                                                                                    Value="{DynamicResource TextMuted}" />
                                                                             <Style.Triggers>
-                                                                                <DataTrigger Binding="{Binding IsStrictRrSearch}" Value="True">
-                                                                                    <Setter Property="Text" Value="{x:Static loc:Strings.Sea_StrictSearchWatermark}"/>
-                                                                                    <Setter Property="Foreground" Value="{DynamicResource PrimaryAccent}"/>
+                                                                                <DataTrigger
+                                                                                    Binding="{Binding IsStrictRrSearch}"
+                                                                                    Value="True">
+                                                                                    <Setter Property="Text"
+                                                                                        Value="{x:Static loc:Strings.Sea_StrictSearchWatermark}" />
+                                                                                    <Setter Property="Foreground"
+                                                                                        Value="{DynamicResource PrimaryAccent}" />
                                                                                 </DataTrigger>
                                                                             </Style.Triggers>
                                                                         </Style>
@@ -184,64 +224,82 @@
                     </Border>
 
                     <StackPanel Orientation="Horizontal" Margin="0,0,24,12" VerticalAlignment="Center">
-                        <TextBlock Text="{x:Static loc:Strings.Sea_FilterByDate}" Foreground="{DynamicResource TextMuted}" FontSize="13" VerticalAlignment="Center" Margin="0,0,12,0"/>
-                        <ComboBox ItemsSource="{Binding AvailableYears}" SelectedItem="{Binding SelectedYear}" Style="{StaticResource CleanComboBox}" MinWidth="90" Margin="0,0,8,0"/>
-                        <ComboBox ItemsSource="{Binding AvailableMonths}" SelectedItem="{Binding SelectedMonth}" Style="{StaticResource CleanComboBox}" MinWidth="120"/>
+                        <TextBlock Text="{x:Static loc:Strings.Sea_FilterByDate}"
+                                   Foreground="{DynamicResource TextMuted}" FontSize="13" VerticalAlignment="Center"
+                                   Margin="0,0,12,0" />
+                        <ComboBox ItemsSource="{Binding AvailableYears}" SelectedItem="{Binding SelectedYear}"
+                                  Style="{StaticResource CleanComboBox}" MinWidth="90" Margin="0,0,8,0" />
+                        <ComboBox ItemsSource="{Binding AvailableMonths}" SelectedItem="{Binding SelectedMonth}"
+                                  Style="{StaticResource CleanComboBox}" MinWidth="120" />
                     </StackPanel>
 
                     <WrapPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,12">
-                        <TextBlock Text="{x:Static loc:Strings.Sea_QuickFilters}" Foreground="{DynamicResource TextMuted}" FontSize="13" VerticalAlignment="Center" Margin="0,0,12,0"/>
-                        <ComboBox ItemsSource="{Binding AvailableSectors}" SelectedItem="{Binding SelectedSector}" Style="{StaticResource CleanComboBox}" MinWidth="140" Margin="0,0,12,0"/>
-                        <ToggleButton Content="{x:Static loc:Strings.Sea_FilterRecent}" IsChecked="{Binding IsRecentActive}" Style="{StaticResource FilterToggleStyle}"/>
-                        <ToggleButton Content="{x:Static loc:Strings.Sea_FilterAvailable}" IsChecked="{Binding IsAvailableActive}" Style="{StaticResource FilterToggleStyle}"/>
-                        <ToggleButton Content="{x:Static loc:Strings.Sea_FilterBorrowed}" IsChecked="{Binding IsBorrowedActive}" Style="{StaticResource FilterToggleStyle}"/>
-                        <ToggleButton Content="{x:Static loc:Strings.Sea_FilterRemoved}" IsChecked="{Binding IsRemovedActive}" Style="{StaticResource FilterToggleStyle}"/>
+                        <TextBlock Text="{x:Static loc:Strings.Sea_QuickFilters}"
+                                   Foreground="{DynamicResource TextMuted}" FontSize="13" VerticalAlignment="Center"
+                                   Margin="0,0,12,0" />
+                        <ComboBox ItemsSource="{Binding AvailableSectors}" SelectedItem="{Binding SelectedSector}"
+                                  Style="{StaticResource CleanComboBox}" MinWidth="140" Margin="0,0,12,0" />
+                        <ToggleButton Content="{x:Static loc:Strings.Sea_FilterRecent}"
+                                      IsChecked="{Binding IsRecentActive}" Style="{StaticResource FilterToggleStyle}" />
+                        <ToggleButton Content="{x:Static loc:Strings.Sea_FilterAvailable}"
+                                      IsChecked="{Binding IsAvailableActive}"
+                                      Style="{StaticResource FilterToggleStyle}" />
+                        <ToggleButton Content="{x:Static loc:Strings.Sea_FilterBorrowed}"
+                                      IsChecked="{Binding IsBorrowedActive}" Style="{StaticResource FilterToggleStyle}" />
+                        <ToggleButton Content="{x:Static loc:Strings.Sea_FilterRemoved}"
+                                      IsChecked="{Binding IsRemovedActive}" Style="{StaticResource FilterToggleStyle}" />
                     </WrapPanel>
                 </WrapPanel>
 
                 <DataGrid Grid.Row="1" ItemsSource="{Binding SearchResults}" SelectedItem="{Binding SelectedFile}"
                           AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True"
-                          Background="Transparent" Foreground="{DynamicResource TextMain}" 
-                          RowBackground="Transparent" AlternatingRowBackground="Transparent" 
-                          HeadersVisibility="Column" GridLinesVisibility="None" 
+                          Background="Transparent" Foreground="{DynamicResource TextMain}"
+                          RowBackground="Transparent" AlternatingRowBackground="Transparent"
+                          HeadersVisibility="Column" GridLinesVisibility="None"
                           BorderThickness="0" Margin="20,0,20,10">
-                    
+
                     <DataGrid.InputBindings>
-                        <MouseBinding Gesture="LeftDoubleClick" Command="{Binding OpenDetailsCommand}"/>
+                        <MouseBinding Gesture="LeftDoubleClick" Command="{Binding OpenDetailsCommand}" />
                     </DataGrid.InputBindings>
-                    
+
                     <DataGrid.Resources>
                         <Style TargetType="DataGridColumnHeader">
-                            <Setter Property="Background" Value="Transparent"/>
-                            <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
-                            <Setter Property="FontWeight" Value="Normal"/>
-                            <Setter Property="FontSize" Value="13"/>
-                            <Setter Property="Padding" Value="16,12"/>
-                            <Setter Property="BorderThickness" Value="0,0,0,1"/>
-                            <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
+                            <Setter Property="Background" Value="Transparent" />
+                            <Setter Property="Foreground" Value="{DynamicResource TextMuted}" />
+                            <Setter Property="FontWeight" Value="Normal" />
+                            <Setter Property="FontSize" Value="13" />
+                            <Setter Property="Padding" Value="16,12" />
+                            <Setter Property="BorderThickness" Value="0,0,0,1" />
+                            <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}" />
                         </Style>
-                        
+
                         <Style TargetType="DataGridRow">
-                            <Setter Property="Padding" Value="0,6"/>
-                            <Setter Property="BorderThickness" Value="0"/>
-                            <Setter Property="Margin" Value="0,2"/>
-                            <Setter Property="Cursor" Value="Hand"/>
+                            <Setter Property="Padding" Value="0,6" />
+                            <Setter Property="BorderThickness" Value="0" />
+                            <Setter Property="Margin" Value="0,2" />
+                            <Setter Property="Cursor" Value="Hand" />
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="DataGridRow">
-                                        <Border x:Name="DGR_Border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6">
+                                        <Border x:Name="DGR_Border" Background="{TemplateBinding Background}"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6">
                                             <SelectiveScrollingGrid>
                                                 <SelectiveScrollingGrid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="Auto"/>
-                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="*" />
                                                 </SelectiveScrollingGrid.ColumnDefinitions>
                                                 <SelectiveScrollingGrid.RowDefinitions>
-                                                    <RowDefinition Height="*"/>
-                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="*" />
+                                                    <RowDefinition Height="Auto" />
                                                 </SelectiveScrollingGrid.RowDefinitions>
-                                                <DataGridCellsPresenter Grid.Column="1" ItemsPanel="{TemplateBinding ItemsPanel}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
-                                                <DataGridDetailsPresenter Grid.Column="1" Grid.Row="1" Visibility="{TemplateBinding DetailsVisibility}"/>
-                                                <DataGridRowHeader Grid.RowSpan="2" Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.Row}, Converter={x:Static DataGrid.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                                                <DataGridCellsPresenter Grid.Column="1"
+                                                                        ItemsPanel="{TemplateBinding ItemsPanel}"
+                                                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                                <DataGridDetailsPresenter Grid.Column="1" Grid.Row="1"
+                                                                          Visibility="{TemplateBinding DetailsVisibility}" />
+                                                <DataGridRowHeader Grid.RowSpan="2"
+                                                                   Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.Row}, Converter={x:Static DataGrid.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" />
                                             </SelectiveScrollingGrid>
                                         </Border>
                                     </ControlTemplate>
@@ -249,39 +307,43 @@
                             </Setter>
                             <Style.Triggers>
                                 <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="#0A808080"/>
+                                    <Setter Property="Background" Value="#0A808080" />
                                 </Trigger>
                                 <Trigger Property="IsSelected" Value="True">
-                                    <Setter Property="Background" Value="{DynamicResource IconBgLent}"/>
-                                    <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
+                                    <Setter Property="Background" Value="{DynamicResource IconBgLent}" />
+                                    <Setter Property="Foreground" Value="{DynamicResource TextMain}" />
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
-                        
+
                         <Style TargetType="DataGridCell">
-                            <Setter Property="BorderThickness" Value="0"/>
-                            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                            <Setter Property="BorderThickness" Value="0" />
+                            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
                         </Style>
                     </DataGrid.Resources>
-                    
+
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="{x:Static loc:Strings.Sea_ColIdentifier}" Binding="{Binding RrNumber}" Width="160">
+                        <DataGridTextColumn Header="{x:Static loc:Strings.Sea_ColIdentifier}"
+                                            Binding="{Binding RrNumber}" Width="160">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="TextBlock">
-                                    <Setter Property="Foreground" Value="{DynamicResource TextMain}"/>
-                                    <Setter Property="FontWeight" Value="SemiBold"/>
-                                    <Setter Property="VerticalAlignment" Value="Center"/>
-                                    <Setter Property="Padding" Value="16,0,0,0"/> 
+                                    <Setter Property="Foreground" Value="{DynamicResource TextMain}" />
+                                    <Setter Property="FontWeight" Value="SemiBold" />
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                    <Setter Property="Padding" Value="16,0,0,0" />
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        
+
                         <DataGridTemplateColumn Header="{x:Static loc:Strings.Sea_ColSubjectName}" Width="*">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate DataType="{x:Type models:FileRecord}">
                                     <StackPanel VerticalAlignment="Center" Margin="16,0,0,0">
-                                        <TextBlock Text="{Binding FileName}" Foreground="{DynamicResource TextMain}" FontSize="14" TextWrapping="Wrap"/>
-                                        <TextBlock Text="{Binding SubjectNumber, TargetNullValue={x:Static loc:Strings.Sea_FallbackSecondaryId}}" Foreground="{DynamicResource TextMuted}" FontSize="11" Margin="0,2,0,0"/>
+                                        <TextBlock Text="{Binding FileName}" Foreground="{DynamicResource TextMain}"
+                                                   FontSize="14" TextWrapping="Wrap" />
+                                        <TextBlock
+                                            Text="{Binding SubjectNumber, TargetNullValue={x:Static loc:Strings.Sea_FallbackSecondaryId}}"
+                                            Foreground="{DynamicResource TextMuted}" FontSize="11" Margin="0,2,0,0" />
                                     </StackPanel>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
@@ -291,173 +353,231 @@
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate DataType="{x:Type models:FileRecord}">
                                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="16,0,0,0">
-                                        <Ellipse Width="10" Height="10" Fill="{Binding SectorColorHex}" Stroke="{DynamicResource TextMain}" StrokeThickness="1" Margin="0,0,10,0"/>
-                                        <TextBlock Text="{Binding Sector}" Foreground="{DynamicResource TextMain}" TextWrapping="Wrap"/>
+                                        <Ellipse Width="10" Height="10" Fill="{Binding SectorColorHex}"
+                                                 Stroke="{DynamicResource TextMain}" StrokeThickness="1"
+                                                 Margin="0,0,10,0" />
+                                        <TextBlock Text="{Binding Sector}" Foreground="{DynamicResource TextMain}"
+                                                   TextWrapping="Wrap" />
                                     </StackPanel>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        
+
                         <DataGridTemplateColumn Header="{x:Static loc:Strings.Sea_ColOriginDate}" Width="140">
                             <DataGridTemplateColumn.CellTemplate>
-                                 <DataTemplate DataType="{x:Type models:FileRecord}">
-                                    <TextBlock Text="{Binding AddedDateTime, StringFormat=dd MMM yyyy}" VerticalAlignment="Center" Margin="16,0,0,0" Foreground="{DynamicResource TextMain}"/>
-                                 </DataTemplate>
+                                <DataTemplate DataType="{x:Type models:FileRecord}">
+                                    <TextBlock Text="{Binding AddedDateTime, StringFormat=dd MMM yyyy}"
+                                               VerticalAlignment="Center" Margin="16,0,0,0"
+                                               Foreground="{DynamicResource TextMain}" />
+                                </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
 
                         <DataGridTemplateColumn Header="{x:Static loc:Strings.Sea_ColStatus}" Width="140">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate DataType="{x:Type models:FileRecord}">
-                                     <TextBlock Text="{Binding CurrentStatus}" FontWeight="SemiBold" VerticalAlignment="Center" Margin="16,0,0,0">
+                                    <TextBlock Text="{Binding CurrentStatus}" FontWeight="SemiBold"
+                                               VerticalAlignment="Center" Margin="16,0,0,0">
                                         <TextBlock.Style>
                                             <Style TargetType="TextBlock">
-                                                <Setter Property="Foreground" Value="{DynamicResource PrimaryAccent}"/>
+                                                <Setter Property="Foreground" Value="{DynamicResource PrimaryAccent}" />
                                                 <Style.Triggers>
                                                     <DataTrigger Binding="{Binding CurrentStatus}" Value="Available">
-                                                        <Setter Property="Foreground" Value="{DynamicResource AvailableColor}"/>
+                                                        <Setter Property="Foreground"
+                                                                Value="{DynamicResource AvailableColor}" />
                                                     </DataTrigger>
                                                     <DataTrigger Binding="{Binding CurrentStatus}" Value="Removed">
-                                                        <Setter Property="Foreground" Value="{DynamicResource RemovedColor}"/>
+                                                        <Setter Property="Foreground"
+                                                                Value="{DynamicResource RemovedColor}" />
                                                     </DataTrigger>
                                                     <DataTrigger Binding="{Binding CurrentStatus}" Value="Borrowed">
-                                                        <Setter Property="Foreground" Value="{DynamicResource BorrowedColor}"/>
+                                                        <Setter Property="Foreground"
+                                                                Value="{DynamicResource BorrowedColor}" />
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
                                         </TextBlock.Style>
-                                     </TextBlock>
+                                    </TextBlock>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
                     </DataGrid.Columns>
                 </DataGrid>
 
-                <Border Grid.Row="2" Background="{DynamicResource PrimaryAccent}" CornerRadius="6" Padding="20,10" Margin="20,0,20,20" HorizontalAlignment="Stretch" Effect="{StaticResource Win11Shadow}">
+                <Border Grid.Row="2" Background="{DynamicResource PrimaryAccent}" CornerRadius="6" Padding="20,10"
+                        Margin="20,0,20,20" HorizontalAlignment="Stretch" Effect="{StaticResource Win11Shadow}">
                     <Grid>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
                             <TextBlock Foreground="{DynamicResource CardBackground}" FontSize="13" Margin="0,0,15,0">
-                                 <Run Text="{x:Static loc:Strings.Sea_MainDesc_Part1}"/>
-                                 <Run Text="{Binding TotalResultsCount, Mode=OneWay}" FontWeight="Bold"/>
-                                <Run Text="{x:Static loc:Strings.Sea_MainDesc_Part2}"/>
+                                <Run Text="{x:Static loc:Strings.Sea_MainDesc_Part1}" />
+                                <Run Text="{Binding TotalResultsCount, Mode=OneWay}" FontWeight="Bold" />
+                                <Run Text="{x:Static loc:Strings.Sea_MainDesc_Part2}" />
                             </TextBlock>
-                            <Rectangle Width="1" Height="16" Fill="{DynamicResource CardBackground}" Opacity="0.4" Margin="0,0,15,0"/>
-                             <TextBlock Text="{x:Static loc:Strings.Sea_ShowingMatchingResults}" Foreground="{DynamicResource CardBackground}" FontSize="13" Opacity="0.9"/>
+                            <Rectangle Width="1" Height="16" Fill="{DynamicResource CardBackground}" Opacity="0.4"
+                                       Margin="0,0,15,0" />
+                            <TextBlock Text="{x:Static loc:Strings.Sea_ShowingMatchingResults}"
+                                       Foreground="{DynamicResource CardBackground}" FontSize="13" Opacity="0.9" />
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-                            <Button Command="{Binding PreviousPageCommand}" Background="#1AFFFFFF" BorderThickness="0" Cursor="Hand" Padding="12,6" Margin="0,0,10,0">
+                            <Button Command="{Binding PreviousPageCommand}" Background="#1AFFFFFF" BorderThickness="0"
+                                    Cursor="Hand" Padding="12,6" Margin="0,0,10,0">
                                 <Button.Template>
                                     <ControlTemplate TargetType="Button">
                                         <Border Background="{TemplateBinding Background}" CornerRadius="4">
-                                            <fa:ImageAwesome Icon="ChevronLeft" Width="10" Height="10" Foreground="{DynamicResource CardBackground}" Margin="{TemplateBinding Padding}"/>
+                                            <fa:ImageAwesome Icon="ChevronLeft" Width="10" Height="10"
+                                                             Foreground="{DynamicResource CardBackground}"
+                                                             Margin="{TemplateBinding Padding}" />
                                         </Border>
                                     </ControlTemplate>
                                 </Button.Template>
                             </Button>
-                            <TextBlock Text="{Binding CurrentPage, Mode=OneWay}" Foreground="{DynamicResource CardBackground}" FontWeight="Bold" FontSize="14" VerticalAlignment="Center" Margin="5,0"/>
-                            <Button Command="{Binding NextPageCommand}" Background="#1AFFFFFF" BorderThickness="0" Cursor="Hand" Padding="12,6" Margin="10,0,0,0">
+                            <TextBlock Text="{Binding CurrentPage, Mode=OneWay}"
+                                       Foreground="{DynamicResource CardBackground}" FontWeight="Bold" FontSize="14"
+                                       VerticalAlignment="Center" Margin="5,0" />
+                            <Button Command="{Binding NextPageCommand}" Background="#1AFFFFFF" BorderThickness="0"
+                                    Cursor="Hand" Padding="12,6" Margin="10,0,0,0">
                                 <Button.Template>
                                     <ControlTemplate TargetType="Button">
                                         <Border Background="{TemplateBinding Background}" CornerRadius="4">
-                                            <fa:ImageAwesome Icon="ChevronRight" Width="10" Height="10" Foreground="{DynamicResource CardBackground}" Margin="{TemplateBinding Padding}"/>
+                                            <fa:ImageAwesome Icon="ChevronRight" Width="10" Height="10"
+                                                             Foreground="{DynamicResource CardBackground}"
+                                                             Margin="{TemplateBinding Padding}" />
                                         </Border>
                                     </ControlTemplate>
-                                 </Button.Template>
+                                </Button.Template>
                             </Button>
                         </StackPanel>
                     </Grid>
-                 </Border>
+                </Border>
             </Grid>
         </Border>
 
-        <Grid Grid.Row="0" Grid.RowSpan="2" Visibility="{Binding IsDetailsOpen, Converter={StaticResource BoolToVisConverter}}" Panel.ZIndex="100">
-            <Border Background="#66000000"/> 
-            <Border Background="{DynamicResource CardBackground}" BorderThickness="0" MinWidth="450" MaxWidth="500" HorizontalAlignment="Right" VerticalAlignment="Stretch" CornerRadius="12,0,0,12" Effect="{StaticResource Win11Shadow}">
+        <Grid Grid.Row="0" Grid.RowSpan="2"
+              Visibility="{Binding IsDetailsOpen, Converter={StaticResource BoolToVisConverter}}" Panel.ZIndex="100">
+            <Border Background="#66000000" />
+            <Border Background="{DynamicResource CardBackground}" BorderThickness="0" MinWidth="450" MaxWidth="500"
+                    HorizontalAlignment="Right" VerticalAlignment="Stretch" CornerRadius="12,0,0,12"
+                    Effect="{StaticResource Win11Shadow}">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
 
-                    <Border Grid.Row="0" BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,0,0,1" Padding="24">
-                         <Grid>
-                            <TextBlock Text="{x:Static loc:Strings.Sea_FileRecords}" Foreground="{DynamicResource TextMain}" FontSize="20" FontWeight="SemiBold" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                            <Ellipse Width="18" Height="18" Fill="{Binding SelectedFile.SectorColorHex}" Stroke="{DynamicResource TextMain}" StrokeThickness="1" HorizontalAlignment="Right" VerticalAlignment="Center" ToolTip="{Binding SelectedFile.Sector}"/>
-                         </Grid>
+                    <Border Grid.Row="0" BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,0,0,1"
+                            Padding="24">
+                        <Grid>
+                            <TextBlock Text="{x:Static loc:Strings.Sea_FileRecords}"
+                                       Foreground="{DynamicResource TextMain}" FontSize="20" FontWeight="SemiBold"
+                                       HorizontalAlignment="Left" VerticalAlignment="Center" />
+                            <Ellipse Width="18" Height="18" Fill="{Binding SelectedFile.SectorColorHex}"
+                                     Stroke="{DynamicResource TextMain}" StrokeThickness="1"
+                                     HorizontalAlignment="Right" VerticalAlignment="Center"
+                                     ToolTip="{Binding SelectedFile.Sector}" />
+                        </Grid>
                     </Border>
-                   
+
                     <ScrollViewer Grid.Row="1" Padding="32,24">
                         <StackPanel>
-                             <TextBlock Text="{x:Static loc:Strings.Sea_LblSerialNumber}" Foreground="{DynamicResource TextMuted}" FontSize="12" Margin="0,0,0,4"/>
-                            <TextBlock Text="{Binding SelectedFile.SerialNumber}" Foreground="{DynamicResource TextMain}" FontWeight="SemiBold" FontSize="15" Margin="0,0,0,20" TextWrapping="Wrap"/>
+                            <TextBlock Text="{x:Static loc:Strings.Sea_LblSerialNumber}"
+                                       Foreground="{DynamicResource TextMuted}" FontSize="12" Margin="0,0,0,4" />
+                            <TextBlock Text="{Binding SelectedFile.SerialNumber}"
+                                       Foreground="{DynamicResource TextMain}" FontWeight="SemiBold" FontSize="15"
+                                       Margin="0,0,0,20" TextWrapping="Wrap" />
 
-                            <TextBlock Text="{x:Static loc:Strings.Sea_LblRrNumber}" Foreground="{DynamicResource TextMuted}" FontSize="12" Margin="0,0,0,4"/>
-                             <TextBlock Text="{Binding SelectedFile.RrNumber}" Foreground="{DynamicResource PrimaryAccent}" FontWeight="Bold" FontSize="15" Margin="0,0,0,20" TextWrapping="Wrap"/>
+                            <TextBlock Text="{x:Static loc:Strings.Sea_LblRrNumber}"
+                                       Foreground="{DynamicResource TextMuted}" FontSize="12" Margin="0,0,0,4" />
+                            <TextBlock Text="{Binding SelectedFile.RrNumber}"
+                                       Foreground="{DynamicResource PrimaryAccent}" FontWeight="Bold" FontSize="15"
+                                       Margin="0,0,0,20" TextWrapping="Wrap" />
 
-                            <TextBlock Text="{x:Static loc:Strings.Sea_LblSector}" Foreground="{DynamicResource TextMuted}" FontSize="12" Margin="0,0,0,4"/>
-                            <TextBlock Text="{Binding SelectedFile.Sector}" Foreground="{DynamicResource TextMain}" FontWeight="SemiBold" FontSize="15" Margin="0,0,0,20" TextWrapping="Wrap"/>
+                            <TextBlock Text="{x:Static loc:Strings.Sea_LblSector}"
+                                       Foreground="{DynamicResource TextMuted}" FontSize="12" Margin="0,0,0,4" />
+                            <TextBlock Text="{Binding SelectedFile.Sector}" Foreground="{DynamicResource TextMain}"
+                                       FontWeight="SemiBold" FontSize="15" Margin="0,0,0,20" TextWrapping="Wrap" />
 
-                            <TextBlock Text="{x:Static loc:Strings.Sea_LblSubjectFileName}" Foreground="{DynamicResource TextMuted}" FontSize="12" Margin="0,0,0,4"/>
-                            <TextBlock Text="{Binding SelectedFile.FileName}" Foreground="{DynamicResource TextMain}" FontWeight="SemiBold" TextWrapping="Wrap" FontSize="15" Margin="0,0,0,20"/>
+                            <TextBlock Text="{x:Static loc:Strings.Sea_LblSubjectFileName}"
+                                       Foreground="{DynamicResource TextMuted}" FontSize="12" Margin="0,0,0,4" />
+                            <TextBlock Text="{Binding SelectedFile.FileName}" Foreground="{DynamicResource TextMain}"
+                                       FontWeight="SemiBold" TextWrapping="Wrap" FontSize="15" Margin="0,0,0,20" />
 
-                            <TextBlock Text="{x:Static loc:Strings.Sea_LblSubjectNumber}" Foreground="{DynamicResource TextMuted}" FontSize="12" Margin="0,0,0,4"/>
-                            <TextBlock Text="{Binding SelectedFile.SubjectNumber}" Foreground="{DynamicResource TextMain}" FontWeight="SemiBold" FontSize="15" Margin="0,0,0,20" TextWrapping="Wrap"/>
+                            <TextBlock Text="{x:Static loc:Strings.Sea_LblSubjectNumber}"
+                                       Foreground="{DynamicResource TextMuted}" FontSize="12" Margin="0,0,0,4" />
+                            <TextBlock Text="{Binding SelectedFile.SubjectNumber}"
+                                       Foreground="{DynamicResource TextMain}" FontWeight="SemiBold" FontSize="15"
+                                       Margin="0,0,0,20" TextWrapping="Wrap" />
 
-                            <TextBlock Text="{x:Static loc:Strings.Sea_LblFileType}" Foreground="{DynamicResource TextMuted}" FontSize="12" Margin="0,0,0,4"/>
-                            <TextBlock Text="{Binding SelectedFile.FileType}" Foreground="{DynamicResource TextMain}" FontWeight="SemiBold" FontSize="15" Margin="0,0,0,20" TextWrapping="Wrap"/>
+                            <TextBlock Text="{x:Static loc:Strings.Sea_LblFileType}"
+                                       Foreground="{DynamicResource TextMuted}" FontSize="12" Margin="0,0,0,4" />
+                            <TextBlock Text="{Binding SelectedFile.FileType}" Foreground="{DynamicResource TextMain}"
+                                       FontWeight="SemiBold" FontSize="15" Margin="0,0,0,20" TextWrapping="Wrap" />
 
-                            <TextBlock Text="{x:Static loc:Strings.Sea_LblChronoSpan}" Foreground="{DynamicResource TextMuted}" FontSize="12" Margin="0,0,0,4"/>
-                            <TextBlock Foreground="{DynamicResource TextMain}" FontWeight="SemiBold" FontSize="15" Margin="0,0,0,20" TextWrapping="Wrap">
-                                 <Run Text="{Binding SelectedFile.StartDate, StringFormat=dd MMM yyyy}"/>
-                                <Run Text=" - "/>
-                                <Run Text="{Binding SelectedFile.EndDate, StringFormat=dd MMM yyyy}"/>
-                             </TextBlock>
-
-                            <TextBlock Text="{x:Static loc:Strings.Sea_LblTotalPages}" Foreground="{DynamicResource TextMuted}" FontSize="12" Margin="0,0,0,4"/>
-                            <TextBlock Text="{Binding SelectedFile.TotalPages}" Foreground="{DynamicResource TextMain}" FontWeight="SemiBold" FontSize="15" Margin="0,0,0,20"/>
-
-                            <TextBlock Text="{x:Static loc:Strings.Sea_LblPhysicalLocation}" Foreground="{DynamicResource TextMuted}" FontSize="12" Margin="0,0,0,4"/>
-                            <TextBlock Foreground="{DynamicResource TextMain}" FontWeight="SemiBold" FontSize="15" Margin="0,0,0,20" TextWrapping="Wrap">
-                                <Run Text="{x:Static loc:Strings.Sea_LblShelf}"/>
-                                <Run Text=" "/>
-                                <Run Text="{Binding SelectedFile.ShelfNumber}"/>
-                                <Run Text=" | "/>
-                                <Run Text="{x:Static loc:Strings.Sea_LblDeck}"/>
-                                <Run Text=" "/>
-                                <Run Text="{Binding SelectedFile.DeckNumber}"/>
+                            <TextBlock Text="{x:Static loc:Strings.Sea_LblChronoSpan}"
+                                       Foreground="{DynamicResource TextMuted}" FontSize="12" Margin="0,0,0,4" />
+                            <TextBlock Foreground="{DynamicResource TextMain}" FontWeight="SemiBold" FontSize="15"
+                                       Margin="0,0,0,20" TextWrapping="Wrap">
+                                <Run Text="{Binding SelectedFile.StartDate, StringFormat=dd MMM yyyy}" />
+                                <Run Text=" - " />
+                                <Run Text="{Binding SelectedFile.EndDate, StringFormat=dd MMM yyyy}" />
                             </TextBlock>
 
-                             <Button Command="{Binding OpenDocumentManagerCommand}" Margin="0,25,0,0" Padding="0,14"
-                                     Background="{DynamicResource PrimaryAccent}" Foreground="{DynamicResource CardBackground}" BorderThickness="0" Cursor="Hand">
-                                 <Button.Template>
-                                     <ControlTemplate TargetType="Button">
-                                         <Border Background="{TemplateBinding Background}" CornerRadius="6">
-                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}">
-                                                 <fa:ImageAwesome Icon="FolderOpen" Width="14" Height="14" Margin="0,0,10,0" Foreground="{DynamicResource CardBackground}"/>
-                                                 <TextBlock Text="Manage Attached Documents" FontSize="14"/>
-                                             </StackPanel>
-                                         </Border>
-                                     </ControlTemplate>
-                                 </Button.Template>
-                             </Button>
-                            
+                            <TextBlock Text="{x:Static loc:Strings.Sea_LblTotalPages}"
+                                       Foreground="{DynamicResource TextMuted}" FontSize="12" Margin="0,0,0,4" />
+                            <TextBlock Text="{Binding SelectedFile.TotalPages}" Foreground="{DynamicResource TextMain}"
+                                       FontWeight="SemiBold" FontSize="15" Margin="0,0,0,20" />
+
+                            <TextBlock Text="{x:Static loc:Strings.Sea_LblPhysicalLocation}"
+                                       Foreground="{DynamicResource TextMuted}" FontSize="12" Margin="0,0,0,4" />
+                            <TextBlock Foreground="{DynamicResource TextMain}" FontWeight="SemiBold" FontSize="15"
+                                       Margin="0,0,0,20" TextWrapping="Wrap">
+                                <Run Text="{x:Static loc:Strings.Sea_LblShelf}" />
+                                <Run Text=" " />
+                                <Run Text="{Binding SelectedFile.ShelfNumber}" />
+                                <Run Text=" | " />
+                                <Run Text="{x:Static loc:Strings.Sea_LblDeck}" />
+                                <Run Text=" " />
+                                <Run Text="{Binding SelectedFile.DeckNumber}" />
+                            </TextBlock>
+
+                            <Button Command="{Binding OpenDocumentManagerCommand}" Margin="0,25,0,0" Padding="0,14"
+                                    Background="{DynamicResource PrimaryAccent}"
+                                    Foreground="{DynamicResource CardBackground}" BorderThickness="0" Cursor="Hand">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}" CornerRadius="6">
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center" Margin="{TemplateBinding Padding}">
+                                                <fa:ImageAwesome Icon="FolderOpen" Width="14" Height="14"
+                                                                 Margin="0,0,10,0"
+                                                                 Foreground="{DynamicResource CardBackground}" />
+                                                <TextBlock Text="Manage Attached Documents" FontSize="14" />
+                                            </StackPanel>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+
                         </StackPanel>
                     </ScrollViewer>
 
-                    <Border Grid.Row="2" BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,1,0,0" Padding="24" Background="{DynamicResource WindowBackground}">
-                         <Button Command="{Binding CloseDetailsCommand}" Content="{x:Static loc:Strings.Sea_BtnCloseDossier}" 
-                                Padding="0,14" Background="{DynamicResource BorderColor}" 
-                                Foreground="{DynamicResource TextMain}" FontWeight="SemiBold" BorderThickness="0" Cursor="Hand">
-                             <Button.Template>
-                                 <ControlTemplate TargetType="Button">
+                    <Border Grid.Row="2" BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,1,0,0"
+                            Padding="24" Background="{DynamicResource WindowBackground}">
+                        <Button Command="{Binding CloseDetailsCommand}"
+                                Content="{x:Static loc:Strings.Sea_BtnCloseDossier}"
+                                Padding="0,14" Background="{DynamicResource BorderColor}"
+                                Foreground="{DynamicResource TextMain}" FontWeight="SemiBold" BorderThickness="0"
+                                Cursor="Hand">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
                                     <Border Background="{TemplateBinding Background}" CornerRadius="6">
-                                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
-                                     </Border>
-                                  </ControlTemplate>
-                             </Button.Template>
-                         </Button>
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                          Margin="{TemplateBinding Padding}" />
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
                     </Border>
                 </Grid>
             </Border>

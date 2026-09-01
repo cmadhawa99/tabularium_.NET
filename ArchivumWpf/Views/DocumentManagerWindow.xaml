@@ -5,5 +5,5 @@
         Title="Document Manager" Width="950" Height="650"
         WindowStartupLocation="CenterOwner"
         Background="{DynamicResource WindowBackground}">
-    <views:DocumentManagerView/>
+    <views:DocumentManagerView />
 </Window>

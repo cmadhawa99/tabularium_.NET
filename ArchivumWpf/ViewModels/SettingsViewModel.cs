@@ -1,105 +1,98 @@
-﻿using System;
-using System.Windows;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using System.Threading.Tasks;
-using System.Windows.Documents;
+using System.Windows;
+using ArchivumWpf.Models;
+using ArchivumWpf.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
-using ArchivumWpf.Models;
-using ArchivumWpf.Services;
+using Microsoft.Win32;
 using Npgsql;
-
 
 namespace ArchivumWpf.ViewModels;
 
 public partial class SettingsViewModel : ObservableObject
 {
-    
-    private readonly IPreferencesService _preferencesService;
     private readonly string _appSettingsPath;
-    
-    [ObservableProperty] private string _selectedTimeFormat = string.Empty;
-    [ObservableProperty] private string _selectedLanguage  =  string.Empty;
-    [ObservableProperty] private int _defaultPaginationSize;
-    [ObservableProperty] private string _selectedWindowMode = string.Empty;
-  
-    
-    public ObservableCollection<string> AvailableLanguages { get; } = new() { "English", "Sinhala", "Tamil" };
-    public ObservableCollection<int> PaginationOptions { get; } = new() { 25, 50, 100, 250, 500 };
-    public ObservableCollection<string> AvailableTimeFormats { get; } = new() { "12-Hour (AM/PM)", "24-Hour" };
-    public ObservableCollection<string> AvailableWindowModes { get; } = new() { "Normal", "Full Screen" };
-    
-    [ObservableProperty] private string _dbHost = string.Empty;
-    [ObservableProperty] private string _dbName = string.Empty;
-    [ObservableProperty] private string _dbUser = string.Empty;
-    [ObservableProperty] private string _dbPassword = string.Empty;
-    
-    [ObservableProperty] private bool _autoBackupEnabled;
+
+    private readonly IPreferencesService _preferencesService;
     [ObservableProperty] private string _autoBackupDirectory = string.Empty;
 
-    [ObservableProperty] private ObservableCollection<SectorItem> _sectors = new();
+    [ObservableProperty] private bool _autoBackupEnabled;
+
+    [ObservableProperty] private string _dbHost = string.Empty;
+    [ObservableProperty] private string _dbName = string.Empty;
+    [ObservableProperty] private string _dbPassword = string.Empty;
+    [ObservableProperty] private string _dbUser = string.Empty;
+    [ObservableProperty] private int _defaultPaginationSize;
     [ObservableProperty] private ObservableCollection<string> _fileTypes = new();
-    
-    public ColorPickerViewModel SectorColorPicker { get; } = new();
-    
-    [ObservableProperty] private string _newSectorName = string.Empty;
-    [ObservableProperty] private bool _isColorPickerOpen = false;
+    [ObservableProperty] private bool _isColorPickerOpen;
+    [ObservableProperty] private bool _isProcessing;
     [ObservableProperty] private string _newFileTypeName = string.Empty;
-    
-    [ObservableProperty] private string _statusMessage =  string.Empty;
-    [ObservableProperty] private string _statusColor = "Gray";
-    [ObservableProperty] private bool _isProcessing = false;
-    
+
+    [ObservableProperty] private string _newSectorName = string.Empty;
+
     private string _originalLanguage = string.Empty;
+
+    [ObservableProperty] private ObservableCollection<SectorItem> _sectors = new();
+    [ObservableProperty] private string _selectedLanguage = string.Empty;
+
+    [ObservableProperty] private string _selectedTimeFormat = string.Empty;
+    [ObservableProperty] private string _selectedWindowMode = string.Empty;
+    [ObservableProperty] private string _statusColor = "Gray";
+
+    [ObservableProperty] private string _statusMessage = string.Empty;
 
     public SettingsViewModel(IPreferencesService preferencesService)
     {
-        _preferencesService =  preferencesService;
+        _preferencesService = preferencesService;
         _appSettingsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "appsettings.json");
         LoadSettings();
     }
 
+
+    public ObservableCollection<string> AvailableLanguages { get; } = new() { "English", "Sinhala", "Tamil" };
+    public ObservableCollection<int> PaginationOptions { get; } = new() { 25, 50, 100, 250, 500 };
+    public ObservableCollection<string> AvailableTimeFormats { get; } = new() { "12-Hour (AM/PM)", "24-Hour" };
+    public ObservableCollection<string> AvailableWindowModes { get; } = new() { "Normal", "Full Screen" };
+
+    public ColorPickerViewModel SectorColorPicker { get; } = new();
+
     private void LoadSettings()
     {
         var prefs = _preferencesService.GetPreferences();
-        
+
         SelectedTimeFormat = prefs.TimeFormat ?? "12-Hour (AM/PM)";
         SelectedWindowMode = prefs.WindowMode ?? "Normal";
         DefaultPaginationSize = prefs.DefaultPaginationSize;
-        SelectedWindowMode = prefs.
-        DefaultExportDirectory = prefs.DefaultExportDirectory;
+        SelectedWindowMode = prefs.DefaultExportDirectory = prefs.DefaultExportDirectory;
         SelectedLanguage = prefs.Language ?? "English";
         _originalLanguage = SelectedLanguage;
-        
+
         AutoBackupEnabled = prefs.AutoBackupEnabled;
         AutoBackupDirectory = prefs.AutoBackupDirectory;
-        
+
         Sectors.Clear();
         foreach (var sector in prefs.Sectors) Sectors.Add(sector);
-        
+
         FileTypes.Clear();
         foreach (var type in prefs.FileTypes) FileTypes.Add(type);
 
         if (File.Exists(_appSettingsPath))
-        {
             try
             {
                 var jsonNode = JsonNode.Parse(File.ReadAllText(_appSettingsPath));
-                string encryptedConnString = jsonNode?["ConnectionStrings"]?["DefaultConnection"]?.ToString() ?? "";
+                var encryptedConnString = jsonNode?["ConnectionStrings"]?["DefaultConnection"]?.ToString() ?? "";
 
                 if (!string.IsNullOrEmpty(encryptedConnString))
                 {
-
                     var masterKey = KeyVaultService.GetMasterKey();
                     var cryptoService = new CryptoService(masterKey);
-                    
-                    string decryptedConnString = cryptoService.Decrypt(encryptedConnString);
-                    
+
+                    var decryptedConnString = cryptoService.Decrypt(encryptedConnString);
+
                     var builder = new NpgsqlConnectionStringBuilder(decryptedConnString);
                     // DbHost = builder.Host ?? "";
                     // DbName = builder.Database ?? "";
@@ -107,16 +100,17 @@ public partial class SettingsViewModel : ObservableObject
                     // DbPassword = builder.Password ?? "";
                 }
             }
-            catch{}
-        }
+            catch
+            {
+            }
     }
 
     [RelayCommand]
     private void AddSector()
     {
         if (string.IsNullOrWhiteSpace(NewSectorName)) return;
-        
-        Sectors.Add(new SectorItem {Name = NewSectorName, ColorHex = SectorColorPicker.HexColor});
+
+        Sectors.Add(new SectorItem { Name = NewSectorName, ColorHex = SectorColorPicker.HexColor });
         NewSectorName = string.Empty;
         SectorColorPicker.SetHex("#FFFFFF");
     }
@@ -131,7 +125,7 @@ public partial class SettingsViewModel : ObservableObject
     private void AddFileType()
     {
         if (string.IsNullOrWhiteSpace(NewFileTypeName)) return;
-        
+
         FileTypes.Add(NewFileTypeName);
         NewFileTypeName = string.Empty;
     }
@@ -143,17 +137,23 @@ public partial class SettingsViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void OpenColorPicker() => IsColorPickerOpen = true;
-    
+    private void OpenColorPicker()
+    {
+        IsColorPickerOpen = true;
+    }
+
     [RelayCommand]
-    private void CloseColorPicker() => IsColorPickerOpen = false;
-    
+    private void CloseColorPicker()
+    {
+        IsColorPickerOpen = false;
+    }
+
 
     [RelayCommand]
     private async Task TestDatabaseConnectionAsync()
     {
         IsProcessing = true;
-        ShowStatus ("Testing connection...", "Yellow");
+        ShowStatus("Testing connection...", "Yellow");
 
         var builder = new NpgsqlConnectionStringBuilder
         {
@@ -184,38 +184,35 @@ public partial class SettingsViewModel : ObservableObject
     private void SaveGeneralSettings()
     {
         var prefs = _preferencesService.GetPreferences();
-        
-        prefs.Language = this.SelectedLanguage;
-        prefs.TimeFormat = this.SelectedTimeFormat;
-        prefs.DefaultPaginationSize = this.DefaultPaginationSize;
-        prefs.WindowMode = this.SelectedWindowMode;
-        
+
+        prefs.Language = SelectedLanguage;
+        prefs.TimeFormat = SelectedTimeFormat;
+        prefs.DefaultPaginationSize = DefaultPaginationSize;
+        prefs.WindowMode = SelectedWindowMode;
+
         _preferencesService.SavePreferences(prefs);
         WeakReferenceMessenger.Default.Send(new SettingsChangedMessage());
-        
-        bool languageChanged = !string.Equals(_originalLanguage, SelectedLanguage, StringComparison.Ordinal);
+
+        var languageChanged = !string.Equals(_originalLanguage, SelectedLanguage, StringComparison.Ordinal);
         _originalLanguage = SelectedLanguage;
-        
+
         ShowStatus("General settings saved successfully!", "#4CAF50");
-        
+
         if (languageChanged)
-        {
             MessageBox.Show(
                 "Your language preference has been saved. The change will take effect after you restart the application.",
                 "Restart Required", MessageBoxButton.OK, MessageBoxImage.Information);
-        }
     }
 
     [RelayCommand]
     private void SaveDatabaseSettings()
     {
         var prefs = _preferencesService.GetPreferences();
-        prefs.AutoBackupEnabled = this.AutoBackupEnabled;
-        prefs.AutoBackupDirectory = this.AutoBackupDirectory;
+        prefs.AutoBackupEnabled = AutoBackupEnabled;
+        prefs.AutoBackupDirectory = AutoBackupDirectory;
         _preferencesService.SavePreferences(prefs);
 
         if (File.Exists(_appSettingsPath))
-        {
             try
             {
                 if (!string.IsNullOrWhiteSpace(DbHost) && !string.IsNullOrWhiteSpace(DbName))
@@ -246,7 +243,7 @@ public partial class SettingsViewModel : ObservableObject
                 ShowStatus($"Error saving appsettings.json: {ex.Message}", "#F44336");
                 return;
             }
-        }
+
         WeakReferenceMessenger.Default.Send(new SettingsChangedMessage());
         ShowStatus("Database settings saved! (App restart required for connection changes).", "#4CAF50");
     }
@@ -255,12 +252,12 @@ public partial class SettingsViewModel : ObservableObject
     private void SaveVaultSettings()
     {
         var prefs = _preferencesService.GetPreferences();
-        
-        prefs.Sectors = new List<SectorItem>(this.Sectors);
-        prefs.FileTypes = new List<string>(this.FileTypes);
-        
+
+        prefs.Sectors = new List<SectorItem>(Sectors);
+        prefs.FileTypes = new List<string>(FileTypes);
+
         _preferencesService.SavePreferences(prefs);
-        
+
         WeakReferenceMessenger.Default.Send(new SettingsChangedMessage());
         ShowStatus("Vault categories saved successfully!", "#4CAF50");
     }
@@ -268,24 +265,18 @@ public partial class SettingsViewModel : ObservableObject
     [RelayCommand]
     private void BrowseBackupDirectory()
     {
-        var dialog = new Microsoft.Win32.OpenFolderDialog()
+        var dialog = new OpenFolderDialog
         {
             Title = "Select Auto-Backup Destination Directory",
             Multiselect = false
         };
 
-        if (dialog.ShowDialog() == true)
-        {
-            AutoBackupDirectory = dialog.FolderName;
-        }
+        if (dialog.ShowDialog() == true) AutoBackupDirectory = dialog.FolderName;
     }
 
     private void ShowStatus(string message, string color)
     {
-        StatusMessage =  message;
+        StatusMessage = message;
         StatusColor = color;
     }
-    
-
-    
 }

@@ -4,28 +4,30 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Themes/DarkTheme.xaml"/>
+                <ResourceDictionary Source="Themes/DarkTheme.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            
-            <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
-            
+
+            <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
+
             <!-- Global Styles -->
-            
+
             <Style x:Key="ModernScrollThumb" TargetType="{x:Type Thumb}">
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type Thumb}">
-                            <Border x:Name="ThumbBorder" 
-                                    Background="{DynamicResource BorderColor}" 
-                                    CornerRadius="3" 
-                                    Margin="2"/>
+                            <Border x:Name="ThumbBorder"
+                                    Background="{DynamicResource BorderColor}"
+                                    CornerRadius="3"
+                                    Margin="2" />
                             <ControlTemplate.Triggers>
                                 <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter TargetName="ThumbBorder" Property="Background" Value="{DynamicResource PrimaryAccent}"/>
+                                    <Setter TargetName="ThumbBorder" Property="Background"
+                                            Value="{DynamicResource PrimaryAccent}" />
                                 </Trigger>
                                 <Trigger Property="IsDragging" Value="True">
-                                    <Setter TargetName="ThumbBorder" Property="Background" Value="{DynamicResource PrimaryAccent}"/>
-                                    <Setter TargetName="ThumbBorder" Property="Opacity" Value="0.8"/>
+                                    <Setter TargetName="ThumbBorder" Property="Background"
+                                            Value="{DynamicResource PrimaryAccent}" />
+                                    <Setter TargetName="ThumbBorder" Property="Opacity" Value="0.8" />
                                 </Trigger>
                             </ControlTemplate.Triggers>
                         </ControlTemplate>
@@ -34,44 +36,48 @@
             </Style>
 
             <Style TargetType="{x:Type ScrollBar}">
-                <Setter Property="Background" Value="Transparent"/>
-                <Setter Property="Stylus.IsPressAndHoldEnabled" Value="false"/>
-                <Setter Property="Stylus.IsFlicksEnabled" Value="false"/>
-                <Setter Property="Width" Value="10"/>
-                <Setter Property="MinWidth" Value="10"/>
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="Stylus.IsPressAndHoldEnabled" Value="false" />
+                <Setter Property="Stylus.IsFlicksEnabled" Value="false" />
+                <Setter Property="Width" Value="10" />
+                <Setter Property="MinWidth" Value="10" />
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type ScrollBar}">
                             <Grid x:Name="Bg" Background="Transparent" SnapsToDevicePixels="true">
-                                <Border Background="{DynamicResource CardBackground}" CornerRadius="3" Margin="0" Opacity="0.5"/>
-                                
-                                <Track x:Name="PART_Track" IsDirectionReversed="true" IsEnabled="{TemplateBinding IsMouseOver}">
+                                <Border Background="{DynamicResource CardBackground}" CornerRadius="3" Margin="0"
+                                        Opacity="0.5" />
+
+                                <Track x:Name="PART_Track" IsDirectionReversed="true"
+                                       IsEnabled="{TemplateBinding IsMouseOver}">
                                     <Track.DecreaseRepeatButton>
-                                        <RepeatButton Command="{x:Static ScrollBar.PageUpCommand}" Opacity="0" Focusable="False"/>
+                                        <RepeatButton Command="{x:Static ScrollBar.PageUpCommand}" Opacity="0"
+                                                      Focusable="False" />
                                     </Track.DecreaseRepeatButton>
                                     <Track.IncreaseRepeatButton>
-                                        <RepeatButton Command="{x:Static ScrollBar.PageDownCommand}" Opacity="0" Focusable="False"/>
+                                        <RepeatButton Command="{x:Static ScrollBar.PageDownCommand}" Opacity="0"
+                                                      Focusable="False" />
                                     </Track.IncreaseRepeatButton>
                                     <Track.Thumb>
-                                        <Thumb Style="{StaticResource ModernScrollThumb}"/>
+                                        <Thumb Style="{StaticResource ModernScrollThumb}" />
                                     </Track.Thumb>
                                 </Track>
                             </Grid>
-                            
+
                             <ControlTemplate.Triggers>
                                 <Trigger Property="Orientation" Value="Horizontal">
-                                    <Setter Property="Width" Value="Auto"/>
-                                    <Setter Property="MinWidth" Value="0"/>
-                                    <Setter Property="Height" Value="10"/>
-                                    <Setter Property="MinHeight" Value="10"/>
-                                    <Setter TargetName="PART_Track" Property="IsDirectionReversed" Value="False"/>
+                                    <Setter Property="Width" Value="Auto" />
+                                    <Setter Property="MinWidth" Value="0" />
+                                    <Setter Property="Height" Value="10" />
+                                    <Setter Property="MinHeight" Value="10" />
+                                    <Setter TargetName="PART_Track" Property="IsDirectionReversed" Value="False" />
                                 </Trigger>
                             </ControlTemplate.Triggers>
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
             </Style>
-            
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>

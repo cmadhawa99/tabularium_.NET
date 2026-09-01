@@ -1,15 +1,11 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
+﻿using System.Windows.Controls;
 
 namespace ArchivumWpf.Views;
 
 public partial class SearchView : UserControl
 {
-    
     public SearchView()
     {
         InitializeComponent();
     }
-    
 }

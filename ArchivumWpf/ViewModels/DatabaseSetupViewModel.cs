@@ -1,26 +1,24 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Security.Cryptography;
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using System.Threading.Tasks;
 using System.Windows;
+using ArchivumWpf.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using ArchivumWpf.Services;
 using Npgsql;
 
 namespace ArchivumWpf.ViewModels;
 
 public partial class DatabaseSetupViewModel : ObservableObject
 {
-    [ObservableProperty] private string _dbHost =  string.Empty;
-    [ObservableProperty] private string _dbName =  string.Empty;
-    [ObservableProperty] private string _dbUser =  string.Empty;
-    public string DbPassword { get; set; } = string.Empty;
-    
+    [ObservableProperty] private string _dbHost = string.Empty;
+    [ObservableProperty] private string _dbName = string.Empty;
+    [ObservableProperty] private string _dbUser = string.Empty;
+
     [ObservableProperty] private string _errorMessage = string.Empty;
-    [ObservableProperty] private bool _isProcessing = false;
+    [ObservableProperty] private bool _isProcessing;
+    public string DbPassword { get; set; } = string.Empty;
 
     [RelayCommand]
     private async Task ConnectAndSaveAsync(Window window)
@@ -31,7 +29,7 @@ public partial class DatabaseSetupViewModel : ObservableObject
             ErrorMessage = "Please fill in all database fields.";
             return;
         }
-        
+
         IsProcessing = true;
         ErrorMessage = string.Empty;
 
@@ -46,7 +44,7 @@ public partial class DatabaseSetupViewModel : ObservableObject
 
         try
         {
-            string masterKey = KeyVaultService.GetMasterKey();
+            var masterKey = KeyVaultService.GetMasterKey();
 
             await using var connection = new NpgsqlConnection(builder.ToString());
             await connection.OpenAsync();
@@ -57,7 +55,7 @@ public partial class DatabaseSetupViewModel : ObservableObject
 
             if (result != null && result != DBNull.Value)
             {
-                string encryptedCanary = result.ToString() ?? "";
+                var encryptedCanary = result.ToString() ?? "";
                 try
                 {
                     var cryptoService = new CryptoService(masterKey);
@@ -73,7 +71,7 @@ public partial class DatabaseSetupViewModel : ObservableObject
                 }
             }
 
-            string appSettingsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "appsettings.json");
+            var appSettingsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "appsettings.json");
 
             var jsonNode = File.Exists(appSettingsPath)
                 ? JsonNode.Parse(File.ReadAllText(appSettingsPath))
@@ -98,10 +96,12 @@ public partial class DatabaseSetupViewModel : ObservableObject
         catch (Exception ex)
         {
             ErrorMessage = $"An error occurred: {ex.Message}";
-        } finally{
+        }
+        finally
         {
-            IsProcessing = false;
-        }}
+            {
+                IsProcessing = false;
+            }
+        }
     }
-    
 }

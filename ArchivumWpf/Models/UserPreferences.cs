@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace ArchivumWpf.Models;
+﻿namespace ArchivumWpf.Models;
 
 public class SectorItem
 {
@@ -17,12 +15,12 @@ public class UserPreferences
     public int DefaultPaginationSize { get; set; } = 50;
     public string WindowMode { get; set; } = "Normal";
     public string DefaultExportDirectory { get; set; } = "C:\\";
-    
+
     public bool AutoBackupEnabled { get; set; } = false;
     public string AutoBackupDirectory { get; set; } = "C:\\ArchiveBackups\\";
 
 
-    public List<SectorItem> Sectors { get; set; } = new List<SectorItem>
+    public List<SectorItem> Sectors { get; set; } = new()
     {
         new SectorItem { Name = "පාලන", ColorHex = "#d99694" },
         new SectorItem { Name = "සෞඛ්‍ය", ColorHex = "#b3a2c7" },
@@ -32,6 +30,5 @@ public class UserPreferences
         new SectorItem { Name = "සං‍රක්ෂණ", ColorHex = "#FFFFFF" }
     };
 
-    public List<string> FileTypes { get; set; } = new List<string>();
-
+    public List<string> FileTypes { get; set; } = new();
 }

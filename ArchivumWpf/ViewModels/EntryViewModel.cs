@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.IO;
-using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
 using System.Windows;
-using System.Windows.Media.Effects;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
 using ArchivumWpf.Models;
 using ArchivumWpf.Services;
 using ArchivumWpf.Views;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ArchivumWpf.ViewModels;
@@ -18,72 +14,64 @@ public partial class EntryViewModel : ObservableObject
 {
     private readonly IArchiveService _archiveService;
     private readonly IPreferencesService _preferencesService;
+    [ObservableProperty] private string _addDeckNumber = string.Empty;
+    [ObservableProperty] private DateTime? _addEndDate;
+    [ObservableProperty] private string _addFileName = string.Empty;
+    [ObservableProperty] private string _addFileNumber = string.Empty;
+    [ObservableProperty] private string _addFileType = string.Empty;
 
-    public ObservableCollection<string> AvailableSectors { get; } = new();
-    public ObservableCollection<string> AvailableFileTypes { get; } = new();
-
-    public ObservableCollection<EntryHistoryRecord> HistoryRecords { get; } = new();
-    
-    [ObservableProperty] private string _historySearchQuery = string.Empty;
-    [ObservableProperty] private int _historyCurrentPage = 1;
-    [ObservableProperty] private int _historyTotalPages = 1;
-    [ObservableProperty] private int _historyTotalCount = 0;
-    [ObservableProperty] private int _pageSize;
-    
     //Add entry properties
     [ObservableProperty] private string _addRrNumber = string.Empty;
     [ObservableProperty] private string _addSector = string.Empty;
-    [ObservableProperty] private string _addSubjectNumber = string.Empty;
-    [ObservableProperty] private string _addFileName = string.Empty;
-    [ObservableProperty] private string _addFileType = string.Empty;
-    [ObservableProperty] private DateTime? _addStartDate;
-    [ObservableProperty] private DateTime? _addEndDate;
-    [ObservableProperty] private string _addTotalPages = string.Empty; // Using string for UI input, parse to int later
     [ObservableProperty] private string _addShelfNumber = string.Empty;
-    [ObservableProperty] private string _addDeckNumber = string.Empty;
-    [ObservableProperty] private string _addFileNumber = string.Empty;
-    
+    [ObservableProperty] private DateTime? _addStartDate;
+    [ObservableProperty] private string _addSubjectNumber = string.Empty;
+    [ObservableProperty] private string _addTotalPages = string.Empty; // Using string for UI input, parse to int later
+
+    private FileRecord _currentEditingFile;
+    [ObservableProperty] private string _dialogTitle = string.Empty;
+    [ObservableProperty] private string _editDeckNumber = string.Empty;
+    [ObservableProperty] private DateTime? _editEndDate;
+    [ObservableProperty] private string _editFileName = string.Empty;
+    [ObservableProperty] private string _editFileNumber = string.Empty;
+    [ObservableProperty] private string _editFileType = string.Empty;
+
+    [ObservableProperty] private string _editRrNumber = string.Empty;
+
+    [ObservableProperty] private string _editSector = string.Empty;
+    [ObservableProperty] private string _editShelfNumber = string.Empty;
+    [ObservableProperty] private DateTime? _editStartDate;
+    [ObservableProperty] private string _editSubjectNumber = string.Empty;
+    [ObservableProperty] private string _editTotalPages = string.Empty;
+    [ObservableProperty] private int _historyCurrentPage = 1;
+
+    [ObservableProperty] private string _historySearchQuery = string.Empty;
+    [ObservableProperty] private int _historyTotalCount;
+    [ObservableProperty] private int _historyTotalPages = 1;
+
+    [ObservableProperty] private bool _isDialogOpen;
+    [ObservableProperty] private bool _isEditFormEnabled;
+
+    [ObservableProperty] private FileRecord? _lastSavedRecordForDocs;
+    [ObservableProperty] private int _pageSize;
+
     //Edit entry properties
     [ObservableProperty] private string _searchRrNumber = string.Empty;
-    [ObservableProperty] private bool _isEditFormEnabled = false;
-    
-    private FileRecord _currentEditingFile;
-    
-    [ObservableProperty] private string _editRrNumber = string.Empty;
-    
-    [ObservableProperty] private string _editSector = string.Empty;
-    [ObservableProperty] private string _editSubjectNumber = string.Empty;
-    [ObservableProperty] private string _editFileName = string.Empty;
-    [ObservableProperty] private string _editFileType = string.Empty;
-    [ObservableProperty] private DateTime? _editStartDate;
-    [ObservableProperty] private DateTime? _editEndDate;
-    [ObservableProperty] private string _editTotalPages = string.Empty;
-    [ObservableProperty] private string _editShelfNumber = string.Empty;
-    [ObservableProperty] private string _editDeckNumber = string.Empty;
-    [ObservableProperty] private string _editFileNumber = string.Empty;
-
-    [ObservableProperty] private bool _isDialogOpen = false;
-    [ObservableProperty] private string _dialogTitle = string.Empty;
     [ObservableProperty] private EntryHistoryRecord _selectedHistoryRecord;
-    
-    [ObservableProperty] private FileRecord? _lastSavedRecordForDocs;
-    
-    
-    public ObservableCollection<ChangeItem> RecordChanges { get; } = new();
-    
-    [ObservableProperty] private string _statusMessage = string.Empty;
     [ObservableProperty] private string _statusColor = "White";
+
+    [ObservableProperty] private string _statusMessage = string.Empty;
 
     public EntryViewModel(IArchiveService archiveService, IPreferencesService preferencesService)
     {
         _archiveService = archiveService;
         _preferencesService = preferencesService;
-        
+
         PageSize = _preferencesService.GetPreferences().DefaultPaginationSize;
-        
+
         LoadDropdowns();
         _ = LoadHistoryAsync();
-        
+
         WeakReferenceMessenger.Default.Register<SettingsChangedMessage>(this, (recipient, message) =>
         {
             LoadDropdowns();
@@ -91,14 +79,21 @@ public partial class EntryViewModel : ObservableObject
             PageSize = _preferencesService.GetPreferences().DefaultPaginationSize;
             HistoryCurrentPage = 1;
             _ = LoadHistoryAsync();
-
         });
-        
     }
-    
+
+    public ObservableCollection<string> AvailableSectors { get; } = new();
+    public ObservableCollection<string> AvailableFileTypes { get; } = new();
+
+    public ObservableCollection<EntryHistoryRecord> HistoryRecords { get; } = new();
+
+
+    public ObservableCollection<ChangeItem> RecordChanges { get; } = new();
+
     public async Task RefreshAsync()
     {
         LoadDropdowns();
+        LastSavedRecordForDocs = null;
         await LoadHistoryAsync();
     }
 
@@ -107,7 +102,7 @@ public partial class EntryViewModel : ObservableObject
         HistoryCurrentPage = 1;
         _ = LoadHistoryAsync();
     }
-    
+
 
     [RelayCommand]
     private void PerformHistorySearch()
@@ -125,22 +120,19 @@ public partial class EntryViewModel : ObservableObject
         AvailableFileTypes.Add("");
         foreach (var t in prefs.FileTypes) AvailableFileTypes.Add(t);
     }
-    
-    
+
 
     private async Task LoadHistoryAsync()
     {
-        var result = await _archiveService.GetEntryHistoryPaginatedAsync(HistorySearchQuery, HistoryCurrentPage, PageSize);
+        var result =
+            await _archiveService.GetEntryHistoryPaginatedAsync(HistorySearchQuery, HistoryCurrentPage, PageSize);
 
         HistoryTotalCount = result.TotalCount;
         HistoryTotalPages = (int)Math.Ceiling((double)HistoryTotalCount / PageSize);
         if (HistoryTotalPages == 0) HistoryTotalPages = 1;
 
         HistoryRecords.Clear();
-        foreach (var record in result.Items)
-        {
-            HistoryRecords.Add(record);
-        }
+        foreach (var record in result.Items) HistoryRecords.Add(record);
     }
 
     [RelayCommand]
@@ -162,9 +154,9 @@ public partial class EntryViewModel : ObservableObject
             await LoadHistoryAsync();
         }
     }
-    
+
     //Add tab
-    
+
     [RelayCommand]
     private async Task SaveNewFileAsync()
     {
@@ -175,20 +167,20 @@ public partial class EntryViewModel : ObservableObject
             return;
         }
 
-        var newRecord = new FileRecord()
+        var newRecord = new FileRecord
         {
-            RrNumber = this.AddRrNumber,
-            Sector = this.AddSector,
-            SubjectNumber = string.IsNullOrWhiteSpace(this.AddSubjectNumber) ? null : this.AddSubjectNumber,
-            FileName = this.AddFileName,
-            FileType = string.IsNullOrWhiteSpace(this.AddFileType) ? null : this.AddFileType,
-            StartDate = this.AddStartDate,
-            EndDate = this.AddEndDate,
-            
-            TotalPages = int.TryParse(this.AddTotalPages, out int tp) ? tp : null,
-            ShelfNumber = string.IsNullOrWhiteSpace(this.AddShelfNumber) ? null : this.AddShelfNumber,
-            DeckNumber = string.IsNullOrWhiteSpace(this.AddDeckNumber) ? null : this.AddDeckNumber,
-            FileNumber = string.IsNullOrWhiteSpace(this.AddFileNumber) ? null : this.AddFileNumber
+            RrNumber = AddRrNumber,
+            Sector = AddSector,
+            SubjectNumber = string.IsNullOrWhiteSpace(AddSubjectNumber) ? null : AddSubjectNumber,
+            FileName = AddFileName,
+            FileType = string.IsNullOrWhiteSpace(AddFileType) ? null : AddFileType,
+            StartDate = AddStartDate,
+            EndDate = AddEndDate,
+
+            TotalPages = int.TryParse(AddTotalPages, out var tp) ? tp : null,
+            ShelfNumber = string.IsNullOrWhiteSpace(AddShelfNumber) ? null : AddShelfNumber,
+            DeckNumber = string.IsNullOrWhiteSpace(AddDeckNumber) ? null : AddDeckNumber,
+            FileNumber = string.IsNullOrWhiteSpace(AddFileNumber) ? null : AddFileNumber
         };
 
         var result = await _archiveService.AddNewFileAsync(newRecord);
@@ -200,7 +192,6 @@ public partial class EntryViewModel : ObservableObject
             LastSavedRecordForDocs = newRecord;
             _ = LoadHistoryAsync();
         }
-
     }
 
     [RelayCommand]
@@ -219,8 +210,8 @@ public partial class EntryViewModel : ObservableObject
         AddFileNumber = string.Empty;
         LastSavedRecordForDocs = null;
     }
-    
-    
+
+
     //Edit tab
 
     [RelayCommand]
@@ -245,10 +236,10 @@ public partial class EntryViewModel : ObservableObject
         EditStartDate = _currentEditingFile.StartDate;
         EditEndDate = _currentEditingFile.EndDate;
         EditTotalPages = _currentEditingFile.TotalPages?.ToString() ?? "";
-        EditShelfNumber = _currentEditingFile.ShelfNumber?.ToString() ?? "";
-        EditDeckNumber = _currentEditingFile.DeckNumber?.ToString() ?? "";
-        EditFileNumber = _currentEditingFile.FileNumber?.ToString() ?? "";
-        
+        EditShelfNumber = _currentEditingFile.ShelfNumber ?? "";
+        EditDeckNumber = _currentEditingFile.DeckNumber ?? "";
+        EditFileNumber = _currentEditingFile.FileNumber ?? "";
+
         IsEditFormEnabled = true;
         ShowStatus($"File {SearchRrNumber} loaded. Ready to edit.", "#4FC3F7");
     }
@@ -270,11 +261,11 @@ public partial class EntryViewModel : ObservableObject
         _currentEditingFile.FileType = string.IsNullOrWhiteSpace(EditFileType) ? null : EditFileType;
         _currentEditingFile.StartDate = EditStartDate;
         _currentEditingFile.EndDate = EditEndDate;
-        _currentEditingFile.TotalPages = int.TryParse(EditTotalPages, out int tp) ? tp : null;
+        _currentEditingFile.TotalPages = int.TryParse(EditTotalPages, out var tp) ? tp : null;
         _currentEditingFile.ShelfNumber = string.IsNullOrWhiteSpace(EditShelfNumber) ? null : EditShelfNumber;
         _currentEditingFile.DeckNumber = string.IsNullOrWhiteSpace(EditDeckNumber) ? null : EditDeckNumber;
         _currentEditingFile.FileNumber = string.IsNullOrWhiteSpace(EditFileNumber) ? null : EditFileNumber;
-        
+
         var result = await _archiveService.UpdateFileAsync(_currentEditingFile);
         ShowStatus(result.Message, result.Success ? "#4CAF50" : "#F44336");
 
@@ -283,7 +274,6 @@ public partial class EntryViewModel : ObservableObject
             ClearEditForm();
             _ = LoadHistoryAsync();
         }
-        
     }
 
     [RelayCommand]
@@ -292,17 +282,17 @@ public partial class EntryViewModel : ObservableObject
         SearchRrNumber = string.Empty;
         IsEditFormEnabled = false;
         _currentEditingFile = null;
-        
+
         EditRrNumber = string.Empty;
-        EditSector = string.Empty; 
-        EditSubjectNumber = string.Empty; 
+        EditSector = string.Empty;
+        EditSubjectNumber = string.Empty;
         EditFileName = string.Empty;
-        EditFileType = string.Empty; 
-        EditStartDate = null; 
+        EditFileType = string.Empty;
+        EditStartDate = null;
         EditEndDate = null;
-        EditTotalPages = string.Empty; 
-        EditShelfNumber = string.Empty; 
-        EditDeckNumber = string.Empty; 
+        EditTotalPages = string.Empty;
+        EditShelfNumber = string.Empty;
+        EditDeckNumber = string.Empty;
         EditFileNumber = string.Empty;
     }
 
@@ -310,96 +300,154 @@ public partial class EntryViewModel : ObservableObject
     private async Task ShowHistoryDetailsAsync()
     {
         if (_selectedHistoryRecord == null) return;
-        
+
         RecordChanges.Clear();
         IsDialogOpen = true;
 
         if (SelectedHistoryRecord.ActionType == "Created")
         {
             DialogTitle = $"Initial Entry: {SelectedHistoryRecord.RrNumber}";
-            RecordChanges.Add(new ChangeItem { FieldName = "Sector", OldValue = "-", NewValue = SelectedHistoryRecord.Sector });
-            RecordChanges.Add(new ChangeItem { FieldName = "File Name", OldValue = "-", NewValue = SelectedHistoryRecord.FileName });
-            RecordChanges.Add(new ChangeItem { FieldName = "Subject Number", OldValue = "-", NewValue = SelectedHistoryRecord.SubjectNumber ?? "None" });
-            RecordChanges.Add(new ChangeItem { FieldName = "File Type", OldValue = "-", NewValue = SelectedHistoryRecord.FileType ?? "None" });
-            RecordChanges.Add(new ChangeItem { FieldName = "Total Pages", OldValue = "-", NewValue = SelectedHistoryRecord.TotalPages?.ToString() ?? "None" });
-            RecordChanges.Add(new ChangeItem { FieldName = "Shelf Number", OldValue = "-", NewValue = SelectedHistoryRecord.ShelfNumber?.ToString() ?? "None" });
-            RecordChanges.Add(new ChangeItem { FieldName = "Deck Number", OldValue = "-", NewValue = SelectedHistoryRecord.DeckNumber?.ToString() ?? "None" });
-            RecordChanges.Add(new ChangeItem { FieldName = "File Number", OldValue = "-", NewValue = SelectedHistoryRecord.FileNumber?.ToString() ?? "None" });
-            RecordChanges.Add(new ChangeItem { FieldName = "Status", OldValue = "-", NewValue = SelectedHistoryRecord.Status });
+            RecordChanges.Add(new ChangeItem
+                { FieldName = "Sector", OldValue = "-", NewValue = SelectedHistoryRecord.Sector });
+            RecordChanges.Add(new ChangeItem
+                { FieldName = "File Name", OldValue = "-", NewValue = SelectedHistoryRecord.FileName });
+            RecordChanges.Add(new ChangeItem
+            {
+                FieldName = "Subject Number", OldValue = "-", NewValue = SelectedHistoryRecord.SubjectNumber ?? "None"
+            });
+            RecordChanges.Add(new ChangeItem
+                { FieldName = "File Type", OldValue = "-", NewValue = SelectedHistoryRecord.FileType ?? "None" });
+            RecordChanges.Add(new ChangeItem
+            {
+                FieldName = "Total Pages", OldValue = "-",
+                NewValue = SelectedHistoryRecord.TotalPages?.ToString() ?? "None"
+            });
+            RecordChanges.Add(new ChangeItem
+                { FieldName = "Shelf Number", OldValue = "-", NewValue = SelectedHistoryRecord.ShelfNumber ?? "None" });
+            RecordChanges.Add(new ChangeItem
+                { FieldName = "Deck Number", OldValue = "-", NewValue = SelectedHistoryRecord.DeckNumber ?? "None" });
+            RecordChanges.Add(new ChangeItem
+                { FieldName = "File Number", OldValue = "-", NewValue = SelectedHistoryRecord.FileNumber ?? "None" });
+            RecordChanges.Add(new ChangeItem
+                { FieldName = "Status", OldValue = "-", NewValue = SelectedHistoryRecord.Status });
         }
 
         else
         {
             DialogTitle = $"Edits for : {SelectedHistoryRecord.RrNumber}";
-            var previous = await _archiveService.GetPreviousHistoryRecordAsync(SelectedHistoryRecord.FileSerialNumber, SelectedHistoryRecord.Timestamp);
+            var previous = await _archiveService.GetPreviousHistoryRecordAsync(SelectedHistoryRecord.FileSerialNumber,
+                SelectedHistoryRecord.Timestamp);
 
             if (previous != null)
             {
-                if (previous.RrNumber != SelectedHistoryRecord.RrNumber) RecordChanges.Add(new ChangeItem { FieldName = "RR Number", OldValue = previous.RrNumber, NewValue = SelectedHistoryRecord.RrNumber });
-                
+                if (previous.RrNumber != SelectedHistoryRecord.RrNumber)
+                    RecordChanges.Add(new ChangeItem
+                    {
+                        FieldName = "RR Number", OldValue = previous.RrNumber, NewValue = SelectedHistoryRecord.RrNumber
+                    });
+
                 if (previous.Sector != SelectedHistoryRecord.Sector)
-                    RecordChanges.Add(new ChangeItem { FieldName = "Sector", OldValue = previous.Sector, NewValue = SelectedHistoryRecord.Sector });
-                    
+                    RecordChanges.Add(new ChangeItem
+                        { FieldName = "Sector", OldValue = previous.Sector, NewValue = SelectedHistoryRecord.Sector });
+
                 if (previous.FileName != SelectedHistoryRecord.FileName)
-                    RecordChanges.Add(new ChangeItem { FieldName = "File Name", OldValue = previous.FileName, NewValue = SelectedHistoryRecord.FileName });
-                    
+                    RecordChanges.Add(new ChangeItem
+                    {
+                        FieldName = "File Name", OldValue = previous.FileName, NewValue = SelectedHistoryRecord.FileName
+                    });
+
                 if (previous.SubjectNumber != SelectedHistoryRecord.SubjectNumber)
-                    RecordChanges.Add(new ChangeItem { FieldName = "Subject Number", OldValue = previous.SubjectNumber ?? "None", NewValue = SelectedHistoryRecord.SubjectNumber ?? "None" });
-                
-                if (previous.FileType != SelectedHistoryRecord.FileType) 
-                    RecordChanges.Add(new ChangeItem { FieldName = "File Type", OldValue = previous.FileType ?? "None", NewValue = SelectedHistoryRecord.FileType ?? "None" });
-                
-                if (previous.StartDate != SelectedHistoryRecord.StartDate) 
-                    RecordChanges.Add(new ChangeItem { FieldName = "Start Date", OldValue = previous.StartDate?.ToString("yyyy-MM-dd") ?? "None", NewValue = SelectedHistoryRecord.StartDate?.ToString("yyyy-MM-dd") ?? "None" });
-                
+                    RecordChanges.Add(new ChangeItem
+                    {
+                        FieldName = "Subject Number", OldValue = previous.SubjectNumber ?? "None",
+                        NewValue = SelectedHistoryRecord.SubjectNumber ?? "None"
+                    });
+
+                if (previous.FileType != SelectedHistoryRecord.FileType)
+                    RecordChanges.Add(new ChangeItem
+                    {
+                        FieldName = "File Type", OldValue = previous.FileType ?? "None",
+                        NewValue = SelectedHistoryRecord.FileType ?? "None"
+                    });
+
+                if (previous.StartDate != SelectedHistoryRecord.StartDate)
+                    RecordChanges.Add(new ChangeItem
+                    {
+                        FieldName = "Start Date", OldValue = previous.StartDate?.ToString("yyyy-MM-dd") ?? "None",
+                        NewValue = SelectedHistoryRecord.StartDate?.ToString("yyyy-MM-dd") ?? "None"
+                    });
+
                 if (previous.EndDate != SelectedHistoryRecord.EndDate)
-                    RecordChanges.Add(new ChangeItem { FieldName = "End Date", OldValue = previous.EndDate?.ToString("yyyy-MM-dd") ?? "None", NewValue = SelectedHistoryRecord.EndDate?.ToString("yyyy-MM-dd") ?? "None" });
-                
-                if (previous.TotalPages != SelectedHistoryRecord.TotalPages) 
-                    RecordChanges.Add(new ChangeItem { FieldName = "Total Pages", OldValue = previous.TotalPages?.ToString() ?? "None", NewValue = SelectedHistoryRecord.TotalPages?.ToString() ?? "None" });
-                
-                if (previous.ShelfNumber != SelectedHistoryRecord.ShelfNumber) 
-                    RecordChanges.Add(new ChangeItem { FieldName = "Shelf Number", OldValue = previous.ShelfNumber?.ToString() ?? "None", NewValue = SelectedHistoryRecord.ShelfNumber?.ToString() ?? "None" });
-                
-                if (previous.DeckNumber != SelectedHistoryRecord.DeckNumber) 
-                    RecordChanges.Add(new ChangeItem { FieldName = "Deck Number", OldValue = previous.DeckNumber?.ToString() ?? "None", NewValue = SelectedHistoryRecord.DeckNumber?.ToString() ?? "None" });
-                
-                if (previous.FileNumber != SelectedHistoryRecord.FileNumber) 
-                    RecordChanges.Add(new ChangeItem { FieldName = "File Number", OldValue = previous.FileNumber?.ToString() ?? "None", NewValue = SelectedHistoryRecord.FileNumber?.ToString() ?? "None" });
-                
-                
+                    RecordChanges.Add(new ChangeItem
+                    {
+                        FieldName = "End Date", OldValue = previous.EndDate?.ToString("yyyy-MM-dd") ?? "None",
+                        NewValue = SelectedHistoryRecord.EndDate?.ToString("yyyy-MM-dd") ?? "None"
+                    });
+
+                if (previous.TotalPages != SelectedHistoryRecord.TotalPages)
+                    RecordChanges.Add(new ChangeItem
+                    {
+                        FieldName = "Total Pages", OldValue = previous.TotalPages?.ToString() ?? "None",
+                        NewValue = SelectedHistoryRecord.TotalPages?.ToString() ?? "None"
+                    });
+
+                if (previous.ShelfNumber != SelectedHistoryRecord.ShelfNumber)
+                    RecordChanges.Add(new ChangeItem
+                    {
+                        FieldName = "Shelf Number", OldValue = previous.ShelfNumber ?? "None",
+                        NewValue = SelectedHistoryRecord.ShelfNumber ?? "None"
+                    });
+
+                if (previous.DeckNumber != SelectedHistoryRecord.DeckNumber)
+                    RecordChanges.Add(new ChangeItem
+                    {
+                        FieldName = "Deck Number", OldValue = previous.DeckNumber ?? "None",
+                        NewValue = SelectedHistoryRecord.DeckNumber ?? "None"
+                    });
+
+                if (previous.FileNumber != SelectedHistoryRecord.FileNumber)
+                    RecordChanges.Add(new ChangeItem
+                    {
+                        FieldName = "File Number", OldValue = previous.FileNumber ?? "None",
+                        NewValue = SelectedHistoryRecord.FileNumber ?? "None"
+                    });
+
+
                 //----
-                
+
                 if (previous.Status != SelectedHistoryRecord.Status)
-                    RecordChanges.Add(new ChangeItem { FieldName = "Status", OldValue = previous.Status, NewValue = SelectedHistoryRecord.Status });
+                    RecordChanges.Add(new ChangeItem
+                        { FieldName = "Status", OldValue = previous.Status, NewValue = SelectedHistoryRecord.Status });
 
                 if (RecordChanges.Count == 0)
-                    RecordChanges.Add(new ChangeItem { FieldName = "No tracked fields changed", OldValue = "-", NewValue = "-" });
+                    RecordChanges.Add(new ChangeItem
+                        { FieldName = "No tracked fields changed", OldValue = "-", NewValue = "-" });
             }
 
             else
             {
-                RecordChanges.Add(new ChangeItem { FieldName = "System Note", OldValue = "-", NewValue = "Previous record not found." });
+                RecordChanges.Add(new ChangeItem
+                    { FieldName = "System Note", OldValue = "-", NewValue = "Previous record not found." });
             }
         }
     }
-    
+
     // Document Attachments 
-    
+
     [RelayCommand]
     private void ManageNewRecordDocuments()
     {
         if (LastSavedRecordForDocs == null) return;
-        OpenDocumentManager(LastSavedRecordForDocs, isImportAllowed: true);
+        OpenDocumentManager(LastSavedRecordForDocs, true);
     }
 
     [RelayCommand]
     private void ManageEditRecordDocuments()
     {
         if (_currentEditingFile == null) return;
-        OpenDocumentManager(_currentEditingFile, isImportAllowed: true);
+        OpenDocumentManager(_currentEditingFile, true);
     }
-    
+
     private void OpenDocumentManager(FileRecord record, bool isImportAllowed)
     {
         var app = (App)Application.Current;
@@ -411,14 +459,14 @@ public partial class EntryViewModel : ObservableObject
         window.Owner = Application.Current.MainWindow;
         window.ShowDialog();
     }
-    
+
 
     [RelayCommand]
     private void CloseDialog()
     {
         IsDialogOpen = false;
     }
-    
+
 
     private void ShowStatus(string message, string color)
     {
