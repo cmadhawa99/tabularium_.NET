@@ -9,7 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Bogus" Version="35.6.4"/>
+        <PackageReference Include="Bogus" Version="35.6.5" />
         <PackageReference Include="ClosedXML" Version="0.105.0"/>
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0"/>
         <PackageReference Include="FontAwesome.WPF" Version="4.7.0.9" NoWarn="NU1701"/>

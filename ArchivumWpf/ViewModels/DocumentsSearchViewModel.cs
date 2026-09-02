@@ -27,7 +27,7 @@ public partial class DocumentsSearchViewModel : ObservableObject
     private async Task SearchAsync()
     {
         var (items, _) = await _archiveService.SearchFilesPaginatedAsync(
-            SearchQuery, null, null, null, false, false, false, false, 1, 100);
+            SearchQuery, string.Empty, null, null, false, false, false, false, 1, 100);
 
         Results.Clear();
         foreach (var f in items) Results.Add(f);
