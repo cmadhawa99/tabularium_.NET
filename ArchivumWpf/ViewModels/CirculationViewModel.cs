@@ -166,7 +166,7 @@ public partial class CirculationViewModel : ObservableObject
     [RelayCommand]
     private async Task ExecuteIssueAsync()
     {
-        if (!CanIssue || string.IsNullOrWhiteSpace(BorrowerName))
+        if (!CanIssue || LoadedFile == null || string.IsNullOrWhiteSpace(BorrowerName))
         {
             ShowStatus("Please provide a valid Borrower Name.", "#F44336");
             return;
@@ -186,7 +186,7 @@ public partial class CirculationViewModel : ObservableObject
     [RelayCommand]
     private async Task ExecuteReturnAsync()
     {
-        if (!CanReturn) return;
+        if (!CanReturn || LoadedFile == null) return;
 
         var result = await _archiveService.ReturnFileASync(LoadedFile.RrNumber);
         ShowStatus(result.Message, result.Success ? "#4CAF50" : "#F44336");

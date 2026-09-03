@@ -299,7 +299,7 @@ public partial class EntryViewModel : ObservableObject
     [RelayCommand]
     private async Task ShowHistoryDetailsAsync()
     {
-        if (_selectedHistoryRecord == null) return;
+        if (SelectedHistoryRecord == null) return;
 
         RecordChanges.Clear();
         IsDialogOpen = true;
@@ -308,9 +308,9 @@ public partial class EntryViewModel : ObservableObject
         {
             DialogTitle = $"Initial Entry: {SelectedHistoryRecord.RrNumber}";
             RecordChanges.Add(new ChangeItem
-                { FieldName = "Sector", OldValue = "-", NewValue = SelectedHistoryRecord.Sector });
+                { FieldName = "Sector", OldValue = "-", NewValue = SelectedHistoryRecord.Sector ?? "None"});
             RecordChanges.Add(new ChangeItem
-                { FieldName = "File Name", OldValue = "-", NewValue = SelectedHistoryRecord.FileName });
+                { FieldName = "File Name", OldValue = "-", NewValue = SelectedHistoryRecord.FileName ?? "None"});
             RecordChanges.Add(new ChangeItem
             {
                 FieldName = "Subject Number", OldValue = "-", NewValue = SelectedHistoryRecord.SubjectNumber ?? "None"
@@ -329,7 +329,7 @@ public partial class EntryViewModel : ObservableObject
             RecordChanges.Add(new ChangeItem
                 { FieldName = "File Number", OldValue = "-", NewValue = SelectedHistoryRecord.FileNumber ?? "None" });
             RecordChanges.Add(new ChangeItem
-                { FieldName = "Status", OldValue = "-", NewValue = SelectedHistoryRecord.Status });
+                { FieldName = "Status", OldValue = "-", NewValue = SelectedHistoryRecord.Status ?? "None"});
         }
 
         else
@@ -348,12 +348,12 @@ public partial class EntryViewModel : ObservableObject
 
                 if (previous.Sector != SelectedHistoryRecord.Sector)
                     RecordChanges.Add(new ChangeItem
-                        { FieldName = "Sector", OldValue = previous.Sector, NewValue = SelectedHistoryRecord.Sector });
+                        { FieldName = "Sector", OldValue = previous.Sector ?? "None", NewValue = SelectedHistoryRecord.Sector ?? "None"});
 
                 if (previous.FileName != SelectedHistoryRecord.FileName)
                     RecordChanges.Add(new ChangeItem
                     {
-                        FieldName = "File Name", OldValue = previous.FileName, NewValue = SelectedHistoryRecord.FileName
+                        FieldName = "File Name", OldValue = previous.FileName ?? "None", NewValue = SelectedHistoryRecord.FileName ?? "None"
                     });
 
                 if (previous.SubjectNumber != SelectedHistoryRecord.SubjectNumber)
@@ -417,7 +417,7 @@ public partial class EntryViewModel : ObservableObject
 
                 if (previous.Status != SelectedHistoryRecord.Status)
                     RecordChanges.Add(new ChangeItem
-                        { FieldName = "Status", OldValue = previous.Status, NewValue = SelectedHistoryRecord.Status });
+                        { FieldName = "Status", OldValue = previous.Status ?? "None", NewValue = SelectedHistoryRecord.Status ?? "None"});
 
                 if (RecordChanges.Count == 0)
                     RecordChanges.Add(new ChangeItem

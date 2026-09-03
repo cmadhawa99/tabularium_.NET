@@ -85,15 +85,15 @@ public class AppDbContext : DbContext
 
         modelBuilder.Entity<BorrowRecord>()
             .Property(b => b.SnapshotSubjectNumber)
-            .HasConversion(stringEncryptionConverter);
+            .HasConversion(nullableStringEncryptionConverter);
 
         modelBuilder.Entity<BorrowRecord>()
             .Property(b => b.SnapshotFileType)
-            .HasConversion(stringEncryptionConverter);
+            .HasConversion(nullableStringEncryptionConverter);
 
         modelBuilder.Entity<BorrowRecord>()
             .Property(b => b.SnapshotFileNumber)
-            .HasConversion(stringEncryptionConverter);
+            .HasConversion(nullableStringEncryptionConverter);
 
         //Disposed
 
@@ -113,7 +113,7 @@ public class AppDbContext : DbContext
 
         modelBuilder.Entity<EntryHistoryRecord>()
             .Property(e => e.FileName)
-            .HasConversion(stringEncryptionConverter);
+            .HasConversion(nullableStringEncryptionConverter);
 
         modelBuilder.Entity<EntryHistoryRecord>()
             .Property(e => e.FileType)
