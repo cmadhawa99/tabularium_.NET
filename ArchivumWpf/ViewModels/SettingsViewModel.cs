@@ -89,7 +89,7 @@ public partial class SettingsViewModel : ObservableObject
 
                 if (!string.IsNullOrEmpty(encryptedConnString))
                 {
-                    var masterKey = KeyVaultService.GetMasterKey();
+                    var masterKey = KeyVaultService.GetMasterKey(SessionContext.ProfileFolder);
                     var cryptoService = new CryptoService(masterKey);
 
                     var decryptedConnString = cryptoService.Decrypt(encryptedConnString);
@@ -230,7 +230,7 @@ public partial class SettingsViewModel : ObservableObject
                     var jsonNode = JsonNode.Parse(File.ReadAllText(_appSettingsPath));
                     if (jsonNode?["ConnectionStrings"] != null)
                     {
-                        var masterKey = KeyVaultService.GetMasterKey();
+                        var masterKey = KeyVaultService.GetMasterKey(SessionContext.ProfileFolder);
                         var cryptoService = new CryptoService(masterKey);
 
                         jsonNode["ConnectionStrings"]!["DefaultConnection"] = cryptoService.Encrypt(builder.ToString());

@@ -8,7 +8,7 @@ public class SectorItem
 
 public class UserPreferences
 {
-    public string OrganizationName { get; set; } = "Weligepola Divisional Council";
+    public string OrganizationName { get; set; } = "";
     public string CurrentUser { get; set; } = "Admin";
     public string TimeFormat { get; set; } = "12-Hour (AM/PM)";
     public string Language { get; set; } = "English";

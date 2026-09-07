@@ -1,17 +1,10 @@
-﻿// Test Script
-
-using System.Globalization;
-using System.IO;
-using System.Security.Cryptography;
+﻿using System.Globalization;
 using System.Windows;
 using System.Windows.Markup;
 using ArchivumWpf.Localization;
-using ArchivumWpf.Models;
 using ArchivumWpf.Services;
 using ArchivumWpf.ViewModels;
 using ArchivumWpf.Views;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ArchivumWpf;
@@ -30,35 +23,17 @@ public partial class App : Application
     {
         var services = new ServiceCollection();
 
-        IConfiguration config = new ConfigurationBuilder()
-            .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-            .AddJsonFile("appsettings.json", true, true)
-            .Build();
-
-        var rawConnString = config.GetConnectionString("DefaultConnection") ?? string.Empty;
-        var activeConnString = rawConnString;
-
-        if (!string.IsNullOrEmpty(rawConnString) && !rawConnString.Contains("Host="))
-            try
-            {
-                var masterKey = KeyVaultService.GetMasterKey();
-                var cryptoService = new CryptoService(masterKey);
-                activeConnString = cryptoService.Decrypt(rawConnString);
-            }
-            catch (Exception)
-            {
-            }
-
-        if (string.IsNullOrWhiteSpace(activeConnString))
-            activeConnString = "Host=placeholder;Database=placeholder;Username=placeholder;Password=placeholder";
-
-        services.AddDbContextFactory<AppDbContext>(options =>
-            options.UseNpgsql(activeConnString));
+        // NOTE: No connection string is configured here anymore.
+        // AppDbContext.OnConfiguring resolves the connection string dynamically
+        // from SessionContext.ActiveProfile at the moment a context is created,
+        // so the DbContextFactory just needs to know the type - no UseNpgsql() call needed here.
+        services.AddDbContextFactory<AppDbContext>();
 
         services.AddSingleton<IPreferencesService, PreferencesService>();
         services.AddTransient<IArchiveService, ArchiveService>();
         services.AddSingleton<IDocumentService, DocumentService>();
         services.AddSingleton<IPdfRenderService, PdfRenderService>();
+        services.AddSingleton<IConnectionsRegistryService, ConnectionsRegistryService>();
 
         services.AddSingleton<MainViewModel>();
         services.AddSingleton<DashboardViewModel>();
@@ -82,11 +57,17 @@ public partial class App : Application
         return services.BuildServiceProvider();
     }
 
-    protected override async void OnStartup(StartupEventArgs e)
+    protected override void OnStartup(StartupEventArgs e)
     {
-        // =========================================================================
-        // 1. APPLY SAVED LANGUAGE AT STARTUP (Bulletproof Method)
-        // =========================================================================
+        // 1. Resolve the active connection profile (if any) before anything else touches
+        //    PreferencesService, AppDbContext, or DocumentService - they all key off this.
+        AppPaths.EnsureRootExists();
+
+        var registryService = Services.GetRequiredService<IConnectionsRegistryService>();
+        SessionContext.ActiveProfile = registryService.GetActive();
+
+        // 2. Apply saved language preference (falls back to English defaults if no
+        //    active profile / preferences file exists yet - PreferencesService handles that).
         var preferencesService = Services.GetRequiredService<IPreferencesService>();
         var prefs = preferencesService.GetPreferences();
 
@@ -96,127 +77,24 @@ public partial class App : Application
             languageCode = "si-LK";
         else if (prefs.Language == "Tamil") languageCode = "ta-LK";
 
-        // Create the Culture Object
         var culture = new CultureInfo(languageCode);
 
-        // FIX A: Force the active threads to use the culture
         Thread.CurrentThread.CurrentCulture = culture;
         Thread.CurrentThread.CurrentUICulture = culture;
         CultureInfo.DefaultThreadCurrentCulture = culture;
         CultureInfo.DefaultThreadCurrentUICulture = culture;
 
-        // FIX B: Force internal WPF controls (like DatePickers) to translate
         FrameworkElement.LanguageProperty.OverrideMetadata(
             typeof(FrameworkElement),
             new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(culture.IetfLanguageTag)));
 
-        // FIX C: Directly command your auto-generated Strings file to switch!
         Strings.Culture = culture;
-        // =========================================================================
 
-
-        // =========================================================================
-        // =================== [REMOVE BEFORE DEPLOYMENT START] ====================
-        // =========================================================================
-        string[] args = e.Args;
-
-        if (args.Length > 0 && args[0].ToLower() == "--seed-security")
-        {
-            try
-            {
-                var factory = Services.GetRequiredService<IDbContextFactory<AppDbContext>>();
-                using var context = await factory.CreateDbContextAsync();
-
-                if (!context.AppSecurityMetas.Any())
-                {
-                    var existingMasterKey = "W5bZnVXXs+eq9GLHdLTU6btIYmpHEQ9NLfxZjWAb4mI=";
-
-                    var canaryBytes = new byte[32];
-                    RandomNumberGenerator.Fill(canaryBytes);
-                    var plainTextCanary = Convert.ToBase64String(canaryBytes);
-
-                    var cryptoService = new CryptoService(existingMasterKey);
-                    var encryptedCanary = cryptoService.Encrypt(plainTextCanary);
-
-                    context.AppSecurityMetas.Add(new AppSecurityMeta
-                        { EncryptedCanary = encryptedCanary });
-                    await context.SaveChangesAsync();
-
-                    MessageBox.Show(
-                        "Security Canary injected into the database!\n\nIt was encrypted using your existing Master Key.",
-                        "Terminal Seeder", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-                else
-                {
-                    MessageBox.Show(
-                        "A Security Canary already exists in the database. Please clear the AppSecurityMetas table if you want to generate a new one.",
-                        "Notice", MessageBoxButton.OK, MessageBoxImage.Warning);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Security seeding failed: {ex.Message}", "Error", MessageBoxButton.OK,
-                    MessageBoxImage.Error);
-            }
-
-            Current.Shutdown();
-            return;
-        }
-
-        if (args.Length > 0 && args[0].ToLower() == "--seed")
-        {
-            var count = 50;
-            if (args.Length > 1 && int.TryParse(args[1], out var parsedCount)) count = parsedCount;
-
-            try
-            {
-                var factory = Services.GetRequiredService<IDbContextFactory<AppDbContext>>();
-                using var context = await factory.CreateDbContextAsync();
-                var seeder = new DatabaseSeeder(context);
-
-                await seeder.SeedFileRecordsAsync(count);
-
-                MessageBox.Show($"Successfully seeded {count} fake Sinhala records into the database!",
-                    "Terminal Seeder", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Database seeding failed: {ex.Message}",
-                    "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-
-            Current.Shutdown();
-            return;
-        }
-        // =========================================================================
-        // =================== [REMOVE BEFORE DEPLOYMENT END] ======================
-        // =========================================================================
-
-        // 2. Security check
-
-        var appSettingsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "appsettings.json");
-        var appSettingsExists = File.Exists(appSettingsPath);
-        var valueExists = KeyVaultService.VaultExists();
-
-        if (!valueExists)
-        {
-            var setupWindow = new SetupWindow();
-            setupWindow.ShowDialog();
-        }
-        else if (!appSettingsExists)
-        {
-            var dbSetupWindow = new DatabaseSetupWindow();
-            dbSetupWindow.ShowDialog();
-        }
-
-        if (!KeyVaultService.VaultExists() || !File.Exists(appSettingsPath))
-        {
-            MessageBox.Show("Application cannot start without valid database configuration and a security vault.",
-                "Initialization Failed", MessageBoxButton.OK, MessageBoxImage.Error);
-            Current.Shutdown();
-            return;
-        }
-
+        // 3. No more single-vault / single-appsettings gate here. Connection setup
+        //    (new empty DB wizard, attach existing DB, or pick a saved connection)
+        //    now all happens from inside LoginWindow via LoginViewModel's
+        //    OpenNewDatabaseWizardCommand / OpenConnectionManagerCommand.
+        //    LoginViewModel itself blocks login attempts when HasActiveConnection is false.
 
         base.OnStartup(e);
 

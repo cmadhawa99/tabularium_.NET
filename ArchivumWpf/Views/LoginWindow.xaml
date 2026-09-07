@@ -124,6 +124,19 @@
                         <TextBlock Text="Welcome back. Please authenticate." Foreground="{DynamicResource TextMuted}"
                                    FontSize="13" Margin="0,0,0,32" HorizontalAlignment="Center" />
 
+                        <!-- Active Connection Info & Management -->
+                        <TextBlock Text="{Binding ActiveConnectionName}" Foreground="{DynamicResource TextMuted}" FontSize="12"
+                                   HorizontalAlignment="Center" Margin="0,0,0,16"/>
+
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,20">
+                            <Button Content="Connect New Empty Database"
+                                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
+                                    Command="{Binding OpenNewDatabaseWizardCommand}" Margin="0,0,10,0" Padding="14,8"/>
+                            <Button Content="Manage Connections"
+                                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
+                                    Command="{Binding OpenConnectionManagerCommand}" Padding="14,8"/>
+                        </StackPanel>
+
                         <TextBlock Text="{Binding ErrorMessage}" Foreground="{DynamicResource DangerAccent}"
                                    FontSize="13" Margin="0,0,0,20" TextWrapping="Wrap" HorizontalAlignment="Center"
                                    TextAlignment="Center">

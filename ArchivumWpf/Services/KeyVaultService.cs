@@ -1,64 +1,68 @@
 ﻿using System.IO;
 using System.Security.Cryptography;
-using System.Text;
 
 namespace ArchivumWpf.Services;
 
 public static class KeyVaultService
 {
     private const string KeyFileName = "avc.dat";
-    private static readonly byte[] Entropy = Encoding.UTF8.GetBytes("මසෂවසඕඡඈෂඎඇටඈලඵඟළවලථළෆඍකඒඔළණ");
+    private const string EntropyFileName = "entropy.dat";
 
-    public static bool VaultExists()
+    private static byte[] GetOrCreateEntropy(string profileFolder)
     {
-        var KeyPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, KeyFileName);
-        return File.Exists(KeyPath);
+        Directory.CreateDirectory(profileFolder);
+        var entropyPath = Path.Combine(profileFolder, EntropyFileName);
+
+        if (File.Exists(entropyPath))
+            return File.ReadAllBytes(entropyPath);
+
+        var entropy = new byte[32];
+        RandomNumberGenerator.Fill(entropy);
+        File.WriteAllBytes(entropyPath, entropy);
+        return entropy;
     }
 
-    public static string GetMasterKey()
+    public static bool VaultExists(string profileFolder)
+        => File.Exists(Path.Combine(profileFolder, KeyFileName));
+
+    public static string GetMasterKey(string profileFolder)
     {
-        var KeyPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, KeyFileName);
+        var keyPath = Path.Combine(profileFolder, KeyFileName);
+        if (!File.Exists(keyPath))
+            throw new FileNotFoundException("Master key vault not found for this connection.");
 
-        if (File.Exists(KeyPath))
-        {
-            var encryptedKey = File.ReadAllBytes(KeyPath);
-            var decryptedKey =
-                ProtectedData.Unprotect(encryptedKey, Entropy,
-                    DataProtectionScope.CurrentUser); //CurrentUSer or LocalMachine
-
-            return Convert.ToBase64String(decryptedKey);
-        }
-
-        throw new FileNotFoundException("Master key vault not found. The system must be initialized or restored.");
+        var entropy = GetOrCreateEntropy(profileFolder);
+        var encryptedKey = File.ReadAllBytes(keyPath);
+        var decryptedKey = ProtectedData.Unprotect(encryptedKey, entropy, DataProtectionScope.CurrentUser);
+        return Convert.ToBase64String(decryptedKey);
     }
-
-    public static string GenerateNewKey()
+    
+    public static void ImportKey(string profileFolder, string base64Key)
     {
-        var KeyPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, KeyFileName);
+        Directory.CreateDirectory(profileFolder);
 
-        var freshKey = new byte[32];
-        RandomNumberGenerator.Fill(freshKey);
-
-        var newEncryptedKey = ProtectedData.Protect(freshKey, Entropy, DataProtectionScope.CurrentUser);
-        File.WriteAllBytes(KeyPath, newEncryptedKey);
-
-        return Convert.ToBase64String(freshKey);
-    }
-
-    public static void ImportKey(string base64RecoveryKey)
-    {
-        var KeyPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, KeyFileName);
-
+        byte[] keyBytes;
         try
         {
-            var KeyBytes = Convert.FromBase64String(base64RecoveryKey);
-
-            var newEncryptedKey = ProtectedData.Protect(KeyBytes, Entropy, DataProtectionScope.CurrentUser);
-            File.WriteAllBytes(KeyPath, newEncryptedKey);
+            keyBytes = Convert.FromBase64String(base64Key);
         }
         catch (FormatException)
         {
-            throw new ArgumentException("Invalid recovery key format.");
+            throw new ArgumentException("Invalid key format. The key must be a Base64 string.");
         }
+
+        if (keyBytes.Length != 32)
+            throw new ArgumentException("Invalid key length. The key must decode to exactly 32 bytes (AES-256).");
+
+        var entropy = GetOrCreateEntropy(profileFolder);
+        var protectedKey = ProtectedData.Protect(keyBytes, entropy, DataProtectionScope.CurrentUser);
+        File.WriteAllBytes(Path.Combine(profileFolder, KeyFileName), protectedKey);
+    }
+    
+    public static string GenerateRandomKeyBase64()
+    {
+        var key = new byte[32];
+        RandomNumberGenerator.Fill(key);
+        return Convert.ToBase64String(key);
     }
 }

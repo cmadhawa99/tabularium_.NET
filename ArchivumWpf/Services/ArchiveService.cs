@@ -1,6 +1,9 @@
 ﻿using System.Diagnostics;
 using ArchivumWpf.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Nodes;
+using System.IO;
+using Npgsql;
 
 namespace ArchivumWpf.Services;
 
@@ -74,7 +77,7 @@ public class ArchiveService : IArchiveService
     // CHANGED to the Factory to prevent memory leaks and tracking collisions
     private readonly IDbContextFactory<AppDbContext> _contextFactory;
 
-    private readonly CryptoService _cryptoService = new(KeyVaultService.GetMasterKey());
+    private readonly CryptoService _cryptoService = new(KeyVaultService.GetMasterKey(SessionContext.ProfileFolder));
 
     public ArchiveService(IDbContextFactory<AppDbContext> contextFactory)
     {
@@ -519,21 +522,27 @@ public class ArchiveService : IArchiveService
     {
         try
         {
-            var dbName = "testDb";
-            var dbUser = "postgres";
-            var dbPassword = "testPw";
+            var profileFolder = SessionContext.ProfileFolder;
+            var appSettingsPath = Path.Combine(profileFolder, "appsettings.json");
+
+            var jsonNode = JsonNode.Parse(await File.ReadAllTextAsync(appSettingsPath));
+            var encrypted = jsonNode?["ConnectionStrings"]?["DefaultConnection"]?.ToString() ?? "";
+
+            var masterKey = KeyVaultService.GetMasterKey(profileFolder);
+            var cryptoService = new CryptoService(masterKey);
+            var connString = cryptoService.Decrypt(encrypted);
+            var builder = new NpgsqlConnectionStringBuilder(connString);
 
             var processStartInfo = new ProcessStartInfo
             {
                 FileName = "pg_dump",
-                Arguments = $"-U {dbUser} -d {dbName} -f \"{backupPath}\" -F c -Z zstd:19",
+                Arguments = $"-h \"{builder.Host}\" -p {builder.Port} -U \"{builder.Username}\" -d \"{builder.Database}\" -f \"{backupPath}\" -F c -Z zstd:19",
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 UseShellExecute = false,
                 CreateNoWindow = true
             };
-
-            processStartInfo.EnvironmentVariables["PGPASSWORD"] = dbPassword;
+            processStartInfo.EnvironmentVariables["PGPASSWORD"] = builder.Password;
 
             using var process = new Process { StartInfo = processStartInfo };
             process.Start();
@@ -546,8 +555,7 @@ public class ArchiveService : IArchiveService
         }
         catch (Exception ex)
         {
-            return (false,
-                $"Failed to start backup process. Is PostgresSQL installed and in your PATH? Error: {ex.Message}");
+            return (false, $"Failed to start backup process. Is PostgreSQL installed and in your PATH? Error: {ex.Message}");
         }
     }
 

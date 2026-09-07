@@ -30,7 +30,7 @@ public class AppDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        var masterKey = KeyVaultService.GetMasterKey();
+        var masterKey = KeyVaultService.GetMasterKey(SessionContext.ProfileFolder);
         var cryptoService = new CryptoService(masterKey);
 
         var stringEncryptionConverter = new ValueConverter<string, string>(
@@ -137,7 +137,8 @@ public class AppDbContext : DbContext
     {
         if (!optionsBuilder.IsConfigured)
         {
-            var appSettingsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "appsettings.json");
+            var profileFolder = SessionContext.ProfileFolder;
+            var appSettingsPath = Path.Combine(profileFolder, "appsettings.json");
 
             if (File.Exists(appSettingsPath))
             {
@@ -146,10 +147,9 @@ public class AppDbContext : DbContext
 
                 if (!string.IsNullOrEmpty(encryptedConnString))
                 {
-                    var masterKey = KeyVaultService.GetMasterKey();
+                    var masterKey = KeyVaultService.GetMasterKey(profileFolder);
                     var cryptoService = new CryptoService(masterKey);
                     var plainTextConnString = cryptoService.Decrypt(encryptedConnString);
-
                     optionsBuilder.UseNpgsql(plainTextConnString);
                 }
             }

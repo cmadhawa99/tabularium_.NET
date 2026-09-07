@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using ArchivumWpf.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Nodes;
 
 namespace ArchivumWpf.Services;
 
@@ -21,17 +22,34 @@ public class DocumentService : IDocumentService
 {
     private readonly IDbContextFactory<AppDbContext> _contextFactory;
     private readonly string _storagePath;
+    
 
     public DocumentService(IDbContextFactory<AppDbContext> contextFactory)
     {
         _contextFactory = contextFactory;
 
-        _storagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ".SecureStore");
-        if (!Directory.Exists(_storagePath))
+        _storagePath = ResolveStoragePath();
+    }
+
+    public static string ResolveStoragePath()
+    {
+        var appSettingsPath = Path.Combine(SessionContext.ProfileFolder, "appsettings.json");
+        
+        if (File.Exists(appSettingsPath))
         {
-            var di = Directory.CreateDirectory(_storagePath);
+            var node = JsonNode.Parse(File.ReadAllText(appSettingsPath));
+            var configured = node?["SecureStorage"]?["Path"]?.ToString();
+            if (!string.IsNullOrWhiteSpace(configured) && Directory.Exists(configured))
+                return configured;
+        }
+        
+        var fallback = Path.Combine(SessionContext.ProfileFolder, ".Secure");
+        if (!Directory.Exists(fallback))
+        {
+            var di = Directory.CreateDirectory(fallback);
             di.Attributes |= FileAttributes.Hidden;
         }
+        return fallback;
     }
 
     public async Task<Folder> GetOrCreateRootFolderAsync(int fileRecordSerial)
@@ -187,7 +205,7 @@ public class DocumentService : IDocumentService
             }
             catch
             {
-                /* locked/in-use file - DB row removal still proceeds; leftover .dat is caught by the integrity check */
+                // locked/in use file - DB row removal still proceeds, leftover .dat is caught by the integrity check 
             }
 
         context.DigitalFiles.Remove(file);
@@ -196,7 +214,7 @@ public class DocumentService : IDocumentService
 
     private static CryptoService GetCrypto()
     {
-        return new CryptoService(KeyVaultService.GetMasterKey());
+        return new CryptoService(KeyVaultService.GetMasterKey(SessionContext.ProfileFolder));
     }
 
     private string GetPhysicalPath(Guid recordStorageId, string physicalFileName)

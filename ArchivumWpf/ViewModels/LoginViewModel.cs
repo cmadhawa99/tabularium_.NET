@@ -11,26 +11,60 @@ namespace ArchivumWpf.ViewModels;
 public partial class LoginViewModel : ObservableObject
 {
     private readonly IDbContextFactory<AppDbContext> _dbContextFactory;
+    private readonly IConnectionsRegistryService _registryService;
 
     [ObservableProperty] private string _errorMessage = string.Empty;
     [ObservableProperty] private bool _isProcessing;
-
     [ObservableProperty] private bool _isRecoveryMode;
     [ObservableProperty] private string _newUsernameInput = string.Empty;
     [ObservableProperty] private string _usernameInput = string.Empty;
-
-    public LoginViewModel(IDbContextFactory<AppDbContext> dbContextFactory)
-    {
-        _dbContextFactory = dbContextFactory;
-    }
+    [ObservableProperty] private string _activeConnectionName = "No database connected";
+    [ObservableProperty] private bool _hasActiveConnection;
 
     public string PasswordInput { get; set; } = string.Empty;
     public string MasterKeyInput { get; set; } = string.Empty;
     public string NewPasswordInput { get; set; } = string.Empty;
 
+    public LoginViewModel(IDbContextFactory<AppDbContext> dbContextFactory, IConnectionsRegistryService registryService)
+    {
+        _dbContextFactory = dbContextFactory;
+        _registryService = registryService;
+        RefreshActiveConnection();
+    }
+
+    private void RefreshActiveConnection()
+    {
+        var active = _registryService.GetActive();
+        SessionContext.ActiveProfile = active;
+        HasActiveConnection = active != null;
+        ActiveConnectionName = active != null ? active.DisplayName : "No database connected";
+    }
+
+    [RelayCommand]
+    private void OpenConnectionManager(Window ownerWindow)
+    {
+        var window = new Views.ConnectionManagerWindow { Owner = ownerWindow };
+        if (window.ShowDialog() == true)
+            RefreshActiveConnection();
+    }
+
+    [RelayCommand]
+    private void OpenNewDatabaseWizard(Window ownerWindow)
+    {
+        var window = new Views.NewDatabaseWizardWindow { Owner = ownerWindow };
+        if (window.ShowDialog() == true)
+            RefreshActiveConnection();
+    }
+
     [RelayCommand]
     private async Task LoginAsync(Window window)
     {
+        if (!HasActiveConnection)
+        {
+            ErrorMessage = "Please connect to a database first.";
+            return;
+        }
+
         if (string.IsNullOrWhiteSpace(UsernameInput) || string.IsNullOrWhiteSpace(PasswordInput))
         {
             ErrorMessage = "Please enter both username and password.";
@@ -43,13 +77,12 @@ public partial class LoginViewModel : ObservableObject
         try
         {
             using var context = await _dbContextFactory.CreateDbContextAsync();
-
             var allUsers = await context.Users.Where(u => u.IsActive).ToListAsync();
 
             var matchedUser = allUsers.FirstOrDefault(u =>
                 string.Equals(u.Username, UsernameInput, StringComparison.OrdinalIgnoreCase));
 
-            if (matchedUser == null || !VerifyPassword(PasswordInput, matchedUser.PasswordHash))
+            if (matchedUser == null || !PasswordHasher.Verify(PasswordInput, matchedUser.PasswordHash))
             {
                 ErrorMessage = "Invalid username or password.";
                 return;
@@ -77,6 +110,12 @@ public partial class LoginViewModel : ObservableObject
     [RelayCommand]
     private async Task ResetAccountAsync()
     {
+        if (!HasActiveConnection)
+        {
+            ErrorMessage = "Please connect to a database first.";
+            return;
+        }
+
         if (string.IsNullOrWhiteSpace(MasterKeyInput) || string.IsNullOrWhiteSpace(NewUsernameInput) ||
             string.IsNullOrWhiteSpace(NewPasswordInput))
         {
@@ -113,7 +152,7 @@ public partial class LoginViewModel : ObservableObject
             }
 
             userToReset.Username = NewUsernameInput;
-            userToReset.PasswordHash = HashPassword(NewPasswordInput);
+            userToReset.PasswordHash = PasswordHasher.Hash(NewPasswordInput);
 
             await context.SaveChangesAsync();
 
@@ -129,26 +168,5 @@ public partial class LoginViewModel : ObservableObject
         {
             IsProcessing = false;
         }
-    }
-
-    private string HashPassword(string password)
-    {
-        byte[] salt = new byte[16];
-        RandomNumberGenerator.Fill(salt);
-        byte[] hash = Rfc2898DeriveBytes.Pbkdf2(password, salt, 1200000, HashAlgorithmName.SHA256, 32);
-        return $"{Convert.ToBase64String(salt)}:{Convert.ToBase64String(hash)}";
-    }
-
-    private bool VerifyPassword(string password, string storedHash)
-    {
-        var parts = storedHash.Split(':');
-        if (parts.Length != 2) return false;
-
-        byte[] salt = Convert.FromBase64String(parts[0]);
-        byte[] expectedHash = Convert.FromBase64String(parts[1]);
-
-        byte[] actualHash = Rfc2898DeriveBytes.Pbkdf2(password, salt, 1200000, HashAlgorithmName.SHA256, 32);
-
-        return CryptographicOperations.FixedTimeEquals(actualHash, expectedHash);
     }
 }
