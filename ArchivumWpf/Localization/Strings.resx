@@ -1,0 +1,1065 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root"
+                xmlns="">
+        <xsd:element name="root" msdata:IsDataSet="true">
+
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
+    </resheader>
+    <data name="Settings_MainTitle" xml:space="preserve">
+        <value>System Settings &amp; Configuration</value>
+    </data>
+    <data name="Settings_MainDesc" xml:space="preserve">
+        <value>Manage local parameters, database connections, and classification schemas.</value>
+    </data>
+    <data name="Settings_TabGeneral" xml:space="preserve">
+        <value>General &amp; Display</value>
+    </data>
+    <data name="Settings_OrgDetails" xml:space="preserve">
+        <value>ORGANIZATION DETAILS</value>
+    </data>
+    <data name="Settings_OrgName" xml:space="preserve">
+        <value>Organization Name</value>
+    </data>
+    <data name="Settings_LocUser" xml:space="preserve">
+        <value>LOCALIZATION &amp; USER</value>
+    </data>
+    <data name="Settings_CurrentUser" xml:space="preserve">
+        <value>Current User</value>
+    </data>
+    <data name="Settings_SysLanguage" xml:space="preserve">
+        <value>System Language</value>
+    </data>
+    <data name="Settings_SysDefaults" xml:space="preserve">
+        <value>SYSTEM DEFAULTS</value>
+    </data>
+    <data name="Settings_DefPageSize" xml:space="preserve">
+        <value>Default Pagination Size</value>
+    </data>
+    <data name="Settings_DefExportDir" xml:space="preserve">
+        <value>Default Export Directory</value>
+    </data>
+    <data name="Settings_SaveGeneral" xml:space="preserve">
+        <value>Save General Settings</value>
+    </data>
+    <data name="Settings_TabDatabase" xml:space="preserve">
+        <value>Database &amp; Backups</value>
+    </data>
+    <data name="Settings_DbConnection" xml:space="preserve">
+        <value>POSTGRESQL CONNECTION</value>
+    </data>
+    <data name="Settings_DbHost" xml:space="preserve">
+        <value>Host Server (e.g., localhost)</value>
+    </data>
+    <data name="Settings_DbName" xml:space="preserve">
+        <value>Database Name</value>
+    </data>
+    <data name="Settings_DbUser" xml:space="preserve">
+        <value>Username </value>
+    </data>
+    <data name="Settings_DbPassword" xml:space="preserve">
+        <value>Password </value>
+    </data>
+    <data name="Settings_TestConnection" xml:space="preserve">
+        <value>Test Connection</value>
+    </data>
+    <data name="Settings_AutoBackups" xml:space="preserve">
+        <value>AUTOMATED SQL BACKUPS</value>
+    </data>
+    <data name="Settings_EnableAutoBackup" xml:space="preserve">
+        <value>Enable Daily Automated SQL Database Backup</value>
+    </data>
+    <data name="Settings_BackupDest" xml:space="preserve">
+        <value>Backup Destination Folder (Local or Cloud Sync)</value>
+    </data>
+    <data name="Settings_SaveDatabase" xml:space="preserve">
+        <value>Save Database Settings</value>
+    </data>
+    <data name="Settings_TabVault" xml:space="preserve">
+        <value>Vault Categories</value>
+    </data>
+    <data name="Settings_ManageSectors" xml:space="preserve">
+        <value>MANAGE SECTORS</value>
+    </data>
+    <data name="Settings_AddSector" xml:space="preserve">
+        <value>Add New Sector</value>
+    </data>
+    <data name="Settings_SectorNameHint" xml:space="preserve">
+        <value>Sector Name</value>
+    </data>
+    <data name="Settings_ColorTag" xml:space="preserve">
+        <value>Optional Color Tag (Type Hex or Open Palette):</value>
+    </data>
+    <data name="Settings_HexHint" xml:space="preserve">
+        <value>#Hex Code</value>
+    </data>
+    <data name="Settings_ColorPalette" xml:space="preserve">
+        <value>Color Palette</value>
+    </data>
+    <data name="Settings_BtnAddSector" xml:space="preserve">
+        <value>+ Add Sector</value>
+    </data>
+    <data name="Settings_ManageFileTypes" xml:space="preserve">
+        <value>MANAGE FILE TYPES</value>
+    </data>
+    <data name="Settings_AddFileType" xml:space="preserve">
+        <value>Add New File Type</value>
+    </data>
+    <data name="Settings_FileTypeHint" xml:space="preserve">
+        <value>File Type (e.g., Confidential)</value>
+    </data>
+    <data name="Settings_BtnAddFileType" xml:space="preserve">
+        <value>+ Add File Type</value>
+    </data>
+    <data name="Settings_SaveCategory" xml:space="preserve">
+        <value>Save Category Settings</value>
+    </data>
+    <data name="Settings_ColorPickerTitle" xml:space="preserve">
+        <value>SECTOR COLOR PICKER</value>
+    </data>
+    <data name="Settings_Alpha" xml:space="preserve">
+        <value>Alpha</value>
+    </data>
+    <data name="Settings_Red" xml:space="preserve">
+        <value>Red</value>
+    </data>
+    <data name="Settings_Green" xml:space="preserve">
+        <value>Green</value>
+    </data>
+    <data name="Settings_Blue" xml:space="preserve">
+        <value>Blue</value>
+    </data>
+    <data name="Settings_FinalArgb" xml:space="preserve">
+        <value>Final ARGB Output Code</value>
+    </data>
+    <data name="Settings_CancelSelection" xml:space="preserve">
+        <value>Cancel Selection</value>
+    </data>
+    <data name="Settings_ConfirmColor" xml:space="preserve">
+        <value>Confirm Color</value>
+    </data>
+    <data name="Circ_MainTitle" xml:space="preserve">
+        <value>Dossier Circulation Administration</value>
+    </data>
+    <data name="Circ_MainDesc" xml:space="preserve">
+        <value>Process dossier requests, manage active loans, and returning dossiers.</value>
+    </data>
+    <data name="Circ_TabDesk" xml:space="preserve">
+        <value>Circulation Desk</value>
+    </data>
+    <data name="Circ_TabActiveLoans" xml:space="preserve">
+        <value>Active Field Loans</value>
+    </data>
+    <data name="Circ_TabLedger" xml:space="preserve">
+        <value>Circulation Ledger</value>
+    </data>
+    <data name="Circ_SearchWatermark" xml:space="preserve">
+        <value>Target exact RR Number for circulation...</value>
+    </data>
+    <data name="Circ_BtnAssess" xml:space="preserve">
+        <value>Assess Dossier</value>
+    </data>
+    <data name="Circ_AwaitingScanTitle" xml:space="preserve">
+        <value>AWAITING DOSSIER SCAN</value>
+    </data>
+    <data name="Circ_AwaitingScanDesc" xml:space="preserve">
+        <value>Input an RR Number above to assess the file for issuance or return.</value>
+    </data>
+    <data name="Circ_DossierIntel" xml:space="preserve">
+        <value>DOSSIER INTELLIGENCE</value>
+    </data>
+    <data name="Circ_LblRrNumber" xml:space="preserve">
+        <value>RR Number:</value>
+    </data>
+    <data name="Circ_LblSubjectName" xml:space="preserve">
+        <value>FIle Name:</value>
+    </data>
+    <data name="Circ_LblSector" xml:space="preserve">
+        <value>Sector:</value>
+    </data>
+    <data name="Circ_LblCurrentStatus" xml:space="preserve">
+        <value>Current Status:</value>
+    </data>
+    <data name="Circ_IssueTitle" xml:space="preserve">
+        <value>ISSUE TO BORROWER</value>
+    </data>
+    <data name="Circ_BorrowerWatermark" xml:space="preserve">
+        <value>Enter designated borrower name / ID...</value>
+    </data>
+    <data name="Circ_BtnAuthorizeIssue" xml:space="preserve">
+        <value>Authorize Issuance</value>
+    </data>
+    <data name="Circ_ReturnTitle" xml:space="preserve">
+        <value>AUTHORIZE RETURN</value>
+    </data>
+    <data name="Circ_ReturnDesc" xml:space="preserve">
+        <value>This dossier is currently active in the field. Confirm physical return to vault.</value>
+    </data>
+    <data name="Circ_BtnProcessReturn" xml:space="preserve">
+        <value>Process Return</value>
+    </data>
+    <data name="Circ_ActiveLoansHeader" xml:space="preserve">
+        <value>ACTIVE FIELD LOANS</value>
+    </data>
+    <data name="Circ_ColRrNumber" xml:space="preserve">
+        <value>RR NUMBER</value>
+    </data>
+    <data name="Circ_ColFileName" xml:space="preserve">
+        <value>FILE NAME</value>
+    </data>
+    <data name="Circ_ColSector" xml:space="preserve">
+        <value>SECTOR</value>
+    </data>
+    <data name="Circ_ColBorrower" xml:space="preserve">
+        <value>BORROWER</value>
+    </data>
+    <data name="Circ_ColIssueDate" xml:space="preserve">
+        <value>ISSUE DATE</value>
+    </data>
+    <data name="Circ_LedgerSearchWatermark" xml:space="preserve">
+        <value>Filter history by exact RR Number...</value>
+    </data>
+    <data name="Circ_ColStatus" xml:space="preserve">
+        <value>STATUS</value>
+    </data>
+    <data name="Circ_ColReturnDate" xml:space="preserve">
+        <value>RETURN DATE</value>
+    </data>
+    <data name="Circ_StatusReturned" xml:space="preserve">
+        <value>RETURNED</value>
+    </data>
+    <data name="Circ_StatusActiveLoan" xml:space="preserve">
+        <value>ACTIVE LOAN</value>
+    </data>
+    <data name="Circ_TotalHistoryRecords" xml:space="preserve">
+        <value>Total History Records:</value>
+    </data>
+    <data name="Circ_LblTransactionId" xml:space="preserve">
+        <value>Transaction ID:</value>
+    </data>
+    <data name="Circ_LblBorrowerName" xml:space="preserve">
+        <value>Borrower Name:</value>
+    </data>
+    <data name="Circ_LblIssueDate" xml:space="preserve">
+        <value>Issue Date:</value>
+    </data>
+    <data name="Circ_LblReturnDate" xml:space="preserve">
+        <value>Return Date:</value>
+    </data>
+    <data name="Circ_LblSubjectFileName" xml:space="preserve">
+        <value>Subject / File Name:</value>
+    </data>
+    <data name="Circ_LblSubjectNumber" xml:space="preserve">
+        <value>Subject Number:</value>
+    </data>
+    <data name="Circ_LblFileType" xml:space="preserve">
+        <value>File Type:</value>
+    </data>
+    <data name="Circ_LblChronoSpan" xml:space="preserve">
+        <value>Chronological Span:</value>
+    </data>
+    <data name="Circ_LblTo" xml:space="preserve">
+        <value>to</value>
+    </data>
+    <data name="Circ_LblPhysicalLocation" xml:space="preserve">
+        <value>Physical Location:</value>
+    </data>
+    <data name="Circ_LblPages" xml:space="preserve">
+        <value>Pages:</value>
+    </data>
+    <data name="Circ_LblShelf" xml:space="preserve">
+        <value>Shelf:</value>
+    </data>
+    <data name="Circ_LblDeck" xml:space="preserve">
+        <value>Deck:</value>
+    </data>
+    <data name="Circ_BtnCloseRecord" xml:space="preserve">
+        <value>Close Record</value>
+    </data>
+    <data name="Circ_PendingReturn" xml:space="preserve">
+        <value>Pending Return</value>
+    </data>
+    <data name="Circ_None" xml:space="preserve">
+        <value>None</value>
+    </data>
+    <data name="Circ_NA" xml:space="preserve">
+        <value>N/A</value>
+    </data>
+    <data name="Dis_MainTitle" xml:space="preserve">
+        <value>Dossier Retention &amp; Disposal Administration</value>
+    </data>
+    <data name="Dis_MainDesc" xml:space="preserve">
+        <value>Schedule archival purges, execute permanent disposals, and review the destruction ledger.</value>
+    </data>
+    <data name="Dis_TabSearch" xml:space="preserve">
+        <value>Search &amp; Target</value>
+    </data>
+    <data name="Dis_TabQueue" xml:space="preserve">
+        <value>To Be Removed Queue</value>
+    </data>
+    <data name="Dis_TabAudit" xml:space="preserve">
+        <value>Disposed Log</value>
+    </data>
+    <data name="Dis_SearchWatermark" xml:space="preserve">
+        <value>Target exact RR Number for disposal...</value>
+    </data>
+    <data name="Dis_BtnLocate" xml:space="preserve">
+        <value>Locate Dossier</value>
+    </data>
+    <data name="Dis_AwaitingTargetTitle" xml:space="preserve">
+        <value>AWAITING TARGET DOSSIER</value>
+    </data>
+    <data name="Dis_AwaitingTargetDesc" xml:space="preserve">
+        <value>Input a valid RR Number above to retrieve the file record for scheduling or permanent destruction.</value>
+    </data>
+    <data name="Dis_ScheduleTitle" xml:space="preserve">
+        <value>1. SCHEDULE DISPOSAL</value>
+    </data>
+    <data name="Dis_ScheduleDesc" xml:space="preserve">
+        <value>Set a future date to flag this file for removal in system reports.</value>
+    </data>
+    <data name="Dis_LblToBeRemovedDate" xml:space="preserve">
+        <value>To-Be-Removed Date</value>
+    </data>
+    <data name="Dis_BtnUpdateQueue" xml:space="preserve">
+        <value>Update Queue Status</value>
+    </data>
+    <data name="Dis_PermanentTitle" xml:space="preserve">
+        <value>2. PERMANENT DISPOSAL</value>
+    </data>
+    <data name="Dis_PermanentDesc" xml:space="preserve">
+        <value>Instantly log this record in the destruction database. This action is irreversible.</value>
+    </data>
+    <data name="Dis_BtnExecuteDisposal" xml:space="preserve">
+        <value>EXECUTE DISPOSAL</value>
+    </data>
+    <data name="Dis_ColScheduledFor" xml:space="preserve">
+        <value>SCHEDULED FOR</value>
+    </data>
+    <data name="Dis_ColRrNumber" xml:space="preserve">
+        <value>RR NUMBER</value>
+    </data>
+    <data name="Dis_ColFileName" xml:space="preserve">
+        <value>FILE NAME</value>
+    </data>
+    <data name="Dis_ColSector" xml:space="preserve">
+        <value>SECTOR</value>
+    </data>
+    <data name="Dis_ColActions" xml:space="preserve">
+        <value>ACTIONS</value>
+    </data>
+    <data name="Dis_BtnRecover" xml:space="preserve">
+        <value>Recover</value>
+    </data>
+    <data name="Dis_BtnDispose" xml:space="preserve">
+        <value>Dispose</value>
+    </data>
+    <data name="Dis_ColDateDisposed" xml:space="preserve">
+        <value>DATE OF DISPOSAL</value>
+    </data>
+    <data name="Dis_ColAuthorizedBy" xml:space="preserve">
+        <value>AUTHORIZED BY</value>
+    </data>
+    <data name="Dis_ColReason" xml:space="preserve">
+        <value>REASON</value>
+    </data>
+    <data name="Dis_LblSector" xml:space="preserve">
+        <value>Sector:</value>
+    </data>
+    <data name="Dis_LblStatus" xml:space="preserve">
+        <value>Status:</value>
+    </data>
+    <data name="Dis_LblDisposalScheduled" xml:space="preserve">
+        <value>Disposal Scheduled:</value>
+    </data>
+    <data name="Dis_PermDisposedTitle" xml:space="preserve">
+        <value>PERMANENTLY DISPOSED</value>
+    </data>
+    <data name="Dis_LblReasonFormat" xml:space="preserve">
+        <value>Reason:</value>
+    </data>
+    <data name="Dis_LblAuthFormat" xml:space="preserve">
+        <value>Auth:</value>
+    </data>
+    <data name="Dis_BtnCloseDossier" xml:space="preserve">
+        <value>Close Dossier</value>
+    </data>
+    <data name="Dis_AuthorizeDisposalTitle" xml:space="preserve">
+        <value>AUTHORIZE DISPOSAL</value>
+    </data>
+    <data name="Dis_LblTargetFileFormat" xml:space="preserve">
+        <value>Target File:</value>
+    </data>
+    <data name="Dis_LblReasonForDisposal" xml:space="preserve">
+        <value>Reason for Disposal *</value>
+    </data>
+    <data name="Dis_LblAuthorizedBy" xml:space="preserve">
+        <value>Authorized By *</value>
+    </data>
+    <data name="Dis_BtnCancelRequest" xml:space="preserve">
+        <value>Cancel Request</value>
+    </data>
+    <data name="Dis_BtnConfirmDestruction" xml:space="preserve">
+        <value>CONFIRM DESTRUCTION</value>
+    </data>
+    <data name="Sea_MainTitle" xml:space="preserve">
+        <value>The Archival Search Sector</value>
+    </data>
+    <data name="Sea_MainDesc_Part1" xml:space="preserve">
+        <value>Locate and retrieve specific dossiers. Showing</value>
+    </data>
+    <data name="Sea_MainDesc_Part2" xml:space="preserve">
+        <value>synchronized records in the Archive.</value>
+    </data>
+    <data name="Sea_TooltipToggleStrict" xml:space="preserve">
+        <value>Toggle Strict RR Number Search</value>
+    </data>
+    <data name="Sea_StrictToggleIndicator" xml:space="preserve">
+        <value>RR</value>
+    </data>
+    <data name="Sea_SearchWatermark" xml:space="preserve">
+        <value>Enter record identifier or subject...</value>
+    </data>
+    <data name="Sea_StrictSearchWatermark" xml:space="preserve">
+        <value>STRICT MODE: Enter exact RR Number...</value>
+    </data>
+    <data name="Sea_BtnExecuteSearch" xml:space="preserve">
+        <value>Execute Search</value>
+    </data>
+    <data name="Sea_FilterByDate" xml:space="preserve">
+        <value>FILTER BY DATE:</value>
+    </data>
+    <data name="Sea_LblYear" xml:space="preserve">
+        <value>YEAR:</value>
+    </data>
+    <data name="Sea_LblMonth" xml:space="preserve">
+        <value>MONTH:</value>
+    </data>
+    <data name="Sea_QuickFilters" xml:space="preserve">
+        <value>QUICK FILTERS:</value>
+    </data>
+    <data name="Sea_FilterRecent" xml:space="preserve">
+        <value>Recent (24h)</value>
+    </data>
+    <data name="Sea_FilterAvailable" xml:space="preserve">
+        <value>Currently Available</value>
+    </data>
+    <data name="Sea_FilterRemoved" xml:space="preserve">
+        <value>Removed</value>
+    </data>
+    <data name="Sea_RegistryLedger" xml:space="preserve">
+        <value>REGISTRY LEDGER</value>
+    </data>
+    <data name="Sea_ColIdentifier" xml:space="preserve">
+        <value>RR NUMBER</value>
+    </data>
+    <data name="Sea_ColSubjectName" xml:space="preserve">
+        <value>FILE NAME</value>
+    </data>
+    <data name="Sea_FallbackSecondaryId" xml:space="preserve">
+        <value>No Secondary ID</value>
+    </data>
+    <data name="Sea_ColSector" xml:space="preserve">
+        <value>SECTOR</value>
+    </data>
+    <data name="Sea_ColOriginDate" xml:space="preserve">
+        <value>ORIGIN DATE</value>
+    </data>
+    <data name="Sea_ColStatus" xml:space="preserve">
+        <value>STATUS</value>
+    </data>
+    <data name="Sea_ColActions" xml:space="preserve">
+        <value>ACTIONS</value>
+    </data>
+    <data name="Sea_ShowingMatchingResults" xml:space="preserve">
+        <value>Showing matching results</value>
+    </data>
+    <data name="Sea_FileRecords" xml:space="preserve">
+        <value>FILE RECORDS</value>
+    </data>
+    <data name="Sea_LblSerialNumber" xml:space="preserve">
+        <value>Serial Number:</value>
+    </data>
+    <data name="Sea_LblRrNumber" xml:space="preserve">
+        <value>RR Number:</value>
+    </data>
+    <data name="Sea_LblSector" xml:space="preserve">
+        <value>Sector:</value>
+    </data>
+    <data name="Sea_LblSubjectFileName" xml:space="preserve">
+        <value>File Name:</value>
+    </data>
+    <data name="Sea_LblSubjectNumber" xml:space="preserve">
+        <value>Subject Number:</value>
+    </data>
+    <data name="Sea_LblFileType" xml:space="preserve">
+        <value>File Type:</value>
+    </data>
+    <data name="Sea_LblChronoSpan" xml:space="preserve">
+        <value>Chronological Span:</value>
+    </data>
+    <data name="Sea_LblTo" xml:space="preserve">
+        <value> to </value>
+    </data>
+    <data name="Sea_LblTotalPages" xml:space="preserve">
+        <value>Total Pages:</value>
+    </data>
+    <data name="Sea_LblPhysicalLocation" xml:space="preserve">
+        <value>Physical Location:</value>
+    </data>
+    <data name="Sea_LblShelf" xml:space="preserve">
+        <value>Shelf</value>
+    </data>
+    <data name="Sea_LblDeck" xml:space="preserve">
+        <value>Deck</value>
+    </data>
+    <data name="Sea_BtnCloseDossier" xml:space="preserve">
+        <value>Close Dossier</value>
+    </data>
+    <data name="Ent_MainTitle" xml:space="preserve">
+        <value>File Entry Management</value>
+    </data>
+    <data name="Ent_MainDesc" xml:space="preserve">
+        <value>Create new records, amend existing files, or review the comprehensive audit history.</value>
+    </data>
+    <data name="Ent_DatePickerWatermark" xml:space="preserve">
+        <value>Select a date...</value>
+    </data>
+    <data name="Ent_TabAdd" xml:space="preserve">
+        <value>Add New Record</value>
+    </data>
+    <data name="Ent_PrimaryClass" xml:space="preserve">
+        <value>PRIMARY CLASSIFICATION</value>
+    </data>
+    <data name="Ent_LblRrNumber" xml:space="preserve">
+        <value>RR NUMBER *</value>
+    </data>
+    <data name="Ent_LblSector" xml:space="preserve">
+        <value>SECTOR *</value>
+    </data>
+    <data name="Ent_LblSubjectName" xml:space="preserve">
+        <value>FILE NAME *</value>
+    </data>
+    <data name="Ent_LblSecondaryIdOptional" xml:space="preserve">
+        <value>SUBJECT NUMBER*</value>
+    </data>
+    <data name="Ent_LblFileType" xml:space="preserve">
+        <value>FILE TYPE</value>
+    </data>
+    <data name="Ent_ChronoPhysicalData" xml:space="preserve">
+        <value>CHRONOLOGICAL &amp; PHYSICAL DATA</value>
+    </data>
+    <data name="Ent_LblStartDate" xml:space="preserve">
+        <value>START DATE</value>
+    </data>
+    <data name="Ent_LblEndDate" xml:space="preserve">
+        <value>END DATE</value>
+    </data>
+    <data name="Ent_LblTotalPages" xml:space="preserve">
+        <value>TOTAL PAGES</value>
+    </data>
+    <data name="Ent_LblShelfNumber" xml:space="preserve">
+        <value>SHELF NUMBER</value>
+    </data>
+    <data name="Ent_LblDeckNumber" xml:space="preserve">
+        <value>DECK NUMBER</value>
+    </data>
+    <data name="Ent_LblFileNumber" xml:space="preserve">
+        <value>FILE NUMBER</value>
+    </data>
+    <data name="Ent_BtnClearForm" xml:space="preserve">
+        <value>Clear Form</value>
+    </data>
+    <data name="Ent_BtnSaveRecord" xml:space="preserve">
+        <value>Save Record</value>
+    </data>
+    <data name="Ent_TabAmend" xml:space="preserve">
+        <value>Amend Record</value>
+    </data>
+    <data name="Ent_AmendSearchWatermark" xml:space="preserve">
+        <value>Target exact RR Number to amend...</value>
+    </data>
+    <data name="Ent_BtnLocateRecord" xml:space="preserve">
+        <value>Locate Record</value>
+    </data>
+    <data name="Ent_LblRrNumberLockEdit" xml:space="preserve">
+        <value>RR NUMBER (TOGGLE LOCK TO EDIT)</value>
+    </data>
+    <data name="Ent_TooltipUnlockEdit" xml:space="preserve">
+        <value>Unlock to Edit RR Number</value>
+    </data>
+    <data name="Ent_LblSecondaryId" xml:space="preserve">
+        <value>SUBJECT NUMBER</value>
+    </data>
+    <data name="Ent_BtnCancelAmendment" xml:space="preserve">
+        <value>Cancel Amendment</value>
+    </data>
+    <data name="Ent_BtnCommitChanges" xml:space="preserve">
+        <value>Commit Changes</value>
+    </data>
+    <data name="Ent_TabAudit" xml:space="preserve">
+        <value>Audit History Log</value>
+    </data>
+    <data name="Ent_ColTimestamp" xml:space="preserve">
+        <value>TIMESTAMP</value>
+    </data>
+    <data name="Ent_ColAction" xml:space="preserve">
+        <value>ACTION</value>
+    </data>
+    <data name="Ent_ColRrNumber" xml:space="preserve">
+        <value>RR NUMBER</value>
+    </data>
+    <data name="Ent_ColSubjectName" xml:space="preserve">
+        <value>FILE NAME</value>
+    </data>
+    <data name="Ent_ColSector" xml:space="preserve">
+        <value>SECTOR</value>
+    </data>
+    <data name="Ent_ColStatus" xml:space="preserve">
+        <value>STATUS</value>
+    </data>
+    <data name="Ent_ColModifiedField" xml:space="preserve">
+        <value>MODIFIED FIELD</value>
+    </data>
+    <data name="Ent_ColPriorValue" xml:space="preserve">
+        <value>PRIOR VALUE</value>
+    </data>
+    <data name="Ent_ColAmendedValue" xml:space="preserve">
+        <value>AMENDED VALUE</value>
+    </data>
+    <data name="Ent_BtnDismissLog" xml:space="preserve">
+        <value>Dismiss Log</value>
+    </data>
+    <data name="Rep_DatePickerWatermark" xml:space="preserve">
+        <value>Select...</value>
+    </data>
+    <data name="Rep_MainTitle" xml:space="preserve">
+        <value>Report Generation &amp; Export</value>
+    </data>
+    <data name="Rep_MainDesc" xml:space="preserve">
+        <value>Filter parameters, configure output columns, and export system ledger as CSV or Excel.</value>
+    </data>
+    <data name="Rep_BackupTitle" xml:space="preserve">
+        <value>FULL SYSTEM DATABASE BACKUP</value>
+    </data>
+    <data name="Rep_BackupDesc" xml:space="preserve">
+        <value>Generates a complete native .sql dump of the full table. Ignores active filters.</value>
+    </data>
+    <data name="Rep_BtnExportSql" xml:space="preserve">
+        <value>Export .SQL</value>
+    </data>
+    <data name="Rep_FilterToggle" xml:space="preserve">
+        <value>Configure Report Filters &amp; Output Columns</value>
+    </data>
+    <data name="Rep_SectionDataFilters" xml:space="preserve">
+        <value>Data Filters</value>
+    </data>
+    <data name="Rep_LblSerialNumber" xml:space="preserve">
+        <value>Serial Number</value>
+    </data>
+    <data name="Rep_LblRrNumber" xml:space="preserve">
+        <value>RR Number</value>
+    </data>
+    <data name="Rep_LblSector" xml:space="preserve">
+        <value>Sector</value>
+    </data>
+    <data name="Rep_LblCurrentStatus" xml:space="preserve">
+        <value>Current Status</value>
+    </data>
+    <data name="Rep_LblFileName" xml:space="preserve">
+        <value>File Name</value>
+    </data>
+    <data name="Rep_LblFileType" xml:space="preserve">
+        <value>File Type</value>
+    </data>
+    <data name="Rep_LblContentStartDate" xml:space="preserve">
+        <value>Content Start Date</value>
+    </data>
+    <data name="Rep_LblContentEndDate" xml:space="preserve">
+        <value>Content End Date</value>
+    </data>
+    <data name="Rep_LblTotalPages" xml:space="preserve">
+        <value>Total Pages</value>
+    </data>
+    <data name="Rep_LblShelfNumber" xml:space="preserve">
+        <value>Shelf Number</value>
+    </data>
+    <data name="Rep_LblDeckNumber" xml:space="preserve">
+        <value>Deck Number</value>
+    </data>
+    <data name="Rep_LblFileNumber" xml:space="preserve">
+        <value>File Number</value>
+    </data>
+    <data name="Rep_SectionEntryTimestamps" xml:space="preserve">
+        <value>SYSTEM ENTRY TIMESTAMPS</value>
+    </data>
+    <data name="Rep_LblAddedAfter" xml:space="preserve">
+        <value>Added After</value>
+    </data>
+    <data name="Rep_LblAddedBefore" xml:space="preserve">
+        <value>Added Before</value>
+    </data>
+    <data name="Rep_SectionRemovalCriteria" xml:space="preserve">
+        <value>REMOVAL &amp; ARCHIVAL CRITERIA</value>
+    </data>
+    <data name="Rep_ChkIsRemoved" xml:space="preserve">
+        <value>Is Removed?</value>
+    </data>
+    <data name="Rep_LblScheduledRemoval" xml:space="preserve">
+        <value>Scheduled Removal</value>
+    </data>
+    <data name="Rep_LblActualRemovalDate" xml:space="preserve">
+        <value>Actual Removal Date</value>
+    </data>
+    <data name="Rep_BtnResetFilters" xml:space="preserve">
+        <value>Reset All Filters</value>
+    </data>
+    <data name="Rep_SectionOutputColumns" xml:space="preserve">
+        <value>Output Columns</value>
+    </data>
+    <data name="Rep_ChkRenderColors" xml:space="preserve">
+        <value>Render Sector UI Colors</value>
+    </data>
+    <data name="Rep_ChkColAddedStamp" xml:space="preserve">
+        <value>Added Stamp</value>
+    </data>
+    <data name="Rep_ChkColSerialNum" xml:space="preserve">
+        <value>Serial Num</value>
+    </data>
+    <data name="Rep_ChkColRrNum" xml:space="preserve">
+        <value>RR Num</value>
+    </data>
+    <data name="Rep_ChkColSector" xml:space="preserve">
+        <value>Sector</value>
+    </data>
+    <data name="Rep_ChkColSubjectNum" xml:space="preserve">
+        <value>Subject Num</value>
+    </data>
+    <data name="Rep_ChkColFileName" xml:space="preserve">
+        <value>File Name</value>
+    </data>
+    <data name="Rep_ChkColFileType" xml:space="preserve">
+        <value>File Type</value>
+    </data>
+    <data name="Rep_ChkColStartDate" xml:space="preserve">
+        <value>Start Date</value>
+    </data>
+    <data name="Rep_ChkColEndDate" xml:space="preserve">
+        <value>End Date</value>
+    </data>
+    <data name="Rep_ChkColPages" xml:space="preserve">
+        <value>Pages</value>
+    </data>
+    <data name="Rep_ChkColShelf" xml:space="preserve">
+        <value>Shelf</value>
+    </data>
+    <data name="Rep_ChkColDeck" xml:space="preserve">
+        <value>Deck</value>
+    </data>
+    <data name="Rep_ChkColFileNum" xml:space="preserve">
+        <value>File Num</value>
+    </data>
+    <data name="Rep_ChkColStatus" xml:space="preserve">
+        <value>Status</value>
+    </data>
+    <data name="Rep_ChkColScheduledDate" xml:space="preserve">
+        <value>Scheduled Date</value>
+    </data>
+    <data name="Rep_ChkColRemovedDate" xml:space="preserve">
+        <value>Removed Date</value>
+    </data>
+    <data name="Rep_ChkColIsRemoved" xml:space="preserve">
+        <value>Is Removed</value>
+    </data>
+    <data name="Rep_PreviewTitle" xml:space="preserve">
+        <value>REPORT DATA PREVIEW</value>
+    </data>
+    <data name="Rep_GridColTimestamp" xml:space="preserve">
+        <value>Timestamp</value>
+    </data>
+    <data name="Rep_GridColSerial" xml:space="preserve">
+        <value>Serial Num</value>
+    </data>
+    <data name="Rep_GridColRrNum" xml:space="preserve">
+        <value>RR Num</value>
+    </data>
+    <data name="Rep_GridColSector" xml:space="preserve">
+        <value>Sector</value>
+    </data>
+    <data name="Rep_GridColSubjectNum" xml:space="preserve">
+        <value>Subject Num</value>
+    </data>
+    <data name="Rep_GridColFileName" xml:space="preserve">
+        <value>File Name</value>
+    </data>
+    <data name="Rep_GridColFileType" xml:space="preserve">
+        <value>File Type</value>
+    </data>
+    <data name="Rep_GridColStartDate" xml:space="preserve">
+        <value>Start Date</value>
+    </data>
+    <data name="Rep_GridColEndDate" xml:space="preserve">
+        <value>End Date</value>
+    </data>
+    <data name="Rep_GridColPages" xml:space="preserve">
+        <value>Pages</value>
+    </data>
+    <data name="Rep_GridColShelf" xml:space="preserve">
+        <value>Shelf</value>
+    </data>
+    <data name="Rep_GridColDeck" xml:space="preserve">
+        <value>Deck</value>
+    </data>
+    <data name="Rep_GridColFileNum" xml:space="preserve">
+        <value>File Num</value>
+    </data>
+    <data name="Rep_GridColStatus" xml:space="preserve">
+        <value>Status</value>
+    </data>
+    <data name="Rep_GridColScheduledRemoval" xml:space="preserve">
+        <value>Scheduled Removal</value>
+    </data>
+    <data name="Rep_GridColRemovedDate" xml:space="preserve">
+        <value>Removed Date</value>
+    </data>
+    <data name="Rep_GridColIsRemoved" xml:space="preserve">
+        <value>Is Removed</value>
+    </data>
+    <data name="Rep_TotalQueriesMatched" xml:space="preserve">
+        <value>Total Queries Matched:</value>
+    </data>
+    <data name="Rep_PaginationSeparator" xml:space="preserve">
+        <value> / </value>
+    </data>
+    <data name="Rep_BtnExportCsv" xml:space="preserve">
+        <value>Export CSV</value>
+    </data>
+    <data name="Rep_BtnExportExcel" xml:space="preserve">
+        <value>Export Excel</value>
+    </data>
+    <data name="Main_WindowTitle" xml:space="preserve">
+        <value>ArchivumWpf</value>
+    </data>
+    <data name="Main_BrandTitle" xml:space="preserve">
+        <value>Weligepola</value>
+    </data>
+    <data name="Main_BrandSubtitle" xml:space="preserve">
+        <value>Divisional Council</value>
+    </data>
+    <data name="Main_NavDashboard" xml:space="preserve">
+        <value>DASHBOARD</value>
+    </data>
+    <data name="Main_NavSearch" xml:space="preserve">
+        <value>SEARCH</value>
+    </data>
+    <data name="Main_NavCirculation" xml:space="preserve">
+        <value>CIRCULATION</value>
+    </data>
+    <data name="Main_NavNewEntry" xml:space="preserve">
+        <value>ENTRY</value>
+    </data>
+    <data name="Main_NavDisposal" xml:space="preserve">
+        <value>DISPOSAL</value>
+    </data>
+    <data name="Main_NavReports" xml:space="preserve">
+        <value>REPORTS</value>
+    </data>
+    <data name="Main_NavSettings" xml:space="preserve">
+        <value>SETTINGS</value>
+    </data>
+    <data name="Main_HeaderTitle" xml:space="preserve">
+        <value>WPS Archive</value>
+    </data>
+    <data name="Main_HeaderSubtitle" xml:space="preserve">
+        <value>Record Room Management System</value>
+    </data>
+    <data name="Main_WelcomeUser" xml:space="preserve">
+        <value>Welcome, Admin!</value>
+    </data>
+    <data name="Main_TooltipTheme" xml:space="preserve">
+        <value>Toggle Theme</value>
+    </data>
+    <data name="Main_BtnReviewDisposal" xml:space="preserve">
+        <value>Review</value>
+    </data>
+    <data name="Dis_InfoDossierIntel" xml:space="preserve">
+        <value>DOSSIER INTELLIGENCE</value>
+    </data>
+    <data name="Dis_InfoLblRrNumber" xml:space="preserve">
+        <value>RR Number:</value>
+    </data>
+    <data name="Dis_InforLblSubjectName" xml:space="preserve">
+        <value>File Name:</value>
+    </data>
+    <data name="Dis_InforLblSector" xml:space="preserve">
+        <value>Sector:</value>
+    </data>
+    <data name="DIs_InfoLblCurrentStatus" xml:space="preserve">
+        <value>Current Status:</value>
+    </data>
+    <data name="Dis_LblDateDisposed" xml:space="preserve">
+        <value>Date of Disposal:</value>
+    </data>
+    <data name="Dis_PermDisposedDesc" xml:space="preserve">
+        <value>This file has already been permanently removed.</value>
+    </data>
+    <data name="Rep_SectionIdentifiers" xml:space="preserve">
+        <value>Identifiers</value>
+    </data>
+    <data name="Rep_SectionClassification" xml:space="preserve">
+        <value>Classification</value>
+    </data>
+    <data name="Rep_SectionContentDates" xml:space="preserve">
+        <value>Content Dates</value>
+    </data>
+    <data name="Rep_SectionPhysicalStorage" xml:space="preserve">
+        <value>Physical Storage</value>
+    </data>
+    <data name="Rep_SectionActions" xml:space="preserve">
+        <value>Actions</value>
+    </data>
+    <data name="Rep_SectionEntryAndDisposal" xml:space="preserve">
+        <value>Entry &amp; Disposal</value>
+    </data>
+    <data name="Rep_SectionVisibleColumns" xml:space="preserve">
+        <value>Visible columns</value>
+    </data>
+    <data name="Rep_SectionExportTools" xml:space="preserve">
+        <value>Export tools</value>
+    </data>
+    <data name="Rep_SectionDataExport" xml:space="preserve">
+        <value>Data Export</value>
+    </data>
+    <data name="Circ_TotalActiveLoans" xml:space="preserve">
+        <value>Total Active Loans:</value>
+    </data>
+    <data name="Dash_TotalRecords" xml:space="preserve">
+        <value>Total Records</value>
+    </data>
+    <data name="Dash_LentRecords" xml:space="preserve">
+        <value>Lent Records</value>
+    </data>
+    <data name="Dash_RecentActivities" xml:space="preserve">
+        <value>Recent Activities</value>
+    </data>
+    <data name="Dash_RefID" xml:space="preserve">
+        <value>Reference ID</value>
+    </data>
+    <data name="Dash_ActionType" xml:space="preserve">
+        <value>Action Type</value>
+    </data>
+    <data name="Dash_Timestap" xml:space="preserve">
+        <value>Timestap </value>
+    </data>
+    <data name="Dash_PurgedRecords" xml:space="preserve">
+        <value>Purged Records</value>
+    </data>
+    <data name="Dash_SubjectMatter" xml:space="preserve">
+        <value/>
+    </data>
+    <data name="Dash_RRNumber" xml:space="preserve">
+        <value>RR Number</value>
+    </data>
+    <data name="Ent_TotalRecords" xml:space="preserve">
+        <value>Total Records:</value>
+    </data>
+    <data name="Ent_AuditSearchWatermark" xml:space="preserve">
+        <value>Search audit log by exact RR Number...</value>
+    </data>
+    <data name="Dis_TotalRecords" xml:space="preserve">
+        <value>Total Records:</value>
+    </data>
+    <data name="Dis_TotalRecordsPending" xml:space="preserve">
+        <value>Total Pending Records:</value>
+    </data>
+    <data name="Sea_FilterBorrowed" xml:space="preserve">
+        <value>Borrowed</value>
+    </data>
+    <data name="Settings_SaveVault" xml:space="preserve">
+        <value>Save Vault Settings</value>
+    </data>
+    <data name="Main_NavDocuments" xml:space="preserve">
+        <value>FILES</value>
+    </data>
+    <data name="Main_DisposalAlertFormat" xml:space="preserve">
+        <value>{0} record(s) are scheduled to be removed today!</value>
+    </data>
+    <data name="Doc_MainTitle" xml:space="preserve">
+        <value>File Management</value>
+    </data>
+    <data name="Doc_ColRrNumber" xml:space="preserve">
+        <value>RR NUMBER</value>
+    </data>
+    <data name="Doc_ColName" xml:space="preserve">
+        <value>NAME</value>
+    </data>
+    <data name="Doc_ColActions" xml:space="preserve">
+        <value>ACTIONS</value>
+    </data>
+    <data name="Doc_BtnManage" xml:space="preserve">
+        <value>Manage Files</value>
+    </data>
+    <data name="Doc_BtnImport" xml:space="preserve">
+        <value>Import</value>
+    </data>
+    <data name="Doc_BtnExport" xml:space="preserve">
+        <value>Export</value>
+    </data>
+    <data name="Doc_BtnRemove" xml:space="preserve">
+        <value>Remove</value>
+    </data>
+    <data name="Doc_FileNotFound" xml:space="preserve">
+        <value>File Not Found</value>
+    </data>
+    <data name="Doc_ConfirmRemoveTitle" xml:space="preserve">
+        <value>Confirm Removal</value>
+    </data>
+    <data name="Doc_ConfirmRemoveMsg" xml:space="preserve">
+        <value>Are you sure you want to permanently remove file '{0}'?
+
+This deletes the encrypted file from the vault. This action cannot be undone.</value>
+    </data>
+    <data name="Settings_LangRestartTitle" xml:space="preserve">
+        <value>Restart Required</value>
+    </data>
+    <data name="Settings_LangRestartMsg" xml:space="preserve">
+        <value>Your language preference has been saved. The change will take effect after you restart the application.</value>
+    </data>
+    <data name="Dis_ConfirmDisposalTitle" xml:space="preserve">
+        <value>Confirm Disposal</value>
+    </data>
+    <data name="Dis_ConfirmDisposalMsg" xml:space="preserve">
+        <value>Are you sure you want to permanently dispose of File '{0}'?
+
+This will remove it from th vault.</value>
+    </data>
+    <data name="Dis_PermanentLockTitle" xml:space="preserve">
+        <value>PERMANENT LOCK WARNING</value>
+    </data>
+    <data name="Dis_PermanentLockMsg" xml:space="preserve">
+        <value>CRITICAL WARNING:
+
+Disposing this file will permanently lock it. You will no longer be able to edit its contents, issue it to borrowers, or undo this action.
+
+Do you want to proceed? 
+
+</value>
+    </data>
+</root>
