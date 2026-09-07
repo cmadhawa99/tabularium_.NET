@@ -7,6 +7,7 @@
         xmlns:loc="clr-namespace:ArchivumWpf.Localization"
         Title="{x:Static loc:Strings.Main_WindowTitle}"
         Height="900" Width="1380" MinWidth="1100" MinHeight="700"
+        Icon="icon.ico"
         WindowStartupLocation="CenterScreen"
         Background="{DynamicResource WindowBackground}"
         TextElement.FontFamily="Segoe UI Variable, Segoe UI, sans-serif">

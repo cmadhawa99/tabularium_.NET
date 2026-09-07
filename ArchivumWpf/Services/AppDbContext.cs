@@ -151,6 +151,9 @@ public class AppDbContext : DbContext
                     var cryptoService = new CryptoService(masterKey);
                     var plainTextConnString = cryptoService.Decrypt(encryptedConnString);
                     optionsBuilder.UseNpgsql(plainTextConnString);
+
+                    optionsBuilder.ConfigureWarnings(w =>
+                        w.Log(Microsoft.EntityFrameworkCore.Diagnostics.RelationalEventId.PendingModelChangesWarning));
                 }
             }
         }

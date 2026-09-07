@@ -10,6 +10,12 @@
         <converters:StepEqualsConverter x:Key="StepEqualsConverter" />
         <converters:StringNotEmptyToVisibilityConverter x:Key="StringNotEmptyToVisibilityConverter" />
         <converters:InverseBooleanConverter x:Key="InverseBoolConverter" />
+
+        <Style x:Key="FormLabel" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource TextMuted}" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="Margin" Value="0,0,0,4" />
+        </Style>
     </Window.Resources>
 
     <Grid Margin="28">
@@ -31,14 +37,14 @@
             <StackPanel Visibility="{Binding CurrentStep, Converter={StaticResource StepEqualsConverter}, ConverterParameter=2}">
                 <TextBlock Text="Step 2 of 5 — Empty Database Connection" Foreground="{DynamicResource PrimaryAccent}" FontSize="18" Margin="0,0,0,12"/>
                 <TextBlock Text="Point to a PostgreSQL database with no existing tables." Foreground="{DynamicResource TextMuted}" TextWrapping="Wrap" Margin="0,0,0,12"/>
-                <TextBlock Text="Host"/>
-                <TextBox Text="{Binding DbHost, UpdateSourceTrigger=PropertyChanged}" Padding="10" Margin="0,4,0,12"/>
-                <TextBlock Text="Database Name"/>
-                <TextBox Text="{Binding DbName, UpdateSourceTrigger=PropertyChanged}" Padding="10" Margin="0,4,0,12"/>
-                <TextBlock Text="Username"/>
-                <TextBox Text="{Binding DbUser, UpdateSourceTrigger=PropertyChanged}" Padding="10" Margin="0,4,0,12"/>
-                <TextBlock Text="Password"/>
-                <PasswordBox x:Name="DbPasswordBox" PasswordChanged="DbPasswordBox_PasswordChanged" Padding="10" Margin="0,4,0,20"/>
+                <TextBlock Text="Host" Style="{StaticResource FormLabel}"/>
+                <TextBox Text="{Binding DbHost, UpdateSourceTrigger=PropertyChanged}" Padding="10" Margin="0,0,0,12"/>
+                <TextBlock Text="Database Name" Style="{StaticResource FormLabel}"/>
+                <TextBox Text="{Binding DbName, UpdateSourceTrigger=PropertyChanged}" Padding="10" Margin="0,0,0,12"/>
+                <TextBlock Text="Username" Style="{StaticResource FormLabel}"/>
+                <TextBox Text="{Binding DbUser, UpdateSourceTrigger=PropertyChanged}" Padding="10" Margin="0,0,0,12"/>
+                <TextBlock Text="Password" Style="{StaticResource FormLabel}"/>
+                <PasswordBox x:Name="DbPasswordBox" PasswordChanged="DbPasswordBox_PasswordChanged" Padding="10" Margin="0,0,0,20"/>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <Button Content="Back" Command="{Binding BackCommand}" Margin="0,0,12,0" Padding="20,10"/>
                     <Button Content="Test &amp; Next" Command="{Binding NextFromDbStepCommand}" Padding="24,10"
@@ -57,8 +63,8 @@
                     <TextBox Grid.Column="0" Text="{Binding StorageParentDirectory, UpdateSourceTrigger=PropertyChanged}" Padding="10" Margin="0,0,10,0"/>
                     <Button Grid.Column="1" Content="Browse..." Command="{Binding BrowseStorageDirectoryCommand}" Padding="16,10"/>
                 </Grid>
-                <TextBlock Text="Folder name"/>
-                <TextBox Text="{Binding StorageFolderName, UpdateSourceTrigger=PropertyChanged}" Padding="10" Margin="0,4,0,20"/>
+                <TextBlock Text="Folder name" Style="{StaticResource FormLabel}"/>
+                <TextBox Text="{Binding StorageFolderName, UpdateSourceTrigger=PropertyChanged}" Padding="10" Margin="0,0,0,20"/>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <Button Content="Back" Command="{Binding BackCommand}" Margin="0,0,12,0" Padding="20,10"/>
                     <Button Content="Next" Command="{Binding NextFromStorageStepCommand}" Padding="24,10"
@@ -69,12 +75,12 @@
             <!-- STEP 4: Admin account -->
             <StackPanel Visibility="{Binding CurrentStep, Converter={StaticResource StepEqualsConverter}, ConverterParameter=4}">
                 <TextBlock Text="Step 4 of 5 — Admin Account" Foreground="{DynamicResource PrimaryAccent}" FontSize="18" Margin="0,0,0,12"/>
-                <TextBlock Text="Username"/>
-                <TextBox Text="{Binding AdminUsername, UpdateSourceTrigger=PropertyChanged}" Padding="10" Margin="0,4,0,12"/>
-                <TextBlock Text="Password"/>
-                <PasswordBox x:Name="AdminPasswordBox" PasswordChanged="AdminPasswordBox_PasswordChanged" Padding="10" Margin="0,4,0,12"/>
-                <TextBlock Text="Confirm Password"/>
-                <PasswordBox x:Name="AdminPasswordConfirmBox" PasswordChanged="AdminPasswordConfirmBox_PasswordChanged" Padding="10" Margin="0,4,0,20"/>
+                <TextBlock Text="Username" Style="{StaticResource FormLabel}"/>
+                <TextBox Text="{Binding AdminUsername, UpdateSourceTrigger=PropertyChanged}" Padding="10" Margin="0,0,0,12"/>
+                <TextBlock Text="Password" Style="{StaticResource FormLabel}"/>
+                <PasswordBox x:Name="AdminPasswordBox" PasswordChanged="AdminPasswordBox_PasswordChanged" Padding="10" Margin="0,0,0,12"/>
+                <TextBlock Text="Confirm Password" Style="{StaticResource FormLabel}"/>
+                <PasswordBox x:Name="AdminPasswordConfirmBox" PasswordChanged="AdminPasswordConfirmBox_PasswordChanged" Padding="10" Margin="0,0,0,20"/>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <Button Content="Back" Command="{Binding BackCommand}" Margin="0,0,12,0" Padding="20,10"/>
                     <Button Content="Next" Command="{Binding NextFromAdminStepCommand}" Padding="24,10"
