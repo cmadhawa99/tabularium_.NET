@@ -69,7 +69,6 @@ public partial class SettingsViewModel : ObservableObject
         SelectedTimeFormat = prefs.TimeFormat ?? "12-Hour (AM/PM)";
         SelectedWindowMode = prefs.WindowMode ?? "Normal";
         DefaultPaginationSize = prefs.DefaultPaginationSize;
-        SelectedWindowMode = prefs.DefaultExportDirectory = prefs.DefaultExportDirectory;
         SelectedLanguage = prefs.Language ?? "English";
         _originalLanguage = SelectedLanguage;
 

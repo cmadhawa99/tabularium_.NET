@@ -402,7 +402,7 @@ public partial class ReportsViewModel : ObservableObject
         var dtFormat = timePref == "24-Hour" ? "yyyy-MM-dd HH:mm" : "yyyy-MM-dd hh:mm tt";
 
         var combinedFrom = CombineDateTime(AddedDateFrom, AddedTimeFrom);
-        var combinedTo = CombineDateTime(AddedDateTo, AddedDateFrom);
+        var combinedTo = CombineDateTime(AddedDateTo, AddedTimeTo);
 
         var fullData = await _archiveService.GetFullFilteredExportAsync(
             SerialNumber, RrNumber, Sector, SubjectNumber, FileName, FileType, StartDate, EndDate,
