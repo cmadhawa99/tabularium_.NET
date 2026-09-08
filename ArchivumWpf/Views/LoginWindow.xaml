@@ -132,6 +132,15 @@
 
         <!-- Main Content -->
         <Grid Margin="32">
+            
+            <Button Command="{Binding OpenConnectionSetupCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
+                    Background="Transparent" BorderThickness="0" Cursor="Hand"
+                    HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,18,18,0"
+                    ToolTip="Database Connection Setup" Panel.ZIndex="20">
+                <fa:ImageAwesome Icon="Cog" Width="20" Height="20" Foreground="{DynamicResource TextMuted}" />
+            </Button>
+            
             <Border Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource BorderColor}"
                     BorderThickness="1" CornerRadius="12" Padding="40" Effect="{StaticResource Win11ShadowHeavy}"
                     VerticalAlignment="Center">
@@ -151,14 +160,6 @@
                         <TextBlock Text="{Binding ActiveConnectionName}" Foreground="{DynamicResource TextMuted}" FontSize="12"
                                    HorizontalAlignment="Center" Margin="0,0,0,16"/>
 
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,20">
-                            <Button Content="Connect New Empty Database" Style="{StaticResource CleanButton}"
-                                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
-                                    Command="{Binding OpenNewDatabaseWizardCommand}" Margin="0,0,10,0" Padding="14,8"/>
-                            <Button Content="Manage Connections" Style="{StaticResource CleanButton}"
-                                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
-                                    Command="{Binding OpenConnectionManagerCommand}" Padding="14,8"/>
-                        </StackPanel>
 
                         <TextBlock Text="{Binding ErrorMessage}" Foreground="{DynamicResource DangerAccent}"
                                    FontSize="13" Margin="0,0,0,20" TextWrapping="Wrap" HorizontalAlignment="Center"

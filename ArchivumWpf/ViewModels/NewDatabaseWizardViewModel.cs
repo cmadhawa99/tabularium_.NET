@@ -17,24 +17,20 @@ public partial class NewDatabaseWizardViewModel : ObservableObject
 {
     private readonly IConnectionsRegistryService _registryService;
 
-    [ObservableProperty] private int _currentStep = 1; // 1..5
+    [ObservableProperty] private int _currentStep = 1; 
     [ObservableProperty] private string _errorMessage = string.Empty;
     [ObservableProperty] private bool _isProcessing;
 
-    // Step 1: Encryption key
     [ObservableProperty] private string _encryptionKeyInput = string.Empty;
 
-    // Step 2: DB connection
     [ObservableProperty] private string _dbHost = string.Empty;
     [ObservableProperty] private string _dbName = string.Empty;
     [ObservableProperty] private string _dbUser = string.Empty;
     public string DbPassword { get; set; } = string.Empty;
-
-    // Step 3: Secure storage
+    
     [ObservableProperty] private string _storageParentDirectory = string.Empty;
     [ObservableProperty] private string _storageFolderName = ".Secure";
 
-    // Step 4: Admin account
     [ObservableProperty] private string _adminUsername = string.Empty;
     public string AdminPassword { get; set; } = string.Empty;
     public string AdminPasswordConfirm { get; set; } = string.Empty;
@@ -198,10 +194,8 @@ public partial class NewDatabaseWizardViewModel : ObservableObject
         {
             Directory.CreateDirectory(profileFolder);
 
-            // 1. Save the encryption key (DPAPI-protected)
             KeyVaultService.ImportKey(profileFolder, EncryptionKeyInput.Trim());
 
-            // 2. Create the secure storage folder (hidden)
             var storageResult = SecureStorageHelper.Create(StorageParentDirectory, StorageFolderName);
             if (!storageResult.Success)
             {
@@ -209,7 +203,6 @@ public partial class NewDatabaseWizardViewModel : ObservableObject
                 return;
             }
 
-            // 3. Encrypt and save the connection string + storage path
             var connBuilder = new NpgsqlConnectionStringBuilder
             {
                 Host = DbHost,
@@ -234,7 +227,6 @@ public partial class NewDatabaseWizardViewModel : ObservableObject
             File.WriteAllText(Path.Combine(profileFolder, "appsettings.json"),
                 appSettingsNode.ToJsonString(new System.Text.Json.JsonSerializerOptions { WriteIndented = true }));
 
-            // 4. Point the session at this profile so AppDbContext resolves it, then migrate
             _pendingProfileId = profileId;
             SessionContext.ActiveProfile = new ConnectionProfile { Id = profileId };
 
@@ -242,7 +234,6 @@ public partial class NewDatabaseWizardViewModel : ObservableObject
             {
                 await context.Database.MigrateAsync();
 
-                // 5. Security canary
                 var canaryBytes = new byte[32];
                 RandomNumberGenerator.Fill(canaryBytes);
                 var plainCanary = Convert.ToBase64String(canaryBytes);
@@ -251,19 +242,17 @@ public partial class NewDatabaseWizardViewModel : ObservableObject
                     EncryptedCanary = cryptoService.Encrypt(plainCanary)
                 });
 
-                // 6. Admin user
                 context.Users.Add(new Models.User
                 {
                     Role = "Admin",
                     IsActive = true,
-                    Username = AdminUsername, // encrypted transparently via value converter
+                    Username = AdminUsername, 
                     PasswordHash = PasswordHasher.Hash(AdminPassword)
                 });
 
                 await context.SaveChangesAsync();
             }
 
-            // 7. Register the profile
             var profile = new ConnectionProfile
             {
                 Id = profileId,
@@ -284,9 +273,9 @@ public partial class NewDatabaseWizardViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-            // Roll back partially-created profile folder on failure
+
             SessionContext.ActiveProfile = null;
-            try { if (Directory.Exists(profileFolder)) Directory.Delete(profileFolder, true); } catch { /* best effort */ }
+            try { if (Directory.Exists(profileFolder)) Directory.Delete(profileFolder, true); } catch { /**/ }
 
             ErrorMessage = $"Setup failed: {ex.Message}";
         }

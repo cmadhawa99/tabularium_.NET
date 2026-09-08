@@ -16,7 +16,7 @@ public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
     public AppDbContext CreateDbContext(string[] args)
     {
         var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
-        optionsBuilder.UseNpgsql("Host=localhost;Database=design_time_only;Username=postgres;Password=postgres");
+        optionsBuilder.UseNpgsql("Host=localhost;Database=design_time_only;Username=dummy_user;Password=dummy_pw");
 
         return new AppDbContext(optionsBuilder.Options);
     }

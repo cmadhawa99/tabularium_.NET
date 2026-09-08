@@ -39,23 +39,15 @@ public partial class LoginViewModel : ObservableObject
         HasActiveConnection = active != null;
         ActiveConnectionName = active != null ? active.DisplayName : "No database connected";
     }
-
+    
     [RelayCommand]
-    private void OpenConnectionManager(Window ownerWindow)
+    private void OpenConnectionSetup(Window ownerWindow)
     {
-        var window = new Views.ConnectionManagerWindow { Owner = ownerWindow };
+        var window = new Views.ConnectionSetupWindow { Owner = ownerWindow };
         if (window.ShowDialog() == true)
             RefreshActiveConnection();
     }
-
-    [RelayCommand]
-    private void OpenNewDatabaseWizard(Window ownerWindow)
-    {
-        var window = new Views.NewDatabaseWizardWindow { Owner = ownerWindow };
-        if (window.ShowDialog() == true)
-            RefreshActiveConnection();
-    }
-
+    
     [RelayCommand]
     private async Task LoginAsync(Window window)
     {
