@@ -107,7 +107,7 @@ public partial class LoginViewModel : ObservableObject
         IsRecoveryMode = !IsRecoveryMode;
         ErrorMessage = string.Empty;
     }
-
+    
     [RelayCommand]
     private async Task ResetAccountAsync()
     {
@@ -134,7 +134,6 @@ public partial class LoginViewModel : ObservableObject
             var canaryMeta = await context.AppSecurityMetas.FirstOrDefaultAsync();
             if (canaryMeta == null) throw new Exception("Security Canary missing from database.");
 
-
             CryptoService cryptoService;
             try
             {
@@ -147,7 +146,6 @@ public partial class LoginViewModel : ObservableObject
                 return;
             }
 
-
             var userToReset = await context.Users.FirstOrDefaultAsync();
             if (userToReset == null)
             {
@@ -156,10 +154,9 @@ public partial class LoginViewModel : ObservableObject
             }
 
             userToReset.Username = NewUsernameInput;
-
-            string pepper = PepperStorageHelper.GetPepper(cryptoService);
+            
+            string pepper = PepperStorageHelper.GetOrCreatePepper(cryptoService);
             userToReset.PasswordHash = PasswordHasher.Hash(NewPasswordInput, pepper);
-
 
             await context.SaveChangesAsync();
 
@@ -176,4 +173,6 @@ public partial class LoginViewModel : ObservableObject
             IsProcessing = false;
         }
     }
+    
+    
 }
