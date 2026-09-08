@@ -212,6 +212,12 @@ public partial class NewDatabaseWizardViewModel : ObservableObject
             };
 
             var cryptoService = new CryptoService(EncryptionKeyInput.Trim());
+            
+            var pepperBytes = new byte[32];
+            RandomNumberGenerator.Fill(pepperBytes);
+            string plainPepper = Convert.ToBase64String(pepperBytes);
+            string encryptedPepper = cryptoService.Encrypt(plainPepper);
+            
             var appSettingsNode = new JsonObject
             {
                 ["ConnectionStrings"] = new JsonObject
@@ -221,6 +227,11 @@ public partial class NewDatabaseWizardViewModel : ObservableObject
                 ["SecureStorage"] = new JsonObject
                 {
                     ["Path"] = storageResult.FullPath
+                },
+                
+                ["SecuritySettings"] = new JsonObject
+                {
+                    ["EncryptedPepper"] = encryptedPepper
                 }
             };
 
@@ -247,7 +258,7 @@ public partial class NewDatabaseWizardViewModel : ObservableObject
                     Role = "Admin",
                     IsActive = true,
                     Username = AdminUsername, 
-                    PasswordHash = PasswordHasher.Hash(AdminPassword)
+                    PasswordHash = PasswordHasher.Hash(AdminPassword, plainPepper)
                 });
 
                 await context.SaveChangesAsync();
